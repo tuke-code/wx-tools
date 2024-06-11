@@ -14,6 +14,7 @@ set(wxBUILD_USE_STATIC_RUNTIME
 
 include(CMake/wxWidgets.cmake)
 file(GLOB_RECURSE E_TOOLS_SOURCE Source/*.*)
+list(APPEND E_TOOLS_SOURCE eTools.rc)
 add_executable(eTools ${E_TOOLS_SOURCE})
 target_link_libraries(eTools wx::core wx::aui)
 set_target_properties(
