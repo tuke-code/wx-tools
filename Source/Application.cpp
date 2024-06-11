@@ -8,4 +8,11 @@
  **************************************************************************************************/
 #include "Application.h"
 
-wxIMPLEMENT_APP(Application);
+#include "MainWindow.h"
+
+bool Application::OnInit()
+{
+    MainWindow* mainWindow = new MainWindow();
+    mainWindow->Show(true);
+    return true;
+}

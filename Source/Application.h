@@ -6,6 +6,12 @@
  * eTools is licensed according to the terms in the file LICENCE(GPL V3) in the root of the source
  * code directory.
  **************************************************************************************************/
-#include "Application.h"
+#pragma once
 
-wxIMPLEMENT_APP(Application);
+#include <wx/wx.h>
+
+class Application : public wxApp
+{
+public:
+    bool OnInit() override;
+};

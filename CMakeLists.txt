@@ -13,8 +13,8 @@ set(wxBUILD_USE_STATIC_RUNTIME
     CACHE BOOL "Build static runtime" FORCE)
 
 include(CMake/wxWidgets.cmake)
-
-add_executable(eTools Source/main.cpp)
+file(GLOB_RECURSE E_TOOLS_SOURCE Source/*.*)
+add_executable(eTools ${E_TOOLS_SOURCE})
 target_link_libraries(eTools wx::core wx::aui)
 set_target_properties(
   eTools

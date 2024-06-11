@@ -6,6 +6,25 @@
  * eTools is licensed according to the terms in the file LICENCE(GPL V3) in the root of the source
  * code directory.
  **************************************************************************************************/
-#include "Application.h"
+#pragma once
 
-wxIMPLEMENT_APP(Application);
+#include <wx/wx.h>
+
+class MainWindow : public wxFrame
+{
+public:
+    MainWindow();
+
+public:
+    enum { ID_Hello = 1 };
+
+private:
+    void Init();
+    void InitMenu();
+    void InitMenuFile(wxMenuBar* menuBar);
+    void InitMenuHelp(wxMenuBar* menuBar);
+
+    void OnHello(wxCommandEvent& event);
+    void OnExit(wxCommandEvent& event);
+    void OnAbout(wxCommandEvent& event);
+};
