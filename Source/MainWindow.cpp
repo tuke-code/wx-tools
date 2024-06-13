@@ -13,6 +13,12 @@ MainWindow::MainWindow()
 {
     Init();
 
+    wxGridSizer* gridSizer = new wxGridSizer(2, 2, 10, 10);
+    SetSizer(gridSizer);
+
+    wxButton* button1 = new wxButton(this, wxID_ANY, _("Button 1"));
+    gridSizer->Add(button1, 0, wxALIGN_CENTER | wxALL, 10);
+
     CreateStatusBar();
     SetStatusText("Welcome to wxWidgets!");
 }
