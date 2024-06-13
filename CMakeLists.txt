@@ -12,7 +12,9 @@ set(wxBUILD_USE_STATIC_RUNTIME
     ON
     CACHE BOOL "Build static runtime" FORCE)
 
+include(CMake/asio.cmake)
 include(CMake/wxWidgets.cmake)
+
 file(GLOB_RECURSE E_TOOLS_SOURCE Source/*.*)
 list(APPEND E_TOOLS_SOURCE eTools.rc)
 add_executable(eTools ${E_TOOLS_SOURCE})
