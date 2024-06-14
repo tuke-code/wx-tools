@@ -7,14 +7,18 @@
  * code directory.
  **************************************************************************************************/
 #include "Page.h"
+#include "InputBox.h"
 #include "OutputBox.h"
 
 Page::Page(wxWindow* parent, wxWindowID id)
     : wxPanel(parent, id)
 {
-    wxGridSizer* sizer = new wxGridSizer(1, 1, 0, 0);
-    SetSizer(sizer);
+    wxGridSizer* sizer = new wxGridSizer(2, 1, 0, 0);
+    SetSizerAndFit(sizer);
 
     auto outputBox = new OutputBox(this, wxID_ANY);
-    sizer->Add(outputBox, 0, wxEXPAND | wxALL, 0);
+    sizer->Add(outputBox, 1, wxEXPAND | wxALL, 0);
+
+    auto inputBox = new InputBox(this, wxID_ANY);
+    sizer->Add(inputBox, 0, wxEXPAND | wxDOWN, 0);
 }

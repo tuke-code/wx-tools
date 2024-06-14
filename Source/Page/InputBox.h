@@ -6,17 +6,12 @@
  * eTools is licensed according to the terms in the file LICENCE(GPL V3) in the root of the source
  * code directory.
  **************************************************************************************************/
-#include "OutputBox.h"
+#pragma once
 
-OutputBox::OutputBox(wxWindow* parent, wxWindowID id)
-    : wxStaticBoxSizer(wxVERTICAL, parent, _("Output"))
+#include <wx/wx.h>
+
+class InputBox : public wxStaticBoxSizer
 {
-    auto textCtrl = new wxTextCtrl(parent,
-                                   wxID_ANY,
-                                   wxEmptyString,
-                                   wxDefaultPosition,
-                                   wxDefaultSize,
-                                   wxTE_MULTILINE);
-
-    Add(textCtrl, 2, wxEXPAND | wxALL, 0);
-}
+public:
+    InputBox(wxWindow *parent, wxWindowID id);
+};

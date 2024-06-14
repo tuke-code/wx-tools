@@ -10,7 +10,7 @@
 
 #include <wx/wx.h>
 
-class OutputBox : public wxStaticBox
+class OutputBox : public wxStaticBoxSizer
 {
 public:
     OutputBox(wxWindow *parent, wxWindowID id);
