@@ -18,5 +18,5 @@ OutputBox::OutputBox(wxWindow* parent)
                                    wxDefaultSize,
                                    wxTE_MULTILINE);
 
-    Add(textCtrl, 0, wxEXPAND | wxALL, 0);
+    Add(textCtrl, 1, wxEXPAND | wxALL, 0);
 }

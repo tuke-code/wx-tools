@@ -13,5 +13,5 @@
 class InputBox : public wxStaticBoxSizer
 {
 public:
-    InputBox(wxWindow *parent, wxWindowID id);
+    InputBox(wxWindow *parent);
 };

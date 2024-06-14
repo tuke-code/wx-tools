@@ -16,18 +16,20 @@
 Page::Page(wxWindow* parent, wxWindowID id)
     : wxPanel(parent, id)
 {
-    auto* sizer = new wxGridBagSizer(0, 0);
+    auto sizer = new wxBoxSizer(wxHORIZONTAL);
     SetSizerAndFit(sizer);
 
     auto controlPanelLeft = new ControlPanel(this);
-    sizer->Add(controlPanelLeft, wxGBPosition(0, 0), wxGBSpan(1, 1));
+    controlPanelLeft->SetMinSize(wxSize(160, -1));
+    sizer->Add(controlPanelLeft, 0, wxEXPAND | wxALL, 4);
 
     auto ioPanelLeft = new IOPanel(this);
-    sizer->Add(ioPanelLeft, wxGBPosition(0, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
+    sizer->Add(ioPanelLeft, 1, wxEXPAND | wxALL, 4);
 
     auto ioPanelRight = new IOPanel(this);
-    sizer->Add(ioPanelRight, wxGBPosition(0, 2), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
+    sizer->Add(ioPanelRight, 1, wxEXPAND | wxALL, 4);
 
     auto controlPanelRight = new ControlPanel(this);
-    sizer->Add(controlPanelRight, wxGBPosition(0, 3), wxGBSpan(1, 1));
+    controlPanelRight->SetMinSize(wxSize(160, -1));
+    sizer->Add(controlPanelRight, 0, wxEXPAND | wxALL, 4);
 }

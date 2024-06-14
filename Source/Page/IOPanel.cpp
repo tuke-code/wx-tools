@@ -20,6 +20,6 @@ IOPanel::IOPanel(wxWindow* parent)
     auto outputBox = new OutputBox(this);
     sizer->Add(outputBox, 1, wxEXPAND | wxALL, 0);
 
-    auto inputBox = new InputBox(this, wxID_ANY);
+    auto inputBox = new InputBox(this);
     sizer->Add(inputBox, 0, wxEXPAND | wxALL, 0);
 }

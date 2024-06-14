@@ -8,10 +8,9 @@
  **************************************************************************************************/
 #include "InputBox.h"
 
-InputBox::InputBox(wxWindow* parent, wxWindowID id)
+InputBox::InputBox(wxWindow* parent)
     : wxStaticBoxSizer(wxVERTICAL, parent, _("Input"))
 {
     auto textCtrl = new wxTextCtrl(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize);
-
     Add(textCtrl, 1, wxEXPAND | wxALL, 0);
 }

@@ -18,7 +18,7 @@ MainWindow::MainWindow()
 
     auto* notebook = new wxNotebook(this, wxID_ANY);
 
-    auto* page1 = new Page(this, wxID_ANY);
+    auto* page1 = new Page(notebook, wxID_ANY);
 #ifdef __WXMSW__
     notebook->AddPage(page1, _("COM"));
 #else
@@ -40,12 +40,22 @@ MainWindow::MainWindow()
     auto* page7 = new Page(this, wxID_ANY);
     notebook->AddPage(page7, _("WS-S"));
 
-    auto gridSizer = new wxGridSizer(1, 1, 0, 0);
-    gridSizer->Add(notebook, 1, wxEXPAND | wxALL, 0);
-    SetSizer(gridSizer);
+    notebook->AddPage(new wxTextCtrl(notebook,
+                                     wxID_ANY,
+                                     "This is a text control",
+                                     wxDefaultPosition,
+                                     wxDefaultSize,
+                                     wxTE_MULTILINE),
+                      _("Log"));
+
+    auto sizer = new wxBoxSizer(wxVERTICAL);
+    sizer->Add(notebook, 1, wxEXPAND | wxALL, 0);
+    SetSizerAndFit(sizer);
 
     CreateStatusBar();
-    SetStatusText("Welcome to wxWidgets!");
+    SetStatusText("Welcome to wxWidgets!", 2000);
+    Centre();
+    SetMinSize(wxSize(1024, 600));
     Centre();
 }
 
