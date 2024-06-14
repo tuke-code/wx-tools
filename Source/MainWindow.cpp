@@ -48,14 +48,14 @@ MainWindow::MainWindow()
                                      wxTE_MULTILINE),
                       _("Log"));
 
-    auto sizer = new wxBoxSizer(wxVERTICAL);
+    auto const sizer = new wxBoxSizer(wxVERTICAL);
     sizer->Add(notebook, 1, wxEXPAND | wxALL, 0);
     SetSizerAndFit(sizer);
 
-    CreateStatusBar();
-    SetStatusText("Welcome to wxWidgets!");
+    wxFrame::CreateStatusBar();
+    wxFrame::SetStatusText("Welcome to wxWidgets!");
     Centre();
-    SetMinSize(wxSize(1024, 600));
+    wxFrame::SetMinSize(wxSize(1024, 600));
     Centre();
 }
 

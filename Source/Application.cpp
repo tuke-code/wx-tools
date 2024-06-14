@@ -12,7 +12,7 @@
 
 bool Application::OnInit()
 {
-    MainWindow* mainWindow = new MainWindow();
+    auto* mainWindow = new MainWindow();
     mainWindow->Show(true);
     return true;
 }
