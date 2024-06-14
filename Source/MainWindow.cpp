@@ -7,20 +7,46 @@
  * code directory.
  **************************************************************************************************/
 #include "MainWindow.h"
+#include "Page/Page.h"
+
+#include <wx/notebook.h>
 
 MainWindow::MainWindow()
     : wxFrame(nullptr, wxID_ANY, "Hello World")
 {
     Init();
 
-    wxGridSizer* gridSizer = new wxGridSizer(2, 2, 10, 10);
-    SetSizer(gridSizer);
+    auto* notebook = new wxNotebook(this, wxID_ANY);
 
-    wxButton* button1 = new wxButton(this, wxID_ANY, _("Button 1"));
-    gridSizer->Add(button1, 0, wxALIGN_CENTER | wxALL, 10);
+    auto* page1 = new Page(this, wxID_ANY);
+#ifdef __WXMSW__
+    notebook->AddPage(page1, _("COM"));
+#else
+    notebook->AddPage(page1, _("TTY"));
+#endif
+
+    auto* page2 = new Page(this, wxID_ANY);
+    notebook->AddPage(page2, _("UDP-C"));
+    auto* page3 = new Page(this, wxID_ANY);
+    notebook->AddPage(page3, _("UDP-S"));
+
+    auto* page4 = new Page(this, wxID_ANY);
+    notebook->AddPage(page4, _("TCP-C"));
+    auto* page5 = new Page(this, wxID_ANY);
+    notebook->AddPage(page5, _("TCP-S"));
+
+    auto* page6 = new Page(this, wxID_ANY);
+    notebook->AddPage(page6, _("WS-C"));
+    auto* page7 = new Page(this, wxID_ANY);
+    notebook->AddPage(page7, _("WS-S"));
+
+    auto gridSizer = new wxGridSizer(1, 1, 0, 0);
+    gridSizer->Add(notebook, 1, wxEXPAND | wxALL, 0);
+    SetSizer(gridSizer);
 
     CreateStatusBar();
     SetStatusText("Welcome to wxWidgets!");
+    Centre();
 }
 
 void MainWindow::OnExit(wxCommandEvent& event)
