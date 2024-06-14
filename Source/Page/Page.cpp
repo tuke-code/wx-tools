@@ -9,22 +9,23 @@
 #include "Page.h"
 
 #include "ControlPanel.h"
-#include "InputBox.h"
-#include "OutputBox.h"
+#include "IOPanel.h"
 
 Page::Page(wxWindow* parent, wxWindowID id)
     : wxPanel(parent, id)
 {
-    auto* sizer = new wxGridSizer(1, 2, 0, 0);
+    auto* sizer = new wxGridSizer(1, 4, 0, 0);
     SetSizerAndFit(sizer);
 
-    auto controlPanel = new ControlPanel(this, wxID_ANY);
-    sizer->Add(controlPanel, 0, wxTILE | wxALL, 0);
-    sizer->SetItemMinSize(controlPanel, 200, -1);
+    auto controlPanelLeft = new ControlPanel(this, wxID_ANY);
+    sizer->Add(controlPanelLeft, 0, wxEXPAND | wxALL, 0);
 
-    auto outputBox = new OutputBox(this, wxID_ANY);
-    sizer->Add(outputBox, 1, wxEXPAND | wxALL, 0);
+    auto ioPanelLeft = new IOPanel(this);
+    sizer->Add(ioPanelLeft, 1, wxEXPAND | wxALL, 0);
 
-    //auto inputBox = new InputBox(this, wxID_ANY);
-    //sizer->Add(inputBox, 0, wxEXPAND | wxDOWN, 0);
+    auto ioPanelRight = new IOPanel(this);
+    sizer->Add(ioPanelRight, 1, wxEXPAND | wxALL, 0);
+
+    auto controlPanelRight = new ControlPanel(this, wxID_ANY);
+    sizer->Add(controlPanelRight, 0, wxEXPAND | wxALL, 0);
 }

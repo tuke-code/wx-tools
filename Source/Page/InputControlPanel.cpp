@@ -8,6 +8,17 @@
  **************************************************************************************************/
 #include "InputControlBox.h"
 
-InputControlBox::InputControlBox(wxWindow* parent)
-    : wxStaticBoxSizer(wxVERTICAL, parent, _("Input Control"))
-{}
+InputControlPanel::InputControlPanel(wxWindow* parent)
+    : wxPanel(wxVERTICAL, parent)
+{
+    auto* sizer = new wxGridSizer(wxHORIZONTAL);
+    Add(sizer, 0, wxEXPAND | wxALL, 0);
+
+    auto cycleText = new wxStaticText(this, wxID_ANY, _("Cycle:"));
+    sizer->Add(cycleText, 0, wxALIGN_CENTER_VERTICAL | wxALL, 0);
+
+    auto cycleInterval = new wxComboBox(this, wxID_ANY);
+    cycleInterval->Append("1");
+    cycleInterval->Append("2");
+    sizer->Add(cycleInterval, 0, wxALIGN_CENTER_VERTICAL | wxALL, 0);
+}

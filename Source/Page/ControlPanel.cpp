@@ -11,7 +11,7 @@
 #include <wx/stattext.h>
 
 #include "CommunicationControlBox.h"
-#include "InputControlBox.h"
+#include "Inp.h"
 #include "OutputControlBox.h"
 
 ControlPanel::ControlPanel(wxWindow* parent, wxWindowID id)
@@ -28,6 +28,6 @@ ControlPanel::ControlPanel(wxWindow* parent, wxWindowID id)
 
     //sizer.add(new wxStaticText(this, wxID_ANY, ""), 0, wxEXPAND, 0);
 
-    auto inputControlBox = new InputControlBox(this);
+    auto inputControlBox = new InputControlPanel(this);
     sizer->Add(inputControlBox, 0, wxEXPAND | wxDOWN, 0);
 }

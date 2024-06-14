@@ -10,8 +10,8 @@
 
 #include <wx/wx.h>
 
-class InputControlBox : public wxStaticBoxSizer
+class InputControlPanel : public wxPanel
 {
 public:
-    InputControlBox(wxWindow* parent);
+    InputControlPanel(wxWindow* parent);
 };
