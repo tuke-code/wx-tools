@@ -13,5 +13,5 @@
 class OutputBox : public wxStaticBoxSizer
 {
 public:
-    OutputBox(wxWindow *parent, wxWindowID id);
+    OutputBox(wxWindow *parent);
 };

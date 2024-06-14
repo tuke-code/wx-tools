@@ -11,23 +11,21 @@
 #include <wx/stattext.h>
 
 #include "CommunicationControlBox.h"
-#include "Inp.h"
+#include "InputControlBox.h"
 #include "OutputControlBox.h"
 
-ControlPanel::ControlPanel(wxWindow* parent, wxWindowID id)
-    : wxPanel(parent, id)
+ControlPanel::ControlPanel(wxWindow* parent)
+    : wxPanel(parent, wxID_ANY)
 {
     auto* sizer = new wxBoxSizer(wxVERTICAL);
     SetSizerAndFit(sizer);
 
     auto communicationControlBox = new CommunicationControlBox(this);
-    sizer->Add(communicationControlBox, 0, wxEXPAND | wxALL, 0);
+    sizer->Add(communicationControlBox, 2);
 
     auto outputControlBox = new OutputControlBox(this);
-    sizer->Add(outputControlBox, 0, wxEXPAND | wxALL, 0);
+    sizer->Add(outputControlBox, 2);
 
-    //sizer.add(new wxStaticText(this, wxID_ANY, ""), 0, wxEXPAND, 0);
-
-    auto inputControlBox = new InputControlPanel(this);
-    sizer->Add(inputControlBox, 0, wxEXPAND | wxDOWN, 0);
+    auto inputControlBox = new InputControlBox(this);
+    sizer->Add(inputControlBox, 2);
 }

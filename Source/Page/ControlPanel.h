@@ -13,5 +13,5 @@
 class ControlPanel : public wxPanel
 {
 public:
-    ControlPanel(wxWindow* parent, wxWindowID id);
+    ControlPanel(wxWindow* parent);
 };

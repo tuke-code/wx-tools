@@ -6,14 +6,15 @@
  * eTools is licensed according to the terms in the file LICENCE(GPL V3) in the root of the source
  * code directory.
  **************************************************************************************************/
-#include "OutputControlBox.h"
+#include "InputControlBox.h"
 
 #include <wx/gbsizer.h>
+#include <wx/wx.h>
 
-OutputControlBox::OutputControlBox(wxWindow *parent)
-    : wxStaticBoxSizer(wxVERTICAL, parent, _("Output Control"))
+InputControlBox::InputControlBox(wxWindow* parent)
+    : wxStaticBoxSizer(wxVERTICAL, parent, _("Input Control"))
 {
-    auto *sizer = new wxGridBagSizer(0, 0);
+    auto* sizer = new wxGridBagSizer(0, 0);
     Add(sizer, 0, wxEXPAND | wxALL, 0);
 
     auto cycleText = new wxStaticText(GetStaticBox(), wxID_ANY, _("Cycle:"));

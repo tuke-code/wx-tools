@@ -17,7 +17,7 @@ IOPanel::IOPanel(wxWindow* parent)
     auto* sizer = new wxBoxSizer(wxVERTICAL);
     SetSizerAndFit(sizer);
 
-    auto outputBox = new OutputBox(this, wxID_ANY);
+    auto outputBox = new OutputBox(this);
     sizer->Add(outputBox, 1, wxEXPAND | wxALL, 0);
 
     auto inputBox = new InputBox(this, wxID_ANY);

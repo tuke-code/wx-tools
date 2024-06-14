@@ -8,7 +8,7 @@
  **************************************************************************************************/
 #include "OutputBox.h"
 
-OutputBox::OutputBox(wxWindow* parent, wxWindowID id)
+OutputBox::OutputBox(wxWindow* parent)
     : wxStaticBoxSizer(wxVERTICAL, parent, _("Output"))
 {
     auto textCtrl = new wxTextCtrl(parent,
@@ -18,5 +18,5 @@ OutputBox::OutputBox(wxWindow* parent, wxWindowID id)
                                    wxDefaultSize,
                                    wxTE_MULTILINE);
 
-    Add(textCtrl, 2, wxEXPAND | wxALL, 0);
+    Add(textCtrl, 0, wxEXPAND | wxALL, 0);
 }
