@@ -25,19 +25,19 @@ MainWindow::MainWindow()
     notebook->AddPage(page1, _("TTY"));
 #endif
 
-    auto* page2 = new Page(this, wxID_ANY);
+    auto* page2 = new Page(notebook, wxID_ANY);
     notebook->AddPage(page2, _("UDP-C"));
-    auto* page3 = new Page(this, wxID_ANY);
+    auto* page3 = new Page(notebook, wxID_ANY);
     notebook->AddPage(page3, _("UDP-S"));
 
-    auto* page4 = new Page(this, wxID_ANY);
+    auto* page4 = new Page(notebook, wxID_ANY);
     notebook->AddPage(page4, _("TCP-C"));
-    auto* page5 = new Page(this, wxID_ANY);
+    auto* page5 = new Page(notebook, wxID_ANY);
     notebook->AddPage(page5, _("TCP-S"));
 
-    auto* page6 = new Page(this, wxID_ANY);
+    auto* page6 = new Page(notebook, wxID_ANY);
     notebook->AddPage(page6, _("WS-C"));
-    auto* page7 = new Page(this, wxID_ANY);
+    auto* page7 = new Page(notebook, wxID_ANY);
     notebook->AddPage(page7, _("WS-S"));
 
     notebook->AddPage(new wxTextCtrl(notebook,
@@ -53,7 +53,7 @@ MainWindow::MainWindow()
     SetSizerAndFit(sizer);
 
     CreateStatusBar();
-    SetStatusText("Welcome to wxWidgets!", 2000);
+    SetStatusText("Welcome to wxWidgets!");
     Centre();
     SetMinSize(wxSize(1024, 600));
     Centre();

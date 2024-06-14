@@ -14,7 +14,7 @@
 InputControlBox::InputControlBox(wxWindow* parent)
     : wxStaticBoxSizer(wxVERTICAL, parent, _("Input Control"))
 {
-    auto* sizer = new wxGridBagSizer(0, 0);
+    auto* sizer = new wxGridBagSizer(4, 4);
     Add(sizer, 0, wxEXPAND | wxALL, 0);
 
     auto cycleText = new wxStaticText(GetStaticBox(), wxID_ANY, _("Cycle:"));
