@@ -9,5 +9,5 @@
 #include "CommunicationControlBox.h"
 
 CommunicationControlBox::CommunicationControlBox(wxWindow *parent)
-    : wxStaticBoxSizer(wxVERTICAL, parent, "Communication")
+    : wxStaticBoxSizer(wxVERTICAL, parent, _("Communication Control"))
 {}

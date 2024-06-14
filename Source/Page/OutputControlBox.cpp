@@ -8,6 +8,6 @@
  **************************************************************************************************/
 #include "OutputControlBox.h"
 
-OutputControlBox::OutputControlBox(int orient, wxWindow *parent, const wxString &label)
-    : wxStaticBoxSizer(orient, parent, label)
+OutputControlBox::OutputControlBox(wxWindow *parent)
+    : wxStaticBoxSizer(wxVERTICAL, parent, _("Output Control"))
 {}

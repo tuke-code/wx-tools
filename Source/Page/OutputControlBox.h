@@ -13,5 +13,5 @@
 class OutputControlBox : public wxStaticBoxSizer
 {
 public:
-    OutputControlBox(int orient, wxWindow* parent, const wxString& label);
+    OutputControlBox(wxWindow* parent);
 };

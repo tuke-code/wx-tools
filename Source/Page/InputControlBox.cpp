@@ -8,15 +8,6 @@
  **************************************************************************************************/
 #include "InputControlBox.h"
 
-InputControlBox::InputControlBox(int orient, wxWindow* parent, const wxString& label)
-    : wxStaticBoxSizer(orient, parent, label)
-{
-    auto textCtrl = new wxTextCtrl(parent,
-                                   wxID_ANY,
-                                   wxEmptyString,
-                                   wxDefaultPosition,
-                                   wxDefaultSize,
-                                   wxTE_MULTILINE);
-
-    Add(textCtrl, 2, wxEXPAND | wxALL, 0);
-}
+InputControlBox::InputControlBox(wxWindow* parent)
+    : wxStaticBoxSizer(wxVERTICAL, parent, _("Input Control"))
+{}

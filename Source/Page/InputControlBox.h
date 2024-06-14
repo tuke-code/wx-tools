@@ -13,5 +13,5 @@
 class InputControlBox : public wxStaticBoxSizer
 {
 public:
-    InputControlBox(int orient, wxWindow* parent, const wxString& label);
+    InputControlBox(wxWindow* parent);
 };

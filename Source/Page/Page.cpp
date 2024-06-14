@@ -15,11 +15,12 @@
 Page::Page(wxWindow* parent, wxWindowID id)
     : wxPanel(parent, id)
 {
-    auto* sizer = new wxGridSizer(1, 1, 0, 0);
+    auto* sizer = new wxGridSizer(1, 2, 0, 0);
     SetSizerAndFit(sizer);
 
     auto controlPanel = new ControlPanel(this, wxID_ANY);
-    sizer->Add(controlPanel, 0, wxEXPAND | wxALL, 0);
+    sizer->Add(controlPanel, 0, wxTILE | wxALL, 0);
+    sizer->SetItemMinSize(controlPanel, 200, -1);
 
     auto outputBox = new OutputBox(this, wxID_ANY);
     sizer->Add(outputBox, 1, wxEXPAND | wxALL, 0);
