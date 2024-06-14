@@ -6,24 +6,28 @@
  * eTools is licensed according to the terms in the file LICENCE(GPL V3) in the root of the source
  * code directory.
  **************************************************************************************************/
-#include "Page.h"
-
 #include "ControlPanel.h"
+
+#include <wx/stattext.h>
+
+#include "CommunicationControlBox.h"
 #include "InputBox.h"
 #include "OutputBox.h"
 
-Page::Page(wxWindow* parent, wxWindowID id)
+ControlPanel::ControlPanel(wxWindow* parent, wxWindowID id)
     : wxPanel(parent, id)
 {
-    auto* sizer = new wxGridSizer(1, 1, 0, 0);
+    auto* sizer = new wxBoxSizer(wxVERTICAL);
     SetSizerAndFit(sizer);
 
-    auto controlPanel = new ControlPanel(this, wxID_ANY);
-    sizer->Add(controlPanel, 0, wxEXPAND | wxALL, 0);
+    auto communicationControlBox = new CommunicationControlBox(this);
+    sizer->Add(communicationControlBox);
 
     auto outputBox = new OutputBox(this, wxID_ANY);
-    sizer->Add(outputBox, 1, wxEXPAND | wxALL, 0);
+    sizer->Add(outputBox);
 
-    //auto inputBox = new InputBox(this, wxID_ANY);
-    //sizer->Add(inputBox, 0, wxEXPAND | wxDOWN, 0);
+    //sizer.add(new wxStaticText(this, wxID_ANY, ""), 0, wxEXPAND, 0);
+
+    auto inputBox = new InputBox(this, wxID_ANY);
+    sizer->Add(inputBox, 0, wxEXPAND | wxDOWN, 0);
 }
