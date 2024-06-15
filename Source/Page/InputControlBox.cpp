@@ -32,10 +32,10 @@ InputControlBox::InputControlBox(wxWindow* parent)
     buttonSizer->Add(sendingButton, 1, wxEXPAND | wxALL, 0);
 
     sizer->Add(cycleText, wxGBPosition(0, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
-    sizer->Add(cycleInterval, wxGBPosition(0, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
+    sizer->Add(cycleInterval, wxGBPosition(0, 1), wxGBSpan(1, 1), wxEXPAND, 0);
     sizer->Add(formatText, wxGBPosition(1, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
-    sizer->Add(formatComboBox, wxGBPosition(1, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
-    sizer->Add(buttonSizer, wxGBPosition(2, 0), wxGBSpan(1, 2), wxEXPAND | wxALL, 0);
+    sizer->Add(formatComboBox, wxGBPosition(1, 1), wxGBSpan(1, 1), wxEXPAND, 0);
+    sizer->Add(buttonSizer, wxGBPosition(2, 0), wxGBSpan(1, 2), wxEXPAND, 0);
 #else
     auto sizer = new wxGridSizer(3, 2, 4, 4);
     Add(sizer, 1, wxEXPAND | wxALL, 0);
