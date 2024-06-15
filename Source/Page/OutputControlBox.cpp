@@ -13,12 +13,12 @@
 #include "Common/TextFormatComboBox.h"
 
 OutputControlBox::OutputControlBox(wxWindow *parent)
-    : wxStaticBoxSizer(wxHORIZONTAL, parent, _("Output Control"))
+    : wxStaticBoxSizer(wxHORIZONTAL, parent, wxT("Output Control"))
 {
     auto *sizer = new wxGridBagSizer(4, 4);
     Add(sizer, 1, wxEXPAND | wxALL, 0);
 
-    auto formatText = new wxStaticText(GetStaticBox(), wxID_ANY, _("Format"));
+    auto formatText = new wxStaticText(GetStaticBox(), wxID_ANY, wxT("Format"));
     auto formatComboBox = new TextFormatComboBox(GetStaticBox());
     auto optionsSizer = new wxGridBagSizer(4, 4);
     auto AddCheckBox = [=](const wxString &label, int row, int col) -> wxSizerItem * {
@@ -35,8 +35,8 @@ OutputControlBox::OutputControlBox(wxWindow *parent)
     AddCheckBox(wxT("Flags"), 2, 0);
     AddCheckBox(wxT("Logs"), 2, 1);
 
-    auto settingsButton = new wxButton(GetStaticBox(), wxID_ANY, _("Settings"));
-    auto clearButton = new wxButton(GetStaticBox(), wxID_ANY, _("Clear"));
+    auto settingsButton = new wxButton(GetStaticBox(), wxID_ANY, wxT("Settings"));
+    auto clearButton = new wxButton(GetStaticBox(), wxID_ANY, wxT("Clear"));
     auto buttonsSizer = new wxBoxSizer(wxHORIZONTAL);
     buttonsSizer->Add(settingsButton, 1, wxALL, 0);
     buttonsSizer->Add(clearButton, 1, wxALL, 0);

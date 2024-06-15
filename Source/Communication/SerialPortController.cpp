@@ -13,7 +13,7 @@
 SerialPortController::SerialPortController(wxWindow *parent)
     : CommunicationController(parent)
 {
-    Add(new wxStaticText(parent, wxID_ANY, "Port name1"),
+    Add(new wxStaticText(parent, wxID_ANY, "Port name"),
         wxGBPosition(0, 0),
         wxGBSpan(1, 1),
         wxALIGN_CENTER_VERTICAL | wxALL);

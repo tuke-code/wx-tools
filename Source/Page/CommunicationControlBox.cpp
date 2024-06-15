@@ -20,8 +20,8 @@ CommunicationControlBox::CommunicationControlBox(CommunicationType type, wxWindo
     auto *sizer = new wxGridBagSizer(4, 4);
     Add(sizer, 1, wxEXPAND | wxALL, 0);
 
-    auto settingsButton = new wxButton(GetStaticBox(), wxID_ANY, _("Settings"));
-    auto sendingButton = new wxButton(GetStaticBox(), wxID_ANY, _("Send"));
+    auto settingsButton = new wxButton(GetStaticBox(), wxID_ANY, wxT("Settings"));
+    auto sendingButton = new wxButton(GetStaticBox(), wxID_ANY, wxT("Send"));
     auto buttonSizer = new wxBoxSizer(wxHORIZONTAL);
 
     buttonSizer->Add(settingsButton, 1, wxEXPAND | wxALL, 0);
