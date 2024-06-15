@@ -14,10 +14,11 @@
 #include "Common/TextFormatComboBox.h"
 
 InputControlBox::InputControlBox(wxWindow* parent)
-    : wxStaticBoxSizer(wxVERTICAL, parent, _("Input Control"))
+    : wxStaticBoxSizer(wxHORIZONTAL, parent, wxT("Input Control"))
 {
+#if 1
     auto* sizer = new wxGridBagSizer(4, 4);
-    Add(sizer, 1, wxEXPAND | wxALL, 0);
+    Add(sizer, 0, wxEXPAND | wxALL, 0);
 
     auto cycleText = new wxStaticText(GetStaticBox(), wxID_ANY, wxT("Cycle"));
     auto cycleInterval = new wxComboBox(GetStaticBox(), wxID_ANY);
@@ -35,4 +36,25 @@ InputControlBox::InputControlBox(wxWindow* parent)
     sizer->Add(formatText, wxGBPosition(1, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
     sizer->Add(formatComboBox, wxGBPosition(1, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
     sizer->Add(buttonSizer, wxGBPosition(2, 0), wxGBSpan(1, 2), wxEXPAND | wxALL, 0);
+#else
+    auto sizer = new wxGridSizer(3, 2, 4, 4);
+    Add(sizer, 1, wxEXPAND | wxALL, 0);
+
+    auto cycleText = new wxStaticText(GetStaticBox(), wxID_ANY, wxT("Cycle"));
+    auto cycleInterval = new wxComboBox(GetStaticBox(), wxID_ANY);
+    auto formatText = new wxStaticText(GetStaticBox(), wxID_ANY, wxT("Format"));
+    auto formatComboBox = new TextFormatComboBox(GetStaticBox());
+    auto settingsButton = new wxButton(GetStaticBox(), wxID_ANY, wxT("Settings"));
+    auto sendingButton = new wxButton(GetStaticBox(), wxID_ANY, wxT("Send"));
+
+    auto buttonSizer = new wxBoxSizer(wxHORIZONTAL);
+    buttonSizer->Add(settingsButton, 1, wxEXPAND | wxALL, 0);
+    buttonSizer->Add(sendingButton, 1, wxEXPAND | wxALL, 0);
+
+    sizer->Add(cycleText, 0, wxALIGN_CENTER_VERTICAL | wxALL, 0);
+    sizer->Add(cycleInterval, 0, wxEXPAND | wxALL, 0);
+    sizer->Add(formatText, 0, wxALIGN_CENTER_VERTICAL | wxALL, 0);
+    sizer->Add(formatComboBox, 0, wxEXPAND | wxALL, 0);
+    sizer->Add(buttonSizer, 0, wxEXPAND | wxALL, 0);
+#endif
 }

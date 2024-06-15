@@ -28,7 +28,7 @@ Page::Page(CommunicationType type, wxWindow *parent)
     auto ioPanelRight = new IOPanel(this);
     sizer->Add(ioPanelRight, 1, wxEXPAND | wxALL, 4);
 
-    auto controlPanelRight = new ControlPanel(this);
+    auto controlPanelRight = new ControlBoxes(type, this);
     controlPanelRight->SetMinSize(wxSize(180, -1));
     sizer->Add(controlPanelRight, 0, wxEXPAND | wxALL, 4);
 #endif
