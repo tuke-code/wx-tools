@@ -21,13 +21,13 @@ ControlPanel::ControlPanel(wxWindow* parent)
     SetSizerAndFit(sizer);
 
     auto communicationControlBox = new CommunicationControlBox(this);
-    sizer->Add(communicationControlBox, 0);
+    sizer->Add(communicationControlBox, 0, wxEXPAND | wxALL);
 
     auto outputControlBox = new OutputControlBox(this);
-    sizer->Add(outputControlBox, 0);
+    sizer->Add(outputControlBox, 0, wxEXPAND | wxALL);
 
     sizer->Add(new wxStaticText(this, wxID_ANY, wxT("")), 1, wxEXPAND);
 
     auto inputControlBox = new InputControlBox(this);
-    sizer->Add(inputControlBox, 0);
+    sizer->Add(inputControlBox, 0, wxEXPAND | wxALL);
 }

@@ -20,16 +20,17 @@ Page::Page(wxWindow* parent, wxWindowID id)
     SetSizerAndFit(sizer);
 
     auto controlPanelLeft = new ControlPanel(this);
-    controlPanelLeft->SetMinSize(wxSize(160, -1));
+    controlPanelLeft->SetMinSize(wxSize(180, -1));
     sizer->Add(controlPanelLeft, 0, wxEXPAND | wxALL, 4);
 
     auto ioPanelLeft = new IOPanel(this);
     sizer->Add(ioPanelLeft, 1, wxEXPAND | wxALL, 4);
-
+#if 0
     auto ioPanelRight = new IOPanel(this);
     sizer->Add(ioPanelRight, 1, wxEXPAND | wxALL, 4);
 
     auto controlPanelRight = new ControlPanel(this);
-    controlPanelRight->SetMinSize(wxSize(160, -1));
+    controlPanelRight->SetMinSize(wxSize(180, -1));
     sizer->Add(controlPanelRight, 0, wxEXPAND | wxALL, 4);
+#endif
 }

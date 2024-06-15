@@ -5,6 +5,8 @@ project(
   VERSION 1.0.0
   LANGUAGES C CXX)
 
+set(CMAKE_AUTORCC ON)
+
 set(wxBUILD_SHARED
     OFF
     CACHE BOOL "Build wxWidgets as shared libraries" FORCE)
@@ -14,6 +16,8 @@ set(wxBUILD_USE_STATIC_RUNTIME
 
 include(CMake/asio.cmake)
 include(CMake/wxWidgets.cmake)
+
+include_directories(Source)
 
 file(GLOB_RECURSE E_TOOLS_SOURCE Source/*.*)
 list(APPEND E_TOOLS_SOURCE eTools.rc)

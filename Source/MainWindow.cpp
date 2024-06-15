@@ -19,26 +19,22 @@ MainWindow::MainWindow()
     auto* notebook = new wxNotebook(this, wxID_ANY);
 
     auto* page1 = new Page(notebook, wxID_ANY);
-#ifdef __WXMSW__
-    notebook->AddPage(page1, _("COM"));
-#else
-    notebook->AddPage(page1, _("TTY"));
-#endif
+    notebook->AddPage(page1, _("Serial Port"));
 
     auto* page2 = new Page(notebook, wxID_ANY);
-    notebook->AddPage(page2, _("UDP-C"));
+    notebook->AddPage(page2, _("UDP Client"));
     auto* page3 = new Page(notebook, wxID_ANY);
-    notebook->AddPage(page3, _("UDP-S"));
+    notebook->AddPage(page3, _("UDP Server"));
 
     auto* page4 = new Page(notebook, wxID_ANY);
-    notebook->AddPage(page4, _("TCP-C"));
+    notebook->AddPage(page4, _("TCP Client"));
     auto* page5 = new Page(notebook, wxID_ANY);
-    notebook->AddPage(page5, _("TCP-S"));
+    notebook->AddPage(page5, _("TCP Server"));
 
     auto* page6 = new Page(notebook, wxID_ANY);
-    notebook->AddPage(page6, _("WS-C"));
+    notebook->AddPage(page6, _("Web Socket Client"));
     auto* page7 = new Page(notebook, wxID_ANY);
-    notebook->AddPage(page7, _("WS-S"));
+    notebook->AddPage(page7, _("Web Socket Server"));
 
     notebook->AddPage(new wxTextCtrl(notebook,
                                      wxID_ANY,
@@ -54,8 +50,7 @@ MainWindow::MainWindow()
 
     wxFrame::CreateStatusBar();
     wxFrame::SetStatusText("Welcome to wxWidgets!");
-    Centre();
-    wxFrame::SetMinSize(wxSize(1024, 600));
+    //wxFrame::SetMinSize(wxSize(1024, 600));
     Centre();
 }
 
