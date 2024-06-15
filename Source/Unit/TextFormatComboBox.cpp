@@ -25,5 +25,4 @@ TextFormatComboBox::TextFormatComboBox(wxWindow* parent)
         AppendString(format);
     }
     SetSelection(3);
-    SetEditable(false);
 }

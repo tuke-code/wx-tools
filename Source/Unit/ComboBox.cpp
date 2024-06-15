@@ -9,12 +9,5 @@
 #include "ComboBox.h"
 
 ComboBox::ComboBox(wxWindow* parent)
-    : wxComboBox(parent,
-                 wxID_ANY,
-                 wxEmptyString,
-                 wxDefaultPosition,
-                 wxDefaultSize,
-                 0,
-                 nullptr,
-                 wxCB_READONLY)
+    : wxComboBox(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize)
 {}
