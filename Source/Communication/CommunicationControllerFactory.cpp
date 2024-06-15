@@ -4,6 +4,12 @@
 #include "CommunicationControllerFactory.h"
 
 #include "SerialPortController.h"
+#include "TCPClientController.h"
+#include "TCPServerController.h"
+#include "UDPClientController.h"
+#include "UDPServerController.h"
+#include "WSClientController.h"
+#include "WSServerController.h"
 
 CommunicationControllerFactory::CommunicationControllerFactory() {}
 
@@ -18,6 +24,18 @@ CommunicationController *CommunicationControllerFactory::CreateCommunicationCont
 {
     if (type == CommunicationType::SerialPort) {
         return new SerialPortController();
+    } else if (type == CommunicationType::UDPClient) {
+        return new UDPClientController();
+    } else if (type == CommunicationType::UDPServer) {
+        return new UDPServerController();
+    } else if (type == CommunicationType::TCPClient) {
+        return new TCPClientController();
+    } else if (type == CommunicationType::TCPServer) {
+        return new TCPServerController();
+    } else if (type == CommunicationType::WSClient) {
+        return new WSClientController();
+    } else if (type == CommunicationType::WSServer) {
+        return new WSServerController();
     }
 
     return nullptr;
