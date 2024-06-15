@@ -10,8 +10,9 @@
 
 #include <wx/wx.h>
 
+class CommunicationController;
 class ControlPanel : public wxPanel
 {
 public:
-    ControlPanel(wxWindow* parent);
+    ControlPanel(CommunicationController *controller, wxWindow *parent);
 };

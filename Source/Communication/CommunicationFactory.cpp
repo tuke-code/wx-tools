@@ -6,10 +6,22 @@
  * eTools is licensed according to the terms in the file LICENCE(GPL V3) in the root of the source
  * code directory.
  **************************************************************************************************/
-#include "CommunicationController.h"
+#include "CommunicationFactory.h"
 
-CommunicationController::CommunicationController()
-    : wxPanel(nullptr, wxID_ANY)
-{}
+#include "SerialPort.h"
 
-CommunicationController::~CommunicationController() {}
+CommunicationFactory::CommunicationFactory() {}
+
+CommunicationFactory &CommunicationFactory::Singleton()
+{
+    static CommunicationFactory instance;
+    return instance;
+}
+
+Communication *CreateCommunication(wxWindow *parent, CommunicationType type)
+{
+    if (type == CommunicationType::SerialPort) {
+        return new SerialPort();
+    }
+    return nullptr;
+}

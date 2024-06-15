@@ -10,7 +10,10 @@
 
 #include <wx/gbsizer.h>
 
-CommunicationControlBox::CommunicationControlBox(wxWindow *parent)
+#include "Communication/CommunicationController.h"
+
+CommunicationControlBox::CommunicationControlBox(CommunicationController *controller,
+                                                 wxWindow *parent)
     : wxStaticBoxSizer(wxVERTICAL, parent, _("Communication Control"))
 {
     auto *sizer = new wxGridBagSizer(4, 4);
@@ -20,7 +23,13 @@ CommunicationControlBox::CommunicationControlBox(wxWindow *parent)
     auto settingsButton = new wxButton(GetStaticBox(), wxID_ANY, _("Settings"));
     auto sendingButton = new wxButton(GetStaticBox(), wxID_ANY, _("Send"));
 
-    buttonSizer->Add(settingsButton, 1, wxEXPAND | wxALL, 0);
-    buttonSizer->Add(sendingButton, 1, wxEXPAND | wxALL, 0);
-    sizer->Add(buttonSizer, wxGBPosition(0, 0), wxGBSpan(1, 2), wxEXPAND | wxALL, 0);
+    buttonSizer->Add(settingsButton, 0, wxEXPAND | wxALL, 0);
+    buttonSizer->Add(sendingButton, 0, wxEXPAND | wxALL, 0);
+
+    if (controller) {
+        wxLogInfo("controller is not nullptr");
+        controller->SetParent(GetStaticBox());
+        sizer->Add(controller, wxGBPosition(0, 0), wxGBSpan(1, 2), wxEXPAND | wxALL, 0);
+    }
+    sizer->Add(buttonSizer, wxGBPosition(1, 0), wxGBSpan(1, 2), wxEXPAND | wxALL, 0);
 }

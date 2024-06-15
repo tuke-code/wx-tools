@@ -13,3 +13,16 @@
 enum class TextFormat { Bin, Oct, Dec, Hex, Ascii, Utf8, System, Unknown = -1 };
 std::vector<wxString> GetFriendlyTextFormats();
 wxString GetFriendlyTextFormat(TextFormat format);
+
+enum class CommunicationType {
+    SerialPort,
+    UDPClient,
+    UDPServer,
+    TCPClient,
+    TCPServer,
+    WSClient,
+    WSServer,
+    Unknown = -1
+};
+std::vector<CommunicationType> GetSupporttedCommunicationTypes();
+wxString GetCommunicationName(CommunicationType type);

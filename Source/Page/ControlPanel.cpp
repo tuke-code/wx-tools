@@ -14,13 +14,13 @@
 #include "InputControlBox.h"
 #include "OutputControlBox.h"
 
-ControlPanel::ControlPanel(wxWindow* parent)
+ControlPanel::ControlPanel(CommunicationController* controller, wxWindow* parent)
     : wxPanel(parent, wxID_ANY)
 {
     auto* sizer = new wxBoxSizer(wxVERTICAL);
     SetSizerAndFit(sizer);
 
-    auto communicationControlBox = new CommunicationControlBox(this);
+    auto communicationControlBox = new CommunicationControlBox(controller, this);
     sizer->Add(communicationControlBox, 0, wxEXPAND | wxALL);
 
     auto outputControlBox = new OutputControlBox(this);

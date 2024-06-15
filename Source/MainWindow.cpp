@@ -7,9 +7,11 @@
  * code directory.
  **************************************************************************************************/
 #include "MainWindow.h"
-#include "Page/Page.h"
 
 #include <wx/notebook.h>
+
+#include "Common/DataStructure.h"
+#include "Page/PageFactory.h"
 
 MainWindow::MainWindow()
     : wxFrame(nullptr, wxID_ANY, "Hello World")
@@ -18,23 +20,13 @@ MainWindow::MainWindow()
 
     auto* notebook = new wxNotebook(this, wxID_ANY);
 
-    auto* page1 = new Page(notebook, wxID_ANY);
-    notebook->AddPage(page1, _("Serial Port"));
-
-    auto* page2 = new Page(notebook, wxID_ANY);
-    notebook->AddPage(page2, _("UDP Client"));
-    auto* page3 = new Page(notebook, wxID_ANY);
-    notebook->AddPage(page3, _("UDP Server"));
-
-    auto* page4 = new Page(notebook, wxID_ANY);
-    notebook->AddPage(page4, _("TCP Client"));
-    auto* page5 = new Page(notebook, wxID_ANY);
-    notebook->AddPage(page5, _("TCP Server"));
-
-    auto* page6 = new Page(notebook, wxID_ANY);
-    notebook->AddPage(page6, _("Web Socket Client"));
-    auto* page7 = new Page(notebook, wxID_ANY);
-    notebook->AddPage(page7, _("Web Socket Server"));
+    auto types = GetSupporttedCommunicationTypes();
+    for (auto type : types) {
+        auto* page = PageFactory::singleton().CreatePage(type, notebook);
+        if (page != nullptr) {
+            notebook->AddPage(page, GetCommunicationName(type));
+        }
+    }
 
     notebook->AddPage(new wxTextCtrl(notebook,
                                      wxID_ANY,

@@ -40,8 +40,44 @@ wxString GetFriendlyTextFormat(TextFormat format)
     }
 
     if (formatMap.find(format) == formatMap.end()) {
-        return wxT("Unknown");
+        return "Unknown";
     } else {
         return formatMap[format];
+    }
+}
+
+std::vector<CommunicationType> GetSupporttedCommunicationTypes()
+{
+    static std::vector<CommunicationType> types;
+    if (types.empty()) {
+        types.push_back(CommunicationType::SerialPort);
+        types.push_back(CommunicationType::UDPClient);
+        types.push_back(CommunicationType::UDPServer);
+        types.push_back(CommunicationType::TCPClient);
+        types.push_back(CommunicationType::TCPServer);
+        types.push_back(CommunicationType::WSClient);
+        types.push_back(CommunicationType::WSServer);
+    }
+
+    return types;
+}
+
+wxString GetCommunicationName(CommunicationType type)
+{
+    static std::map<CommunicationType, wxString> typeMap;
+    if (typeMap.empty()) {
+        typeMap[CommunicationType::SerialPort] = wxT("Serial Port");
+        typeMap[CommunicationType::UDPClient] = wxT("UDP Client");
+        typeMap[CommunicationType::UDPServer] = wxT("UDP Server");
+        typeMap[CommunicationType::TCPClient] = wxT("TCP Client");
+        typeMap[CommunicationType::TCPServer] = wxT("TCP Server");
+        typeMap[CommunicationType::WSClient] = wxT("WebSocket Client");
+        typeMap[CommunicationType::WSServer] = wxT("WebSocket Server");
+    }
+
+    if (typeMap.find(type) == typeMap.end()) {
+        return "Unknown";
+    } else {
+        return typeMap[type];
     }
 }

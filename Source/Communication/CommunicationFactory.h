@@ -6,10 +6,19 @@
  * eTools is licensed according to the terms in the file LICENCE(GPL V3) in the root of the source
  * code directory.
  **************************************************************************************************/
-#include "CommunicationController.h"
+#pragma once
 
-CommunicationController::CommunicationController()
-    : wxPanel(nullptr, wxID_ANY)
-{}
+#include "Common/DataStructure.h"
 
-CommunicationController::~CommunicationController() {}
+class Communication;
+class CommunicationFactory
+{
+private:
+    CommunicationFactory();
+    CommunicationFactory(const CommunicationFactory &) = delete;
+    CommunicationFactory &operator=(const CommunicationFactory &) = delete;
+
+public:
+    static CommunicationFactory &Singleton();
+    Communication *CreateCommunication(CommunicationType type);
+};

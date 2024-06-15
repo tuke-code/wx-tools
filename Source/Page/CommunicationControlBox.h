@@ -10,8 +10,9 @@
 
 #include <wx/wx.h>
 
+class CommunicationController;
 class CommunicationControlBox : public wxStaticBoxSizer
 {
 public:
-    CommunicationControlBox(wxWindow *parent);
+    CommunicationControlBox(CommunicationController *controller, wxWindow *parent);
 };
