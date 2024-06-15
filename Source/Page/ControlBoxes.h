@@ -12,8 +12,8 @@
 
 #include "Common/DataStructure.h"
 #
-class ControlPanel : public wxPanel
+class ControlBoxes : public wxBoxSizer
 {
 public:
-    ControlPanel(CommunicationType type, wxWindow *parent);
+    ControlBoxes(CommunicationType type, wxWindow *parent);
 };

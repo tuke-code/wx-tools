@@ -19,56 +19,30 @@ OutputControlBox::OutputControlBox(wxWindow *parent)
     Add(sizer, 1, wxEXPAND | wxALL, 0);
 
     auto formatText = new wxStaticText(GetStaticBox(), wxID_ANY, _("Format:"));
-    sizer->Add(formatText, wxGBPosition(0, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
-
     auto formatComboBox = new TextFormatComboBox(GetStaticBox());
-    sizer->Add(formatComboBox, wxGBPosition(0, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
+    auto optionsSizer = new wxGridBagSizer(4, 4);
+    auto AddCheckBox = [=](const wxString &label, int row, int col) -> wxSizerItem * {
+        auto cb = new wxCheckBox(GetStaticBox(), wxID_ANY, label);
+        return optionsSizer->Add(cb, wxGBPosition(row, col), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
+    };
 
-    auto formatSizer = new wxGridBagSizer(4, 4);
-    formatSizer->Add(new wxCheckBox(GetStaticBox(), wxID_ANY, _("Rx")),
-                     wxGBPosition(0, 0),
-                     wxGBSpan(1, 1),
-                     wxEXPAND | wxALL,
-                     0);
-    formatSizer->Add(new wxCheckBox(GetStaticBox(), wxID_ANY, _("Tx")),
-                     wxGBPosition(0, 1),
-                     wxGBSpan(1, 1),
-                     wxEXPAND | wxALL,
-                     0);
-    formatSizer->Add(new wxCheckBox(GetStaticBox(), wxID_ANY, _("Wrap")),
-                     wxGBPosition(0, 2),
-                     wxGBSpan(1, 1),
-                     wxEXPAND | wxALL,
-                     0);
-    formatSizer->Add(new wxCheckBox(GetStaticBox(), wxID_ANY, _("Date")),
-                     wxGBPosition(1, 0),
-                     wxGBSpan(1, 1),
-                     wxEXPAND | wxALL,
-                     0);
-    formatSizer->Add(new wxCheckBox(GetStaticBox(), wxID_ANY, _("Time")),
-                     wxGBPosition(1, 1),
-                     wxGBSpan(1, 1),
-                     wxEXPAND | wxALL,
-                     0);
-    formatSizer->Add(new wxCheckBox(GetStaticBox(), wxID_ANY, _("MS")),
-                     wxGBPosition(1, 2),
-                     wxGBSpan(1, 1),
-                     wxEXPAND | wxALL,
-                     0);
-    formatSizer->Add(new wxCheckBox(GetStaticBox(), wxID_ANY, _("Flags")),
-                     wxGBPosition(2, 0),
-                     wxGBSpan(1, 1),
-                     wxEXPAND | wxALL,
-                     0);
-    formatSizer->Add(new wxCheckBox(GetStaticBox(), wxID_ANY, _("Logs")),
-                     wxGBPosition(2, 1),
-                     wxGBSpan(1, 1),
-                     wxEXPAND | wxALL,
-                     0);
-    sizer->Add(formatSizer, wxGBPosition(1, 0), wxGBSpan(1, 2), wxEXPAND | wxALL, 0);
+    AddCheckBox(wxT("Rx"), 0, 0);
+    AddCheckBox(wxT("Tx"), 0, 1);
+    AddCheckBox(wxT("Wrap"), 0, 2);
+    AddCheckBox(wxT("Date"), 1, 0);
+    AddCheckBox(wxT("Time"), 1, 1);
+    AddCheckBox(wxT("MS"), 1, 2);
+    AddCheckBox(wxT("Flags"), 2, 0);
+    AddCheckBox(wxT("Logs"), 2, 1);
 
+    auto settingsButton = new wxButton(GetStaticBox(), wxID_ANY, _("Settings"));
+    auto clearButton = new wxButton(GetStaticBox(), wxID_ANY, _("Clear"));
     auto buttonsSizer = new wxBoxSizer(wxHORIZONTAL);
-    buttonsSizer->Add(new wxButton(GetStaticBox(), wxID_ANY, _("Settings")), 1, wxALL, 0);
-    buttonsSizer->Add(new wxButton(GetStaticBox(), wxID_ANY, _("Clear")), 1, wxALL, 0);
+    buttonsSizer->Add(settingsButton, 1, wxALL, 0);
+    buttonsSizer->Add(clearButton, 1, wxALL, 0);
+
+    sizer->Add(formatText, wxGBPosition(0, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
+    sizer->Add(formatComboBox, wxGBPosition(0, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
+    sizer->Add(optionsSizer, wxGBPosition(1, 0), wxGBSpan(1, 2), wxEXPAND | wxALL, 0);
     sizer->Add(buttonsSizer, wxGBPosition(2, 0), wxGBSpan(1, 2), wxEXPAND | wxALL, 0);
 }

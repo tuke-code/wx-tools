@@ -18,17 +18,18 @@ CommunicationControlBox::CommunicationControlBox(CommunicationType type, wxWindo
     : wxStaticBoxSizer(wxVERTICAL, parent, _("Communication Control"))
 {
     auto *sizer = new wxGridBagSizer(4, 4);
-    Add(sizer, 0, wxEXPAND | wxALL, 0);
+    Add(sizer, 1, wxEXPAND | wxALL, 0);
 
-    auto buttonSizer = new wxBoxSizer(wxHORIZONTAL);
     auto settingsButton = new wxButton(GetStaticBox(), wxID_ANY, _("Settings"));
     auto sendingButton = new wxButton(GetStaticBox(), wxID_ANY, _("Send"));
+    auto buttonSizer = new wxBoxSizer(wxHORIZONTAL);
 
-    buttonSizer->Add(settingsButton, 0, wxEXPAND | wxALL, 0);
-    buttonSizer->Add(sendingButton, 0, wxEXPAND | wxALL, 0);
+    buttonSizer->Add(settingsButton, 1, wxEXPAND | wxALL, 0);
+    buttonSizer->Add(sendingButton, 1, wxEXPAND | wxALL, 0);
 
     auto &factory = CommunicationControllerFactory::singleton();
     auto *controller = factory.CreateCommunicationController(type, GetStaticBox());
+
     sizer->Add(controller, wxGBPosition(0, 0), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
     sizer->Add(buttonSizer, wxGBPosition(1, 0), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
 }

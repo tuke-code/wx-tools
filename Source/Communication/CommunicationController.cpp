@@ -9,7 +9,7 @@
 #include "CommunicationController.h"
 
 CommunicationController::CommunicationController(wxWindow *parent)
-    : wxPanel(parent, wxID_ANY)
+    : wxGridBagSizer(4, 4)
 {}
 
 CommunicationController::~CommunicationController() {}

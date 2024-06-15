@@ -10,7 +10,7 @@
 
 #include <wx/gbsizer.h>
 
-#include "ControlPanel.h"
+#include "ControlBoxes.h"
 #include "IOPanel.h"
 
 Page::Page(CommunicationType type, wxWindow *parent)
@@ -19,8 +19,7 @@ Page::Page(CommunicationType type, wxWindow *parent)
     auto sizer = new wxBoxSizer(wxHORIZONTAL);
     SetSizerAndFit(sizer);
 
-    auto controlPanelLeft = new ControlPanel(type, this);
-    //controlPanelLeft->SetMinSize(wxSize(200, -1));
+    auto controlPanelLeft = new ControlBoxes(type, this);
     sizer->Add(controlPanelLeft, 0, wxEXPAND | wxALL, 4);
 
     auto ioPanelLeft = new IOPanel(this);

@@ -8,9 +8,10 @@
  **************************************************************************************************/
 #pragma once
 
+#include <wx/gbsizer.h>
 #include <wx/wx.h>
 
-class CommunicationController : public wxPanel
+class CommunicationController : public wxGridBagSizer
 {
 public:
     CommunicationController(wxWindow *parent = nullptr);
