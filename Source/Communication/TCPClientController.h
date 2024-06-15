@@ -13,6 +13,6 @@
 class TCPClientController : public SocketClientController
 {
 public:
-    TCPClientController();
+    TCPClientController(wxWindow *parent = nullptr);
     ~TCPClientController();
 };

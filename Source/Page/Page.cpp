@@ -13,18 +13,13 @@
 #include "ControlPanel.h"
 #include "IOPanel.h"
 
-Page::Page(CommunicationController *controller, wxWindow *parent)
+Page::Page(CommunicationType type, wxWindow *parent)
     : wxPanel(parent, wxID_ANY)
 {
-    if (!controller) {
-        wxLogError("controller is nullptr");
-        return;
-    }
-
     auto sizer = new wxBoxSizer(wxHORIZONTAL);
     SetSizerAndFit(sizer);
 
-    auto controlPanelLeft = new ControlPanel(controller, this);
+    auto controlPanelLeft = new ControlPanel(type, this);
     controlPanelLeft->SetMinSize(wxSize(180, -1));
     sizer->Add(controlPanelLeft, 0, wxEXPAND | wxALL, 4);
 

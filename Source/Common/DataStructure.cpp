@@ -46,7 +46,7 @@ wxString GetFriendlyTextFormat(TextFormat format)
     }
 }
 
-std::vector<CommunicationType> GetSupporttedCommunicationTypes()
+std::vector<CommunicationType> GetSuportedCommunicationTypes()
 {
     static std::vector<CommunicationType> types;
     if (types.empty()) {

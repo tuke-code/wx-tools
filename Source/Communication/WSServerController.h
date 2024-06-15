@@ -13,6 +13,6 @@
 class WSServerController : public SocketServerController
 {
 public:
-    WSServerController();
+    WSServerController(wxWindow *parent = nullptr);
     ~WSServerController();
 };

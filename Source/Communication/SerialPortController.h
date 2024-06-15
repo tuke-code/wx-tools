@@ -13,6 +13,6 @@
 class SerialPortController : public CommunicationController
 {
 public:
-    SerialPortController();
+    SerialPortController(wxWindow *parent = nullptr);
     ~SerialPortController();
 };

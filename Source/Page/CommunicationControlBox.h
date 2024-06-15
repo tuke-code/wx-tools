@@ -10,9 +10,11 @@
 
 #include <wx/wx.h>
 
+#include "Common/DataStructure.h"
+
 class CommunicationController;
 class CommunicationControlBox : public wxStaticBoxSizer
 {
 public:
-    CommunicationControlBox(CommunicationController *controller, wxWindow *parent);
+    CommunicationControlBox(CommunicationType type, wxWindow *parent);
 };

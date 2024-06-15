@@ -8,6 +8,6 @@
  **************************************************************************************************/
 #include "UDPServerController.h"
 
-UDPServerController::UDPServerController() {}
+UDPServerController::UDPServerController(wxWindow *parent) {}
 
 UDPServerController::~UDPServerController() {}

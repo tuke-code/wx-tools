@@ -8,7 +8,7 @@
  **************************************************************************************************/
 #include "TCPClientController.h"
 
-TCPClientController::TCPClientController()
+TCPClientController::TCPClientController(wxWindow *parent)
 {
     // Constructor
 }

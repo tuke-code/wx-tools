@@ -10,10 +10,10 @@
 
 #include <wx/wx.h>
 
-#include "Communication/CommunicationController.h"
+#include "Common/DataStructure.h"
 
 class Page : public wxPanel
 {
 public:
-    Page(CommunicationController *controller, wxWindow *parent);
+    Page(CommunicationType type, wxWindow *parent);
 };

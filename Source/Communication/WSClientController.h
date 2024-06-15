@@ -13,6 +13,6 @@
 class WSClientController : public SocketClientController
 {
 public:
-    WSClientController();
+    WSClientController(wxWindow *parent = nullptr);
     ~WSClientController();
 };

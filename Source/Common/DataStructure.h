@@ -24,5 +24,5 @@ enum class CommunicationType {
     WSServer,
     Unknown = -1
 };
-std::vector<CommunicationType> GetSupporttedCommunicationTypes();
+std::vector<CommunicationType> GetSuportedCommunicationTypes();
 wxString GetCommunicationName(CommunicationType type);

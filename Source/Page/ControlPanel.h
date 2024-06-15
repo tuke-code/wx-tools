@@ -10,9 +10,10 @@
 
 #include <wx/wx.h>
 
-class CommunicationController;
+#include "Common/DataStructure.h"
+#
 class ControlPanel : public wxPanel
 {
 public:
-    ControlPanel(CommunicationController *controller, wxWindow *parent);
+    ControlPanel(CommunicationType type, wxWindow *parent);
 };

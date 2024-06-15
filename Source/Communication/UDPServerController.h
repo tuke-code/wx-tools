@@ -13,6 +13,6 @@
 class UDPServerController : public SocketServerController
 {
 public:
-    UDPServerController();
+    UDPServerController(wxWindow *parent = nullptr);
     ~UDPServerController();
 };

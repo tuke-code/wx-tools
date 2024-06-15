@@ -13,6 +13,6 @@
 class TCPServerController : public SocketServerController
 {
 public:
-    TCPServerController();
+    TCPServerController(wxWindow *parent = nullptr);
     ~TCPServerController();
 };

@@ -22,5 +22,5 @@ private:
 
 public:
     static CommunicationControllerFactory &singleton();
-    CommunicationController *CreateCommunicationController(CommunicationType type);
+    CommunicationController *CreateCommunicationController(CommunicationType type, wxWindow *parent);
 };

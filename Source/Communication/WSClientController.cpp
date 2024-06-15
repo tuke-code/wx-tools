@@ -8,6 +8,6 @@
  **************************************************************************************************/
 #include "WSClientController.h"
 
-WSClientController::WSClientController() {}
+WSClientController::WSClientController(wxWindow *parent) {}
 
 WSClientController::~WSClientController() {}

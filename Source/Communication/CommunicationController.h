@@ -13,6 +13,6 @@
 class CommunicationController : public wxPanel
 {
 public:
-    CommunicationController();
+    CommunicationController(wxWindow *parent = nullptr);
     ~CommunicationController();
 };

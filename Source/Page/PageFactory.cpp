@@ -20,8 +20,6 @@ PageFactory &PageFactory::singleton()
 
 Page *PageFactory::CreatePage(CommunicationType type, wxWindow *parent)
 {
-    auto &factory = CommunicationControllerFactory::singleton();
-    CommunicationController *controller = factory.CreateCommunicationController(type);
-    auto *page = new Page(controller, parent);
+    auto *page = new Page(type, parent);
     return page;
 }

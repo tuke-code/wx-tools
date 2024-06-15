@@ -8,8 +8,8 @@
  **************************************************************************************************/
 #include "CommunicationController.h"
 
-CommunicationController::CommunicationController()
-    : wxPanel(nullptr, wxID_ANY)
+CommunicationController::CommunicationController(wxWindow *parent)
+    : wxPanel(parent, wxID_ANY)
 {}
 
 CommunicationController::~CommunicationController() {}

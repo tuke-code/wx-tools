@@ -20,7 +20,7 @@ MainWindow::MainWindow()
 
     auto* notebook = new wxNotebook(this, wxID_ANY);
 
-    auto types = GetSupporttedCommunicationTypes();
+    auto types = GetSuportedCommunicationTypes();
     for (auto type : types) {
         auto* page = PageFactory::singleton().CreatePage(type, notebook);
         if (page != nullptr) {

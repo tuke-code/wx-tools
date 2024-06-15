@@ -8,6 +8,6 @@
  **************************************************************************************************/
 #include "SocketServerController.h"
 
-SocketServerController::SocketServerController() {}
+SocketServerController::SocketServerController(wxWindow *parent) {}
 
 SocketServerController::~SocketServerController() {}

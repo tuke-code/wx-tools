@@ -13,6 +13,6 @@
 class UDPClientController : public SocketClientController
 {
 public:
-    UDPClientController();
+    UDPClientController(wxWindow *parent = nullptr);
     ~UDPClientController();
 };

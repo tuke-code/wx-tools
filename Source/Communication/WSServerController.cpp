@@ -8,6 +8,6 @@
  **************************************************************************************************/
 #include "WSServerController.h"
 
-WSServerController::WSServerController() {}
+WSServerController::WSServerController(wxWindow *parent) {}
 
 WSServerController::~WSServerController() {}

@@ -13,6 +13,6 @@
 class SocketServerController : public CommunicationController
 {
 public:
-    SocketServerController();
+    SocketServerController(wxWindow *parent = nullptr);
     ~SocketServerController();
 };

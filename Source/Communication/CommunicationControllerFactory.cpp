@@ -20,22 +20,22 @@ CommunicationControllerFactory &CommunicationControllerFactory::singleton()
 }
 
 CommunicationController *CommunicationControllerFactory::CreateCommunicationController(
-    CommunicationType type)
+    CommunicationType type, wxWindow *parent)
 {
     if (type == CommunicationType::SerialPort) {
-        return new SerialPortController();
+        return new SerialPortController(parent);
     } else if (type == CommunicationType::UDPClient) {
-        return new UDPClientController();
+        return new UDPClientController(parent);
     } else if (type == CommunicationType::UDPServer) {
-        return new UDPServerController();
+        return new UDPServerController(parent);
     } else if (type == CommunicationType::TCPClient) {
-        return new TCPClientController();
+        return new TCPClientController(parent);
     } else if (type == CommunicationType::TCPServer) {
-        return new TCPServerController();
+        return new TCPServerController(parent);
     } else if (type == CommunicationType::WSClient) {
-        return new WSClientController();
+        return new WSClientController(parent);
     } else if (type == CommunicationType::WSServer) {
-        return new WSServerController();
+        return new WSServerController(parent);
     }
 
     return nullptr;

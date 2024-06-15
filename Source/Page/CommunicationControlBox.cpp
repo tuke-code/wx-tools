@@ -11,13 +11,14 @@
 #include <wx/gbsizer.h>
 
 #include "Communication/CommunicationController.h"
+#include "Communication/CommunicationControllerFactory.h"
+#include "Communication/SerialPortController.h"
 
-CommunicationControlBox::CommunicationControlBox(CommunicationController *controller,
-                                                 wxWindow *parent)
+CommunicationControlBox::CommunicationControlBox(CommunicationType type, wxWindow *parent)
     : wxStaticBoxSizer(wxVERTICAL, parent, _("Communication Control"))
 {
     auto *sizer = new wxGridBagSizer(4, 4);
-    Add(sizer, 1, wxEXPAND | wxALL, 0);
+    Add(sizer, 0, wxEXPAND | wxALL, 0);
 
     auto buttonSizer = new wxBoxSizer(wxHORIZONTAL);
     auto settingsButton = new wxButton(GetStaticBox(), wxID_ANY, _("Settings"));
@@ -26,10 +27,8 @@ CommunicationControlBox::CommunicationControlBox(CommunicationController *contro
     buttonSizer->Add(settingsButton, 0, wxEXPAND | wxALL, 0);
     buttonSizer->Add(sendingButton, 0, wxEXPAND | wxALL, 0);
 
-    if (controller) {
-        wxLogInfo("controller is not nullptr");
-        controller->SetParent(GetStaticBox());
-        sizer->Add(controller, wxGBPosition(0, 0), wxGBSpan(1, 2), wxEXPAND | wxALL, 0);
-    }
-    sizer->Add(buttonSizer, wxGBPosition(1, 0), wxGBSpan(1, 2), wxEXPAND | wxALL, 0);
+    auto &factory = CommunicationControllerFactory::singleton();
+    auto *controller = factory.CreateCommunicationController(type, GetStaticBox());
+    sizer->Add(controller, wxGBPosition(0, 0), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
+    sizer->Add(buttonSizer, wxGBPosition(1, 0), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
 }

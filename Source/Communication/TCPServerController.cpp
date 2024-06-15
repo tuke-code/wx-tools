@@ -8,6 +8,6 @@
  **************************************************************************************************/
 #include "TCPServerController.h"
 
-TCPServerController::TCPServerController() {}
+TCPServerController::TCPServerController(wxWindow *parent) {}
 
 TCPServerController::~TCPServerController() {}
