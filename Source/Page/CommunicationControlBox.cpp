@@ -18,8 +18,9 @@ CommunicationControlBox::CommunicationControlBox(wxWindow *parent)
 
     auto buttonSizer = new wxBoxSizer(wxHORIZONTAL);
     auto settingsButton = new wxButton(GetStaticBox(), wxID_ANY, _("Settings"));
-    buttonSizer->Add(settingsButton, 1, wxEXPAND | wxALL, 0);
     auto sendingButton = new wxButton(GetStaticBox(), wxID_ANY, _("Send"));
+
+    buttonSizer->Add(settingsButton, 1, wxEXPAND | wxALL, 0);
     buttonSizer->Add(sendingButton, 1, wxEXPAND | wxALL, 0);
     sizer->Add(buttonSizer, wxGBPosition(0, 0), wxGBSpan(1, 2), wxEXPAND | wxALL, 0);
 }

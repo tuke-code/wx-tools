@@ -29,7 +29,6 @@ InputControlBox::InputControlBox(wxWindow* parent)
 
     auto formatText = new wxStaticText(GetStaticBox(), wxID_ANY, _("Format:"));
     sizer->Add(formatText, wxGBPosition(1, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
-
     auto formatComboBox = new TextFormatComboBox(GetStaticBox());
     sizer->Add(formatComboBox, wxGBPosition(1, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
 

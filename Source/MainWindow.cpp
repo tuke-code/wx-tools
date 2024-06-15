@@ -50,7 +50,7 @@ MainWindow::MainWindow()
 
     wxFrame::CreateStatusBar();
     wxFrame::SetStatusText("Welcome to wxWidgets!");
-    //wxFrame::SetMinSize(wxSize(1024, 600));
+    wxFrame::SetMinSize(wxSize(800, -1));
     Centre();
 }
 
