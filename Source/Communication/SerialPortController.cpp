@@ -10,34 +10,82 @@
 
 #include <wx/gbsizer.h>
 
+#include "Common/BaudRateComboBox.h"
 #include "Common/ComboBox.h"
+#include "Common/DataBitsComboBox.h"
+#include "Common/FlowBitsComboBox.h"
+#include "Common/ParityComboBox.h"
+#include "Common/PortNameComboBox.h"
+#include "Common/StopBitsComboBox.h"
 
 SerialPortController::SerialPortController(wxWindow *parent)
     : CommunicationController(parent)
 {
-    auto AddLabel = [=](const wxString &label, int row, int col) -> wxSizerItem * {
-        auto text = new wxStaticText(parent, wxID_ANY, label);
-        return Add(text, wxGBPosition(row, col), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
-    };
-
-    auto AddComboBox = [=](int row, int col) -> wxSizerItem * {
-        auto cb = new ComboBox(parent);
-        cb->SetEditable(false);
-        return Add(cb, wxGBPosition(row, col), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
-    };
-
-    AddLabel(wxT("Port name"), 0, 0);
-    AddComboBox(0, 1);
-    AddLabel(wxT("Baud rate"), 1, 0);
-    AddComboBox(1, 1);
-    AddLabel(wxT("Data bits"), 2, 0);
-    AddComboBox(2, 1);
-    AddLabel(wxT("Stop bits"), 3, 0);
-    AddComboBox(3, 1);
-    AddLabel(wxT("Parity"), 4, 0);
-    AddComboBox(4, 1);
-    AddLabel(wxT("Flow Control"), 5, 0);
-    AddComboBox(5, 1);
+    InitPortNameComboBox(wxT("Port name"), 0, parent);
+    InitBaudRateComboBox(wxT("Baud rate"), 1, parent);
+    InitDataBitsComboBox(wxT("Data bits"), 2, parent);
+    InitStopBitsComboBox(wxT("Stop bits"), 3, parent);
+    InitParityComboBox(wxT("Parity"), 4, parent);
+    InitFlowBitsComboBox(wxT("Flow bits"), 5, parent);
 }
 
 SerialPortController::~SerialPortController() {}
+
+void SerialPortController::InitPortNameComboBox(const wxString &label, int row, wxWindow *parent)
+{
+    auto text = new wxStaticText(parent, wxID_ANY, label);
+    Add(text, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
+
+    auto cb = new PortNameComboBox(parent);
+    cb->SetEditable(false);
+    Add(cb, wxGBPosition(row, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
+}
+
+void SerialPortController::InitBaudRateComboBox(const wxString &label, int row, wxWindow *parent)
+{
+    auto text = new wxStaticText(parent, wxID_ANY, label);
+    Add(text, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
+
+    auto cb = new BaudRateComboBox(parent);
+    Add(cb, wxGBPosition(row, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
+}
+
+void SerialPortController::InitDataBitsComboBox(const wxString &label, int row, wxWindow *parent)
+{
+    auto text = new wxStaticText(parent, wxID_ANY, label);
+    Add(text, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
+
+    auto cb = new DataBitsComboBox(parent);
+    cb->SetEditable(false);
+    Add(cb, wxGBPosition(row, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
+}
+
+void SerialPortController::InitStopBitsComboBox(const wxString &label, int row, wxWindow *parent)
+{
+    auto text = new wxStaticText(parent, wxID_ANY, label);
+    Add(text, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
+
+    auto cb = new StopBitsComboBox(parent);
+    cb->SetEditable(false);
+    Add(cb, wxGBPosition(row, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
+}
+
+void SerialPortController::InitParityComboBox(const wxString &label, int row, wxWindow *parent)
+{
+    auto text = new wxStaticText(parent, wxID_ANY, label);
+    Add(text, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
+
+    auto cb = new ParityComboBox(parent);
+    cb->SetEditable(false);
+    Add(cb, wxGBPosition(row, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
+}
+
+void SerialPortController::InitFlowBitsComboBox(const wxString &label, int row, wxWindow *parent)
+{
+    auto text = new wxStaticText(parent, wxID_ANY, label);
+    Add(text, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
+
+    auto cb = new FlowBitsComboBox(parent);
+    cb->SetEditable(false);
+    Add(cb, wxGBPosition(row, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
+}

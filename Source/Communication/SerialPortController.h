@@ -15,4 +15,12 @@ class SerialPortController : public CommunicationController
 public:
     SerialPortController(wxWindow *parent = nullptr);
     ~SerialPortController();
+
+private:
+    void InitPortNameComboBox(const wxString &label, int row, wxWindow *parent);
+    void InitBaudRateComboBox(const wxString &label, int row, wxWindow *parent);
+    void InitDataBitsComboBox(const wxString &label, int row, wxWindow *parent);
+    void InitStopBitsComboBox(const wxString &label, int row, wxWindow *parent);
+    void InitParityComboBox(const wxString &label, int row, wxWindow *parent);
+    void InitFlowBitsComboBox(const wxString &label, int row, wxWindow *parent);
 };
