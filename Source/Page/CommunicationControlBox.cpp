@@ -15,7 +15,7 @@
 #include "Communication/SerialPortController.h"
 
 CommunicationControlBox::CommunicationControlBox(CommunicationType type, wxWindow *parent)
-    : wxStaticBoxSizer(wxVERTICAL, parent, _("Communication Control"))
+    : wxStaticBoxSizer(wxVERTICAL, parent, wxT("Communication Control"))
 {
     auto *sizer = new wxGridBagSizer(4, 4);
     Add(sizer, 1, wxEXPAND | wxALL, 0);
