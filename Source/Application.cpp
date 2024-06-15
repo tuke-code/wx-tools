@@ -8,10 +8,15 @@
  **************************************************************************************************/
 #include "Application.h"
 
+#include "Common/Log.h"
 #include "MainWindow.h"
 
 bool Application::OnInit()
 {
+    InitGoogleLog("eTools");
+
+    LogInfo("Application::OnInit()");
+
     auto* mainWindow = new MainWindow();
     mainWindow->Show(true);
     return true;

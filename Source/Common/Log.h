@@ -7,3 +7,11 @@
  * code directory.
  **************************************************************************************************/
 #pragma once
+
+#include <glog/logging.h>
+
+#define LogInfo(info) LOG(INFO) << info
+#define LogWarning(warning) LOG(WARNING) << warning
+#define LogError(error) LOG(ERROR) << error
+
+void InitGoogleLog(const char* argv0);

@@ -23,7 +23,7 @@ include_directories(Source)
 file(GLOB_RECURSE E_TOOLS_SOURCE Source/*.*)
 list(APPEND E_TOOLS_SOURCE eTools.rc)
 add_executable(eTools ${E_TOOLS_SOURCE})
-target_link_libraries(eTools wx::core wx::aui)
+target_link_libraries(eTools glog::glog wx::core wx::aui)
 set_target_properties(
   eTools
   PROPERTIES ${BUNDLE_ID_OPTION} MACOSX_BUNDLE_BUNDLE_VERSION
