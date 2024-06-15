@@ -20,7 +20,7 @@ Page::Page(CommunicationType type, wxWindow *parent)
     SetSizerAndFit(sizer);
 
     auto controlPanelLeft = new ControlPanel(type, this);
-    controlPanelLeft->SetMinSize(wxSize(180, -1));
+    //controlPanelLeft->SetMinSize(wxSize(200, -1));
     sizer->Add(controlPanelLeft, 0, wxEXPAND | wxALL, 4);
 
     auto ioPanelLeft = new IOPanel(this);

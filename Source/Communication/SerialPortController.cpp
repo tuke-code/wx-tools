@@ -25,18 +25,12 @@ SerialPortController::SerialPortController(wxWindow *parent)
                wxGBPosition(1, 0),
                wxGBSpan(1, 1),
                wxALIGN_CENTER_VERTICAL | wxALL);
-    sizer->Add(new wxComboBox(this, wxID_ANY, ""),
-               wxGBPosition(1, 1),
-               wxGBSpan(1, 1),
-               wxEXPAND | wxALL);
+    sizer->Add(new wxComboBox(this, wxID_ANY), wxGBPosition(1, 1), wxGBSpan(1, 1), wxEXPAND | wxALL);
     sizer->Add(new wxStaticText(this, wxID_ANY, "Data bits"),
                wxGBPosition(2, 0),
                wxGBSpan(1, 1),
                wxALIGN_CENTER_VERTICAL | wxALL);
-    sizer->Add(new wxComboBox(this, wxID_ANY, ""),
-               wxGBPosition(2, 1),
-               wxGBSpan(1, 1),
-               wxEXPAND | wxALL);
+    sizer->Add(new wxComboBox(this, wxID_ANY), wxGBPosition(2, 1), wxGBSpan(1, 1), wxEXPAND | wxALL);
     sizer->Add(new wxStaticText(this, wxID_ANY, "Parity"),
                wxGBPosition(3, 0),
                wxGBSpan(1, 1),
@@ -61,6 +55,7 @@ SerialPortController::SerialPortController(wxWindow *parent)
                wxGBPosition(5, 1),
                wxGBSpan(1, 1),
                wxEXPAND | wxALL);
+    SetMinSize(wxSize(200, 200));
 }
 
 SerialPortController::~SerialPortController() {}
