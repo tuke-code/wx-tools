@@ -8,7 +8,7 @@
  **************************************************************************************************/
 #include "TextFormatComboBox.h"
 
-#include "DataStructure.h"
+#include "Common/DataStructure.h"
 
 TextFormatComboBox::TextFormatComboBox(wxWindow* parent)
     : wxComboBox(parent,

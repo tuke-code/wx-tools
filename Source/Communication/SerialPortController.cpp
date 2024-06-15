@@ -10,13 +10,13 @@
 
 #include <wx/gbsizer.h>
 
-#include "Common/BaudRateComboBox.h"
-#include "Common/ComboBox.h"
-#include "Common/DataBitsComboBox.h"
-#include "Common/FlowBitsComboBox.h"
-#include "Common/ParityComboBox.h"
-#include "Common/PortNameComboBox.h"
-#include "Common/StopBitsComboBox.h"
+#include "Unit/BaudRateComboBox.h"
+#include "Unit/ComboBox.h"
+#include "Unit/DataBitsComboBox.h"
+#include "Unit/FlowBitsComboBox.h"
+#include "Unit/ParityComboBox.h"
+#include "Unit/PortNameComboBox.h"
+#include "Unit/StopBitsComboBox.h"
 
 SerialPortController::SerialPortController(wxWindow *parent)
     : CommunicationController(parent)

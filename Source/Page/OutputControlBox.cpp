@@ -10,7 +10,7 @@
 
 #include <wx/gbsizer.h>
 
-#include "Common/TextFormatComboBox.h"
+#include "Unit/TextFormatComboBox.h"
 
 OutputControlBox::OutputControlBox(wxWindow *parent)
     : wxStaticBoxSizer(wxHORIZONTAL, parent, wxT("Output Control"))

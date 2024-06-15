@@ -11,8 +11,8 @@
 #include <wx/gbsizer.h>
 #include <wx/wx.h>
 
-#include "Common/ComboBox.h"
-#include "Common/TextFormatComboBox.h"
+#include "Unit/ComboBox.h"
+#include "Unit/TextFormatComboBox.h"
 
 InputControlBox::InputControlBox(wxWindow* parent)
     : wxStaticBoxSizer(wxHORIZONTAL, parent, wxT("Input Control"))
