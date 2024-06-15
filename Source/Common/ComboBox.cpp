@@ -6,11 +6,9 @@
  * eTools is licensed according to the terms in the file LICENCE(GPL V3) in the root of the source
  * code directory.
  **************************************************************************************************/
-#include "TextFormatComboBox.h"
+#include "ComboBox.h"
 
-#include "DataStructure.h"
-
-TextFormatComboBox::TextFormatComboBox(wxWindow* parent)
+ComboBox::ComboBox(wxWindow* parent)
     : wxComboBox(parent,
                  wxID_ANY,
                  wxEmptyString,
@@ -19,11 +17,4 @@ TextFormatComboBox::TextFormatComboBox(wxWindow* parent)
                  0,
                  nullptr,
                  wxCB_READONLY)
-{
-    std::vector<wxString> formats = GetFriendlyTextFormats();
-    for (const wxString& format : formats) {
-        AppendString(format);
-    }
-    SetSelection(3);
-    SetEditable(false);
-}
+{}

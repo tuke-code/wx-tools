@@ -10,6 +10,8 @@
 
 #include <wx/gbsizer.h>
 
+#include "Common/ComboBox.h"
+
 SerialPortController::SerialPortController(wxWindow *parent)
     : CommunicationController(parent)
 {
@@ -19,7 +21,7 @@ SerialPortController::SerialPortController(wxWindow *parent)
     };
 
     auto AddComboBox = [=](int row, int col) -> wxSizerItem * {
-        auto cb = new wxComboBox(parent, wxID_ANY);
+        auto cb = new ComboBox(parent);
         cb->SetEditable(false);
         return Add(cb, wxGBPosition(row, col), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
     };
