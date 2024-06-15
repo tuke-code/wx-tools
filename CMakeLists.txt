@@ -15,6 +15,7 @@ set(wxBUILD_USE_STATIC_RUNTIME
     CACHE BOOL "Build static runtime" FORCE)
 
 include(CMake/asio.cmake)
+include(CMake/glog.cmake)
 include(CMake/wxWidgets.cmake)
 
 include_directories(Source)
