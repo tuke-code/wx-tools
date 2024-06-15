@@ -21,7 +21,7 @@ InputControlBox::InputControlBox(wxWindow* parent)
 
     auto cycleText = new wxStaticText(GetStaticBox(), wxID_ANY, wxT("Cycle"));
     auto cycleInterval = new wxComboBox(GetStaticBox(), wxID_ANY);
-    auto formatText = new wxStaticText(GetStaticBox(), wxID_ANY, wxT("Format"));
+    auto formatText = new wxStaticText(GetStaticBox(), wxID_ANY, wxT("Text format"));
     auto formatComboBox = new TextFormatComboBox(GetStaticBox());
     auto settingsButton = new wxButton(GetStaticBox(), wxID_ANY, wxT("Settings"));
     auto sendingButton = new wxButton(GetStaticBox(), wxID_ANY, wxT("Send"));

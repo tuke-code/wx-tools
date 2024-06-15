@@ -13,36 +13,29 @@
 SerialPortController::SerialPortController(wxWindow *parent)
     : CommunicationController(parent)
 {
-    Add(new wxStaticText(parent, wxID_ANY, "Port name"),
-        wxGBPosition(0, 0),
-        wxGBSpan(1, 1),
-        wxALIGN_CENTER_VERTICAL | wxALL);
-    Add(new wxComboBox(parent, wxID_ANY), wxGBPosition(0, 1), wxGBSpan(1, 1), wxEXPAND | wxALL);
-    Add(new wxStaticText(parent, wxID_ANY, "Baud rate"),
-        wxGBPosition(1, 0),
-        wxGBSpan(1, 1),
-        wxALIGN_CENTER_VERTICAL | wxALL);
-    Add(new wxComboBox(parent, wxID_ANY), wxGBPosition(1, 1), wxGBSpan(1, 1), wxEXPAND | wxALL);
-    Add(new wxStaticText(parent, wxID_ANY, "Data bits"),
-        wxGBPosition(2, 0),
-        wxGBSpan(1, 1),
-        wxALIGN_CENTER_VERTICAL | wxALL);
-    Add(new wxComboBox(parent, wxID_ANY), wxGBPosition(2, 1), wxGBSpan(1, 1), wxEXPAND | wxALL);
-    Add(new wxStaticText(parent, wxID_ANY, "Parity"),
-        wxGBPosition(3, 0),
-        wxGBSpan(1, 1),
-        wxALIGN_CENTER_VERTICAL | wxALL);
-    Add(new wxComboBox(parent, wxID_ANY, ""), wxGBPosition(3, 1), wxGBSpan(1, 0), wxEXPAND | wxALL);
-    Add(new wxStaticText(parent, wxID_ANY, "Stop bits"),
-        wxGBPosition(4, 0),
-        wxGBSpan(1, 1),
-        wxALIGN_CENTER_VERTICAL | wxALL);
-    Add(new wxComboBox(parent, wxID_ANY, ""), wxGBPosition(4, 1), wxGBSpan(1, 1), wxEXPAND | wxALL);
-    Add(new wxStaticText(parent, wxID_ANY, "Flow control"),
-        wxGBPosition(5, 0),
-        wxGBSpan(1, 1),
-        wxALIGN_CENTER_VERTICAL | wxALL);
-    Add(new wxComboBox(parent, wxID_ANY, ""), wxGBPosition(5, 1), wxGBSpan(1, 1), wxEXPAND | wxALL);
+    auto AddLabel = [=](const wxString &label, int row, int col) -> wxSizerItem * {
+        auto text = new wxStaticText(parent, wxID_ANY, label);
+        return Add(text, wxGBPosition(row, col), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
+    };
+
+    auto AddComboBox = [=](int row, int col) -> wxSizerItem * {
+        auto cb = new wxComboBox(parent, wxID_ANY);
+        cb->SetEditable(false);
+        return Add(cb, wxGBPosition(row, col), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
+    };
+
+    AddLabel(wxT("Port name"), 0, 0);
+    AddComboBox(0, 1);
+    AddLabel(wxT("Baud rate"), 1, 0);
+    AddComboBox(1, 1);
+    AddLabel(wxT("Data bits"), 2, 0);
+    AddComboBox(2, 1);
+    AddLabel(wxT("Stop bits"), 3, 0);
+    AddComboBox(3, 1);
+    AddLabel(wxT("Parity"), 4, 0);
+    AddComboBox(4, 1);
+    AddLabel(wxT("Flow Control"), 5, 0);
+    AddComboBox(5, 1);
 }
 
 SerialPortController::~SerialPortController() {}

@@ -15,7 +15,7 @@
 OutputControlBox::OutputControlBox(wxWindow *parent)
     : wxStaticBoxSizer(wxHORIZONTAL, parent, wxT("Output Control"))
 {
-    auto formatText = new wxStaticText(GetStaticBox(), wxID_ANY, wxT("Format"));
+    auto formatText = new wxStaticText(GetStaticBox(), wxID_ANY, wxT("Text format"));
     auto formatComboBox = new TextFormatComboBox(GetStaticBox());
     auto optionsSizer = new wxGridBagSizer(4, 4);
     auto AddCheckBox = [=](const wxString &label, int row, int col) -> wxSizerItem * {
