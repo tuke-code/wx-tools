@@ -14,7 +14,7 @@
 #include "Page/PageFactory.h"
 
 MainWindow::MainWindow()
-    : wxFrame(nullptr, wxID_ANY, "Hello World")
+    : wxFrame(nullptr, wxID_ANY, "eTools")
 {
     Init();
 
