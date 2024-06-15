@@ -19,7 +19,6 @@ MainWindow::MainWindow()
     Init();
 
     auto* notebook = new wxNotebook(this, wxID_ANY);
-
     auto types = GetSuportedCommunicationTypes();
     for (auto type : types) {
         auto* page = PageFactory::singleton().CreatePage(type, notebook);
@@ -27,14 +26,6 @@ MainWindow::MainWindow()
             notebook->AddPage(page, GetCommunicationName(type));
         }
     }
-
-    notebook->AddPage(new wxTextCtrl(notebook,
-                                     wxID_ANY,
-                                     "This is a text control",
-                                     wxDefaultPosition,
-                                     wxDefaultSize,
-                                     wxTE_MULTILINE),
-                      _("Log"));
 
     auto const sizer = new wxBoxSizer(wxVERTICAL);
     sizer->Add(notebook, 1, wxEXPAND | wxALL, 0);

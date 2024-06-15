@@ -13,12 +13,12 @@
 #include "Common/TextFormatComboBox.h"
 
 OutputControlBox::OutputControlBox(wxWindow *parent)
-    : wxStaticBoxSizer(wxVERTICAL, parent, _("Output Control"))
+    : wxStaticBoxSizer(wxHORIZONTAL, parent, _("Output Control"))
 {
     auto *sizer = new wxGridBagSizer(4, 4);
     Add(sizer, 1, wxEXPAND | wxALL, 0);
 
-    auto formatText = new wxStaticText(GetStaticBox(), wxID_ANY, _("Format:"));
+    auto formatText = new wxStaticText(GetStaticBox(), wxID_ANY, _("Format"));
     auto formatComboBox = new TextFormatComboBox(GetStaticBox());
     auto optionsSizer = new wxGridBagSizer(4, 4);
     auto AddCheckBox = [=](const wxString &label, int row, int col) -> wxSizerItem * {
