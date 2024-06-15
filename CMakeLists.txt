@@ -17,6 +17,7 @@ set(wxBUILD_USE_STATIC_RUNTIME
 include(CMake/asio.cmake)
 include(CMake/glog.cmake)
 include(CMake/wxWidgets.cmake)
+include(CMake/websocketpp.cmake)
 
 include_directories(Source)
 
