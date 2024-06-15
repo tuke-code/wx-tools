@@ -15,9 +15,6 @@
 OutputControlBox::OutputControlBox(wxWindow *parent)
     : wxStaticBoxSizer(wxHORIZONTAL, parent, wxT("Output Control"))
 {
-    auto *sizer = new wxGridBagSizer(4, 4);
-    Add(sizer, 1, wxEXPAND | wxALL, 0);
-
     auto formatText = new wxStaticText(GetStaticBox(), wxID_ANY, wxT("Format"));
     auto formatComboBox = new TextFormatComboBox(GetStaticBox());
     auto optionsSizer = new wxGridBagSizer(4, 4);
@@ -38,11 +35,13 @@ OutputControlBox::OutputControlBox(wxWindow *parent)
     auto settingsButton = new wxButton(GetStaticBox(), wxID_ANY, wxT("Settings"));
     auto clearButton = new wxButton(GetStaticBox(), wxID_ANY, wxT("Clear"));
     auto buttonsSizer = new wxBoxSizer(wxHORIZONTAL);
-    buttonsSizer->Add(settingsButton, 1, wxALL, 0);
-    buttonsSizer->Add(clearButton, 1, wxALL, 0);
+    buttonsSizer->Add(settingsButton, 1, wxEXPAND | wxALL, 0);
+    buttonsSizer->Add(clearButton, 1, wxEXPAND | wxALL, 0);
 
+    auto *sizer = new wxGridBagSizer(4, 4);
     sizer->Add(formatText, wxGBPosition(0, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
     sizer->Add(formatComboBox, wxGBPosition(0, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
     sizer->Add(optionsSizer, wxGBPosition(1, 0), wxGBSpan(1, 2), wxEXPAND | wxALL, 0);
     sizer->Add(buttonsSizer, wxGBPosition(2, 0), wxGBSpan(1, 2), wxEXPAND | wxALL, 0);
+    Add(sizer, 1, wxEXPAND | wxALL, 0);
 }
