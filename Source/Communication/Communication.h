@@ -15,4 +15,11 @@ class Communication : wxObject
 public:
     Communication();
     ~Communication();
+
+    bool openCommunication();
+    void closeCommunication();
+
+protected:
+    virtual bool openCommunicationActually();
+    virtual void closeCommunicationActually();
 };

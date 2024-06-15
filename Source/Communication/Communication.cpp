@@ -11,3 +11,20 @@
 Communication::Communication() {}
 
 Communication::~Communication() {}
+
+bool Communication::openCommunication()
+{
+    return openCommunicationActually();
+}
+
+bool Communication::openCommunicationActually()
+{
+    return false;
+}
+
+void Communication::closeCommunication()
+{
+    closeCommunicationActually();
+}
+
+void Communication::closeCommunicationActually() {}

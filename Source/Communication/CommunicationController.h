@@ -16,4 +16,11 @@ class CommunicationController : public wxGridBagSizer
 public:
     CommunicationController(wxWindow *parent = nullptr);
     ~CommunicationController();
+
+    bool openCommunication();
+    void closeCommunication();
+
+protected:
+    virtual bool openCommunicationActually();
+    virtual void closeCommunicationActually();
 };

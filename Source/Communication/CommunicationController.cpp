@@ -13,3 +13,20 @@ CommunicationController::CommunicationController(wxWindow *parent)
 {}
 
 CommunicationController::~CommunicationController() {}
+
+bool CommunicationController::openCommunication()
+{
+    return openCommunicationActually();
+}
+
+bool CommunicationController::openCommunicationActually()
+{
+    return false;
+}
+
+void CommunicationController::closeCommunication()
+{
+    closeCommunicationActually();
+}
+
+void CommunicationController::closeCommunicationActually() {}
