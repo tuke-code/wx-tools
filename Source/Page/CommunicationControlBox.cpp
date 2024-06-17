@@ -53,22 +53,6 @@ void CommunicationControlBox::SetOpenButtonLabel(const wxString &label)
 
 void CommunicationControlBox::OnOpen(wxCommandEvent &event)
 {
-#if 0
-    if (m_controller->IsOpen()) {
-        m_controller->Close();
-        m_openButton->SetLabel(wxT("Open"));
-        LogInfo("Close communication successfully.");
-    } else {
-        if (m_controller->Open()) {
-            m_openButton->SetLabel(wxT("Close"));
-            LogInfo("Open communication successfully.");
-        } else {
-            // wxWidget警告对话框
-            wxMessageBox(wxT("Failed to open communication."), wxT("Error"), wxICON_ERROR);
-        }
-    }
-#else
     wxUnusedVar(event);
     m_invokeOpenSignal();
-#endif
 }
