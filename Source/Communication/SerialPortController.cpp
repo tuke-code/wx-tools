@@ -11,13 +11,13 @@
 #include <wx/gbsizer.h>
 
 #include "Unit/BaudRateComboBox.h"
-#include "Unit/ComboBox.h"
 #include "Unit/DataBitsComboBox.h"
 #include "Unit/FlowBitsComboBox.h"
 #include "Unit/ParityComboBox.h"
 #include "Unit/PortNameComboBox.h"
 #include "Unit/StopBitsComboBox.h"
 
+#include "Common/Log.h"
 #include "SerialPort.h"
 
 SerialPortController::SerialPortController(wxWindow *parent)
@@ -57,6 +57,17 @@ void SerialPortController::AboutToOpen(Communication *communication)
     asio::serial_port::stop_bits::type stopBits = m_stopBitsComboBox->GetStopBits();
     asio::serial_port::parity::type parity = m_parityComboBox->GetParity();
     asio::serial_port::flow_control::type flowControl = m_flowBitsComboBox->GetFlowBits();
+
+    auto info = wxString::Format("Open serial port, port name: %s, baud rate: %d, data bits: %d, "
+                                 "stop bits: %d, parity: %d, flow control: %d",
+                                 portName,
+                                 static_cast<int>(baudRate),
+                                 dataBits.value(),
+                                 static_cast<int>(stopBits),
+                                 static_cast<int>(parity),
+                                 static_cast<int>(flowControl));
+    LogInfo(info.ToStdString());
+
     serialPort->SetBaudRate(baudRate);
     serialPort->SetCharacterSize(dataBits);
     serialPort->SetFlowControl(flowControl);

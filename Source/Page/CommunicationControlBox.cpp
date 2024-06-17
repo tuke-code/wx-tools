@@ -49,7 +49,8 @@ void CommunicationControlBox::OnOpen(wxCommandEvent &event)
             m_openButton->SetLabel(wxT("Close"));
             LogInfo("Open communication successfully.");
         } else {
-            LogError("Open communication failed.");
+            // wxWidget警告对话框
+            wxMessageBox(wxT("Failed to open communication."), wxT("Error"), wxICON_ERROR);
         }
     }
 }

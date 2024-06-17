@@ -11,12 +11,9 @@
 PortNameComboBox::PortNameComboBox(wxWindow* parent)
     : ComboBox(parent)
 {
-    Append(wxT("COM1"));
-    Append(wxT("COM2"));
-    Append(wxT("COM3"));
-    Append(wxT("COM4"));
-    Append(wxT("COM5"));
-    Append(wxT("COM6"));
+    for (int i = 0; i < 10; i++) {
+        Append(wxString::Format("COM%d", i+1));
+    }
 
-    SetSelection(0);
+    SetSelection(9);
 }

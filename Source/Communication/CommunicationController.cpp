@@ -8,8 +8,12 @@
  **************************************************************************************************/
 #include "CommunicationController.h"
 
+#include <wx/event.h>
+#include <wx/wx.h>
+
 CommunicationController::CommunicationController(wxWindow *parent)
     : wxGridBagSizer(4, 4)
+    , m_communication(nullptr)
 {}
 
 CommunicationController::~CommunicationController() {}
@@ -22,6 +26,7 @@ bool CommunicationController::Open()
     }
 
     AboutToOpen(m_communication);
+
     return m_communication->Open();
 }
 
@@ -48,10 +53,12 @@ Communication *CommunicationController::CreateCommunication()
 
 void CommunicationController::AboutToOpen(Communication *communication)
 {
+    wxUnusedVar(communication);
     // Nothing to do
 }
 
 void CommunicationController::AboutToClose(Communication *communication)
 {
+    wxUnusedVar(communication);
     // Nothing to do
 }

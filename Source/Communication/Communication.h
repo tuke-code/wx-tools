@@ -10,16 +10,15 @@
 
 #include <wx/wx.h>
 
+#include "Common/DataStructure.h"
+
 class Communication : wxObject
 {
 public:
     Communication();
     ~Communication();
 
-    bool Open();
-    void Close();
-
-protected:
-    virtual bool OpenActually();
-    virtual void CloseActually();
+    virtual bool Open();
+    virtual void Close();
+    virtual void Write(const wxString &data, TextFormat format);
 };

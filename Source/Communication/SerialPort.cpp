@@ -13,7 +13,6 @@
 SerialPort::SerialPort()
     : Communication()
     , m_serialPort(nullptr)
-    , m_ioService(nullptr)
 {}
 
 void SerialPort::SetPortName(const std::string &portName)
@@ -24,74 +23,118 @@ void SerialPort::SetPortName(const std::string &portName)
 void SerialPort::SetBaudRate(int baudRate)
 {
     if (m_serialPort) {
-        m_serialPort->set_option(asio::serial_port::baud_rate(baudRate));
+        try {
+            m_serialPort->set_option(asio::serial_port::baud_rate(baudRate));
+        } catch (asio::system_error &e) {
+            std::string errorString = e.what();
+            errorString = "Set baud rate failed, error message: " + errorString;
+            LogInfo(errorString);
+        }
     }
 }
 
 void SerialPort::SetFlowControl(asio::serial_port::flow_control::type flowControl)
 {
     if (m_serialPort) {
-        m_serialPort->set_option(asio::serial_port::flow_control(flowControl));
+        try {
+            m_serialPort->set_option(asio::serial_port::flow_control(flowControl));
+        } catch (asio::system_error &e) {
+            std::string errorString = e.what();
+            errorString = "Set flow control failed, error message: " + errorString;
+            LogInfo(errorString);
+        }
     }
 }
 
 void SerialPort::SetParity(asio::serial_port::parity::type parity)
 {
     if (m_serialPort) {
-        m_serialPort->set_option(asio::serial_port::parity(parity));
+        try {
+            m_serialPort->set_option(asio::serial_port::parity(parity));
+        } catch (asio::system_error &e) {
+            std::string errorString = e.what();
+            errorString = "Set parity failed, error message: " + errorString;
+            LogInfo(errorString);
+        }
     }
 }
 
 void SerialPort::SetStopBits(asio::serial_port::stop_bits::type stopBits)
 {
     if (m_serialPort) {
-        m_serialPort->set_option(asio::serial_port::stop_bits(stopBits));
+        try {
+            m_serialPort->set_option(asio::serial_port::stop_bits(stopBits));
+        } catch (asio::system_error &e) {
+            std::string errorString = e.what();
+            errorString = "Set stop bits failed, error message: " + errorString;
+            LogInfo(errorString);
+        }
     }
 }
 
 void SerialPort::SetCharacterSize(asio::serial_port::character_size dataBits)
 {
     if (m_serialPort) {
-        m_serialPort->set_option(asio::serial_port::character_size(dataBits));
+        try {
+            m_serialPort->set_option(asio::serial_port::character_size(dataBits));
+        } catch (asio::system_error &e) {
+            std::string errorString = e.what();
+            errorString = "Set character size failed, error message: " + errorString;
+            LogInfo(errorString);
+        }
     }
 }
 
-bool SerialPort::OpenActually()
+bool SerialPort::Open()
 {
     if (m_serialPort) {
         return true;
     }
 
-    m_ioService = new asio::io_service();
-    m_serialPort = new asio::serial_port(*m_ioService);
-
-    m_serialPort->set_option(asio::serial_port::baud_rate(115200));
-    m_serialPort->set_option(asio::serial_port::flow_control(asio::serial_port::flow_control::none));
-    m_serialPort->set_option(asio::serial_port::parity(asio::serial_port::parity::none));
-    m_serialPort->set_option(asio::serial_port::stop_bits(asio::serial_port::stop_bits::one));
-    m_serialPort->set_option(asio::serial_port::character_size(8));
-
+    m_serialPort = new asio::serial_port(m_ioService);
     try {
         m_serialPort->open(m_portName);
     } catch (asio::system_error &e) {
+        m_ioService.stop();
+
+        m_serialPort->close();
+        delete m_serialPort;
+        m_serialPort = nullptr;
+
         std::string errorString = e.what();
         errorString = "Open serial port failed, error message: " + errorString;
         LogInfo(errorString);
         return false;
     }
+#if 1
+    const std::string msg = "Hello asio serial port.";
+    size_t ret = m_serialPort->write_some(asio::buffer(msg.data(), msg.size()));
+    if (ret <= 0) {
+        LogWarning("Write data failed.");
+    }
+#endif
 
-    return false;
+    return true;
 }
 
-void SerialPort::CloseActually()
+void SerialPort::Close()
 {
     if (m_serialPort) {
         m_serialPort->close();
         delete m_serialPort;
         m_serialPort = nullptr;
+    }
+}
 
-        m_ioService->stop();
-        delete m_ioService;
-        m_ioService = nullptr;
+void SerialPort::Write(const wxString &data, TextFormat format)
+{
+    const std::string msg = data.ToStdString();
+    if (m_serialPort && m_serialPort->is_open() && !msg.empty()) {
+        size_t ret = m_serialPort->write_some(asio::buffer(msg.data(), msg.size()));
+        if (ret > 0) {
+            wxPostEvent(nullptr, wxCommandEvent(wxEVT_COMMAND_TEXT_UPDATED));
+        } else {
+            LogWarning("Write data failed.");
+        }
     }
 }

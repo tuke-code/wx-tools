@@ -25,12 +25,12 @@ public:
     void SetStopBits(asio::serial_port::stop_bits::type stopBits);
     void SetCharacterSize(asio::serial_port::character_size dataBits);
 
-protected:
-    bool OpenActually() override;
-    void CloseActually() override;
+    bool Open() override;
+    void Close() override;
+    void Write(const wxString &data, TextFormat format) override;
 
 private:
     asio::serial_port *m_serialPort;
-    asio::io_service *m_ioService;
+    asio::io_service m_ioService;
     std::string m_portName;
 };

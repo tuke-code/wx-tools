@@ -14,17 +14,13 @@ Communication::~Communication() {}
 
 bool Communication::Open()
 {
-    return OpenActually();
-}
-
-bool Communication::OpenActually()
-{
     return false;
 }
 
-void Communication::Close()
-{
-    CloseActually();
-}
+void Communication::Close() {}
 
-void Communication::CloseActually() {}
+void Communication::Write(const wxString &data, TextFormat format)
+{
+    wxUnusedVar(data);
+    wxUnusedVar(format);
+}

@@ -30,5 +30,9 @@ void InitGoogleLog(const char *argv0)
     fLI::FLAGS_logbufsecs = 0;
     fLU::FLAGS_max_log_size = 10;
     fLB::FLAGS_stop_logging_if_full_disk = true;
+    fLB::FLAGS_colorlogtostderr = true;
+#if 0
+    fLB::FLAGS_alsologtostderr = true;
+#endif
     google::InitGoogleLogging(argv0);
 }
