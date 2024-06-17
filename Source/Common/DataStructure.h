@@ -8,11 +8,13 @@
  **************************************************************************************************/
 #pragma once
 
+#include <asio/buffer.hpp>
 #include <wx/wx.h>
 
-enum class TextFormat { Bin, Oct, Dec, Hex, Ascii, Utf8, System, Unknown = -1 };
+enum class TextFormat { Bin, Oct, Dec, Hex, Ascii, Utf8, Unknown = -1 };
 std::vector<wxString> GetFriendlyTextFormats();
 wxString GetFriendlyTextFormat(TextFormat format);
+std::string GetFormattedText(asio::const_buffer &buffer, TextFormat format);
 
 enum class CommunicationType {
     SerialPort,

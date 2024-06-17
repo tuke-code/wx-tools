@@ -8,7 +8,7 @@
  **************************************************************************************************/
 #include "OutputBox.h"
 
-OutputBox::OutputBox(wxWindow* parent)
+OutputBox::OutputBox(wxWindow *parent)
     : wxStaticBoxSizer(wxVERTICAL, parent, _("Output"))
 {
     m_textCtrl = new wxTextCtrl(parent,
@@ -23,5 +23,5 @@ OutputBox::OutputBox(wxWindow* parent)
 
 void OutputBox::AppendText(const wxString &text)
 {
-    m_textCtrl->AppendText(text);
+    m_textCtrl->AppendText(text + "\n");
 }

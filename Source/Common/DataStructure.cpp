@@ -8,7 +8,12 @@
  **************************************************************************************************/
 #include "DataStructure.h"
 
+#include <bitset>
+#include <iomanip>
+#include <iostream>
 #include <map>
+#include <sstream>
+#include <string>
 
 std::vector<wxString> GetFriendlyTextFormats()
 {
@@ -20,7 +25,6 @@ std::vector<wxString> GetFriendlyTextFormats()
         formats.push_back(GetFriendlyTextFormat(TextFormat::Hex));
         formats.push_back(GetFriendlyTextFormat(TextFormat::Ascii));
         formats.push_back(GetFriendlyTextFormat(TextFormat::Utf8));
-        formats.push_back(GetFriendlyTextFormat(TextFormat::System));
     }
 
     return formats;
@@ -36,7 +40,6 @@ wxString GetFriendlyTextFormat(TextFormat format)
         formatMap[TextFormat::Hex] = wxT("Hexadecimal");
         formatMap[TextFormat::Ascii] = wxT("ASCII");
         formatMap[TextFormat::Utf8] = wxT("UTF-8");
-        formatMap[TextFormat::System] = wxT("System");
     }
 
     if (formatMap.find(format) == formatMap.end()) {
@@ -44,6 +47,40 @@ wxString GetFriendlyTextFormat(TextFormat format)
     } else {
         return formatMap[format];
     }
+}
+
+std::string GetFormattedText(asio::const_buffer &buffer, TextFormat format)
+{
+    const auto *dataPtr = static_cast<const unsigned char *>(buffer.data());
+    size_t size = buffer.size();
+    std::ostringstream stringStream;
+    if (format == TextFormat::Bin) {
+        for (std::size_t i = 0; i < size; ++i) {
+            stringStream << std::bitset<8>(dataPtr[i]).to_string() << " ";
+        }
+        return stringStream.str();
+    } else if (format == TextFormat::Oct) {
+        for (std::size_t i = 0; i < size; ++i) {
+            stringStream << std::setw(3) << std::setfill('0') << std::oct << dataPtr[i] << " ";
+        }
+        return stringStream.str();
+    } else if (format == TextFormat::Dec) {
+        for (std::size_t i = 0; i < size; ++i) {
+            stringStream << std::setw(3) << std::setfill('0') << std::dec << dataPtr[i] << " ";
+        }
+        return stringStream.str();
+    } else if (format == TextFormat::Hex) {
+        for (std::size_t i = 0; i < size; ++i) {
+            stringStream << std::setw(2) << std::setfill('0') << std::hex << dataPtr[i] << " ";
+        }
+        return stringStream.str();
+    } else if (format == TextFormat::Ascii) {
+        return std::string(dataPtr, dataPtr + size);
+    } else if (format == TextFormat::Utf8) {
+        return std::string(dataPtr, dataPtr + size);
+    }
+
+    return "formatting error";
 }
 
 std::vector<CommunicationType> GetSuportedCommunicationTypes()

@@ -80,6 +80,7 @@ void Page::OnBytesWritten(asio::const_buffer &bytes, TextFormat format, const wx
     OutputControlBox *outputControlBox = m_controlBoxes->GetOutputControlBox();
     wxUnusedVar(outputControlBox);
 
+    std::string text = GetFormattedText(bytes, format);
     OutputBox *outBox = m_ioPanel->GetOutputBox();
-    outBox->AppendText(to);
+    outBox->AppendText(text);
 }
