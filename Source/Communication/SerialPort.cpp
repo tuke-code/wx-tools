@@ -132,7 +132,6 @@ void SerialPort::Write(const wxString &data, TextFormat format)
     if (m_serialPort && m_serialPort->is_open() && !msg.empty()) {
         size_t ret = m_serialPort->write_some(asio::buffer(msg.data(), msg.size()));
         if (ret > 0) {
-            wxPostEvent(nullptr, wxCommandEvent(wxEVT_COMMAND_TEXT_UPDATED));
         } else {
             LogWarning("Write data failed.");
         }
