@@ -8,12 +8,25 @@
  **************************************************************************************************/
 #pragma once
 
+#include <asio/buffer.hpp>
+#include <sigslot/signal.hpp>
 #include <wx/wx.h>
 
 #include "Common/DataStructure.h"
 
+class IOPanel;
+class ControlBoxes;
 class Page : public wxPanel
 {
 public:
     Page(CommunicationType type, wxWindow *parent);
+
+private:
+    ControlBoxes *m_controlBoxes;
+    IOPanel *m_ioPanel;
+
+private:
+    void OnInvokeOpen();
+    void OnInvokeWrite(TextFormat format);
+    void OnBytesWritten(asio::const_buffer &bytes, TextFormat format, const wxString &to);
 };

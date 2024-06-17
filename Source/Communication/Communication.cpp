@@ -12,6 +12,17 @@ Communication::Communication() {}
 
 Communication::~Communication() {}
 
+sigslot::signal<asio::const_buffer &, TextFormat, const wxString &> &
+Communication::GetBytesWrittenSignal()
+{
+    return m_bytesWrittenSignal;
+}
+
+sigslot::signal<asio::const_buffer &> &Communication::GetBytesReadSignal()
+{
+    return m_bytesReadSignal;
+}
+
 bool Communication::Open()
 {
     return false;

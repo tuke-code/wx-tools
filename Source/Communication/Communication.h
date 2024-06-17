@@ -8,6 +8,8 @@
  **************************************************************************************************/
 #pragma once
 
+#include <asio/buffer.hpp>
+#include <sigslot/signal.hpp>
 #include <wx/wx.h>
 
 #include "Common/DataStructure.h"
@@ -18,7 +20,14 @@ public:
     Communication();
     ~Communication();
 
+    sigslot::signal<asio::const_buffer &, TextFormat, const wxString &> &GetBytesWrittenSignal();
+    sigslot::signal<asio::const_buffer &> &GetBytesReadSignal();
+
     virtual bool Open();
     virtual void Close();
     virtual void Write(const wxString &data, TextFormat format);
+
+protected:
+    sigslot::signal<asio::const_buffer &, TextFormat, const wxString &> m_bytesWrittenSignal;
+    sigslot::signal<asio::const_buffer &> m_bytesReadSignal;
 };

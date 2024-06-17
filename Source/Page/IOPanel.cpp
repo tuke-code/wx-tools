@@ -17,9 +17,19 @@ IOPanel::IOPanel(wxWindow* parent)
     auto* sizer = new wxBoxSizer(wxVERTICAL);
     SetSizerAndFit(sizer);
 
-    auto outputBox = new OutputBox(this);
-    sizer->Add(outputBox, 1, wxEXPAND | wxALL, 0);
+    m_outputBox = new OutputBox(this);
+    sizer->Add(m_outputBox, 1, wxEXPAND | wxALL, 0);
 
-    auto inputBox = new InputBox(this);
-    sizer->Add(inputBox, 0, wxEXPAND | wxALL, 0);
+    m_inputBox = new InputBox(this);
+    sizer->Add(m_inputBox, 0, wxEXPAND | wxALL, 0);
+}
+
+InputBox *IOPanel::GetInputBox() const
+{
+    return m_inputBox;
+}
+
+OutputBox *IOPanel::GetOutputBox() const
+{
+    return m_outputBox;
 }

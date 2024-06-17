@@ -18,6 +18,11 @@ CommunicationController::CommunicationController(wxWindow *parent)
 
 CommunicationController::~CommunicationController() {}
 
+Communication *CommunicationController::GetCommunication() const
+{
+    return m_communication;
+}
+
 bool CommunicationController::Open()
 {
     m_communication = CreateCommunication();

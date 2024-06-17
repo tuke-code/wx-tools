@@ -8,10 +8,24 @@
  **************************************************************************************************/
 #pragma once
 
+#include <sigslot/signal.hpp>
 #include <wx/wx.h>
 
+#include "Common/DataStructure.h"
+
+class TextFormatComboBox;
 class InputControlBox : public wxStaticBoxSizer
 {
 public:
     InputControlBox(wxWindow* parent);
+    sigslot::signal<TextFormat> &GetInvokeWriteSignal();
+
+private:
+    wxButton *m_sendButton;
+    TextFormatComboBox *m_formatComboBox;
+
+    sigslot::signal<TextFormat> m_invokeWriteSignal;
+
+private:
+    void OnSend(wxCommandEvent &event);
 };

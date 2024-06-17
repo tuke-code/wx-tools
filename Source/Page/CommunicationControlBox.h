@@ -8,6 +8,7 @@
  **************************************************************************************************/
 #pragma once
 
+#include <sigslot/signal.hpp>
 #include <wx/wx.h>
 
 #include "Common/DataStructure.h"
@@ -17,10 +18,15 @@ class CommunicationControlBox : public wxStaticBoxSizer
 {
 public:
     CommunicationControlBox(CommunicationType type, wxWindow *parent);
+    CommunicationController *GetController() const;
+    sigslot::signal<> &GetInvokeOpenSignal();
+    void SetOpenButtonLabel(const wxString &label);
 
 private:
     CommunicationController *m_controller;
     wxButton *m_openButton;
+
+    sigslot::signal<> m_invokeOpenSignal;
 
 private:
     void OnOpen(wxCommandEvent &event);

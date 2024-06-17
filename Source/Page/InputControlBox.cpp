@@ -20,19 +20,19 @@ InputControlBox::InputControlBox(wxWindow* parent)
     auto cycleText = new wxStaticText(GetStaticBox(), wxID_ANY, wxT("Cycle"));
     auto cycleInterval = new ComboBox(GetStaticBox());
     auto formatText = new wxStaticText(GetStaticBox(), wxID_ANY, wxT("Format"));
-    auto formatComboBox = new TextFormatComboBox(GetStaticBox());
+    m_formatComboBox = new TextFormatComboBox(GetStaticBox());
     auto settingsButton = new wxButton(GetStaticBox(), wxID_ANY, wxT("Settings"));
-    auto sendingButton = new wxButton(GetStaticBox(), wxID_ANY, wxT("Send"));
+    m_sendButton = new wxButton(GetStaticBox(), wxID_ANY, wxT("Send"));
 
     auto buttonSizer = new wxBoxSizer(wxHORIZONTAL);
     buttonSizer->Add(settingsButton, 1, wxEXPAND | wxALL, 0);
-    buttonSizer->Add(sendingButton, 1, wxEXPAND | wxALL, 0);
+    buttonSizer->Add(m_sendButton, 1, wxEXPAND | wxALL, 0);
 
     auto* sizer = new wxGridBagSizer(4, 4);
     sizer->Add(cycleText, wxGBPosition(0, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
     sizer->Add(cycleInterval, wxGBPosition(0, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
     sizer->Add(formatText, wxGBPosition(1, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
-    sizer->Add(formatComboBox, wxGBPosition(1, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
+    sizer->Add(m_formatComboBox, wxGBPosition(1, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
     sizer->Add(buttonSizer, wxGBPosition(2, 0), wxGBSpan(1, 2), wxEXPAND | wxALL, 0);
     Add(sizer, 1, wxEXPAND | wxALL, 0);
 
@@ -48,4 +48,17 @@ InputControlBox::InputControlBox(wxWindow* parent)
     }
     cycleInterval->SetSelection(0);
     cycleInterval->SetEditable(false);
+
+    m_sendButton->Bind(wxEVT_BUTTON, &InputControlBox::OnSend, this);
+}
+
+sigslot::signal<TextFormat>& InputControlBox::GetInvokeWriteSignal()
+{
+    return m_invokeWriteSignal;
+}
+
+void InputControlBox::OnSend(wxCommandEvent& event)
+{
+    TextFormat format = m_formatComboBox->GetSelectedFormat();
+    m_invokeWriteSignal(format);
 }

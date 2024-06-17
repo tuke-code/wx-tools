@@ -14,17 +14,35 @@
 #include "InputControlBox.h"
 #include "OutputControlBox.h"
 
-ControlBoxes::ControlBoxes(CommunicationType type, wxWindow* parent)
+ControlBoxes::ControlBoxes(CommunicationType type, wxWindow *parent)
     : wxBoxSizer(wxVERTICAL)
+    , m_inputControlBox(nullptr)
+    , m_outputControlBox(nullptr)
+    , m_communicationControlBox(nullptr)
 {
-    auto communicationControlBox = new CommunicationControlBox(type, parent);
-    Add(communicationControlBox, 0, wxEXPAND | wxALL);
+    m_communicationControlBox = new CommunicationControlBox(type, parent);
+    Add(m_communicationControlBox, 0, wxEXPAND | wxALL);
 
-    auto outputControlBox = new OutputControlBox(parent);
-    Add(outputControlBox, 0, wxEXPAND | wxALL);
+    m_outputControlBox = new OutputControlBox(parent);
+    Add(m_outputControlBox, 0, wxEXPAND | wxALL);
 
     Add(new wxStaticText(parent, wxID_ANY, wxT("")), 1, wxEXPAND);
 
-    auto inputControlBox = new InputControlBox(parent);
-    Add(inputControlBox, 0, wxEXPAND | wxALL);
+    m_inputControlBox = new InputControlBox(parent);
+    Add(m_inputControlBox, 0, wxEXPAND | wxALL);
+}
+
+InputControlBox *ControlBoxes::GetInputControlBox() const
+{
+    return m_inputControlBox;
+}
+
+OutputControlBox *ControlBoxes::GetOutputControlBox() const
+{
+    return m_outputControlBox;
+}
+
+CommunicationControlBox *ControlBoxes::GetCommunicationControlBox() const
+{
+    return m_communicationControlBox;
 }

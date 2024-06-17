@@ -10,10 +10,8 @@
 
 #include <wx/gbsizer.h>
 
-#include "Common/Log.h"
 #include "Communication/CommunicationController.h"
 #include "Communication/CommunicationControllerFactory.h"
-#include "Communication/SerialPortController.h"
 
 CommunicationControlBox::CommunicationControlBox(CommunicationType type, wxWindow *parent)
     : wxStaticBoxSizer(wxVERTICAL, parent, wxT("Communication Control"))
@@ -38,8 +36,24 @@ CommunicationControlBox::CommunicationControlBox(CommunicationType type, wxWindo
     m_openButton->Bind(wxEVT_BUTTON, &CommunicationControlBox::OnOpen, this);
 }
 
+CommunicationController *CommunicationControlBox::GetController() const
+{
+    return m_controller;
+}
+
+sigslot::signal<> &CommunicationControlBox::GetInvokeOpenSignal()
+{
+    return m_invokeOpenSignal;
+}
+
+void CommunicationControlBox::SetOpenButtonLabel(const wxString &label)
+{
+    m_openButton->SetLabel(label);
+}
+
 void CommunicationControlBox::OnOpen(wxCommandEvent &event)
 {
+#if 0
     if (m_controller->IsOpen()) {
         m_controller->Close();
         m_openButton->SetLabel(wxT("Open"));
@@ -53,4 +67,8 @@ void CommunicationControlBox::OnOpen(wxCommandEvent &event)
             wxMessageBox(wxT("Failed to open communication."), wxT("Error"), wxICON_ERROR);
         }
     }
+#else
+    wxUnusedVar(event);
+    m_invokeOpenSignal();
+#endif
 }

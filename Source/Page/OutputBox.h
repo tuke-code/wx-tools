@@ -14,4 +14,9 @@ class OutputBox : public wxStaticBoxSizer
 {
 public:
     OutputBox(wxWindow *parent);
+
+    void AppendText(const wxString &text);
+
+private:
+    wxTextCtrl *m_textCtrl;
 };

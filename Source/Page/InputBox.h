@@ -14,4 +14,9 @@ class InputBox : public wxStaticBoxSizer
 {
 public:
     InputBox(wxWindow *parent);
+
+    wxString GetInputText() const;
+
+private:
+    wxTextCtrl *m_textCtrl;
 };

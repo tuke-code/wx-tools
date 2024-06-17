@@ -8,12 +8,25 @@
  **************************************************************************************************/
 #pragma once
 
+#include <sigslot/signal.hpp>
 #include <wx/wx.h>
 
 #include "Common/DataStructure.h"
-#
+
+class InputControlBox;
+class OutputControlBox;
+class CommunicationControlBox;
 class ControlBoxes : public wxBoxSizer
 {
 public:
     ControlBoxes(CommunicationType type, wxWindow *parent);
+
+    InputControlBox *GetInputControlBox() const;
+    OutputControlBox *GetOutputControlBox() const;
+    CommunicationControlBox *GetCommunicationControlBox() const;
+
+private:
+    InputControlBox *m_inputControlBox;
+    OutputControlBox *m_outputControlBox;
+    CommunicationControlBox *m_communicationControlBox;
 };

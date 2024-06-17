@@ -11,6 +11,11 @@
 InputBox::InputBox(wxWindow* parent)
     : wxStaticBoxSizer(wxVERTICAL, parent, _("Input"))
 {
-    auto textCtrl = new wxTextCtrl(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize);
-    Add(textCtrl, 1, wxEXPAND | wxALL, 0);
+    m_textCtrl = new wxTextCtrl(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize);
+    Add(m_textCtrl, 1, wxEXPAND | wxALL, 0);
+}
+
+wxString InputBox::GetInputText() const
+{
+    return m_textCtrl->GetValue();
 }

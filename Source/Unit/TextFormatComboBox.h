@@ -10,8 +10,12 @@
 
 #include <wx/wx.h>
 
+#include "Common/DataStructure.h"
+
 class TextFormatComboBox : public wxComboBox
 {
 public:
     TextFormatComboBox(wxWindow* parent);
+
+    TextFormat GetSelectedFormat() const;
 };

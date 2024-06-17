@@ -11,7 +11,6 @@
 #include <wx/gbsizer.h>
 #include <wx/wx.h>
 
-#include "Common/DataStructure.h"
 #include "Communication.h"
 
 class CommunicationController : public wxGridBagSizer
@@ -19,6 +18,7 @@ class CommunicationController : public wxGridBagSizer
 public:
     CommunicationController(wxWindow *parent = nullptr);
     ~CommunicationController();
+    Communication *GetCommunication() const;
 
     bool Open();
     void Close();

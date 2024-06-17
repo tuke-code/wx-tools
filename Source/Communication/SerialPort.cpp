@@ -128,10 +128,13 @@ void SerialPort::Close()
 
 void SerialPort::Write(const wxString &data, TextFormat format)
 {
+    LogInfo("Write data");
     const std::string msg = data.ToStdString();
     if (m_serialPort && m_serialPort->is_open() && !msg.empty()) {
-        size_t ret = m_serialPort->write_some(asio::buffer(msg.data(), msg.size()));
+        auto buffer = asio::buffer(msg.data(), msg.size());
+        size_t ret = m_serialPort->write_some(buffer);
         if (ret > 0) {
+            m_bytesWrittenSignal(buffer, format, m_portName);
         } else {
             LogWarning("Write data failed.");
         }

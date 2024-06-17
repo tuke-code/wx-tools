@@ -11,12 +11,17 @@
 OutputBox::OutputBox(wxWindow* parent)
     : wxStaticBoxSizer(wxVERTICAL, parent, _("Output"))
 {
-    auto textCtrl = new wxTextCtrl(parent,
-                                   wxID_ANY,
-                                   wxEmptyString,
-                                   wxDefaultPosition,
-                                   wxDefaultSize,
-                                   wxTE_MULTILINE);
+    m_textCtrl = new wxTextCtrl(parent,
+                                wxID_ANY,
+                                wxEmptyString,
+                                wxDefaultPosition,
+                                wxDefaultSize,
+                                wxTE_MULTILINE);
 
-    Add(textCtrl, 1, wxEXPAND | wxALL, 0);
+    Add(m_textCtrl, 1, wxEXPAND | wxALL, 0);
+}
+
+void OutputBox::AppendText(const wxString &text)
+{
+    m_textCtrl->AppendText(text);
 }
