@@ -49,7 +49,7 @@ wxString GetFriendlyTextFormat(TextFormat format)
     }
 }
 
-std::string GetFormattedText(asio::const_buffer &buffer, TextFormat format)
+std::string DoFormattedText(asio::const_buffer &buffer, TextFormat format)
 {
     const auto *dataPtr = static_cast<const unsigned char *>(buffer.data());
     size_t size = buffer.size();
