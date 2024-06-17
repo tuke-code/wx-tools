@@ -20,7 +20,7 @@ public:
     Communication();
     ~Communication();
 
-    sigslot::signal<asio::const_buffer &, TextFormat, const wxString &> &GetBytesWrittenSignal();
+    sigslot::signal<asio::const_buffer &, const wxString &> &GetBytesWrittenSignal();
     sigslot::signal<asio::const_buffer &> &GetBytesReadSignal();
 
     virtual bool Open();
@@ -28,6 +28,6 @@ public:
     virtual void Write(const wxString &data, TextFormat format);
 
 protected:
-    sigslot::signal<asio::const_buffer &, TextFormat, const wxString &> m_bytesWrittenSignal;
+    sigslot::signal<asio::const_buffer &, const wxString &> m_bytesWrittenSignal;
     sigslot::signal<asio::const_buffer &> m_bytesReadSignal;
 };

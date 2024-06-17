@@ -16,7 +16,7 @@ OutputControlBox::OutputControlBox(wxWindow *parent)
     : wxStaticBoxSizer(wxHORIZONTAL, parent, wxT("Output Control"))
 {
     auto formatText = new wxStaticText(GetStaticBox(), wxID_ANY, wxT("Format"));
-    auto formatComboBox = new TextFormatComboBox(GetStaticBox());
+    m_textFormatComboBox = new TextFormatComboBox(GetStaticBox());
     auto optionsSizer = new wxGridBagSizer(4, 4);
     auto AddCheckBox = [=](const wxString &label, int row, int col) -> wxSizerItem * {
         auto cb = new wxCheckBox(GetStaticBox(), wxID_ANY, label);
@@ -40,8 +40,13 @@ OutputControlBox::OutputControlBox(wxWindow *parent)
 
     auto *sizer = new wxGridBagSizer(4, 4);
     sizer->Add(formatText, wxGBPosition(0, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
-    sizer->Add(formatComboBox, wxGBPosition(0, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
+    sizer->Add(m_textFormatComboBox, wxGBPosition(0, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
     sizer->Add(optionsSizer, wxGBPosition(1, 0), wxGBSpan(1, 2), wxEXPAND | wxALL, 0);
     sizer->Add(buttonsSizer, wxGBPosition(2, 0), wxGBSpan(1, 2), wxEXPAND | wxALL, 0);
     Add(sizer, 1, wxEXPAND | wxALL, 0);
+}
+
+TextFormat OutputControlBox::GetTextFormat() const
+{
+    return m_textFormatComboBox->GetSelectedFormat();
 }

@@ -10,8 +10,15 @@
 
 #include <wx/wx.h>
 
+#include "Common/DataStructure.h"
+
+class TextFormatComboBox;
 class OutputControlBox : public wxStaticBoxSizer
 {
 public:
     OutputControlBox(wxWindow* parent);
+    TextFormat GetTextFormat() const;
+
+private:
+    TextFormatComboBox* m_textFormatComboBox;
 };

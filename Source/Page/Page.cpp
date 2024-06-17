@@ -75,12 +75,11 @@ void Page::OnInvokeWrite(TextFormat format)
     communication->Write(text, format);
 }
 
-void Page::OnBytesWritten(asio::const_buffer &bytes, TextFormat format, const wxString &to)
+void Page::OnBytesWritten(asio::const_buffer &bytes, const wxString &to)
 {
     OutputControlBox *outputControlBox = m_controlBoxes->GetOutputControlBox();
-    wxUnusedVar(outputControlBox);
-
-    std::string text = DoFormattedText(bytes, format);
+    TextFormat outputFormat = outputControlBox->GetTextFormat();
+    std::string text = DoFormattedText(bytes, outputFormat);
     OutputBox *outBox = m_ioPanel->GetOutputBox();
     outBox->AppendText(text);
 }

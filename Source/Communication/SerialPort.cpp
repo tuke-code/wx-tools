@@ -134,7 +134,7 @@ void SerialPort::Write(const wxString &data, TextFormat format)
         auto buffer = asio::buffer(msg.data(), msg.size());
         size_t ret = m_serialPort->write_some(buffer);
         if (ret > 0) {
-            m_bytesWrittenSignal(buffer, format, m_portName);
+            m_bytesWrittenSignal(buffer, m_portName);
         } else {
             LogWarning("Write data failed.");
         }

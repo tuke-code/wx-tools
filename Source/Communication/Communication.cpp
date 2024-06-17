@@ -12,7 +12,7 @@ Communication::Communication() {}
 
 Communication::~Communication() {}
 
-sigslot::signal<asio::const_buffer &, TextFormat, const wxString &> &
+sigslot::signal<asio::const_buffer &, const wxString &> &
 Communication::GetBytesWrittenSignal()
 {
     return m_bytesWrittenSignal;
