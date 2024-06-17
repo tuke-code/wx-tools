@@ -18,3 +18,8 @@ DataBitsComboBox::DataBitsComboBox(wxWindow* parent)
 
     SetSelection(0);
 }
+
+asio::serial_port::character_size DataBitsComboBox::GetDataBits()
+{
+    return static_cast<asio::serial_port::character_size>(wxAtoi(GetStringSelection()));
+}

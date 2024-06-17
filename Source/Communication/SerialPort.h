@@ -8,10 +8,29 @@
  **************************************************************************************************/
 #pragma once
 
+#include <asio/io_service.hpp>
+#include <asio/serial_port.hpp>
+
 #include "Communication.h"
 
 class SerialPort : public Communication
 {
 public:
     SerialPort();
+
+    void SetPortName(const std::string &portName);
+    void SetBaudRate(int baudRate);
+    void SetFlowControl(asio::serial_port::flow_control::type flowControl);
+    void SetParity(asio::serial_port::parity::type parity);
+    void SetStopBits(asio::serial_port::stop_bits::type stopBits);
+    void SetCharacterSize(asio::serial_port::character_size dataBits);
+
+protected:
+    bool OpenActually() override;
+    void CloseActually() override;
+
+private:
+    asio::serial_port *m_serialPort;
+    asio::io_service *m_ioService;
+    std::string m_portName;
 };

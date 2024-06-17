@@ -14,19 +14,44 @@ CommunicationController::CommunicationController(wxWindow *parent)
 
 CommunicationController::~CommunicationController() {}
 
-bool CommunicationController::openCommunication()
+bool CommunicationController::Open()
 {
-    return openCommunicationActually();
+    m_communication = CreateCommunication();
+    if (!m_communication) {
+        return false;
+    }
+
+    AboutToOpen(m_communication);
+    return m_communication->Open();
 }
 
-bool CommunicationController::openCommunicationActually()
+void CommunicationController::Close()
 {
-    return false;
+    if (m_communication) {
+        AboutToClose(m_communication);
+
+        m_communication->Close();
+        delete m_communication;
+        m_communication = nullptr;
+    }
 }
 
-void CommunicationController::closeCommunication()
+bool CommunicationController::IsOpen() const
 {
-    closeCommunicationActually();
+    return m_communication != nullptr;
 }
 
-void CommunicationController::closeCommunicationActually() {}
+Communication *CommunicationController::CreateCommunication()
+{
+    return nullptr;
+}
+
+void CommunicationController::AboutToOpen(Communication *communication)
+{
+    // Nothing to do
+}
+
+void CommunicationController::AboutToClose(Communication *communication)
+{
+    // Nothing to do
+}

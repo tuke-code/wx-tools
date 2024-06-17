@@ -10,11 +10,22 @@
 
 #include "CommunicationController.h"
 
+class BaudRateComboBox;
+class DataBitsComboBox;
+class FlowBitsComboBox;
+class ParityComboBox;
+class PortNameComboBox;
+class StopBitsComboBox;
 class SerialPortController : public CommunicationController
 {
 public:
     SerialPortController(wxWindow *parent = nullptr);
     ~SerialPortController();
+
+protected:
+    Communication *CreateCommunication() override;
+    void AboutToOpen(Communication *communication) override;
+    void AboutToClose(Communication *communication) override;
 
 private:
     void InitPortNameComboBox(const wxString &label, int row, wxWindow *parent);
@@ -23,4 +34,12 @@ private:
     void InitStopBitsComboBox(const wxString &label, int row, wxWindow *parent);
     void InitParityComboBox(const wxString &label, int row, wxWindow *parent);
     void InitFlowBitsComboBox(const wxString &label, int row, wxWindow *parent);
+
+private:
+    PortNameComboBox *m_portNameComboBox;
+    BaudRateComboBox *m_baudRateComboBox;
+    DataBitsComboBox *m_dataBitsComboBox;
+    StopBitsComboBox *m_stopBitsComboBox;
+    FlowBitsComboBox *m_flowBitsComboBox;
+    ParityComboBox *m_parityComboBox;
 };

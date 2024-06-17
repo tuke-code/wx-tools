@@ -23,3 +23,8 @@ BaudRateComboBox::BaudRateComboBox(wxWindow* parent)
     SetEditable(true);
     SetSelection(0);
 }
+
+int BaudRateComboBox::GetBaudRate()
+{
+    return wxAtoi(GetStringSelection());
+}

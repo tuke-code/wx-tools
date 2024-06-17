@@ -14,7 +14,19 @@ ParityComboBox::ParityComboBox(wxWindow* parent)
     Append("None");
     Append("Odd");
     Append("Even");
-    Append("Mark");
-    Append("Space");
     SetSelection(0);
+}
+
+asio::serial_port_base::parity::type ParityComboBox::GetParity()
+{
+    switch (GetSelection()) {
+    case 0:
+        return asio::serial_port_base::parity::type::none;
+    case 1:
+        return asio::serial_port_base::parity::type::odd;
+    case 2:
+        return asio::serial_port_base::parity::type::even;
+    default:
+        return asio::serial_port_base::parity::type::none;
+    }
 }

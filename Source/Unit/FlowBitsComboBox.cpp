@@ -16,3 +16,17 @@ FlowBitsComboBox::FlowBitsComboBox(wxWindow* parent)
     Append("Software");
     SetSelection(0);
 }
+
+asio::serial_port::flow_control::type FlowBitsComboBox::GetFlowBits()
+{
+    switch (GetSelection()) {
+    case 0:
+        return asio::serial_port::flow_control::none;
+    case 1:
+        return asio::serial_port::flow_control::hardware;
+    case 2:
+        return asio::serial_port::flow_control::software;
+    default:
+        return asio::serial_port::flow_control::none;
+    }
+}

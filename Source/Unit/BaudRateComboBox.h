@@ -14,4 +14,6 @@ class BaudRateComboBox : public ComboBox
 {
 public:
     BaudRateComboBox(wxWindow* parent = nullptr);
+
+    int GetBaudRate();
 };

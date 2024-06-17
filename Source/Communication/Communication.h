@@ -16,10 +16,10 @@ public:
     Communication();
     ~Communication();
 
-    bool openCommunication();
-    void closeCommunication();
+    bool Open();
+    void Close();
 
 protected:
-    virtual bool openCommunicationActually();
-    virtual void closeCommunicationActually();
+    virtual bool OpenActually();
+    virtual void CloseActually();
 };

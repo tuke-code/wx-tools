@@ -8,10 +8,14 @@
  **************************************************************************************************/
 #pragma once
 
+#include <asio/serial_port.hpp>
+
 #include "ComboBox.h"
 
 class ParityComboBox : public ComboBox
 {
 public:
     ParityComboBox(wxWindow* parent = nullptr);
+
+    asio::serial_port_base::parity::type GetParity();
 };

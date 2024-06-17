@@ -16,3 +16,17 @@ StopBitsComboBox::StopBitsComboBox(wxWindow* parent)
     Append("2");
     SetSelection(0);
 }
+
+asio::serial_port::stop_bits::type StopBitsComboBox::GetStopBits()
+{
+    switch (GetSelection()) {
+    case 0:
+        return asio::serial_port::stop_bits::one;
+    case 1:
+        return asio::serial_port::stop_bits::onepointfive;
+    case 2:
+        return asio::serial_port::stop_bits::two;
+    default:
+        return asio::serial_port::stop_bits::one;
+    }
+}

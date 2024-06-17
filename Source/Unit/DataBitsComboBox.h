@@ -8,10 +8,14 @@
  **************************************************************************************************/
 #pragma once
 
+#include <asio/serial_port.hpp>
+
 #include "ComboBox.h"
 
 class DataBitsComboBox : public ComboBox
 {
 public:
     DataBitsComboBox(wxWindow* parent = nullptr);
+
+    asio::serial_port::character_size GetDataBits();
 };

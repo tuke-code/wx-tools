@@ -12,19 +12,19 @@ Communication::Communication() {}
 
 Communication::~Communication() {}
 
-bool Communication::openCommunication()
+bool Communication::Open()
 {
-    return openCommunicationActually();
+    return OpenActually();
 }
 
-bool Communication::openCommunicationActually()
+bool Communication::OpenActually()
 {
     return false;
 }
 
-void Communication::closeCommunication()
+void Communication::Close()
 {
-    closeCommunicationActually();
+    CloseActually();
 }
 
-void Communication::closeCommunicationActually() {}
+void Communication::CloseActually() {}

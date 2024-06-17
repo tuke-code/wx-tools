@@ -17,4 +17,11 @@ class CommunicationControlBox : public wxStaticBoxSizer
 {
 public:
     CommunicationControlBox(CommunicationType type, wxWindow *parent);
+
+private:
+    CommunicationController *m_controller;
+    wxButton *m_openButton;
+
+private:
+    void OnOpen(wxCommandEvent &event);
 };
