@@ -16,20 +16,31 @@
 
 class IOPanel;
 class ControlBoxes;
+class InputControlBox;
+class CommunicationControlBox;
+class OutputControlBox;
 class Page : public wxPanel
 {
 public:
     Page(CommunicationType type, wxWindow *parent);
 
 private:
+    InputControlBox *m_inputControlBox;
     ControlBoxes *m_controlBoxes;
+    CommunicationControlBox *m_communicationControlBox;
     IOPanel *m_ioPanel;
+    wxTimer m_sendTimer;
+    OutputControlBox *m_outputControlBox;
 
 private:
     void OnInvokeOpen();
     void OnInvokeWrite(TextFormat format);
+    void OnInvokeStartTimer(int ms);
     void OnBytesRead(asio::const_buffer &bytes, const wxString &from);
     void OnBytesWritten(asio::const_buffer &bytes, const wxString &to);
+    void OnWrap(bool wrap);
+    void OnSendTimerTimeout();
+    void OnClear();
 
     void OutputText(asio::const_buffer &bytes, const wxString &fromTo, bool isRx);
 };

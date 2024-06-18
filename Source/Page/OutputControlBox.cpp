@@ -14,23 +14,38 @@
 
 OutputControlBox::OutputControlBox(wxWindow *parent)
     : wxStaticBoxSizer(wxHORIZONTAL, parent, wxT("Output Control"))
+    , m_showDate(nullptr)
+    , m_showTime(nullptr)
+    , m_showMs(nullptr)
+    , m_showRx(nullptr)
+    , m_showTx(nullptr)
+    , m_wrap(nullptr)
+    , m_showFlag(nullptr)
 {
     auto formatText = new wxStaticText(GetStaticBox(), wxID_ANY, wxT("Format"));
     m_textFormatComboBox = new TextFormatComboBox(GetStaticBox());
     auto optionsSizer = new wxGridBagSizer(4, 4);
-    auto AddCheckBox = [=](const wxString &label, int row, int col) -> wxSizerItem * {
+    auto AddCheckBox = [=](const wxString &label, int row, int col) -> wxCheckBox * {
         auto cb = new wxCheckBox(GetStaticBox(), wxID_ANY, label);
-        return optionsSizer->Add(cb, wxGBPosition(row, col), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
+        optionsSizer->Add(cb, wxGBPosition(row, col), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
+        return cb;
     };
 
-    AddCheckBox(wxT("Rx"), 0, 0);
-    AddCheckBox(wxT("Tx"), 0, 1);
-    AddCheckBox(wxT("Wrap"), 0, 2);
-    AddCheckBox(wxT("Date"), 1, 0);
-    AddCheckBox(wxT("Time"), 1, 1);
-    AddCheckBox(wxT("MS"), 1, 2);
-    AddCheckBox(wxT("Flags"), 2, 0);
-    AddCheckBox(wxT("Logs"), 2, 1);
+    m_showRx = AddCheckBox(wxT("Rx"), 0, 0);
+    m_showTx = AddCheckBox(wxT("Tx"), 0, 1);
+    m_wrap = AddCheckBox(wxT("Wrap"), 0, 2);
+    m_showDate = AddCheckBox(wxT("Date"), 1, 0);
+    m_showTime = AddCheckBox(wxT("Time"), 1, 1);
+    m_showMs = AddCheckBox(wxT("MS"), 1, 2);
+    m_showFlag = AddCheckBox(wxT("Flags"), 2, 0);
+
+    m_showRx->SetValue(true);
+    m_showTx->SetValue(true);
+    m_showDate->SetValue(false);
+    m_showTime->SetValue(true);
+    m_showMs->SetValue(false);
+    m_wrap->SetValue(false);
+    m_showFlag->SetValue(true);
 
     auto settingsButton = new wxButton(GetStaticBox(), wxID_ANY, wxT("Settings"));
     auto clearButton = new wxButton(GetStaticBox(), wxID_ANY, wxT("Clear"));
@@ -44,9 +59,57 @@ OutputControlBox::OutputControlBox(wxWindow *parent)
     sizer->Add(optionsSizer, wxGBPosition(1, 0), wxGBSpan(1, 2), wxEXPAND | wxALL, 0);
     sizer->Add(buttonsSizer, wxGBPosition(2, 0), wxGBSpan(1, 2), wxEXPAND | wxALL, 0);
     Add(sizer, 1, wxEXPAND | wxALL, 0);
+
+    m_wrap->Bind(wxEVT_CHECKBOX, [=](wxCommandEvent &event) { m_wrapSignal(m_wrap->GetValue()); });
+    clearButton->Bind(wxEVT_BUTTON, [=](wxCommandEvent &event) { m_clearSignal(); });
 }
 
 TextFormat OutputControlBox::GetTextFormat() const
 {
     return m_textFormatComboBox->GetSelectedFormat();
+}
+
+bool OutputControlBox::GetShowDate() const
+{
+    return m_showDate->GetValue();
+}
+
+bool OutputControlBox::GetShowTime() const
+{
+    return m_showTime->GetValue();
+}
+
+bool OutputControlBox::GetShowMs() const
+{
+    return m_showMs->GetValue();
+}
+
+bool OutputControlBox::GetShowRx() const
+{
+    return m_showRx->GetValue();
+}
+
+bool OutputControlBox::GetShowTx() const
+{
+    return m_showTx->GetValue();
+}
+
+bool OutputControlBox::GetWrap() const
+{
+    return m_wrap->GetValue();
+}
+
+bool OutputControlBox::GetShowFlag() const
+{
+    return m_showFlag->GetValue();
+}
+
+sigslot::signal<bool> &OutputControlBox::GetWrapSignal()
+{
+    return m_wrapSignal;
+}
+
+sigslot::signal<> &OutputControlBox::GetClearSignal()
+{
+    return m_clearSignal;
 }

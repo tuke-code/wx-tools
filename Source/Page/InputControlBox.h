@@ -17,15 +17,18 @@ class TextFormatComboBox;
 class InputControlBox : public wxStaticBoxSizer
 {
 public:
-    InputControlBox(wxWindow* parent);
+    InputControlBox(wxWindow *parent);
+    void SetCycleIntervalComboBoxSelection(int selection);
+    TextFormat GetTextFormat() const;
+
     sigslot::signal<TextFormat> &GetInvokeWriteSignal();
+    sigslot::signal<int> &GetInvokeStartTimerSignal();
 
 private:
     wxButton *m_sendButton;
+    wxComboBox *m_cycleIntervalComboBox;
     TextFormatComboBox *m_formatComboBox;
 
     sigslot::signal<TextFormat> m_invokeWriteSignal;
-
-private:
-    void OnSend(wxCommandEvent &event);
+    sigslot::signal<int> m_invokeStartTimerSignal;
 };

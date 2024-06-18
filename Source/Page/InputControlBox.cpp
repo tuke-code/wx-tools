@@ -18,7 +18,7 @@ InputControlBox::InputControlBox(wxWindow* parent)
     : wxStaticBoxSizer(wxHORIZONTAL, parent, wxT("Input Control"))
 {
     auto cycleText = new wxStaticText(GetStaticBox(), wxID_ANY, wxT("Cycle"));
-    auto cycleInterval = new ComboBox(GetStaticBox());
+    m_cycleIntervalComboBox = new ComboBox(GetStaticBox());
     auto formatText = new wxStaticText(GetStaticBox(), wxID_ANY, wxT("Format"));
     m_formatComboBox = new TextFormatComboBox(GetStaticBox());
     auto settingsButton = new wxButton(GetStaticBox(), wxID_ANY, wxT("Settings"));
@@ -30,26 +30,53 @@ InputControlBox::InputControlBox(wxWindow* parent)
 
     auto* sizer = new wxGridBagSizer(4, 4);
     sizer->Add(cycleText, wxGBPosition(0, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
-    sizer->Add(cycleInterval, wxGBPosition(0, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
+    sizer->Add(m_cycleIntervalComboBox, wxGBPosition(0, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
     sizer->Add(formatText, wxGBPosition(1, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
     sizer->Add(m_formatComboBox, wxGBPosition(1, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
     sizer->Add(buttonSizer, wxGBPosition(2, 0), wxGBSpan(1, 2), wxEXPAND | wxALL, 0);
     Add(sizer, 1, wxEXPAND | wxALL, 0);
 
-    cycleInterval->Append(wxT("Disabled"));
+    m_cycleIntervalComboBox->Append(wxT("Disabled"), new int(-1));
+    std::vector<int> items;
     for (int i = 10; i <= 100; i += 10) {
-        cycleInterval->AppendString(wxString::Format(wxT("%d ms"), i));
+        items.push_back(i);
     }
     for (int i = 100; i <= 1000; i += 100) {
-        cycleInterval->AppendString(wxString::Format(wxT("%d ms"), i));
+        items.push_back(i);
     }
     for (int i = 2000; i <= 10000; i += 1000) {
-        cycleInterval->AppendString(wxString::Format(wxT("%d ms"), i));
+        items.push_back(i);
     }
-    cycleInterval->SetSelection(0);
-    cycleInterval->SetEditable(false);
+    for (auto it = items.begin(); it != items.end(); ++it) {
+        m_cycleIntervalComboBox->Append(wxString::Format("%d ms", *it), new int(*it));
+    }
 
-    m_sendButton->Bind(wxEVT_BUTTON, &InputControlBox::OnSend, this);
+    m_cycleIntervalComboBox->SetSelection(0);
+    m_cycleIntervalComboBox->SetEditable(false);
+
+    m_sendButton->Bind(wxEVT_BUTTON, [=](wxCommandEvent& event) {
+        m_invokeWriteSignal(m_formatComboBox->GetSelectedFormat());
+    });
+
+    m_cycleIntervalComboBox->Bind(wxEVT_COMBOBOX, [=](wxCommandEvent& event) {
+        int selection = m_cycleIntervalComboBox->GetSelection();
+        int value = *static_cast<int*>(m_cycleIntervalComboBox->GetClientData(selection));
+        m_invokeStartTimerSignal(value);
+    });
+}
+
+void InputControlBox::SetCycleIntervalComboBoxSelection(int selection)
+{
+    if (selection < 0 || selection >= m_cycleIntervalComboBox->GetCount()) {
+        return;
+    }
+
+    m_cycleIntervalComboBox->SetSelection(selection);
+}
+
+TextFormat InputControlBox::GetTextFormat() const
+{
+    return m_formatComboBox->GetSelectedFormat();
 }
 
 sigslot::signal<TextFormat>& InputControlBox::GetInvokeWriteSignal()
@@ -57,8 +84,7 @@ sigslot::signal<TextFormat>& InputControlBox::GetInvokeWriteSignal()
     return m_invokeWriteSignal;
 }
 
-void InputControlBox::OnSend(wxCommandEvent& event)
+sigslot::signal<int>& InputControlBox::GetInvokeStartTimerSignal()
 {
-    TextFormat format = m_formatComboBox->GetSelectedFormat();
-    m_invokeWriteSignal(format);
+    return m_invokeStartTimerSignal;
 }

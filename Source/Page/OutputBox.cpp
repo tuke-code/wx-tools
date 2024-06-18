@@ -19,9 +19,21 @@ OutputBox::OutputBox(wxWindow *parent)
                                 wxTE_MULTILINE);
 
     Add(m_textCtrl, 1, wxEXPAND | wxALL, 0);
+    m_textCtrl->SetEditable(false);
 }
 
 void OutputBox::AppendText(const wxString &text)
 {
     m_textCtrl->AppendText(text + "\n");
+}
+
+void OutputBox::SetWrap(bool wrap)
+{
+    int wrapMode = wrap ? wxTE_WORDWRAP : wxTE_DONTWRAP;
+    m_textCtrl->SetWindowStyleFlag(m_textCtrl->GetWindowStyleFlag() & wrapMode);
+}
+
+void OutputBox::Clear()
+{
+    m_textCtrl->Clear();
 }

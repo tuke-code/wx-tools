@@ -8,6 +8,7 @@
  **************************************************************************************************/
 #pragma once
 
+#include <sigslot/signal.hpp>
 #include <wx/wx.h>
 
 #include "Common/DataStructure.h"
@@ -16,9 +17,29 @@ class TextFormatComboBox;
 class OutputControlBox : public wxStaticBoxSizer
 {
 public:
-    OutputControlBox(wxWindow* parent);
+    OutputControlBox(wxWindow *parent);
     TextFormat GetTextFormat() const;
+    bool GetShowDate() const;
+    bool GetShowTime() const;
+    bool GetShowMs() const;
+    bool GetShowRx() const;
+    bool GetShowTx() const;
+    bool GetWrap() const;
+    bool GetShowFlag() const;
+
+    sigslot::signal<bool> &GetWrapSignal();
+    sigslot::signal<> &GetClearSignal();
 
 private:
-    TextFormatComboBox* m_textFormatComboBox;
+    TextFormatComboBox *m_textFormatComboBox;
+    wxCheckBox *m_showDate;
+    wxCheckBox *m_showTime;
+    wxCheckBox *m_showMs;
+    wxCheckBox *m_showRx;
+    wxCheckBox *m_showTx;
+    wxCheckBox *m_wrap;
+    wxCheckBox *m_showFlag;
+
+    sigslot::signal<bool> m_wrapSignal;
+    sigslot::signal<> m_clearSignal;
 };

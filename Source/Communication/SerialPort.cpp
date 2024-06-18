@@ -152,7 +152,6 @@ void SerialPort::Close()
 
 void SerialPort::Write(const wxString &data, TextFormat format)
 {
-    LogInfo("Write data");
     const std::string msg = data.ToStdString();
     if (m_serialPort && m_serialPort->is_open() && !msg.empty()) {
         auto buffer = asio::buffer(msg.data(), msg.size());

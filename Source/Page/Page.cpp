@@ -10,6 +10,7 @@
 
 #include <wx/gbsizer.h>
 
+#include "Common/Interface.h"
 #include "Common/Log.h"
 #include "Communication/Communication.h"
 #include "Communication/CommunicationController.h"
@@ -24,6 +25,9 @@
 Page::Page(CommunicationType type, wxWindow *parent)
     : wxPanel(parent, wxID_ANY)
     , m_controlBoxes(nullptr)
+    , m_ioPanel(nullptr)
+    , m_inputControlBox(nullptr)
+    , m_communicationControlBox(nullptr)
 {
     auto sizer = new wxBoxSizer(wxHORIZONTAL);
     SetSizerAndFit(sizer);
@@ -33,12 +37,20 @@ Page::Page(CommunicationType type, wxWindow *parent)
 
     m_ioPanel = new IOPanel(this);
     sizer->Add(m_ioPanel, 1, wxEXPAND | wxALL, 4);
+    Layout();
 
-    InputControlBox *inputControlBox = m_controlBoxes->GetInputControlBox();
-    inputControlBox->GetInvokeWriteSignal().connect(&Page::OnInvokeWrite, this);
+    m_inputControlBox = m_controlBoxes->GetInputControlBox();
+    m_inputControlBox->GetInvokeWriteSignal().connect(&Page::OnInvokeWrite, this);
+    m_inputControlBox->GetInvokeStartTimerSignal().connect(&Page::OnInvokeStartTimer, this);
 
-    CommunicationControlBox *communicationControlBox = m_controlBoxes->GetCommunicationControlBox();
-    communicationControlBox->GetInvokeOpenSignal().connect(&Page::OnInvokeOpen, this);
+    m_communicationControlBox = m_controlBoxes->GetCommunicationControlBox();
+    m_communicationControlBox->GetInvokeOpenSignal().connect(&Page::OnInvokeOpen, this);
+
+    m_outputControlBox = m_controlBoxes->GetOutputControlBox();
+    m_outputControlBox->GetWrapSignal().connect(&Page::OnWrap, this);
+    m_outputControlBox->GetClearSignal().connect(&Page::OnClear, this);
+
+    m_sendTimer.Bind(wxEVT_TIMER, [this](wxTimerEvent &event) { OnSendTimerTimeout(); });
 }
 
 void Page::OnInvokeOpen()
@@ -46,6 +58,9 @@ void Page::OnInvokeOpen()
     CommunicationControlBox *communicationControlBox = m_controlBoxes->GetCommunicationControlBox();
     CommunicationController *communicationController = communicationControlBox->GetController();
     if (communicationController->IsOpen()) {
+        m_sendTimer.Stop();
+        m_inputControlBox->SetCycleIntervalComboBoxSelection(0);
+
         Communication *communication = communicationController->GetCommunication();
         communication->GetBytesWrittenSignal().disconnect_all();
 
@@ -61,7 +76,6 @@ void Page::OnInvokeOpen()
             communication->GetBytesReadSignal().connect(&Page::OnBytesRead, this);
             communication->GetBytesWrittenSignal().connect(&Page::OnBytesWritten, this);
         } else {
-            // wxWidget警告对话框
             wxMessageBox(wxT("Failed to open communication."), wxT("Error"), wxICON_ERROR);
         }
     }
@@ -69,11 +83,38 @@ void Page::OnInvokeOpen()
 
 void Page::OnInvokeWrite(TextFormat format)
 {
+    CommunicationController *communicationController = m_communicationControlBox->GetController();
+    if (!communicationController->IsOpen()) {
+        wxMessageBox(wxT("Communication is not open."), wxT("Error"), wxICON_ERROR);
+        return;
+    }
+
+    Communication *communication = communicationController->GetCommunication();
     wxString text = m_ioPanel->GetInputBox()->GetInputText();
+
+    if (text.IsEmpty()) {
+        text = wxString::FromAscii("(null)");
+    }
+
+    communication->Write(text, format);
+}
+
+void Page::OnInvokeStartTimer(int ms)
+{
+    if (ms == -1) {
+        m_sendTimer.Stop();
+        return;
+    }
+
     CommunicationControlBox *communicationControlBox = m_controlBoxes->GetCommunicationControlBox();
     CommunicationController *communicationController = communicationControlBox->GetController();
-    Communication *communication = communicationController->GetCommunication();
-    communication->Write(text, format);
+    if (!communicationController->IsOpen()) {
+        m_inputControlBox->SetCycleIntervalComboBoxSelection(0);
+        wxMessageBox(wxT("Communication is not open."), wxT("Error"), wxICON_ERROR);
+        return;
+    }
+
+    m_sendTimer.Start(ms);
 }
 
 void Page::OnBytesRead(asio::const_buffer &bytes, const wxString &from)
@@ -86,11 +127,95 @@ void Page::OnBytesWritten(asio::const_buffer &bytes, const wxString &to)
     OutputText(bytes, to, false);
 }
 
+void Page::OnWrap(bool wrap)
+{
+    m_ioPanel->GetOutputBox()->SetWrap(wrap);
+}
+
+void Page::OnSendTimerTimeout()
+{
+    if (!m_communicationControlBox->GetController()->IsOpen()) {
+        return;
+    }
+
+    TextFormat format = m_inputControlBox->GetTextFormat();
+    OnInvokeWrite(format);
+}
+
+void Page::OnClear()
+{
+    m_ioPanel->GetOutputBox()->Clear();
+}
+
+std::string dateTimeString(bool showDate, bool showTime, bool showMs)
+{
+    std::string text;
+    if (showDate) {
+        if (showTime) {
+            text = currentDateTimeString("%Y-%m-%d %H:%M:%S", showMs) + " " + text;
+        } else {
+            if (showMs) {
+                text = currentDateTimeString("%Y-%m-%d", showMs) + " " + text;
+            }
+        }
+    } else {
+        if (showTime) {
+            text = currentDateTimeString("%H:%M:%S", showMs) + " " + text;
+        } else {
+            if (showMs) {
+                text = currentDateTimeString("%H:%M:%S", showMs) + " " + text;
+            }
+        }
+    }
+
+    return text;
+}
+
+std::string flagString(bool isRx, const std::string &fromTo, bool showFlag)
+{
+    if (!showFlag) {
+        return isRx ? "Rx" : "Tx";
+    }
+
+    std::stringstream stringStream;
+    if (isRx) {
+        stringStream << "Rx" << ("<-") << fromTo;
+
+    } else {
+        stringStream << "Rx" << ("->") << fromTo;
+    }
+
+    return stringStream.str();
+}
+
 void Page::OutputText(asio::const_buffer &bytes, const wxString &fromTo, bool isRx)
 {
     OutputControlBox *outputControlBox = m_controlBoxes->GetOutputControlBox();
     TextFormat outputFormat = outputControlBox->GetTextFormat();
+    bool showDate = outputControlBox->GetShowDate();
+    bool showTime = outputControlBox->GetShowTime();
+    bool showMs = outputControlBox->GetShowMs();
+    bool showRx = outputControlBox->GetShowRx();
+    bool showTx = outputControlBox->GetShowTx();
+    bool showFlag = outputControlBox->GetShowFlag();
     std::string text = DoFormattedText(bytes, outputFormat);
-    OutputBox *outBox = m_ioPanel->GetOutputBox();
-    outBox->AppendText(text);
+    std::string dateTimeString = ::dateTimeString(showDate, showTime, showMs);
+    std::string flagString = ::flagString(isRx, fromTo.ToStdString(), showFlag);
+
+    if (isRx && !showRx) {
+        return;
+    }
+
+    if (!isRx && !showTx) {
+        return;
+    }
+
+    wxString str;
+    if (dateTimeString.empty()) {
+        str = wxString::Format("[%s] %s", flagString, text);
+    } else {
+        str = wxString::Format("[%s %s] %s", dateTimeString, flagString, text);
+    }
+
+    m_ioPanel->GetOutputBox()->AppendText(str);
 }

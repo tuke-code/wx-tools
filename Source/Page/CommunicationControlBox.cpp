@@ -17,9 +17,6 @@ CommunicationControlBox::CommunicationControlBox(CommunicationType type, wxWindo
     : wxStaticBoxSizer(wxVERTICAL, parent, wxT("Communication Control"))
     , m_controller(nullptr)
 {
-    auto *sizer = new wxGridBagSizer(4, 4);
-    Add(sizer, 1, wxEXPAND | wxALL, 0);
-
     auto settingsButton = new wxButton(GetStaticBox(), wxID_ANY, wxT("Settings"));
     m_openButton = new wxButton(GetStaticBox(), wxID_ANY, wxT("Open"));
     auto buttonSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -30,8 +27,11 @@ CommunicationControlBox::CommunicationControlBox(CommunicationType type, wxWindo
     auto &factory = CommunicationControllerFactory::singleton();
     m_controller = factory.CreateCommunicationController(type, GetStaticBox());
 
+    auto *sizer = new wxGridBagSizer(4, 4);
+    Add(sizer, 1, wxEXPAND | wxALL, 0);
     sizer->Add(m_controller, wxGBPosition(0, 0), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
     sizer->Add(buttonSizer, wxGBPosition(1, 0), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
+    GetStaticBox()->Layout();
 
     m_openButton->Bind(wxEVT_BUTTON, &CommunicationControlBox::OnOpen, this);
 }

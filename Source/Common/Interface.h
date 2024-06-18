@@ -8,17 +8,7 @@
  **************************************************************************************************/
 #pragma once
 
-#include <wx/wx.h>
+#include <string>
 
-class OutputBox : public wxStaticBoxSizer
-{
-public:
-    OutputBox(wxWindow *parent);
-
-    void AppendText(const wxString &text);
-    void SetWrap(bool wrap);
-    void Clear();
-
-private:
-    wxTextCtrl *m_textCtrl;
-};
+std::string currentDateTimeString(const std::string &format = "%Y-%m-%d %H:%M:%S",
+                                  bool showMs = false);
