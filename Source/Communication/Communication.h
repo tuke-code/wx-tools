@@ -21,7 +21,7 @@ public:
     ~Communication();
 
     sigslot::signal<asio::const_buffer &, const wxString &> &GetBytesWrittenSignal();
-    sigslot::signal<asio::const_buffer &> &GetBytesReadSignal();
+    sigslot::signal<asio::const_buffer &, const wxString &> &GetBytesReadSignal();
 
     virtual bool Open();
     virtual void Close();
@@ -29,5 +29,5 @@ public:
 
 protected:
     sigslot::signal<asio::const_buffer &, const wxString &> m_bytesWrittenSignal;
-    sigslot::signal<asio::const_buffer &> m_bytesReadSignal;
+    sigslot::signal<asio::const_buffer &, const wxString &> m_bytesReadSignal;
 };

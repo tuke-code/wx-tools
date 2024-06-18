@@ -13,7 +13,9 @@
 SerialPort::SerialPort()
     : Communication()
     , m_serialPort(nullptr)
-{}
+{
+
+}
 
 void SerialPort::SetPortName(const std::string &portName)
 {
@@ -85,6 +87,20 @@ void SerialPort::SetCharacterSize(asio::serial_port::character_size dataBits)
     }
 }
 
+void ReadData(asio::serial_port **serialPort)
+{
+    while (1) {
+        if ((*serialPort)) {
+            char buffer[1024] = {0};
+            size_t ret = (*serialPort)->read_some(asio::buffer(buffer, sizeof(buffer)));
+            if (ret > 0) {
+                std::string data(buffer, ret);
+                LogInfo(data);
+            }
+        }
+    }
+}
+
 bool SerialPort::Open()
 {
     if (m_serialPort) {
@@ -113,6 +129,9 @@ bool SerialPort::Open()
         LogWarning("Write data failed.");
     }
 #endif
+
+    std::thread t(ReadData, &m_serialPort);
+    t.detach();
 
     return true;
 }

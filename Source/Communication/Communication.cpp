@@ -12,13 +12,12 @@ Communication::Communication() {}
 
 Communication::~Communication() {}
 
-sigslot::signal<asio::const_buffer &, const wxString &> &
-Communication::GetBytesWrittenSignal()
+sigslot::signal<asio::const_buffer &, const wxString &> &Communication::GetBytesWrittenSignal()
 {
     return m_bytesWrittenSignal;
 }
 
-sigslot::signal<asio::const_buffer &> &Communication::GetBytesReadSignal()
+sigslot::signal<asio::const_buffer &, const wxString &> &Communication::GetBytesReadSignal()
 {
     return m_bytesReadSignal;
 }
