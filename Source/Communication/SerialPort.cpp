@@ -90,28 +90,32 @@ void SerialPort::SetCharacterSize(asio::serial_port::character_size dataBits)
     }
 }
 
-void ReadData(asio::serial_port **serialPort, SerialPort *serialPortInstance)
+void ReadData(asio::serial_port *serialPort, SerialPort *serialPortInstance)
 {
-    while (1) {
-        if ((*serialPort)) {
-            char buffer[1024] = {0};
-            try {
-                size_t ret = (*serialPort)->read_some(asio::buffer(buffer, sizeof(buffer)));
+    if (!serialPort || !serialPortInstance) {
+        return;
+    }
 
-                if (ret > 0) {
-                    std::string data(buffer, ret);
-                    asio::const_buffer buffer(data.data(), data.size());
-                    std::string portName = serialPortInstance->GetPortName();
-                    serialPortInstance->GetBytesReadSignal()(buffer, portName);
-                }
-            } catch (asio::system_error &e) {
-                break;
+    while (1) {
+        char buffer[1024] = {0};
+        try {
+            size_t ret = serialPort->read_some(asio::buffer(buffer, sizeof(buffer)));
+
+            if (ret > 0) {
+                std::string data(buffer, ret);
+                asio::const_buffer buffer(data.data(), data.size());
+                std::string portName = serialPortInstance->GetPortName();
+                serialPortInstance->GetBytesReadSignal()(buffer, portName);
             }
+        } catch (asio::system_error &e) {
+            std::string errorString = e.what();
+            wxString msg = wxString::Format("Read data failed, error message: %s", errorString);
+            LogInfo(msg);
+            break;
         }
     }
-#if 0
-    delete (*serialPort);
-#endif
+
+    delete serialPort;
 }
 
 bool SerialPort::Open()
@@ -132,7 +136,7 @@ bool SerialPort::Open()
         return false;
     }
 
-    std::thread t(ReadData, &m_serialPort, this);
+    std::thread t(ReadData, m_serialPort, this);
     t.detach();
 
     return true;
