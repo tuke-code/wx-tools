@@ -30,4 +30,6 @@ private:
     void OnInvokeWrite(TextFormat format);
     void OnBytesRead(asio::const_buffer &bytes, const wxString &from);
     void OnBytesWritten(asio::const_buffer &bytes, const wxString &to);
+
+    void OutputText(asio::const_buffer &bytes, const wxString &fromTo, bool isRx);
 };

@@ -78,14 +78,15 @@ void Page::OnInvokeWrite(TextFormat format)
 
 void Page::OnBytesRead(asio::const_buffer &bytes, const wxString &from)
 {
-    OutputControlBox *outputControlBox = m_controlBoxes->GetOutputControlBox();
-    TextFormat outputFormat = outputControlBox->GetTextFormat();
-    std::string text = DoFormattedText(bytes, outputFormat);
-    OutputBox *outBox = m_ioPanel->GetOutputBox();
-    outBox->AppendText(text);
+    OutputText(bytes, from, true);
 }
 
 void Page::OnBytesWritten(asio::const_buffer &bytes, const wxString &to)
+{
+    OutputText(bytes, to, false);
+}
+
+void Page::OutputText(asio::const_buffer &bytes, const wxString &fromTo, bool isRx)
 {
     OutputControlBox *outputControlBox = m_controlBoxes->GetOutputControlBox();
     TextFormat outputFormat = outputControlBox->GetTextFormat();
