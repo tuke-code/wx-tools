@@ -18,6 +18,7 @@ class SerialPort : public Communication
 public:
     SerialPort();
 
+    std::string GetPortName() const;
     void SetPortName(const std::string &portName);
     void SetBaudRate(int baudRate);
     void SetFlowControl(asio::serial_port::flow_control::type flowControl);

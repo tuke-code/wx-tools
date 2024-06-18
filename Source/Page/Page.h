@@ -28,5 +28,6 @@ private:
 private:
     void OnInvokeOpen();
     void OnInvokeWrite(TextFormat format);
+    void OnBytesRead(asio::const_buffer &bytes, const wxString &from);
     void OnBytesWritten(asio::const_buffer &bytes, const wxString &to);
 };

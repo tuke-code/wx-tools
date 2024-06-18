@@ -13,8 +13,11 @@
 SerialPort::SerialPort()
     : Communication()
     , m_serialPort(nullptr)
-{
+{}
 
+std::string SerialPort::GetPortName() const
+{
+    return m_portName;
 }
 
 void SerialPort::SetPortName(const std::string &portName)
@@ -87,24 +90,34 @@ void SerialPort::SetCharacterSize(asio::serial_port::character_size dataBits)
     }
 }
 
-void ReadData(asio::serial_port **serialPort)
+void ReadData(asio::serial_port **serialPort, SerialPort *serialPortInstance)
 {
     while (1) {
         if ((*serialPort)) {
             char buffer[1024] = {0};
-            size_t ret = (*serialPort)->read_some(asio::buffer(buffer, sizeof(buffer)));
-            if (ret > 0) {
-                std::string data(buffer, ret);
-                LogInfo(data);
+            try {
+                size_t ret = (*serialPort)->read_some(asio::buffer(buffer, sizeof(buffer)));
+
+                if (ret > 0) {
+                    std::string data(buffer, ret);
+                    asio::const_buffer buffer(data.data(), data.size());
+                    std::string portName = serialPortInstance->GetPortName();
+                    serialPortInstance->GetBytesReadSignal()(buffer, portName);
+                }
+            } catch (asio::system_error &e) {
+                break;
             }
         }
     }
+#if 0
+    delete (*serialPort);
+#endif
 }
 
 bool SerialPort::Open()
 {
     if (m_serialPort) {
-        return true;
+        m_serialPort->close();
     }
 
     m_serialPort = new asio::serial_port(m_ioService);
@@ -113,24 +126,13 @@ bool SerialPort::Open()
     } catch (asio::system_error &e) {
         m_ioService.stop();
 
-        m_serialPort->close();
-        delete m_serialPort;
-        m_serialPort = nullptr;
-
         std::string errorString = e.what();
         errorString = "Open serial port failed, error message: " + errorString;
         LogInfo(errorString);
         return false;
     }
-#if 1
-    const std::string msg = "Hello asio serial port.";
-    size_t ret = m_serialPort->write_some(asio::buffer(msg.data(), msg.size()));
-    if (ret <= 0) {
-        LogWarning("Write data failed.");
-    }
-#endif
 
-    std::thread t(ReadData, &m_serialPort);
+    std::thread t(ReadData, &m_serialPort, this);
     t.detach();
 
     return true;
@@ -140,8 +142,6 @@ void SerialPort::Close()
 {
     if (m_serialPort) {
         m_serialPort->close();
-        delete m_serialPort;
-        m_serialPort = nullptr;
     }
 }
 

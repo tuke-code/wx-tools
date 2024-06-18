@@ -58,6 +58,7 @@ void Page::OnInvokeOpen()
             LogInfo("Open communication successfully.");
 
             Communication *communication = communicationController->GetCommunication();
+            communication->GetBytesReadSignal().connect(&Page::OnBytesRead, this);
             communication->GetBytesWrittenSignal().connect(&Page::OnBytesWritten, this);
         } else {
             // wxWidget警告对话框
@@ -73,6 +74,15 @@ void Page::OnInvokeWrite(TextFormat format)
     CommunicationController *communicationController = communicationControlBox->GetController();
     Communication *communication = communicationController->GetCommunication();
     communication->Write(text, format);
+}
+
+void Page::OnBytesRead(asio::const_buffer &bytes, const wxString &from)
+{
+    OutputControlBox *outputControlBox = m_controlBoxes->GetOutputControlBox();
+    TextFormat outputFormat = outputControlBox->GetTextFormat();
+    std::string text = DoFormattedText(bytes, outputFormat);
+    OutputBox *outBox = m_ioPanel->GetOutputBox();
+    outBox->AppendText(text);
 }
 
 void Page::OnBytesWritten(asio::const_buffer &bytes, const wxString &to)
