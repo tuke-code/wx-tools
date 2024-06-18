@@ -15,7 +15,7 @@
 #include "Unit/TextFormatComboBox.h"
 
 InputControlBox::InputControlBox(wxWindow* parent)
-    : wxStaticBoxSizer(wxHORIZONTAL, parent, wxT("Input Control"))
+    : wxStaticBoxSizer(wxVERTICAL, parent, wxT("Input Control"))
 {
     auto cycleText = new wxStaticText(GetStaticBox(), wxID_ANY, wxT("Cycle"));
     m_cycleIntervalComboBox = new ComboBox(GetStaticBox());
@@ -24,17 +24,20 @@ InputControlBox::InputControlBox(wxWindow* parent)
     auto settingsButton = new wxButton(GetStaticBox(), wxID_ANY, wxT("Settings"));
     m_sendButton = new wxButton(GetStaticBox(), wxID_ANY, wxT("Send"));
 
-    auto buttonSizer = new wxBoxSizer(wxHORIZONTAL);
-    buttonSizer->Add(settingsButton, 1, wxEXPAND | wxALL, 0);
-    buttonSizer->Add(m_sendButton, 1, wxEXPAND | wxALL, 0);
-
     auto* sizer = new wxGridBagSizer(4, 4);
     sizer->Add(cycleText, wxGBPosition(0, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
     sizer->Add(m_cycleIntervalComboBox, wxGBPosition(0, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
     sizer->Add(formatText, wxGBPosition(1, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
     sizer->Add(m_formatComboBox, wxGBPosition(1, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
-    sizer->Add(buttonSizer, wxGBPosition(2, 0), wxGBSpan(1, 2), wxEXPAND | wxALL, 0);
-    Add(sizer, 1, wxEXPAND | wxALL, 0);
+    sizer->AddGrowableCol(1);
+    Add(sizer, 0, wxEXPAND | wxALL, 0);
+
+    AddSpacer(4);
+
+    auto buttonSizer = new wxBoxSizer(wxHORIZONTAL);
+    buttonSizer->Add(settingsButton, 1, wxEXPAND | wxALL, 0);
+    buttonSizer->Add(m_sendButton, 1, wxEXPAND | wxALL, 0);
+    Add(buttonSizer, 0, wxEXPAND | wxALL, 0);
 
     m_cycleIntervalComboBox->Append(wxT("Disabled"), new int(-1));
     std::vector<int> items;

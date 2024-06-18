@@ -26,11 +26,7 @@ ControlBoxes::ControlBoxes(CommunicationType type, wxWindow *parent)
     m_outputControlBox = new OutputControlBox(parent);
     Add(m_outputControlBox, 0, wxEXPAND | wxALL);
 
-#if 0
     Add(new wxStaticText(parent, wxID_ANY, ""), 1, wxEXPAND);
-#else
-    Add(new wxTextCtrl(parent, wxID_ANY), 1, wxEXPAND | wxALL);
-#endif
 
     m_inputControlBox = new InputControlBox(parent);
     Add(m_inputControlBox, 0, wxEXPAND | wxALL);

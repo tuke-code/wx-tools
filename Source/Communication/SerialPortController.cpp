@@ -35,6 +35,8 @@ SerialPortController::SerialPortController(wxWindow *parent)
     InitStopBitsComboBox(wxT("Stop bits"), 3, parent);
     InitParityComboBox(wxT("Parity"), 4, parent);
     InitFlowBitsComboBox(wxT("Flow bits"), 5, parent);
+
+    AddGrowableCol(1);
 }
 
 SerialPortController::~SerialPortController() {}

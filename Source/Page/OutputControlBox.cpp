@@ -59,6 +59,7 @@ OutputControlBox::OutputControlBox(wxWindow *parent)
     sizer->Add(optionsSizer, wxGBPosition(1, 0), wxGBSpan(1, 2), wxEXPAND | wxALL, 0);
     sizer->Add(buttonsSizer, wxGBPosition(2, 0), wxGBSpan(1, 2), wxEXPAND | wxALL, 0);
     Add(sizer, 1, wxEXPAND | wxALL, 0);
+    sizer->AddGrowableCol(1);
 
     m_wrap->Bind(wxEVT_CHECKBOX, [=](wxCommandEvent &event) { m_wrapSignal(m_wrap->GetValue()); });
     clearButton->Bind(wxEVT_BUTTON, [=](wxCommandEvent &event) { m_clearSignal(); });
