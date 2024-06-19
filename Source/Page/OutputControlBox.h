@@ -24,7 +24,6 @@ public:
     bool GetShowMs() const;
     bool GetShowRx() const;
     bool GetShowTx() const;
-    bool GetWrap() const;
     bool GetShowFlag() const;
 
     sigslot::signal<bool> &GetWrapSignal();
@@ -37,9 +36,7 @@ private:
     wxCheckBox *m_showMs;
     wxCheckBox *m_showRx;
     wxCheckBox *m_showTx;
-    wxCheckBox *m_wrap;
     wxCheckBox *m_showFlag;
 
-    sigslot::signal<bool> m_wrapSignal;
     sigslot::signal<> m_clearSignal;
 };

@@ -47,7 +47,6 @@ Page::Page(CommunicationType type, wxWindow *parent)
     m_communicationControlBox->GetInvokeOpenSignal().connect(&Page::OnInvokeOpen, this);
 
     m_outputControlBox = m_controlBoxes->GetOutputControlBox();
-    m_outputControlBox->GetWrapSignal().connect(&Page::OnWrap, this);
     m_outputControlBox->GetClearSignal().connect(&Page::OnClear, this);
 
     m_sendTimer.Bind(wxEVT_TIMER, [this](wxTimerEvent &event) { OnSendTimerTimeout(); });
@@ -142,11 +141,6 @@ void Page::OnBytesRead(asio::const_buffer &bytes, const wxString &from)
 void Page::OnBytesWritten(asio::const_buffer &bytes, const wxString &to)
 {
     OutputText(bytes, to, false);
-}
-
-void Page::OnWrap(bool wrap)
-{
-    m_ioPanel->GetOutputBox()->SetWrap(wrap);
 }
 
 void Page::OnSendTimerTimeout()

@@ -19,7 +19,6 @@ OutputControlBox::OutputControlBox(wxWindow *parent)
     , m_showMs(nullptr)
     , m_showRx(nullptr)
     , m_showTx(nullptr)
-    , m_wrap(nullptr)
     , m_showFlag(nullptr)
 {
     auto formatText = new wxStaticText(GetStaticBox(), wxID_ANY, wxT("Format"));
@@ -33,18 +32,16 @@ OutputControlBox::OutputControlBox(wxWindow *parent)
 
     m_showRx = AddCheckBox(wxT("Rx"), 0, 0);
     m_showTx = AddCheckBox(wxT("Tx"), 0, 1);
-    m_wrap = AddCheckBox(wxT("Wrap"), 0, 2);
+    m_showFlag = AddCheckBox(wxT("Flags"), 0, 2);
     m_showDate = AddCheckBox(wxT("Date"), 1, 0);
     m_showTime = AddCheckBox(wxT("Time"), 1, 1);
     m_showMs = AddCheckBox(wxT("MS"), 1, 2);
-    m_showFlag = AddCheckBox(wxT("Flags"), 2, 0);
 
     m_showRx->SetValue(true);
     m_showTx->SetValue(true);
     m_showDate->SetValue(false);
     m_showTime->SetValue(true);
     m_showMs->SetValue(false);
-    m_wrap->SetValue(false);
     m_showFlag->SetValue(true);
 
     auto settingsButton = new wxButton(GetStaticBox(), wxID_ANY, wxT("Settings"));
@@ -61,7 +58,6 @@ OutputControlBox::OutputControlBox(wxWindow *parent)
     Add(sizer, 1, wxEXPAND | wxALL, 0);
     sizer->AddGrowableCol(1);
 
-    m_wrap->Bind(wxEVT_CHECKBOX, [=](wxCommandEvent &event) { m_wrapSignal(m_wrap->GetValue()); });
     clearButton->Bind(wxEVT_BUTTON, [=](wxCommandEvent &event) { m_clearSignal(); });
 }
 
@@ -95,19 +91,9 @@ bool OutputControlBox::GetShowTx() const
     return m_showTx->GetValue();
 }
 
-bool OutputControlBox::GetWrap() const
-{
-    return m_wrap->GetValue();
-}
-
 bool OutputControlBox::GetShowFlag() const
 {
     return m_showFlag->GetValue();
-}
-
-sigslot::signal<bool> &OutputControlBox::GetWrapSignal()
-{
-    return m_wrapSignal;
 }
 
 sigslot::signal<> &OutputControlBox::GetClearSignal()

@@ -50,7 +50,6 @@ private:
     void OnInvokeStartTimer(int ms);
     void OnBytesRead(asio::const_buffer &bytes, const wxString &from);
     void OnBytesWritten(asio::const_buffer &bytes, const wxString &to);
-    void OnWrap(bool wrap);
     void OnSendTimerTimeout();
     void OnClear();
 
