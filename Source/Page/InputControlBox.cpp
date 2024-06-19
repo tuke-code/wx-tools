@@ -18,7 +18,14 @@ InputControlBox::InputControlBox(wxWindow* parent)
     : wxStaticBoxSizer(wxVERTICAL, parent, wxT("Input Control"))
 {
     auto cycleText = new wxStaticText(GetStaticBox(), wxID_ANY, wxT("Cycle"));
-    m_cycleIntervalComboBox = new ComboBox(GetStaticBox());
+    m_cycleIntervalComboBox = new wxComboBox(GetStaticBox(),
+                                             wxID_ANY,
+                                             wxEmptyString,
+                                             wxDefaultPosition,
+                                             wxDefaultSize,
+                                             0,
+                                             nullptr,
+                                             wxCB_READONLY);
     auto formatText = new wxStaticText(GetStaticBox(), wxID_ANY, wxT("Format"));
     m_formatComboBox = new TextFormatComboBox(GetStaticBox());
     auto settingsButton = new wxButton(GetStaticBox(), wxID_ANY, wxT("Settings"));
@@ -55,7 +62,6 @@ InputControlBox::InputControlBox(wxWindow* parent)
     }
 
     m_cycleIntervalComboBox->SetSelection(0);
-    m_cycleIntervalComboBox->SetEditable(false);
 
     m_sendButton->Bind(wxEVT_BUTTON, [=](wxCommandEvent& event) {
         m_invokeWriteSignal(m_formatComboBox->GetSelectedFormat());

@@ -8,12 +8,38 @@
  **************************************************************************************************/
 #include "PortNameComboBox.h"
 
+#include <algorithm>
+
+#include <CSerialPort/SerialPortInfo.h>
+
 PortNameComboBox::PortNameComboBox(wxWindow* parent)
-    : ComboBox(parent)
+    : wxComboBox(parent,
+                 wxID_ANY,
+                 wxEmptyString,
+                 wxDefaultPosition,
+                 wxDefaultSize,
+                 0,
+                 nullptr,
+                 wxCB_READONLY)
 {
-    for (int i = 0; i < 10; i++) {
-        Append(wxString::Format("COM%d", i+1));
+    std::vector<itas109::SerialPortInfo> infos = itas109::CSerialPortInfo::availablePortInfos();
+    std::sort(infos.begin(),
+              infos.end(),
+              [](const itas109::SerialPortInfo& a, const itas109::SerialPortInfo& b) {
+                  std::string aStr = a.portName;
+                  std::string bStr = b.portName;
+                  if (aStr.length() < bStr.length()) {
+                      return true;
+                  } else {
+                      return false;
+                  }
+              });
+
+    for (auto& info : infos) {
+        Append(info.portName, new wxString(info.portName));
     }
 
-    SetSelection(9);
+    if (!infos.empty()) {
+        SetSelection(0);
+    }
 }

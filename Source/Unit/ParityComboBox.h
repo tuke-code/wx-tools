@@ -9,10 +9,9 @@
 #pragma once
 
 #include <asio/serial_port.hpp>
+#include <wx/wx.h>
 
-#include "ComboBox.h"
-
-class ParityComboBox : public ComboBox
+class ParityComboBox : public wxComboBox
 {
 public:
     ParityComboBox(wxWindow* parent = nullptr);

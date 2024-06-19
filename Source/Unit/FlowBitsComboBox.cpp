@@ -9,7 +9,14 @@
 #include "FlowBitsComboBox.h"
 
 FlowBitsComboBox::FlowBitsComboBox(wxWindow* parent)
-    : ComboBox(parent)
+    : wxComboBox(parent,
+                 wxID_ANY,
+                 wxEmptyString,
+                 wxDefaultPosition,
+                 wxDefaultSize,
+                 0,
+                 nullptr,
+                 wxCB_READONLY)
 {
     Append("None");
     Append("Hardware");

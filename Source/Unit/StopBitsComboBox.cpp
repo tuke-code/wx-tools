@@ -9,7 +9,14 @@
 #include "StopBitsComboBox.h"
 
 StopBitsComboBox::StopBitsComboBox(wxWindow* parent)
-    : ComboBox(parent)
+    : wxComboBox(parent,
+                 wxID_ANY,
+                 wxEmptyString,
+                 wxDefaultPosition,
+                 wxDefaultSize,
+                 0,
+                 nullptr,
+                 wxCB_READONLY)
 {
     Append("1");
     Append("1.5");

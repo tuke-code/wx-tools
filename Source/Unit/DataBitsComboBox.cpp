@@ -9,7 +9,14 @@
 #include "DataBitsComboBox.h"
 
 DataBitsComboBox::DataBitsComboBox(wxWindow* parent)
-    : ComboBox(parent)
+    : wxComboBox(parent,
+                 wxID_ANY,
+                 wxEmptyString,
+                 wxDefaultPosition,
+                 wxDefaultSize,
+                 0,
+                 nullptr,
+                 wxCB_READONLY)
 {
     Append("8");
     Append("7");

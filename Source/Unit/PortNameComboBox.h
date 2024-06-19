@@ -8,9 +8,9 @@
  **************************************************************************************************/
 #pragma once
 
-#include "ComboBox.h"
+#include <wx/wx.h>
 
-class PortNameComboBox : public ComboBox
+class PortNameComboBox : public wxComboBox
 {
 public:
     PortNameComboBox(wxWindow* parent = nullptr);

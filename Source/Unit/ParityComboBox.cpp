@@ -9,7 +9,14 @@
 #include "ParityComboBox.h"
 
 ParityComboBox::ParityComboBox(wxWindow* parent)
-    : ComboBox(parent)
+    : wxComboBox(parent,
+                 wxID_ANY,
+                 wxEmptyString,
+                 wxDefaultPosition,
+                 wxDefaultSize,
+                 0,
+                 nullptr,
+                 wxCB_READONLY)
 {
     Append("None");
     Append("Odd");

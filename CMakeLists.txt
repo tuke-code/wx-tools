@@ -19,6 +19,7 @@ include(CMake/glog.cmake)
 include(CMake/sigslot.cmake)
 include(CMake/wxWidgets.cmake)
 include(CMake/websocketpp.cmake)
+include(CMake/CSerialPort.cmake)
 
 include_directories(Source)
 
@@ -27,7 +28,7 @@ option(_WIN32_WINNT 0x0601)
 file(GLOB_RECURSE E_TOOLS_SOURCE Source/*.*)
 list(APPEND E_TOOLS_SOURCE eTools.rc)
 add_executable(eTools ${E_TOOLS_SOURCE})
-target_link_libraries(eTools glog::glog wx::core wx::aui)
+target_link_libraries(eTools libcserialport glog::glog wx::core wx::aui)
 set_target_properties(
   eTools
   PROPERTIES ${BUNDLE_ID_OPTION} MACOSX_BUNDLE_BUNDLE_VERSION

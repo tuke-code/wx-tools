@@ -9,10 +9,9 @@
 #pragma once
 
 #include <asio/serial_port.hpp>
+#include <wx/wx.h>
 
-#include "ComboBox.h"
-
-class DataBitsComboBox : public ComboBox
+class DataBitsComboBox : public wxComboBox
 {
 public:
     DataBitsComboBox(wxWindow* parent = nullptr);
