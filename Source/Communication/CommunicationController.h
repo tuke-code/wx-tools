@@ -24,6 +24,9 @@ public:
     void Close();
     bool IsOpen() const;
 
+    virtual void Disable();
+    virtual void Enable();
+
 protected:
     virtual Communication *CreateCommunication();
     virtual void AboutToOpen(Communication *communication);

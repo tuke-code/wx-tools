@@ -41,6 +41,26 @@ SerialPortController::SerialPortController(wxWindow *parent)
 
 SerialPortController::~SerialPortController() {}
 
+void SerialPortController::Disable()
+{
+    m_portNameComboBox->Disable();
+    m_baudRateComboBox->Disable();
+    m_dataBitsComboBox->Disable();
+    m_stopBitsComboBox->Disable();
+    m_flowBitsComboBox->Disable();
+    m_parityComboBox->Disable();
+}
+
+void SerialPortController::Enable()
+{
+    m_portNameComboBox->Enable();
+    m_baudRateComboBox->Enable();
+    m_dataBitsComboBox->Enable();
+    m_stopBitsComboBox->Enable();
+    m_flowBitsComboBox->Enable();
+    m_parityComboBox->Enable();
+}
+
 Communication *SerialPortController::CreateCommunication()
 {
     return new SerialPort();

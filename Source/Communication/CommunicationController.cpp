@@ -51,6 +51,10 @@ bool CommunicationController::IsOpen() const
     return m_communication != nullptr;
 }
 
+void CommunicationController::Disable() {}
+
+void CommunicationController::Enable() {}
+
 Communication *CommunicationController::CreateCommunication()
 {
     return nullptr;

@@ -22,6 +22,9 @@ public:
     SerialPortController(wxWindow *parent = nullptr);
     ~SerialPortController();
 
+    void Disable() override;
+    void Enable() override;
+
 protected:
     Communication *CreateCommunication() override;
     void AboutToOpen(Communication *communication) override;

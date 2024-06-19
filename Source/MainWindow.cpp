@@ -11,6 +11,7 @@
 #include <wx/notebook.h>
 
 #include "Common/DataStructure.h"
+#include "Common/Log.h"
 #include "Page/PageFactory.h"
 
 MainWindow::MainWindow()
@@ -35,6 +36,8 @@ MainWindow::MainWindow()
     wxFrame::SetStatusText("Welcome to wxWidgets!");
     wxFrame::SetSize(wxSize(1024, 600));
     Centre();
+
+    Bind(wxEVT_CLOSE_WINDOW, &MainWindow::OnClose, this);
 }
 
 void MainWindow::OnExit(wxCommandEvent& event)
@@ -48,6 +51,12 @@ void MainWindow::OnAbout(wxCommandEvent& event)
     wxMessageBox("This is a wxWidgets Hello World example",
                  "About Hello World",
                  wxOK | wxICON_INFORMATION);
+}
+
+void MainWindow::OnClose(wxCloseEvent& event)
+{
+    LogInfo("MainWindow::OnClose()");
+    Destroy();
 }
 
 void MainWindow::Init()

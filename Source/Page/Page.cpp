@@ -65,10 +65,12 @@ void Page::OnInvokeOpen()
         communication->GetBytesWrittenSignal().disconnect_all();
 
         communicationController->Close();
+        communicationController->Enable();
         communicationControlBox->SetOpenButtonLabel(wxT("Open"));
         LogInfo("Close communication successfully.");
     } else {
         if (communicationController->Open()) {
+            communicationController->Disable();
             communicationControlBox->SetOpenButtonLabel(wxT("Close"));
             LogInfo("Open communication successfully.");
 
