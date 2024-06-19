@@ -16,5 +16,5 @@ public:
     PortNameComboBox(wxWindow* parent = nullptr);
 
     wxString GetPortName() const;
-    void SetPortName(const wxString& portName);
+    void SetPortName(const std::string &portName);
 };

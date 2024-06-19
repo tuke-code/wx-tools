@@ -9,6 +9,7 @@
 #include "CommunicationControlBox.h"
 
 #include <wx/gbsizer.h>
+#include <wx/popupwin.h>
 
 #include "Communication/CommunicationController.h"
 #include "Communication/CommunicationControllerFactory.h"
@@ -50,6 +51,13 @@ void CommunicationControlBox::SetOpenButtonLabel(const wxString &label)
 
 void CommunicationControlBox::OnOpen(wxCommandEvent &event)
 {
+#if 0
+    static wxPopupTransientWindow *popup = new wxPopupTransientWindow(m_openButton, wxBORDER_SIMPLE);
+    popup->SetBackgroundColour(*wxWHITE);
+    popup->SetPosition(m_openButton->ClientToScreen(wxPoint(m_openButton->GetSize().GetWidth(), 0)));
+    popup->Show();
+#endif
+
     wxUnusedVar(event);
     m_invokeOpenSignal();
 }

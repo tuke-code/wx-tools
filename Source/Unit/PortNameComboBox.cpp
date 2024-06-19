@@ -49,7 +49,7 @@ wxString PortNameComboBox::GetPortName() const
     return GetValue();
 }
 
-void PortNameComboBox::SetPortName(const wxString& portName)
+void PortNameComboBox::SetPortName(const std::string& portName)
 {
     int selection = FindString(portName);
     if (selection != wxNOT_FOUND) {

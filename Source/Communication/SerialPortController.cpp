@@ -75,8 +75,7 @@ nlohmann::json SerialPortController::SaveParameters() const
 
 void SerialPortController::LoadParameters(const nlohmann::json &json)
 {
-    std::string portName = json[m_parameterNames.portName];
-    m_portNameComboBox->SetPortName(portName);
+    m_portNameComboBox->SetPortName(json[m_parameterNames.portName]);
     m_baudRateComboBox->SetBaudRate(json[m_parameterNames.baudRate]);
     m_dataBitsComboBox->SetDataBits(json[m_parameterNames.dataBits]);
     m_stopBitsComboBox->SetStopBits(json[m_parameterNames.stopBits]);
