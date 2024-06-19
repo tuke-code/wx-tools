@@ -13,6 +13,7 @@
 
 #include "Common/DataStructure.h"
 
+class CommunicationPopup;
 class CommunicationController;
 class CommunicationControlBox : public wxStaticBoxSizer
 {
@@ -25,6 +26,7 @@ public:
 private:
     CommunicationController *m_controller;
     wxButton *m_openButton;
+    CommunicationPopup *m_popup;
 
     sigslot::signal<> m_invokeOpenSignal;
 

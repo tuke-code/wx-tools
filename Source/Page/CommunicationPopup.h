@@ -12,5 +12,6 @@
 
 class CommunicationPopup : public wxPopupWindow
 {
+public:
     CommunicationPopup(wxWindow *parent, int flags = wxBORDER_NONE);
 };
