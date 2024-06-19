@@ -11,17 +11,23 @@
 BaudRateComboBox::BaudRateComboBox(wxWindow* parent)
     : wxComboBox(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, nullptr)
 {
-    Append(wxT("9600"));
-    Append(wxT("19200"));
-    Append(wxT("38400"));
-    Append(wxT("57600"));
-    Append(wxT("115200"));
-    Append(wxT("230400"));
-    Append(wxT("460800"));
-    Append(wxT("921600"));
+    Append("110");
+    Append("300");
+    Append("600");
+    Append("1200");
+    Append("2400");
+    Append("4800");
+    Append("9600");
+    Append("14400");
+    Append("19200");
+    Append("38400");
+    Append("56000");
+    Append("57600");
+    Append("115200");
+    Append("921600");
 
     SetEditable(true);
-    SetSelection(0);
+    SetSelection(6);
 }
 
 int BaudRateComboBox::GetBaudRate()
