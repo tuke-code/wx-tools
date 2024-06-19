@@ -8,8 +8,13 @@
  **************************************************************************************************/
 #pragma once
 
+#include <vector>
+
 class SerialPortInfo
 {
 public:
     SerialPortInfo();
+
+    static std::vector<int> standardBaudRates();
+    static std::vector<SerialPortInfo> availablePorts();
 };
