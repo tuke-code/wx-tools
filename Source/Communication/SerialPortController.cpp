@@ -61,6 +61,29 @@ void SerialPortController::Enable()
     m_parityComboBox->Enable();
 }
 
+nlohmann::json SerialPortController::SaveParameters() const
+{
+    nlohmann::json json;
+    json[m_parameterNames.portName] = m_portNameComboBox->GetPortName().ToStdString();
+    json[m_parameterNames.baudRate] = m_baudRateComboBox->GetBaudRate();
+    json[m_parameterNames.dataBits] = m_dataBitsComboBox->GetDataBits().value();
+    json[m_parameterNames.stopBits] = m_stopBitsComboBox->GetStopBits();
+    json[m_parameterNames.flowBits] = m_flowBitsComboBox->GetFlowBits();
+    json[m_parameterNames.parity] = m_parityComboBox->GetParity();
+    return json;
+}
+
+void SerialPortController::LoadParameters(const nlohmann::json &json)
+{
+    std::string portName = json[m_parameterNames.portName];
+    m_portNameComboBox->SetPortName(portName);
+    m_baudRateComboBox->SetBaudRate(json[m_parameterNames.baudRate]);
+    m_dataBitsComboBox->SetDataBits(json[m_parameterNames.dataBits]);
+    m_stopBitsComboBox->SetStopBits(json[m_parameterNames.stopBits]);
+    m_flowBitsComboBox->SetFlowBits(json[m_parameterNames.flowBits]);
+    m_parityComboBox->SetParity(json[m_parameterNames.parity]);
+}
+
 Communication *SerialPortController::CreateCommunication()
 {
     return new SerialPort();

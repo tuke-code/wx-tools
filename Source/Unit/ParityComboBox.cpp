@@ -18,13 +18,13 @@ ParityComboBox::ParityComboBox(wxWindow* parent)
                  nullptr,
                  wxCB_READONLY)
 {
-    Append("None");
-    Append("Odd");
-    Append("Even");
+    Append(wxT("None"));
+    Append(wxT("Odd"));
+    Append(wxT("Even"));
     SetSelection(0);
 }
 
-asio::serial_port_base::parity::type ParityComboBox::GetParity()
+asio::serial_port_base::parity::type ParityComboBox::GetParity() const
 {
     switch (GetSelection()) {
     case 0:
@@ -35,5 +35,23 @@ asio::serial_port_base::parity::type ParityComboBox::GetParity()
         return asio::serial_port_base::parity::type::even;
     default:
         return asio::serial_port_base::parity::type::none;
+    }
+}
+
+void ParityComboBox::SetParity(int parity)
+{
+    switch (parity) {
+    case asio::serial_port_base::parity::type::none:
+        SetSelection(0);
+        break;
+    case asio::serial_port_base::parity::type::odd:
+        SetSelection(1);
+        break;
+    case asio::serial_port_base::parity::type::even:
+        SetSelection(2);
+        break;
+    default:
+        SetSelection(0);
+        break;
     }
 }

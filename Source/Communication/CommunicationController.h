@@ -8,6 +8,7 @@
  **************************************************************************************************/
 #pragma once
 
+#include <nlohmann/json.hpp>
 #include <wx/gbsizer.h>
 #include <wx/wx.h>
 
@@ -26,6 +27,8 @@ public:
 
     virtual void Disable();
     virtual void Enable();
+    virtual nlohmann::json SaveParameters() const;
+    virtual void LoadParameters(const nlohmann::json &json);
 
 protected:
     virtual Communication *CreateCommunication();

@@ -43,3 +43,16 @@ PortNameComboBox::PortNameComboBox(wxWindow* parent)
         SetSelection(0);
     }
 }
+
+wxString PortNameComboBox::GetPortName() const
+{
+    return GetValue();
+}
+
+void PortNameComboBox::SetPortName(const wxString& portName)
+{
+    int selection = FindString(portName);
+    if (selection != wxNOT_FOUND) {
+        SetSelection(selection);
+    }
+}

@@ -30,7 +30,12 @@ BaudRateComboBox::BaudRateComboBox(wxWindow* parent)
     SetSelection(6);
 }
 
-int BaudRateComboBox::GetBaudRate()
+int BaudRateComboBox::GetBaudRate() const
 {
     return wxAtoi(GetStringSelection());
+}
+
+void BaudRateComboBox::SetBaudRate(int baudRate)
+{
+    SetStringSelection(wxString::Format("%d", baudRate));
 }

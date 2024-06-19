@@ -15,5 +15,6 @@ class BaudRateComboBox : public wxComboBox
 public:
     BaudRateComboBox(wxWindow* parent = nullptr);
 
-    int GetBaudRate();
+    int GetBaudRate() const;
+    void SetBaudRate(int baudRate);
 };

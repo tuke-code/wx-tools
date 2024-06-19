@@ -18,13 +18,13 @@ FlowBitsComboBox::FlowBitsComboBox(wxWindow* parent)
                  nullptr,
                  wxCB_READONLY)
 {
-    Append("None");
-    Append("Hardware");
-    Append("Software");
+    Append(wxT("None"));
+    Append(wxT("Hardware"));
+    Append(wxT("Software"));
     SetSelection(0);
 }
 
-asio::serial_port::flow_control::type FlowBitsComboBox::GetFlowBits()
+asio::serial_port::flow_control::type FlowBitsComboBox::GetFlowBits() const
 {
     switch (GetSelection()) {
     case 0:
@@ -35,5 +35,23 @@ asio::serial_port::flow_control::type FlowBitsComboBox::GetFlowBits()
         return asio::serial_port::flow_control::software;
     default:
         return asio::serial_port::flow_control::none;
+    }
+}
+
+void FlowBitsComboBox::SetFlowBits(int flowBits)
+{
+    switch (flowBits) {
+    case asio::serial_port::flow_control::none:
+        SetSelection(0);
+        break;
+    case asio::serial_port::flow_control::hardware:
+        SetSelection(1);
+        break;
+    case asio::serial_port::flow_control::software:
+        SetSelection(2);
+        break;
+    default:
+        SetSelection(0);
+        break;
     }
 }

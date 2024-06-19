@@ -25,8 +25,8 @@ class Page : public wxPanel
 public:
     Page(CommunicationType type, wxWindow *parent);
 
-    void loadParameters(const nlohmann::json &json);
-    nlohmann::json saveParameters() const;
+    void LoadParameters(const nlohmann::json &json);
+    nlohmann::json SaveParameters() const;
 
 private:
     InputControlBox *m_inputControlBox;
@@ -35,6 +35,14 @@ private:
     IOPanel *m_ioPanel;
     wxTimer m_sendTimer;
     OutputControlBox *m_outputControlBox;
+
+private:
+    struct ParameterNames
+    {
+        const std::string communicationControlBox{"CommunicationController"};
+        const std::string outputControlBox{"OutputController"};
+        const std::string inputControlBox{"InputController"};
+    } m_parameterNames;
 
 private:
     void OnInvokeOpen();

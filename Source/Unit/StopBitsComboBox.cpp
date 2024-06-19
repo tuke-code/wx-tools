@@ -24,7 +24,7 @@ StopBitsComboBox::StopBitsComboBox(wxWindow* parent)
     SetSelection(0);
 }
 
-asio::serial_port::stop_bits::type StopBitsComboBox::GetStopBits()
+asio::serial_port::stop_bits::type StopBitsComboBox::GetStopBits() const
 {
     switch (GetSelection()) {
     case 0:
@@ -35,5 +35,23 @@ asio::serial_port::stop_bits::type StopBitsComboBox::GetStopBits()
         return asio::serial_port::stop_bits::two;
     default:
         return asio::serial_port::stop_bits::one;
+    }
+}
+
+void StopBitsComboBox::SetStopBits(int stopBits)
+{
+    switch (stopBits) {
+    case asio::serial_port::stop_bits::one:
+        SetStringSelection("1");
+        break;
+    case asio::serial_port::stop_bits::onepointfive:
+        SetStringSelection("1.5");
+        break;
+    case asio::serial_port::stop_bits::two:
+        SetStringSelection("2");
+        break;
+    default:
+        SetStringSelection("1");
+        break;
     }
 }

@@ -12,7 +12,6 @@
 
 #include "Common/Interface.h"
 #include "Common/Log.h"
-#include "Common/Settings.h"
 #include "Communication/Communication.h"
 #include "Communication/CommunicationController.h"
 #include "CommunicationControlBox.h"
@@ -30,9 +29,6 @@ Page::Page(CommunicationType type, wxWindow *parent)
     , m_inputControlBox(nullptr)
     , m_communicationControlBox(nullptr)
 {
-    Settings &settings = Settings::GetInstance();
-    settings.Write("Group/Key", "1");
-
     auto sizer = new wxBoxSizer(wxHORIZONTAL);
     SetSizerAndFit(sizer);
 
@@ -57,11 +53,18 @@ Page::Page(CommunicationType type, wxWindow *parent)
     m_sendTimer.Bind(wxEVT_TIMER, [this](wxTimerEvent &event) { OnSendTimerTimeout(); });
 }
 
-void Page::loadParameters(const nlohmann::json &json) {}
-
-nlohmann::json Page::saveParameters() const
+void Page::LoadParameters(const nlohmann::json &json)
 {
+    auto controllerJson = json[m_parameterNames.communicationControlBox];
+    m_communicationControlBox->GetController()->LoadParameters(controllerJson);
+}
+
+nlohmann::json Page::SaveParameters() const
+{
+    auto *communicationController = m_communicationControlBox->GetController();
+
     nlohmann::json json;
+    json[m_parameterNames.communicationControlBox] = communicationController->SaveParameters();
     return json;
 }
 

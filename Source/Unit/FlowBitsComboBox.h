@@ -16,5 +16,6 @@ class FlowBitsComboBox : public wxComboBox
 public:
     FlowBitsComboBox(wxWindow* parent = nullptr);
 
-    asio::serial_port::flow_control::type GetFlowBits();
+    asio::serial_port::flow_control::type GetFlowBits() const;
+    void SetFlowBits(int flowBits);
 };

@@ -16,5 +16,6 @@ class StopBitsComboBox : public wxComboBox
 public:
     StopBitsComboBox(wxWindow* parent = nullptr);
 
-    asio::serial_port::stop_bits::type GetStopBits();
+    asio::serial_port::stop_bits::type GetStopBits() const;
+    void SetStopBits(int stopBits);
 };

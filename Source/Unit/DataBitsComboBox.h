@@ -16,5 +16,6 @@ class DataBitsComboBox : public wxComboBox
 public:
     DataBitsComboBox(wxWindow* parent = nullptr);
 
-    asio::serial_port::character_size GetDataBits();
+    asio::serial_port::character_size GetDataBits() const;
+    void SetDataBits(int dataBits);
 };

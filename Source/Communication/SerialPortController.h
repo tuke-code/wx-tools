@@ -24,6 +24,8 @@ public:
 
     void Disable() override;
     void Enable() override;
+    nlohmann::json SaveParameters() const override;
+    void LoadParameters(const nlohmann::json &json) override;
 
 protected:
     Communication *CreateCommunication() override;
@@ -45,4 +47,15 @@ private:
     StopBitsComboBox *m_stopBitsComboBox;
     FlowBitsComboBox *m_flowBitsComboBox;
     ParityComboBox *m_parityComboBox;
+
+private:
+    struct ParameterNames
+    {
+        const std::string portName{"PortName"};
+        const std::string baudRate{"BaudRate"};
+        const std::string dataBits{"DataBits"};
+        const std::string stopBits{"StopBits"};
+        const std::string flowBits{"FlowBits"};
+        const std::string parity{"Parity"};
+    } m_parameterNames;
 };

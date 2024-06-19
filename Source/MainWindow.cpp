@@ -8,6 +8,7 @@
  **************************************************************************************************/
 #include "MainWindow.h"
 
+#include <fstream>>
 #include <wx/notebook.h>
 
 #include "Common/Log.h"
@@ -104,6 +105,35 @@ void MainWindow::OnHello(wxCommandEvent& event)
     wxLogMessage("Hello world from wxWidgets!");
 }
 
-void MainWindow::LoadParameters() {}
+std::string GetPageParameterFileName(CommunicationType type)
+{
+    wxString name = GetCommunicationName(type);
+    name.Replace(" ", "");
+    return name.ToStdString() + ".json";
+}
 
-void MainWindow::SaveParameters() {}
+void MainWindow::LoadParameters()
+{
+    for (auto it = m_pageMap.begin(); it != m_pageMap.end(); ++it) {
+        auto* page = it->second;
+        wxString name = GetPageParameterFileName(it->first);
+        std::ifstream file(name.ToStdString());
+        nlohmann::json json = nlohmann::json::parse(file);
+
+        std::cout << name.ToStdString() << json << std::endl;
+        if (it->first == CommunicationType::SerialPort) {
+            page->LoadParameters(json);
+        }
+    }
+}
+
+void MainWindow::SaveParameters()
+{
+    for (auto it = m_pageMap.begin(); it != m_pageMap.end(); ++it) {
+        auto* page = it->second;
+        auto json = page->SaveParameters();
+        wxString name = GetPageParameterFileName(it->first);
+        std::ofstream file(name.ToStdString());
+        file << json.dump(4);
+    }
+}

@@ -16,5 +16,6 @@ class ParityComboBox : public wxComboBox
 public:
     ParityComboBox(wxWindow* parent = nullptr);
 
-    asio::serial_port_base::parity::type GetParity();
+    asio::serial_port_base::parity::type GetParity() const;
+    void SetParity(int parity);
 };
