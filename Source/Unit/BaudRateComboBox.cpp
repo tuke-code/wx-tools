@@ -9,7 +9,7 @@
 #include "BaudRateComboBox.h"
 
 BaudRateComboBox::BaudRateComboBox(wxWindow* parent)
-    : ComboBox(parent)
+    : wxComboBox(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, nullptr)
 {
     Append(wxT("9600"));
     Append(wxT("19200"));

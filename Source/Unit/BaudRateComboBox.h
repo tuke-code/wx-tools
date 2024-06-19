@@ -8,9 +8,9 @@
  **************************************************************************************************/
 #pragma once
 
-#include "ComboBox.h"
+#include <wx/wx.h>
 
-class BaudRateComboBox : public ComboBox
+class BaudRateComboBox : public wxComboBox
 {
 public:
     BaudRateComboBox(wxWindow* parent = nullptr);

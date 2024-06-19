@@ -11,7 +11,6 @@
 #include <wx/gbsizer.h>
 #include <wx/wx.h>
 
-#include "Unit/ComboBox.h"
 #include "Unit/TextFormatComboBox.h"
 
 InputControlBox::InputControlBox(wxWindow* parent)
