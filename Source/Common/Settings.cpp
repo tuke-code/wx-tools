@@ -8,12 +8,20 @@
  **************************************************************************************************/
 #include "Settings.h"
 
+#include <wx/stdpaths.h>
+
 Settings::Settings()
-    : wxFileConfig("123.ini")
+    : wxFileConfig("eTools", "xTools", "eTools.ini")
 {}
 
 Settings& Settings::GetInstance()
 {
     static Settings instance;
     return instance;
+}
+
+wxString Settings::GetSettingsPath()
+{
+    wxStandardPaths &path = wxStandardPaths::Get();
+    return path.GetUserDataDir();
 }

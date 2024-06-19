@@ -13,6 +13,9 @@
 
 bool Application::OnInit()
 {
+    SetAppName("eTools");
+    SetVendorName("xTools");
+
 #if 0
     InitGoogleLog("eTools");
 #endif

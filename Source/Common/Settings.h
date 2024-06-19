@@ -20,4 +20,5 @@ private:
 
 public:
     static Settings& GetInstance();
+    static wxString GetSettingsPath();
 };

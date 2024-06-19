@@ -12,6 +12,7 @@
 
 #include "Common/Interface.h"
 #include "Common/Log.h"
+#include "Common/Settings.h"
 #include "Communication/Communication.h"
 #include "Communication/CommunicationController.h"
 #include "CommunicationControlBox.h"
@@ -29,6 +30,9 @@ Page::Page(CommunicationType type, wxWindow *parent)
     , m_inputControlBox(nullptr)
     , m_communicationControlBox(nullptr)
 {
+    Settings &settings = Settings::GetInstance();
+    settings.Write("Group/Key", "1");
+
     auto sizer = new wxBoxSizer(wxHORIZONTAL);
     SetSizerAndFit(sizer);
 
@@ -51,6 +55,14 @@ Page::Page(CommunicationType type, wxWindow *parent)
     m_outputControlBox->GetClearSignal().connect(&Page::OnClear, this);
 
     m_sendTimer.Bind(wxEVT_TIMER, [this](wxTimerEvent &event) { OnSendTimerTimeout(); });
+}
+
+void Page::loadParameters(const nlohmann::json &json) {}
+
+nlohmann::json Page::saveParameters() const
+{
+    nlohmann::json json;
+    return json;
 }
 
 void Page::OnInvokeOpen()
@@ -200,7 +212,7 @@ void Page::OutputText(asio::const_buffer &bytes, const wxString &fromTo, bool is
     bool showRx = outputControlBox->GetShowRx();
     bool showTx = outputControlBox->GetShowTx();
     bool showFlag = outputControlBox->GetShowFlag();
-    std::string text = DoFormattedText(bytes, outputFormat);
+    std::string text = DoFormatText(bytes, outputFormat);
     std::string dateTimeString = ::dateTimeString(showDate, showTime, showMs);
     std::string flagString = ::flagString(isRx, fromTo.ToStdString(), showFlag);
 

@@ -8,29 +8,28 @@
  **************************************************************************************************/
 #include "DataStructure.h"
 
-#include <bitset>
-#include <iomanip>
-#include <iostream>
 #include <map>
 #include <sstream>
 #include <string>
 
-std::vector<wxString> GetFriendlyTextFormats()
+#include "Data.h"
+
+std::vector<wxString> GetSuportedTextFormats()
 {
     static std::vector<wxString> formats;
     if (formats.empty()) {
-        formats.push_back(GetFriendlyTextFormat(TextFormat::Bin));
-        formats.push_back(GetFriendlyTextFormat(TextFormat::Oct));
-        formats.push_back(GetFriendlyTextFormat(TextFormat::Dec));
-        formats.push_back(GetFriendlyTextFormat(TextFormat::Hex));
-        formats.push_back(GetFriendlyTextFormat(TextFormat::Ascii));
-        formats.push_back(GetFriendlyTextFormat(TextFormat::Utf8));
+        formats.push_back(GetTextFormatName(TextFormat::Bin));
+        formats.push_back(GetTextFormatName(TextFormat::Oct));
+        formats.push_back(GetTextFormatName(TextFormat::Dec));
+        formats.push_back(GetTextFormatName(TextFormat::Hex));
+        formats.push_back(GetTextFormatName(TextFormat::Ascii));
+        formats.push_back(GetTextFormatName(TextFormat::Utf8));
     }
 
     return formats;
 }
 
-wxString GetFriendlyTextFormat(TextFormat format)
+wxString GetTextFormatName(TextFormat format)
 {
     static std::map<TextFormat, wxString> formatMap;
     if (formatMap.empty()) {
@@ -49,38 +48,43 @@ wxString GetFriendlyTextFormat(TextFormat format)
     }
 }
 
-std::string DoFormattedText(asio::const_buffer &buffer, TextFormat format)
+std::string GetString(TextFormat format, uint8_t value)
 {
-    const auto *dataPtr = static_cast<const unsigned char *>(buffer.data());
-    size_t size = buffer.size();
-    std::ostringstream stringStream;
     if (format == TextFormat::Bin) {
-        for (std::size_t i = 0; i < size; ++i) {
-            stringStream << std::bitset<8>(dataPtr[i]).to_string() << " ";
-        }
-        return stringStream.str();
+        return GetBinString(value);
     } else if (format == TextFormat::Oct) {
-        for (std::size_t i = 0; i < size; ++i) {
-            stringStream << std::setw(3) << std::setfill('0') << std::oct << dataPtr[i] << " ";
-        }
-        return stringStream.str();
+        return GetOctString(value);
     } else if (format == TextFormat::Dec) {
-        for (std::size_t i = 0; i < size; ++i) {
-            stringStream << std::setw(3) << std::setfill('0') << std::dec << dataPtr[i] << " ";
-        }
-        return stringStream.str();
+        return GetDecString(value);
     } else if (format == TextFormat::Hex) {
-        for (std::size_t i = 0; i < size; ++i) {
-            stringStream << std::setw(2) << std::setfill('0') << std::hex << dataPtr[i] << " ";
-        }
-        return stringStream.str();
-    } else if (format == TextFormat::Ascii) {
-        return std::string(dataPtr, dataPtr + size);
-    } else if (format == TextFormat::Utf8) {
-        return std::string(dataPtr, dataPtr + size);
+        return GetHexString(value);
     }
 
-    return "formatting error";
+    return GetHexString(value);
+}
+
+std::string DoFormatText(asio::const_buffer &buffer, TextFormat format)
+{
+    const auto *dataPtr = static_cast<const char *>(buffer.data());
+    size_t size = buffer.size();
+    std::ostringstream stringStream;
+    switch (format) {
+    case TextFormat::Bin:
+    case TextFormat::Oct:
+    case TextFormat::Dec:
+    case TextFormat::Hex:
+        for (std::size_t i = 0; i < size; ++i) {
+            stringStream << GetString(format, dataPtr[i]);
+            if (i < size - 1) {
+                stringStream << " ";
+            }
+        }
+        return stringStream.str();
+    case TextFormat::Ascii:
+        return wxString::FromAscii(dataPtr, size).ToStdString();
+    default:
+        return wxString::FromUTF8(dataPtr, size).ToStdString();
+    }
 }
 
 std::vector<CommunicationType> GetSuportedCommunicationTypes()
@@ -108,8 +112,8 @@ wxString GetCommunicationName(CommunicationType type)
         typeMap[CommunicationType::UDPServer] = wxT("UDP Server");
         typeMap[CommunicationType::TCPClient] = wxT("TCP Client");
         typeMap[CommunicationType::TCPServer] = wxT("TCP Server");
-        typeMap[CommunicationType::WSClient] = wxT("WebSocket Client");
-        typeMap[CommunicationType::WSServer] = wxT("WebSocket Server");
+        typeMap[CommunicationType::WSClient] = wxT("Web Socket Client");
+        typeMap[CommunicationType::WSServer] = wxT("Web Socket Server");
     }
 
     if (typeMap.find(type) == typeMap.end()) {

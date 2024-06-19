@@ -9,6 +9,7 @@
 #pragma once
 
 #include <asio/buffer.hpp>
+#include <nlohmann/json.hpp>
 #include <sigslot/signal.hpp>
 #include <wx/wx.h>
 
@@ -23,6 +24,9 @@ class Page : public wxPanel
 {
 public:
     Page(CommunicationType type, wxWindow *parent);
+
+    void loadParameters(const nlohmann::json &json);
+    nlohmann::json saveParameters() const;
 
 private:
     InputControlBox *m_inputControlBox;

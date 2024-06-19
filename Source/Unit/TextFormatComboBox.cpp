@@ -20,7 +20,7 @@ TextFormatComboBox::TextFormatComboBox(wxWindow* parent)
                  nullptr,
                  wxCB_READONLY)
 {
-    std::vector<wxString> formats = GetFriendlyTextFormats();
+    std::vector<wxString> formats = GetSuportedTextFormats();
     for (const wxString& format : formats) {
         AppendString(format);
     }
