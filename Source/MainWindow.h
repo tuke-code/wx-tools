@@ -8,8 +8,12 @@
  **************************************************************************************************/
 #pragma once
 
+#include <map>
 #include <wx/wx.h>
 
+#include "Common/DataStructure.h"
+
+class Page;
 class MainWindow : public wxFrame
 {
 public:
@@ -28,4 +32,10 @@ private:
     void OnExit(wxCommandEvent& event);
     void OnAbout(wxCommandEvent& event);
     void OnClose(wxCloseEvent& event);
+
+    void LoadParameters();
+    void SaveParameters();
+
+private:
+    std::map<CommunicationType, Page*> m_pageMap;
 };

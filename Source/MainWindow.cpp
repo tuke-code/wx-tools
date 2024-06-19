@@ -10,7 +10,6 @@
 
 #include <wx/notebook.h>
 
-#include "Common/DataStructure.h"
 #include "Common/Log.h"
 #include "Page/PageFactory.h"
 
@@ -25,8 +24,11 @@ MainWindow::MainWindow()
         auto* page = PageFactory::singleton().CreatePage(type, notebook);
         if (page != nullptr) {
             notebook->AddPage(page, GetCommunicationName(type));
+            m_pageMap[type] = page;
         }
     }
+
+    LoadParameters();
 
     auto const sizer = new wxBoxSizer(wxVERTICAL);
     sizer->Add(notebook, 1, wxEXPAND | wxALL, 0);
@@ -55,7 +57,7 @@ void MainWindow::OnAbout(wxCommandEvent& event)
 
 void MainWindow::OnClose(wxCloseEvent& event)
 {
-    LogInfo("MainWindow::OnClose()");
+    SaveParameters();
     Destroy();
 }
 
@@ -101,3 +103,7 @@ void MainWindow::OnHello(wxCommandEvent& event)
 {
     wxLogMessage("Hello world from wxWidgets!");
 }
+
+void MainWindow::LoadParameters() {}
+
+void MainWindow::SaveParameters() {}

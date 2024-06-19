@@ -11,7 +11,7 @@
 #include <wx/stdpaths.h>
 
 Settings::Settings()
-    : wxFileConfig("eTools", "xTools", "eTools.ini")
+    : wxFileConfig("eTools", "xTools", "xTools/eTools/eTools.ini")
 {}
 
 Settings& Settings::GetInstance()
