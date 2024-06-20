@@ -8,7 +8,7 @@
  **************************************************************************************************/
 #include "MainWindow.h"
 
-#include <fstream>>
+#include <fstream>
 #include <wx/notebook.h>
 
 #include "Common/Log.h"

@@ -8,6 +8,15 @@
  **************************************************************************************************/
 #include "CommunicationPopup.h"
 
+#include <wx/gbsizer.h>
+#include <wx/wx.h>
+
 CommunicationPopup::CommunicationPopup(wxWindow *parent, int flags) : wxPopupWindow(parent, flags)
 {
+    wxGridBagSizer *sizer = new wxGridBagSizer(4, 4);
+    SetSizerAndFit(sizer);
+    SetMinSize(wxSize(200, 100));
+    SetSize(wxSize(200, 100));
+
+    sizer->Add(new wxStaticText(this, wxID_ANY, "Rx Mask:"), wxGBPosition(0, 0));
 }
