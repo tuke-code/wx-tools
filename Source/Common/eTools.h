@@ -12,16 +12,21 @@
 #include <glog/logging.h>
 #include <wx/wx.h>
 
+//--------------------------------------------------------------------------------------------------
+// Google Log
 #define eToolsLog(severity) LOG(severity)
-
-#define LogInfo(info) LOG(INFO) << info
+#define eToolsInfo(info) LOG(INFO) << info
 #define LogWarning(warning) LOG(WARNING) << warning
 #define LogError(error) LOG(ERROR) << error
 void InitGoogleLog(const char *argv0);
 
+//--------------------------------------------------------------------------------------------------
+// Common interface
 std::string currentDateTimeString(const std::string &format = "%Y-%m-%d %H:%M:%S",
                                   bool showMs = false);
 
+//--------------------------------------------------------------------------------------------------
+// Text format
 enum class TextFormat { Bin, Oct, Dec, Hex, Ascii, Utf8, Unknown = -1 };
 std::vector<wxString> GetSuportedTextFormats();
 wxString GetTextFormatName(TextFormat format);
@@ -31,6 +36,8 @@ std::string GetOctString(uint8_t value);
 std::string GetDecString(uint8_t value);
 std::string GetHexString(uint8_t value);
 
+//--------------------------------------------------------------------------------------------------
+// Text format
 enum class CommunicationType {
     SerialPort,
     UDPClient,

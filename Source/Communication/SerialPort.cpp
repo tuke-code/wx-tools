@@ -8,7 +8,7 @@
  **************************************************************************************************/
 #include "SerialPort.h"
 
-#include <Common/Log.h>
+#include <Common/eTools.h>
 
 SerialPort::SerialPort()
     : Communication()
@@ -33,7 +33,7 @@ void SerialPort::SetBaudRate(int baudRate)
         } catch (asio::system_error &e) {
             std::string errorString = e.what();
             errorString = "Set baud rate failed, error message: " + errorString;
-            LogInfo(errorString);
+            eToolsInfo(errorString);
         }
     }
 }
@@ -46,7 +46,7 @@ void SerialPort::SetFlowControl(asio::serial_port::flow_control::type flowContro
         } catch (asio::system_error &e) {
             std::string errorString = e.what();
             errorString = "Set flow control failed, error message: " + errorString;
-            LogInfo(errorString);
+            eToolsInfo(errorString);
         }
     }
 }
@@ -59,7 +59,7 @@ void SerialPort::SetParity(asio::serial_port::parity::type parity)
         } catch (asio::system_error &e) {
             std::string errorString = e.what();
             errorString = "Set parity failed, error message: " + errorString;
-            LogInfo(errorString);
+            eToolsInfo(errorString);
         }
     }
 }
@@ -72,7 +72,7 @@ void SerialPort::SetStopBits(asio::serial_port::stop_bits::type stopBits)
         } catch (asio::system_error &e) {
             std::string errorString = e.what();
             errorString = "Set stop bits failed, error message: " + errorString;
-            LogInfo(errorString);
+            eToolsInfo(errorString);
         }
     }
 }
@@ -85,7 +85,7 @@ void SerialPort::SetCharacterSize(asio::serial_port::character_size dataBits)
         } catch (asio::system_error &e) {
             std::string errorString = e.what();
             errorString = "Set character size failed, error message: " + errorString;
-            LogInfo(errorString);
+            eToolsInfo(errorString);
         }
     }
 }
@@ -104,7 +104,7 @@ void ReadData(asio::serial_port *asioSerialPort, SerialPort *serialPort)
         } catch (asio::system_error &e) {
             std::string errorString = e.what();
             wxString msg = wxString::Format("Read data failed, error message: %s", errorString);
-            LogInfo(msg);
+            eToolsInfo(msg);
             break;
         }
 
@@ -133,7 +133,7 @@ bool SerialPort::Open()
 
         std::string errorString = e.what();
         errorString = "Open serial port failed, error message: " + errorString;
-        LogInfo(errorString);
+        eToolsInfo(errorString);
         return false;
     }
 

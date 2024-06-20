@@ -8,7 +8,7 @@
  **************************************************************************************************/
 #include "Application.h"
 
-#include "Common/Log.h"
+#include "Common/eTools.h"
 #include "MainWindow.h"
 
 bool Application::OnInit()
@@ -19,7 +19,7 @@ bool Application::OnInit()
 #if 0
     InitGoogleLog("eTools");
 #endif
-    LogInfo("Application::OnInit()");
+    eToolsInfo("Application::OnInit()");
 
     auto* mainWindow = new MainWindow();
     mainWindow->Show(true);

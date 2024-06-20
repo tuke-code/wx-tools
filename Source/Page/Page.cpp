@@ -10,11 +10,11 @@
 
 #include <wx/gbsizer.h>
 
-#include "Common/Interface.h"
-#include "Common/Log.h"
+#include "Common/eTools.h"
 #include "Communication/Communication.h"
 #include "Communication/CommunicationController.h"
 #include "CommunicationControlBox.h"
+
 #include "ControlBoxes.h"
 #include "IOPanel.h"
 #include "InputBox.h"
@@ -81,12 +81,12 @@ void Page::OnInvokeOpen()
         communicationController->Close();
         communicationController->Enable();
         communicationControlBox->SetOpenButtonLabel(wxT("Open"));
-        LogInfo("Close communication successfully.");
+        eToolsInfo("Close communication successfully.");
     } else {
         if (communicationController->Open()) {
             communicationController->Disable();
             communicationControlBox->SetOpenButtonLabel(wxT("Close"));
-            LogInfo("Open communication successfully.");
+            eToolsInfo("Open communication successfully.");
 
             Communication *communication = communicationController->GetCommunication();
             communication->GetBytesReadSignal().connect(&Page::OnBytesRead, this);
