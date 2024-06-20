@@ -20,7 +20,7 @@ std::string LogPath()
     return "log";
 }
 
-void eToolsInitLogging(const char *argv0)
+void DoInitLogging(const char *argv0)
 {
     const std::chrono::minutes keep{7 * 24 * 60};
 
@@ -40,6 +40,11 @@ void eToolsInitLogging(const char *argv0)
     fLB::FLAGS_alsologtostderr = true;
 #endif
     google::InitGoogleLogging(argv0);
+}
+
+void DoShutdownLogging()
+{
+    google::ShutdownGoogleLogging();
 }
 
 std::string GetDateTimeString(const std::string &format, bool showMs)

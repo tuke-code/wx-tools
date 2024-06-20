@@ -18,8 +18,8 @@
 #define eToolsInfo() LOG(INFO)
 #define eToolsWarning() LOG(WARNING)
 #define eToolError() LOG(ERROR)
-void eToolsInitLogging(const char *argv0);
-void eToolsShutdownLogging();
+void DoInitLogging(const char *argv0);
+void DoShutdownLogging();
 
 //--------------------------------------------------------------------------------------------------
 // asio
