@@ -9,9 +9,16 @@
 #pragma once
 
 #include <wx/popupwin.h>
+#include <wx/spinctrl.h>
+#include <wx/wx.h>
 
-class CommunicationPopup : public wxPopupWindow
+class CommunicationPopup : public wxPopupTransientWindow
 {
 public:
     CommunicationPopup(wxWindow *parent, int flags = wxBORDER_NONE);
+
+private:
+    wxSpinCtrl *m_txMask;
+    wxCheckBox *m_enableTxMask;
+    wxButton *m_refresh;
 };
