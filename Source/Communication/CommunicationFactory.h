@@ -8,7 +8,7 @@
  **************************************************************************************************/
 #pragma once
 
-#include "Common/DataStructure.h"
+#include "Common/eTools.h"
 
 class Communication;
 class CommunicationFactory

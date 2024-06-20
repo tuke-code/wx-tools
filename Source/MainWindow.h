@@ -11,7 +11,7 @@
 #include <map>
 #include <wx/wx.h>
 
-#include "Common/DataStructure.h"
+#include "Common/eTools.h"
 
 class Page;
 class MainWindow : public wxFrame
@@ -33,6 +33,7 @@ private:
     void OnExit(wxCommandEvent& event);
     void OnAbout(wxCommandEvent& event);
     void OnClose(wxCloseEvent& event);
+    void OnTimer(wxTimerEvent& event);
 
     void LoadParameters();
     void SaveParameters();
@@ -40,4 +41,5 @@ private:
 private:
     std::map<CommunicationType, Page*> m_pageMap;
     wxStatusBar* m_statusBar;
+    wxTimer m_updateTimeTimer;
 };

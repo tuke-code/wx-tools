@@ -10,7 +10,7 @@
 
 #include <wx/wx.h>
 
-#include "Common/DataStructure.h"
+#include "Common/eTools.h"
 
 class CommunicationController;
 class CommunicationControllerFactory

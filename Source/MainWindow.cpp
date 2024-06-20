@@ -9,7 +9,6 @@
 #include "MainWindow.h"
 
 #include <fstream>
-#include <iostream>
 
 #include <wx/filename.h>
 #include <wx/notebook.h>
@@ -42,7 +41,8 @@ MainWindow::MainWindow()
     SetSize(wxSize(1024, 600));
     Centre();
 
-    Bind(wxEVT_CLOSE_WINDOW, &MainWindow::OnClose, this);
+    Bind(wxEVT_CLOSE_WINDOW, &MainWindow::OnClose, this, GetId());
+    Bind(wxEVT_TIMER, &MainWindow::OnTimer, this, m_updateTimeTimer.GetId());
 }
 
 void MainWindow::OnExit(wxCommandEvent& event)
@@ -60,8 +60,15 @@ void MainWindow::OnAbout(wxCommandEvent& event)
 
 void MainWindow::OnClose(wxCloseEvent& event)
 {
+    m_updateTimeTimer.Stop();
+
     SaveParameters();
     Destroy();
+}
+
+void MainWindow::OnTimer(wxTimerEvent& event)
+{
+    m_statusBar->SetStatusText(wxDateTime::Now().FormatTime(), 1);
 }
 
 void MainWindow::Init()
@@ -106,12 +113,10 @@ void MainWindow::InitMenuHelp(wxMenuBar* menuBar)
 void MainWindow::InitStatusBar()
 {
     m_statusBar = CreateStatusBar(2);
-    int widths[] = {-1, 100};
+    int widths[] = {-1, 60};
     SetStatusWidths(2, widths);
 
-    wxTimer* timer = new wxTimer(this);
-    timer->Bind(wxEVT_TIMER, [this](wxTimerEvent& event) { m_statusBar->SetStatusText("123", 1); });
-    timer->Start(1000);
+    m_updateTimeTimer.Start(1000);
 }
 
 void MainWindow::OnHello(wxCommandEvent& event)
@@ -138,7 +143,8 @@ void MainWindow::LoadParameters()
         std::ifstream file(name.ToStdString());
         nlohmann::json json = nlohmann::json::parse(file);
 
-        std::cout << name.ToStdString() << json << std::endl;
+        eToolsLog(INFO) << wxString::Format("[%s]", name) << json;
+
         if (it->first == CommunicationType::SerialPort) {
             page->LoadParameters(json);
         }

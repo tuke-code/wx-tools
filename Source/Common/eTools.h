@@ -9,12 +9,27 @@
 #pragma once
 
 #include <asio/buffer.hpp>
+#include <glog/logging.h>
 #include <wx/wx.h>
+
+#define eToolsLog(severity) LOG(severity)
+
+#define LogInfo(info) LOG(INFO) << info
+#define LogWarning(warning) LOG(WARNING) << warning
+#define LogError(error) LOG(ERROR) << error
+void InitGoogleLog(const char *argv0);
+
+std::string currentDateTimeString(const std::string &format = "%Y-%m-%d %H:%M:%S",
+                                  bool showMs = false);
 
 enum class TextFormat { Bin, Oct, Dec, Hex, Ascii, Utf8, Unknown = -1 };
 std::vector<wxString> GetSuportedTextFormats();
 wxString GetTextFormatName(TextFormat format);
 std::string DoFormatText(asio::const_buffer &buffer, TextFormat format);
+std::string GetBinString(uint8_t value);
+std::string GetOctString(uint8_t value);
+std::string GetDecString(uint8_t value);
+std::string GetHexString(uint8_t value);
 
 enum class CommunicationType {
     SerialPort,
