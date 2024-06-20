@@ -27,6 +27,7 @@ private:
     void InitMenu();
     void InitMenuFile(wxMenuBar* menuBar);
     void InitMenuHelp(wxMenuBar* menuBar);
+    void InitStatusBar();
 
     void OnHello(wxCommandEvent& event);
     void OnExit(wxCommandEvent& event);
@@ -38,4 +39,5 @@ private:
 
 private:
     std::map<CommunicationType, Page*> m_pageMap;
+    wxStatusBar* m_statusBar;
 };

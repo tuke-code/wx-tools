@@ -9,6 +9,9 @@
 #include "MainWindow.h"
 
 #include <fstream>
+#include <iostream>
+
+#include <wx/filename.h>
 #include <wx/notebook.h>
 
 #include "Common/Log.h"
@@ -16,6 +19,7 @@
 
 MainWindow::MainWindow()
     : wxFrame(nullptr, wxID_ANY, "eTools")
+    , m_statusBar(nullptr)
 {
     Init();
 
@@ -35,9 +39,7 @@ MainWindow::MainWindow()
     sizer->Add(notebook, 1, wxEXPAND | wxALL, 0);
     SetSizerAndFit(sizer);
 
-    wxFrame::CreateStatusBar();
-    wxFrame::SetStatusText("Welcome to wxWidgets!");
-    wxFrame::SetSize(wxSize(1024, 600));
+    SetSize(wxSize(1024, 600));
     Centre();
 
     Bind(wxEVT_CLOSE_WINDOW, &MainWindow::OnClose, this);
@@ -65,6 +67,7 @@ void MainWindow::OnClose(wxCloseEvent& event)
 void MainWindow::Init()
 {
     InitMenu();
+    InitStatusBar();
 }
 
 void MainWindow::InitMenu()
@@ -100,6 +103,17 @@ void MainWindow::InitMenuHelp(wxMenuBar* menuBar)
     Bind(wxEVT_MENU, &MainWindow::OnAbout, this, wxID_ABOUT);
 }
 
+void MainWindow::InitStatusBar()
+{
+    m_statusBar = CreateStatusBar(2);
+    int widths[] = {-1, 100};
+    SetStatusWidths(2, widths);
+
+    wxTimer* timer = new wxTimer(this);
+    timer->Bind(wxEVT_TIMER, [this](wxTimerEvent& event) { m_statusBar->SetStatusText("123", 1); });
+    timer->Start(1000);
+}
+
 void MainWindow::OnHello(wxCommandEvent& event)
 {
     wxLogMessage("Hello world from wxWidgets!");
@@ -117,6 +131,10 @@ void MainWindow::LoadParameters()
     for (auto it = m_pageMap.begin(); it != m_pageMap.end(); ++it) {
         auto* page = it->second;
         wxString name = GetPageParameterFileName(it->first);
+        if (!wxFileName::Exists(name)) {
+            continue;
+        }
+
         std::ifstream file(name.ToStdString());
         nlohmann::json json = nlohmann::json::parse(file);
 
