@@ -27,7 +27,7 @@ CommunicationControlBox::CommunicationControlBox(CommunicationType type, wxWindo
     AddSpacer(4);
 
     auto settingsButton = new wxButton(GetStaticBox(), wxID_ANY, wxT("Settings"));
-    m_popup = new CommunicationPopup(parent, wxBORDER_SIMPLE);
+    m_popup = new CommunicationPopup(parent, wxBORDER_THEME);
     settingsButton->Bind(wxEVT_BUTTON, [this, settingsButton](wxCommandEvent &event) {
         int height = settingsButton->GetSize().GetHeight();
         m_popup->SetPosition(settingsButton->ClientToScreen(wxPoint(0, height)));

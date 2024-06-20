@@ -17,10 +17,12 @@ CommunicationPopup::CommunicationPopup(wxWindow *parent, int flags)
     , m_txMask(nullptr)
     , m_refresh(nullptr)
 {
-    m_enableTxMask = new wxCheckBox(this, wxID_ANY, wxT("Enable Tx Mask"));
-    auto rxText = new wxStaticText(this, wxID_ANY, wxT("Rx Mask:"));
-    m_txMask = new wxSpinCtrl(this, wxID_ANY);
-    m_refresh = new wxButton(this, wxID_ANY, wxT("Refresh"));
+    wxPanel *panel = new wxPanel(this);
+    m_enableTxMask = new wxCheckBox(panel, wxID_ANY, wxT("Enable Tx Mask"));
+    auto rxText = new wxStaticText(panel, wxID_ANY, wxT("Rx Mask:"));
+    m_txMask = new wxSpinCtrl(panel, wxID_ANY);
+    m_txMask->SetRange(0, 255);
+    m_refresh = new wxButton(panel, wxID_ANY, wxT("Refresh"));
 
     wxGridBagSizer *sizer = new wxGridBagSizer(4, 4);
     sizer->Add(m_enableTxMask, wxGBPosition(0, 0), wxGBSpan(1, 2), wxEXPAND | wxALL, 0);
@@ -28,7 +30,11 @@ CommunicationPopup::CommunicationPopup(wxWindow *parent, int flags)
     sizer->Add(m_txMask, wxGBPosition(1, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
     sizer->Add(m_refresh, wxGBPosition(2, 0), wxGBSpan(1, 2), wxEXPAND | wxALL, 0);
     sizer->AddGrowableCol(1);
-    SetSizerAndFit(sizer);
+    panel->SetSizerAndFit(sizer);
 
-    m_txMask->SetRange(0, 255);
+    int padding = 8;
+    wxBoxSizer *panelSizer = new wxBoxSizer(wxVERTICAL);
+    panelSizer->Add(panel, 1, wxEXPAND | wxALL, padding);
+    panel->SetMinSize(wxSize(152, -1));
+    SetSizerAndFit(panelSizer);
 }
