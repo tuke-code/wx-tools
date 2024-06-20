@@ -81,12 +81,12 @@ void Page::OnInvokeOpen()
         communicationController->Close();
         communicationController->Enable();
         communicationControlBox->SetOpenButtonLabel(wxT("Open"));
-        eToolsInfo("Close communication successfully.");
+        eToolsInfo() << "Close communication successfully.";
     } else {
         if (communicationController->Open()) {
             communicationController->Disable();
             communicationControlBox->SetOpenButtonLabel(wxT("Close"));
-            eToolsInfo("Open communication successfully.");
+            eToolsInfo() << "Open communication successfully.";
 
             Communication *communication = communicationController->GetCommunication();
             communication->GetBytesReadSignal().connect(&Page::OnBytesRead, this);
@@ -163,18 +163,18 @@ std::string dateTimeString(bool showDate, bool showTime, bool showMs)
     std::string text;
     if (showDate) {
         if (showTime) {
-            text = currentDateTimeString("%Y-%m-%d %H:%M:%S", showMs) + " " + text;
+            text = GetDateTimeString("%Y-%m-%d %H:%M:%S", showMs) + " " + text;
         } else {
             if (showMs) {
-                text = currentDateTimeString("%Y-%m-%d", showMs) + " " + text;
+                text = GetDateTimeString("%Y-%m-%d", showMs) + " " + text;
             }
         }
     } else {
         if (showTime) {
-            text = currentDateTimeString("%H:%M:%S", showMs) + " " + text;
+            text = GetDateTimeString("%H:%M:%S", showMs) + " " + text;
         } else {
             if (showMs) {
-                text = currentDateTimeString("%H:%M:%S", showMs) + " " + text;
+                text = GetDateTimeString("%H:%M:%S", showMs) + " " + text;
             }
         }
     }
@@ -209,7 +209,7 @@ void Page::OutputText(asio::const_buffer &bytes, const wxString &fromTo, bool is
     bool showRx = outputControlBox->GetShowRx();
     bool showTx = outputControlBox->GetShowTx();
     bool showFlag = outputControlBox->GetShowFlag();
-    std::string text = DoFormatText(bytes, outputFormat);
+    std::string text = DoDecodeText(bytes, outputFormat);
     std::string dateTimeString = ::dateTimeString(showDate, showTime, showMs);
     std::string flagString = ::flagString(isRx, fromTo.ToStdString(), showFlag);
 

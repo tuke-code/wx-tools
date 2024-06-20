@@ -15,22 +15,27 @@
 //--------------------------------------------------------------------------------------------------
 // Google Log
 #define eToolsLog(severity) LOG(severity)
-#define eToolsInfo(info) LOG(INFO) << info
-#define LogWarning(warning) LOG(WARNING) << warning
-#define LogError(error) LOG(ERROR) << error
-void InitGoogleLog(const char *argv0);
+#define eToolsInfo() LOG(INFO)
+#define eToolsWarning() LOG(WARNING)
+#define eToolError() LOG(ERROR)
+void eToolsInitLogging(const char *argv0);
+void eToolsShutdownLogging();
+
+//--------------------------------------------------------------------------------------------------
+// asio
+#define eToolsConstBuffer asio::const_buffer
 
 //--------------------------------------------------------------------------------------------------
 // Common interface
-std::string currentDateTimeString(const std::string &format = "%Y-%m-%d %H:%M:%S",
-                                  bool showMs = false);
+std::string GetDateTimeString(const std::string &format = "%Y-%m-%d %H:%M:%S", bool showMs = false);
 
 //--------------------------------------------------------------------------------------------------
 // Text format
 enum class TextFormat { Bin, Oct, Dec, Hex, Ascii, Utf8, Unknown = -1 };
 std::vector<wxString> GetSuportedTextFormats();
 wxString GetTextFormatName(TextFormat format);
-std::string DoFormatText(asio::const_buffer &buffer, TextFormat format);
+std::string DoDecodeText(eToolsConstBuffer &buffer, TextFormat format);
+eToolsConstBuffer DoEncodeText(const std::string &text, TextFormat format);
 std::string GetBinString(uint8_t value);
 std::string GetOctString(uint8_t value);
 std::string GetDecString(uint8_t value);

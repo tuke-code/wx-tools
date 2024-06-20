@@ -9,8 +9,6 @@
 #include "eTools.h"
 
 #include <chrono>
-#include <iomanip>
-#include <iostream>
 #include <map>
 #include <sstream>
 #include <string>
@@ -22,7 +20,7 @@ std::string LogPath()
     return "log";
 }
 
-void InitGoogleLog(const char *argv0)
+void eToolsInitLogging(const char *argv0)
 {
     const std::chrono::minutes keep{7 * 24 * 60};
 
@@ -44,7 +42,7 @@ void InitGoogleLog(const char *argv0)
     google::InitGoogleLogging(argv0);
 }
 
-std::string currentDateTimeString(const std::string &format, bool showMs)
+std::string GetDateTimeString(const std::string &format, bool showMs)
 {
     auto now = std::chrono::system_clock::now();
     auto nowTime = std::chrono::system_clock::to_time_t(now);
@@ -110,28 +108,38 @@ std::string GetString(TextFormat format, uint8_t value)
     return GetHexString(value);
 }
 
-std::string DoFormatText(asio::const_buffer &buffer, TextFormat format)
+std::string DoDecodeText(asio::const_buffer &buffer, TextFormat format)
 {
     const auto *dataPtr = static_cast<const char *>(buffer.data());
     size_t size = buffer.size();
-    std::ostringstream stringStream;
-    switch (format) {
-    case TextFormat::Bin:
-    case TextFormat::Oct:
-    case TextFormat::Dec:
-    case TextFormat::Hex:
+
+    auto getString = [](const char *data, size_t size, TextFormat format) -> std::string {
+        std::ostringstream stringStream;
         for (std::size_t i = 0; i < size; ++i) {
-            stringStream << GetString(format, dataPtr[i]);
+            stringStream << GetString(format, data[i]);
             if (i < size - 1) {
                 stringStream << " ";
             }
         }
         return stringStream.str();
+    };
+
+    switch (format) {
+    case TextFormat::Bin:
+    case TextFormat::Oct:
+    case TextFormat::Dec:
+    case TextFormat::Hex:
+        return getString(dataPtr, size, format);
     case TextFormat::Ascii:
         return wxString::FromAscii(dataPtr, size).ToStdString();
     default:
         return wxString::FromUTF8(dataPtr, size).ToStdString();
     }
+}
+
+asio::const_buffer DoEncodeText(const std::string &text, TextFormat format)
+{
+    return asio::buffer(text.data(), text.size());
 }
 
 std::string GetBinString(uint8_t value)

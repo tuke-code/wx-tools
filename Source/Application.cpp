@@ -19,7 +19,7 @@ bool Application::OnInit()
 #if 0
     InitGoogleLog("eTools");
 #endif
-    eToolsInfo("Application::OnInit()");
+    eToolsInfo() << "Application::OnInit()";
 
     auto* mainWindow = new MainWindow();
     mainWindow->Show(true);

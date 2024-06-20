@@ -110,7 +110,7 @@ void SerialPortController::AboutToOpen(Communication *communication)
                                  static_cast<int>(stopBits),
                                  static_cast<int>(parity),
                                  static_cast<int>(flowControl));
-    LogInfo(info.ToStdString());
+    eToolsInfo() << info;
 
     serialPort->SetBaudRate(baudRate);
     serialPort->SetCharacterSize(dataBits);
