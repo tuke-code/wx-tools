@@ -17,6 +17,7 @@ set(wxBUILD_USE_STATIC_RUNTIME
 include(CMake/json.cmake)
 include(CMake/asio.cmake)
 include(CMake/glog.cmake)
+# include(CMake/libcrc.cmake)
 include(CMake/sigslot.cmake)
 include(CMake/wxWidgets.cmake)
 include(CMake/websocketpp.cmake)
@@ -31,7 +32,12 @@ option(_WIN32_WINNT "Windows Version" 0x0501)
 file(GLOB_RECURSE E_TOOLS_SOURCE Source/*.*)
 list(APPEND E_TOOLS_SOURCE eTools.rc)
 add_executable(eTools ${E_TOOLS_SOURCE})
-target_link_libraries(eTools PRIVATE libcserialport nlohmann_json glog::glog wx::core wx::aui)
+
+set(PROJECT_LIBS libcserialport)
+list(APPEND PROJECT_LIBS glog::glog)
+list(APPEND PROJECT_LIBS nlohmann_json)
+list(APPEND PROJECT_LIBS wx::core wx::aui)
+target_link_libraries(eTools PRIVATE ${PROJECT_LIBS})
 set_target_properties(
   eTools
   PROPERTIES ${BUNDLE_ID_OPTION} MACOSX_BUNDLE_BUNDLE_VERSION
