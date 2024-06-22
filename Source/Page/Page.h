@@ -48,8 +48,8 @@ private:
     void OnInvokeOpen();
     void OnInvokeWrite(TextFormat format);
     void OnInvokeStartTimer(int ms);
-    void OnBytesRead(etoolsconstbuffer &bytes, const wxString &from);
-    void OnBytesWritten(etoolsconstbuffer &bytes, const wxString &to);
+    void OnBytesRead(eToolsConstBuffer &bytes, const wxString &from);
+    void OnBytesWritten(eToolsConstBuffer &bytes, const wxString &to);
     void OnSendTimerTimeout();
     void OnClear();
 
