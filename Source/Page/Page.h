@@ -48,10 +48,10 @@ private:
     void OnInvokeOpen();
     void OnInvokeWrite(TextFormat format);
     void OnInvokeStartTimer(int ms);
-    void OnBytesRead(asio::const_buffer &bytes, const wxString &from);
-    void OnBytesWritten(asio::const_buffer &bytes, const wxString &to);
+    void OnBytesRead(etoolsconstbuffer &bytes, const wxString &from);
+    void OnBytesWritten(etoolsconstbuffer &bytes, const wxString &to);
     void OnSendTimerTimeout();
     void OnClear();
 
-    void OutputText(asio::const_buffer &bytes, const wxString &fromTo, bool isRx);
+    void OutputText(eToolsConstBuffer &bytes, const wxString &fromTo, bool isRx);
 };

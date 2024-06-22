@@ -133,12 +133,12 @@ void Page::OnInvokeStartTimer(int ms)
     m_sendTimer.Start(ms);
 }
 
-void Page::OnBytesRead(asio::const_buffer &bytes, const wxString &from)
+void Page::OnBytesRead(etoolsconstbuffer &bytes, const wxString &from)
 {
     OutputText(bytes, from, true);
 }
 
-void Page::OnBytesWritten(asio::const_buffer &bytes, const wxString &to)
+void Page::OnBytesWritten(etoolsconstbuffer &bytes, const wxString &to)
 {
     OutputText(bytes, to, false);
 }
@@ -199,7 +199,7 @@ std::string flagString(bool isRx, const std::string &fromTo, bool showFlag)
     return stringStream.str();
 }
 
-void Page::OutputText(asio::const_buffer &bytes, const wxString &fromTo, bool isRx)
+void Page::OutputText(etoolsconstbuffer &bytes, const wxString &fromTo, bool isRx)
 {
     OutputControlBox *outputControlBox = m_controlBoxes->GetOutputControlBox();
     TextFormat outputFormat = outputControlBox->GetTextFormat();
