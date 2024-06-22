@@ -13,20 +13,20 @@
 #include <wx/spinctrl.h>
 #include <wx/statline.h>
 
-#include "Unit/AdditionBoxSizer.h"
+#include "Unit/AdditionComboBox.h"
 #include "Unit/CRCTypeComboBox.h"
-#include "Unit/ESCBoxSizer.h"
+#include "Unit/ESCComboBox.h"
 
 InputPopup::InputPopup(wxButton *controlButton)
     : Popup(controlButton, false)
 {
     auto panel = new wxPanel(this);
     auto prefixLabel = new wxStaticText(panel, wxID_ANY, wxT("Prefix"));
-    auto prefixComboBox = new AdditionBoxSizer(panel);
+    auto prefixComboBox = new AdditionComboBox(panel);
     auto suffixLabel = new wxStaticText(panel, wxID_ANY, wxT("Suffix"));
-    auto suffixComboBox = new AdditionBoxSizer(panel);
+    auto suffixComboBox = new AdditionComboBox(panel);
     auto escLabel = new wxStaticText(panel, wxID_ANY, wxT("ESC"));
-    auto escComboBox = new ESCBoxSizer(panel);
+    auto escComboBox = new ESCComboBox(panel);
 
     auto startIndexLabel = new wxStaticText(panel, wxID_ANY, wxT("Start Index"));
     auto startIndexSpinCtrl = new wxSpinCtrl(panel, wxID_ANY);
