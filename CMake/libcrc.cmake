@@ -8,6 +8,12 @@ if(NOT EXISTS ${CMAKE_SOURCE_DIR}/ThirdParty/${packet_name})
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/ThirdParty)
 endif()
 
+if(NOT EXISTS ${CMAKE_SOURCE_DIR}/ThirdParty/${packet_name}/tab/gentab64.inc)
+  execute_process(
+    COMMAND ${CMAKE_COMMAND} -E copy_directory_if_different ${CMAKE_SOURCE_DIR}/ThirdParty/libcrc
+            ${CMAKE_SOURCE_DIR}/ThirdParty/${packet_name}/tab)
+endif()
+
 file(GLOB LIBCRC_H ${CMAKE_SOURCE_DIR}/ThirdParty/${packet_name}/include/*.*)
 file(GLOB LIBCRC_C ${CMAKE_SOURCE_DIR}/ThirdParty/${packet_name}/src/*.*)
 

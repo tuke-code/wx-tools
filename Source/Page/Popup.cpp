@@ -20,7 +20,7 @@ Popup::Popup(wxButton *controlButton, bool showOnBottom)
 
 bool Popup::ProcessLeftDown(wxMouseEvent &event)
 {
-    wxPopupTransientWindow::ProcessLeftDown(event);
+    return wxPopupTransientWindow::ProcessLeftDown(event);
 }
 
 void Popup::OnControlButtonClicked(wxMouseEvent &event)
