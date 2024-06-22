@@ -41,6 +41,25 @@ void DoShutdownLogging();
 #define eToolsConstBuffer asio::const_buffer
 
 //--------------------------------------------------------------------------------------------------
+// libcrc
+enum class CrcType {
+    CRC_8,
+    CRC_16,
+    CRC_MODBUS,
+    CRC_XMODEM,
+    CRC_CCITT_1D0F,
+    CRC_CCITT_FFFF,
+    CRC_KERMIT,
+    CRC_SICK,
+    CRC_DNP,
+    CRC_32,
+    CRC_64_ECMA,
+    CRC_64_WE,
+};
+std::vector<CrcType> GetSuportedCrcTypes();
+wxString GetCrcName(CrcType type);
+
+//--------------------------------------------------------------------------------------------------
 // Common interface
 std::string GetDateTimeString(const std::string &format = "%Y-%m-%d %H:%M:%S", bool showMs = false);
 

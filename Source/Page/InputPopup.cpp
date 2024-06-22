@@ -14,8 +14,8 @@
 #include <wx/statline.h>
 
 #include "Unit/AdditionComboBox.h"
+#include "Unit/CRCTypeComboBox.h"
 #include "Unit/ESCComboBox.h"
-#include "Unit/TextFormatComboBox.h"
 
 InputPopup::InputPopup(wxButton *controlButton)
     : Popup(controlButton, false)
@@ -33,7 +33,7 @@ InputPopup::InputPopup(wxButton *controlButton)
     auto endIndexLabel = new wxStaticText(panel, wxID_ANY, wxT("End Index"));
     auto endIndexSpinCtrl = new wxSpinCtrl(panel, wxID_ANY);
     auto algorithmLabel = new wxStaticText(panel, wxID_ANY, wxT("Algorithm"));
-    auto algorithmComboBox = new TextFormatComboBox(panel);
+    auto algorithmComboBox = new CRCTypeComboBox(panel);
     auto addCrcCheckBox = new wxCheckBox(panel, wxID_ANY, wxT("Add CRC"));
     auto bigEndianCheckBox = new wxCheckBox(panel, wxID_ANY, wxT("Big Endian"));
 
