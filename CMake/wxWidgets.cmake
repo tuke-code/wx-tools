@@ -11,6 +11,11 @@ endif()
 add_subdirectory(${CMAKE_SOURCE_DIR}/ThirdParty/${packet_name})
 include_directories(${CMAKE_SOURCE_DIR}/ThirdParty/${packet_name}/include)
 
-set(include_temp ${CMAKE_BINARY_DIR}/ThirdParty/${packet_name}/lib/vc_lib/mswu)
+if(WIN32)
+  set(include_temp ${CMAKE_BINARY_DIR}/ThirdParty/${packet_name}/lib/vc_lib/mswu)
+else()
+
+endif()
+
 message(STATUS "include_temp:${include_temp}")
 include_directories(${include_temp})
