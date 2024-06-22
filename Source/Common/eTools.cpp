@@ -326,3 +326,68 @@ wxString GetCommunicationName(CommunicationType type)
         return typeMap[type];
     }
 }
+
+std::vector<AdditionType> GetSuportedAdditionTypes()
+{
+    static std::vector<AdditionType> types;
+    if (types.empty()) {
+        types.push_back(AdditionType::R);
+        types.push_back(AdditionType::RN);
+        types.push_back(AdditionType::N);
+        types.push_back(AdditionType::NR);
+    }
+
+    return types;
+}
+
+wxString GetAdditionName(AdditionType type)
+{
+    static std::map<AdditionType, wxString> typeMap;
+    if (typeMap.empty()) {
+        typeMap[AdditionType::R] = "//r";
+        typeMap[AdditionType::RN] = "//r//n";
+        typeMap[AdditionType::N] = "//n";
+        typeMap[AdditionType::NR] = "//n//r";
+        typeMap[AdditionType::None] = eToolsNoneStr;
+    }
+
+    if (typeMap.find(type) == typeMap.end()) {
+        return typeMap[AdditionType::None];
+    } else {
+        return typeMap[type];
+    }
+}
+
+std::vector<EscapeType> GetSuportedEscapeTypes()
+{
+    static std::vector<EscapeType> types;
+    if (types.empty()) {
+        types.push_back(EscapeType::None);
+        types.push_back(EscapeType::R);
+        types.push_back(EscapeType::RN);
+        types.push_back(EscapeType::N);
+        types.push_back(EscapeType::NR);
+        types.push_back(EscapeType::R_N);
+    }
+
+    return types;
+}
+
+wxString GetEscapeName(EscapeType type)
+{
+    static std::map<EscapeType, wxString> typeMap;
+    if (typeMap.empty()) {
+        typeMap[EscapeType::R] = "//r";
+        typeMap[EscapeType::RN] = "//r//n";
+        typeMap[EscapeType::N] = "//n";
+        typeMap[EscapeType::NR] = "//n//r";
+        typeMap[EscapeType::R_N] = "//r + //n";
+        typeMap[EscapeType::None] = eToolsNoneStr;
+    }
+
+    if (typeMap.find(type) == typeMap.end()) {
+        return typeMap[EscapeType::None];
+    } else {
+        return typeMap[type];
+    }
+}

@@ -13,23 +13,27 @@
 #include <wx/spinctrl.h>
 #include <wx/statline.h>
 
+#include "Unit/AdditionComboBox.h"
+#include "Unit/ESCComboBox.h"
+#include "Unit/TextFormatComboBox.h"
+
 InputPopup::InputPopup(wxButton *controlButton)
     : Popup(controlButton, false)
 {
     auto panel = new wxPanel(this);
     auto prefixLabel = new wxStaticText(panel, wxID_ANY, wxT("Prefix"));
-    auto prefixComboBox = new wxComboBox(panel, wxID_ANY);
+    auto prefixComboBox = new AdditionComboBox(panel);
     auto suffixLabel = new wxStaticText(panel, wxID_ANY, wxT("Suffix"));
-    auto suffixComboBox = new wxComboBox(panel, wxID_ANY);
+    auto suffixComboBox = new AdditionComboBox(panel);
     auto escLabel = new wxStaticText(panel, wxID_ANY, wxT("ESC"));
-    auto escComboBox = new wxComboBox(panel, wxID_ANY);
+    auto escComboBox = new AdditionComboBox(panel);
 
     auto startIndexLabel = new wxStaticText(panel, wxID_ANY, wxT("Start Index"));
     auto startIndexSpinCtrl = new wxSpinCtrl(panel, wxID_ANY);
     auto endIndexLabel = new wxStaticText(panel, wxID_ANY, wxT("End Index"));
     auto endIndexSpinCtrl = new wxSpinCtrl(panel, wxID_ANY);
     auto algorithmLabel = new wxStaticText(panel, wxID_ANY, wxT("Algorithm"));
-    auto algorithmComboBox = new wxComboBox(panel, wxID_ANY);
+    auto algorithmComboBox = new TextFormatComboBox(panel);
     auto addCrcCheckBox = new wxCheckBox(panel, wxID_ANY, wxT("Add CRC"));
     auto bigEndianCheckBox = new wxCheckBox(panel, wxID_ANY, wxT("Big Endian"));
 

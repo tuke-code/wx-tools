@@ -14,6 +14,16 @@
 #include <wx/wx.h>
 
 //--------------------------------------------------------------------------------------------------
+// Common
+#define eToolsNone -1
+#define eToolsOk 0
+#define eToolsUnknown -2
+
+#define eToolsNoneStr wxT("None")
+#define eToolsOkStr wxT("Ok")
+#define eToolsUnknownStr wxT("Unknown")
+
+//--------------------------------------------------------------------------------------------------
 // Google Log
 #define eToolsLog(severity) LOG(severity)
 #define eToolsInfo() LOG(INFO)
@@ -60,3 +70,15 @@ enum class CommunicationType {
 };
 std::vector<CommunicationType> GetSuportedCommunicationTypes();
 wxString GetCommunicationName(CommunicationType type);
+
+//--------------------------------------------------------------------------------------------------
+// Addition
+enum class AdditionType { R, RN, N, NR, None = eToolsNone };
+std::vector<AdditionType> GetSuportedAdditionTypes();
+wxString GetAdditionName(AdditionType type);
+
+//--------------------------------------------------------------------------------------------------
+// Escape character
+enum class EscapeType { R, RN, N, NR, R_N, None = eToolsNone };
+std::vector<EscapeType> GetSuportedEscapeTypes();
+wxString GetEscapeName(EscapeType type);
