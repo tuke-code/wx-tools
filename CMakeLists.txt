@@ -16,8 +16,8 @@ if(WIN32)
       CACHE BOOL "Build static runtime" FORCE)
 endif()
 
-if(WIN32)
-set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+if(WIN32 AND MSVC AND CMAKE_BUILD_TYPE STREQUAL "Release")
+  set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 endif()
 
 include(CMake/json.cmake)
