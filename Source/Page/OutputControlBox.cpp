@@ -10,6 +10,7 @@
 
 #include <wx/gbsizer.h>
 
+#include "OutputPopup.h"
 #include "Unit/TextFormatComboBox.h"
 
 OutputControlBox::OutputControlBox(wxWindow *parent)
@@ -49,6 +50,8 @@ OutputControlBox::OutputControlBox(wxWindow *parent)
     auto buttonsSizer = new wxBoxSizer(wxHORIZONTAL);
     buttonsSizer->Add(settingsButton, 1, wxEXPAND | wxALL, 0);
     buttonsSizer->Add(clearButton, 1, wxEXPAND | wxALL, 0);
+
+    m_popup = new OutputPopup(settingsButton);
 
     auto *sizer = new wxGridBagSizer(4, 4);
     sizer->Add(formatText, wxGBPosition(0, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);

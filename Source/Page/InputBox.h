@@ -19,4 +19,5 @@ public:
 
 private:
     wxTextCtrl *m_textCtrl;
+    const wxString m_boxLabel{"Input"};
 };

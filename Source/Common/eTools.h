@@ -10,6 +10,7 @@
 
 #include <asio/buffer.hpp>
 #include <glog/logging.h>
+#include <sigslot/signal.hpp>
 #include <wx/wx.h>
 
 //--------------------------------------------------------------------------------------------------
@@ -20,6 +21,10 @@
 #define eToolError() LOG(ERROR)
 void DoInitLogging(const char *argv0);
 void DoShutdownLogging();
+
+//--------------------------------------------------------------------------------------------------
+// sigslot
+#define eToolsSignal sigslot::signal
 
 //--------------------------------------------------------------------------------------------------
 // asio

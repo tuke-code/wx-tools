@@ -11,10 +11,13 @@
 #include <wx/gbsizer.h>
 #include <wx/wx.h>
 
+#include "InputPopup.h"
 #include "Unit/TextFormatComboBox.h"
 
 InputControlBox::InputControlBox(wxWindow* parent)
     : wxStaticBoxSizer(wxVERTICAL, parent, wxT("Input Control"))
+    , m_settingsButton(nullptr)
+    , m_sendButton(nullptr)
 {
     auto cycleText = new wxStaticText(GetStaticBox(), wxID_ANY, wxT("Cycle"));
     m_cycleIntervalComboBox = new wxComboBox(GetStaticBox(),
@@ -27,7 +30,7 @@ InputControlBox::InputControlBox(wxWindow* parent)
                                              wxCB_READONLY);
     auto formatText = new wxStaticText(GetStaticBox(), wxID_ANY, wxT("Format"));
     m_formatComboBox = new TextFormatComboBox(GetStaticBox());
-    auto settingsButton = new wxButton(GetStaticBox(), wxID_ANY, wxT("Settings"));
+    m_settingsButton = new wxButton(GetStaticBox(), wxID_ANY, wxT("Settings"));
     m_sendButton = new wxButton(GetStaticBox(), wxID_ANY, wxT("Send"));
 
     auto* sizer = new wxGridBagSizer(4, 4);
@@ -41,7 +44,7 @@ InputControlBox::InputControlBox(wxWindow* parent)
     AddSpacer(4);
 
     auto buttonSizer = new wxBoxSizer(wxHORIZONTAL);
-    buttonSizer->Add(settingsButton, 1, wxEXPAND | wxALL, 0);
+    buttonSizer->Add(m_settingsButton, 1, wxEXPAND | wxALL, 0);
     buttonSizer->Add(m_sendButton, 1, wxEXPAND | wxALL, 0);
     Add(buttonSizer, 0, wxEXPAND | wxALL, 0);
 
@@ -71,6 +74,8 @@ InputControlBox::InputControlBox(wxWindow* parent)
         int value = *static_cast<int*>(m_cycleIntervalComboBox->GetClientData(selection));
         m_invokeStartTimerSignal(value);
     });
+
+    m_popup = new InputPopup(m_settingsButton);
 }
 
 void InputControlBox::SetCycleIntervalComboBoxSelection(int selection)
@@ -87,12 +92,12 @@ TextFormat InputControlBox::GetTextFormat() const
     return m_formatComboBox->GetSelectedFormat();
 }
 
-sigslot::signal<TextFormat>& InputControlBox::GetInvokeWriteSignal()
+eToolsSignal<TextFormat>& InputControlBox::GetInvokeWriteSignal()
 {
     return m_invokeWriteSignal;
 }
 
-sigslot::signal<int>& InputControlBox::GetInvokeStartTimerSignal()
+eToolsSignal<int>& InputControlBox::GetInvokeStartTimerSignal()
 {
     return m_invokeStartTimerSignal;
 }

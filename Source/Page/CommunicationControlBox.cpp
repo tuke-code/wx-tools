@@ -27,16 +27,7 @@ CommunicationControlBox::CommunicationControlBox(CommunicationType type, wxWindo
     AddSpacer(4);
 
     auto settingsButton = new wxButton(GetStaticBox(), wxID_ANY, wxT("Settings"));
-    m_popup = new CommunicationPopup(parent, wxBORDER_THEME);
-    settingsButton->Bind(wxEVT_BUTTON, [this, settingsButton](wxCommandEvent &event) {
-        int height = settingsButton->GetSize().GetHeight();
-        m_popup->SetPosition(settingsButton->ClientToScreen(wxPoint(0, height)));
-        if (m_popup->IsShown()) {
-            m_popup->Hide();
-        } else {
-            m_popup->Show();
-        }
-    });
+    m_popup = new CommunicationPopup(settingsButton);
 
     m_openButton = new wxButton(GetStaticBox(), wxID_ANY, wxT("Open"));
     m_openButton->Bind(wxEVT_BUTTON, &CommunicationControlBox::OnOpen, this);
@@ -52,7 +43,7 @@ CommunicationController *CommunicationControlBox::GetController() const
     return m_controller;
 }
 
-sigslot::signal<> &CommunicationControlBox::GetInvokeOpenSignal()
+eToolsSignal<> &CommunicationControlBox::GetInvokeOpenSignal()
 {
     return m_invokeOpenSignal;
 }

@@ -6,19 +6,20 @@
  * eTools is licensed according to the terms in the file LICENCE(GPL V3) in the root of the source
  * code directory.
  **************************************************************************************************/
-#include "InputBox.h"
+#pragma once
 
-InputBox::InputBox(wxWindow* parent)
-    : wxStaticBoxSizer(wxVERTICAL, parent, m_boxLabel)
-{
-    m_textCtrl = new wxTextCtrl(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize);
-    Add(m_textCtrl, 1, wxEXPAND | wxALL, 0);
-#if 0
-    m_textCtrl->SetHint(wxT("[prefix][input][suffix][crc]"));
-#endif
-}
+#include <wx/popupwin.h>
+#include <wx/wx.h>
 
-wxString InputBox::GetInputText() const
+class Popup : public wxPopupTransientWindow
 {
-    return m_textCtrl->GetValue();
-}
+public:
+    Popup(wxButton *controlButton, bool showOnBottom = true);
+
+private:
+    wxButton *m_controlButton;
+    bool m_showOnBottom;
+
+private:
+    void OnControlButtonClicked(wxCommandEvent &event);
+};

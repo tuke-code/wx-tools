@@ -8,9 +8,12 @@
  **************************************************************************************************/
 #pragma once
 
-#include <wx/popupwin.h>
+#include "Popup.h"
 
-class OutputPopup : public wxPopupWindow
+#include <wx/textctrl.h>
+
+class OutputPopup : public Popup
 {
-    OutputPopup(wxWindow *parent, int flags = wxBORDER_NONE);
+public:
+    OutputPopup(wxButton *controlButton);
 };

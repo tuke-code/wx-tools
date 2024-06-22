@@ -13,6 +13,7 @@
 
 #include "Common/eTools.h"
 
+class OutputPopup;
 class TextFormatComboBox;
 class OutputControlBox : public wxStaticBoxSizer
 {
@@ -37,6 +38,7 @@ private:
     wxCheckBox *m_showRx;
     wxCheckBox *m_showTx;
     wxCheckBox *m_showFlag;
+    OutputPopup *m_popup;
 
     sigslot::signal<> m_clearSignal;
 };

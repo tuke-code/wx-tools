@@ -13,6 +13,7 @@
 
 #include "Common/eTools.h"
 
+class InputPopup;
 class TextFormatComboBox;
 class InputControlBox : public wxStaticBoxSizer
 {
@@ -21,14 +22,16 @@ public:
     void SetCycleIntervalComboBoxSelection(int selection);
     TextFormat GetTextFormat() const;
 
-    sigslot::signal<TextFormat> &GetInvokeWriteSignal();
-    sigslot::signal<int> &GetInvokeStartTimerSignal();
+    eToolsSignal<TextFormat> &GetInvokeWriteSignal();
+    eToolsSignal<int> &GetInvokeStartTimerSignal();
 
 private:
+    wxButton *m_settingsButton;
     wxButton *m_sendButton;
     wxComboBox *m_cycleIntervalComboBox;
     TextFormatComboBox *m_formatComboBox;
+    InputPopup *m_popup;
 
-    sigslot::signal<TextFormat> m_invokeWriteSignal;
-    sigslot::signal<int> m_invokeStartTimerSignal;
+    eToolsSignal<TextFormat> m_invokeWriteSignal;
+    eToolsSignal<int> m_invokeStartTimerSignal;
 };

@@ -11,8 +11,8 @@
 #include <wx/gbsizer.h>
 #include <wx/wx.h>
 
-CommunicationPopup::CommunicationPopup(wxWindow *parent, int flags)
-    : wxPopupTransientWindow(parent, flags)
+CommunicationPopup::CommunicationPopup(wxButton *controlButton)
+    : Popup(controlButton)
     , m_enableTxMask(nullptr)
     , m_txMask(nullptr)
     , m_refresh(nullptr)
