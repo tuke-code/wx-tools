@@ -331,6 +331,7 @@ std::vector<AdditionType> GetSuportedAdditionTypes()
 {
     static std::vector<AdditionType> types;
     if (types.empty()) {
+        types.push_back(AdditionType::None);
         types.push_back(AdditionType::R);
         types.push_back(AdditionType::RN);
         types.push_back(AdditionType::N);
@@ -344,10 +345,10 @@ wxString GetAdditionName(AdditionType type)
 {
     static std::map<AdditionType, wxString> typeMap;
     if (typeMap.empty()) {
-        typeMap[AdditionType::R] = "//r";
-        typeMap[AdditionType::RN] = "//r//n";
-        typeMap[AdditionType::N] = "//n";
-        typeMap[AdditionType::NR] = "//n//r";
+        typeMap[AdditionType::R] = "\\r";
+        typeMap[AdditionType::RN] = "\\r\\n";
+        typeMap[AdditionType::N] = "\\n";
+        typeMap[AdditionType::NR] = "\\n\\r";
         typeMap[AdditionType::None] = eToolsNoneStr;
     }
 
@@ -377,11 +378,11 @@ wxString GetEscapeName(EscapeType type)
 {
     static std::map<EscapeType, wxString> typeMap;
     if (typeMap.empty()) {
-        typeMap[EscapeType::R] = "//r";
-        typeMap[EscapeType::RN] = "//r//n";
-        typeMap[EscapeType::N] = "//n";
-        typeMap[EscapeType::NR] = "//n//r";
-        typeMap[EscapeType::R_N] = "//r + //n";
+        typeMap[EscapeType::R] = "\\r";
+        typeMap[EscapeType::RN] = "\\r\\n";
+        typeMap[EscapeType::N] = "\\n";
+        typeMap[EscapeType::NR] = "\\n\\r";
+        typeMap[EscapeType::R_N] = "\\r + \\n";
         typeMap[EscapeType::None] = eToolsNoneStr;
     }
 
