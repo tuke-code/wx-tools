@@ -23,6 +23,7 @@ InputControlBox::InputControlBox(wxWindow* parent)
     m_cycleIntervalComboBox = InitCycleIntervalComboBox();
     auto formatText = new wxStaticText(GetStaticBox(), wxID_ANY, wxT("Format"));
     m_formatComboBox = new TextFormatComboBox(GetStaticBox());
+    m_formatComboBox->Bind(wxEVT_COMBOBOX, &InputControlBox::OnTextFormat, this);
     m_settingsButton = new wxButton(GetStaticBox(), wxID_ANY, wxT("Settings"));
     m_sendButton = new wxButton(GetStaticBox(), wxID_ANY, wxT("Send"));
     m_popup = new InputPopup(m_settingsButton);
@@ -68,10 +69,21 @@ eToolsSignal<int>& InputControlBox::GetInvokeStartTimerSignal()
     return m_invokeStartTimerSignal;
 }
 
+eToolsSignal<TextFormat>& InputControlBox::GetTextFormatChangedSignal()
+{
+    return m_textFormatChangedSignal;
+}
+
 void InputControlBox::OnSendButtonClicked(wxCommandEvent& event)
 {
     wxUnusedVar(event);
     m_invokeWriteSignal(m_formatComboBox->GetSelectedFormat());
+}
+
+void InputControlBox::OnTextFormat(wxCommandEvent& event)
+{
+    wxUnusedVar(event);
+    m_textFormatChangedSignal(m_formatComboBox->GetSelectedFormat());
 }
 
 wxComboBox* InputControlBox::InitCycleIntervalComboBox()

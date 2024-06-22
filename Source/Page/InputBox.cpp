@@ -8,17 +8,27 @@
  **************************************************************************************************/
 #include "InputBox.h"
 
-InputBox::InputBox(wxWindow* parent)
+#include "Unit/LineEdit.h"
+
+InputBox::InputBox(wxWindow *parent)
     : wxStaticBoxSizer(wxVERTICAL, parent, wxT("Input"))
 {
-    m_textCtrl = new wxTextCtrl(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize);
-    Add(m_textCtrl, 1, wxEXPAND | wxALL, 0);
-#if 0
-    m_textCtrl->SetHint(wxT("[prefix][input][suffix][crc]"));
-#endif
+    m_lineEdit = new LineEdit(parent);
+    Add(m_lineEdit, 1, wxEXPAND | wxALL, 0);
 }
 
 wxString InputBox::GetInputText() const
 {
-    return m_textCtrl->GetValue();
+    return m_lineEdit->GetValue();
+}
+
+void InputBox::SetTextFormat(TextFormat format)
+{
+    m_lineEdit->Clear();
+    m_lineEdit->SetTextFormat(format);
+}
+
+eToolsConstBuffer InputBox::GetInputBuffer() const
+{
+    return m_lineEdit->GetBuffer();
 }

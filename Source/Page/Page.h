@@ -52,6 +52,7 @@ private:
     void OnBytesWritten(eToolsConstBuffer &bytes, const wxString &to);
     void OnSendTimerTimeout();
     void OnClear();
+    void OnTextFormatChanged(TextFormat format);
 
     void OutputText(eToolsConstBuffer &bytes, const wxString &fromTo, bool isRx);
 };

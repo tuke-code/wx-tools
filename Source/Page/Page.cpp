@@ -42,6 +42,7 @@ Page::Page(CommunicationType type, wxWindow *parent)
     m_inputControlBox = m_controlBoxes->GetInputControlBox();
     m_inputControlBox->GetInvokeWriteSignal().connect(&Page::OnInvokeWrite, this);
     m_inputControlBox->GetInvokeStartTimerSignal().connect(&Page::OnInvokeStartTimer, this);
+    m_inputControlBox->GetTextFormatChangedSignal().connect(&Page::OnTextFormatChanged, this);
 
     m_communicationControlBox = m_controlBoxes->GetCommunicationControlBox();
     m_communicationControlBox->GetInvokeOpenSignal().connect(&Page::OnInvokeOpen, this);
@@ -156,6 +157,11 @@ void Page::OnSendTimerTimeout()
 void Page::OnClear()
 {
     m_ioPanel->GetOutputBox()->Clear();
+}
+
+void Page::OnTextFormatChanged(TextFormat format)
+{
+    m_ioPanel->GetInputBox()->SetTextFormat(format);
 }
 
 std::string dateTimeString(bool showDate, bool showTime, bool showMs)

@@ -8,20 +8,28 @@
  **************************************************************************************************/
 #pragma once
 
+#include <wx/textctrl.h>
 #include <wx/wx.h>
 
 #include "Common/eTools.h"
 
-class LineEdit;
-class InputBox : public wxStaticBoxSizer
+class LineEdit : public wxTextCtrl
 {
 public:
-    InputBox(wxWindow *parent);
+    LineEdit(wxWindow *parent);
 
-    wxString GetInputText() const;
     void SetTextFormat(TextFormat format);
-    eToolsConstBuffer GetInputBuffer() const;
+    eToolsConstBuffer GetBuffer() const;
 
 private:
-    LineEdit *m_lineEdit;
+    TextFormat m_textFormat;
+
+private:
+    void OnText(wxCommandEvent &event);
+
+    wxString FormatTextToBinString(const wxString &text);
+    wxString FormatTextToOctString(const wxString &text);
+    wxString FormatTextToDecString(const wxString &text);
+    wxString FormatTextToHexString(const wxString &text);
+    wxString FormatTextToAsciiString(const wxString &text);
 };

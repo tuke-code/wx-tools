@@ -24,6 +24,7 @@ public:
 
     eToolsSignal<TextFormat> &GetInvokeWriteSignal();
     eToolsSignal<int> &GetInvokeStartTimerSignal();
+    eToolsSignal<TextFormat> &GetTextFormatChangedSignal();
 
 private:
     wxButton *m_settingsButton;
@@ -35,7 +36,10 @@ private:
 private:
     eToolsSignal<TextFormat> m_invokeWriteSignal;
     eToolsSignal<int> m_invokeStartTimerSignal;
+    eToolsSignal<TextFormat> m_textFormatChangedSignal;
 
     void OnSendButtonClicked(wxCommandEvent &event);
+    void OnTextFormat(wxCommandEvent &event);
+
     wxComboBox *InitCycleIntervalComboBox();
 };
