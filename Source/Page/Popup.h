@@ -16,6 +16,9 @@ class Popup : public wxPopupTransientWindow
 public:
     Popup(wxButton *controlButton, bool showOnBottom = true);
 
+protected:
+    bool ProcessLeftDown(wxMouseEvent &event) override;
+
 private:
     wxButton *m_controlButton;
     bool m_showOnBottom;

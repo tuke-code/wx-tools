@@ -19,6 +19,11 @@ Popup::Popup(wxButton *controlButton, bool showOnBottom)
     }
 }
 
+bool Popup::ProcessLeftDown(wxMouseEvent &event)
+{
+    wxPopupTransientWindow::ProcessLeftDown(event);
+}
+
 void Popup::OnControlButtonClicked(wxMouseEvent &event)
 {
     wxPoint p = m_controlButton->ClientToScreen(wxPoint(0, 0));
