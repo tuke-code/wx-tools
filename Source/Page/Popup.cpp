@@ -14,7 +14,6 @@ Popup::Popup(wxButton *controlButton, bool showOnBottom)
     , m_showOnBottom(showOnBottom)
 {
     if (controlButton) {
-        // 左键点击
         controlButton->Bind(wxEVT_LEFT_DOWN, &Popup::OnControlButtonClicked, this);
     }
 }
