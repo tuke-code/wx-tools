@@ -9,7 +9,7 @@
 #include "InputBox.h"
 
 InputBox::InputBox(wxWindow* parent)
-    : wxStaticBoxSizer(wxVERTICAL, parent, m_boxLabel)
+    : wxStaticBoxSizer(wxVERTICAL, parent, wxT("Input"))
 {
     m_textCtrl = new wxTextCtrl(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize);
     Add(m_textCtrl, 1, wxEXPAND | wxALL, 0);

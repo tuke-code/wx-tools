@@ -25,9 +25,9 @@ OutputPopup::OutputPopup(wxButton *controlButton)
                                             wxDefaultSize);
 
     auto panelSizer = new wxGridBagSizer(4, 4);
-    panelSizer->Add(filterLabel, wxGBPosition(0, 0));
+    panelSizer->Add(filterLabel, wxGBPosition(0, 0), wxDefaultSpan, wxALIGN_CENTER_VERTICAL);
     panelSizer->Add(filterTextCtrl, wxGBPosition(0, 1), wxDefaultSpan, wxEXPAND);
-    panelSizer->Add(highlightLabel, wxGBPosition(1, 0));
+    panelSizer->Add(highlightLabel, wxGBPosition(1, 0), wxDefaultSpan, wxALIGN_CENTER_VERTICAL);
     panelSizer->Add(highlightTextCtrl, wxGBPosition(1, 1), wxDefaultSpan, wxEXPAND);
     panelSizer->AddGrowableCol(1);
     panel->SetSizerAndFit(panelSizer);

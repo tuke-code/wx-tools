@@ -42,7 +42,7 @@ MainWindow::MainWindow()
     Centre();
 
     Bind(wxEVT_CLOSE_WINDOW, &MainWindow::OnClose, this, GetId());
-    Bind(wxEVT_TIMER, &MainWindow::OnTimer, this, m_updateTimeTimer.GetId());
+    m_updateTimeTimer.Bind(wxEVT_TIMER, &MainWindow::OnTimer, this);
 }
 
 void MainWindow::OnExit(wxCommandEvent& event)
@@ -60,8 +60,6 @@ void MainWindow::OnAbout(wxCommandEvent& event)
 
 void MainWindow::OnClose(wxCloseEvent& event)
 {
-    m_updateTimeTimer.Stop();
-
     SaveParameters();
     Destroy();
 }
