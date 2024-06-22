@@ -6,7 +6,7 @@
  * eTools is licensed according to the terms in the file LICENCE(GPL V3) in the root of the source
  * code directory.
  **************************************************************************************************/
-#include "CrcTypeComboBox.h"
+#include "CRCTypeComboBox.h"
 
 CRCTypeComboBox::CRCTypeComboBox(wxWindow *parent)
     : wxComboBox(parent,
@@ -25,17 +25,17 @@ CRCTypeComboBox::CRCTypeComboBox(wxWindow *parent)
     SetSelection(0);
 }
 
-CrcType CRCTypeComboBox::GetCrcType() const
+CRCType CRCTypeComboBox::GetCrcType() const
 {
     auto index = GetSelection();
     if (index == wxNOT_FOUND) {
-        return CrcType::CRC_8;
+        return CRCType::CRC_8;
     }
 
-    return *reinterpret_cast<CrcType *>(GetClientData(index));
+    return *reinterpret_cast<CRCType *>(GetClientData(index));
 }
 
-void CRCTypeComboBox::SetCrcType(CrcType type)
+void CRCTypeComboBox::SetCrcType(CRCType type)
 {
     auto index = FindString(GetCrcName(type));
     if (index != wxNOT_FOUND) {

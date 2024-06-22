@@ -17,6 +17,6 @@ class CRCTypeComboBox : public wxComboBox
 public:
     CRCTypeComboBox(wxWindow* parent = nullptr);
 
-    CrcType GetCrcType() const;
-    void SetCrcType(CrcType type);
+    CRCType GetCrcType() const;
+    void SetCrcType(CRCType type);
 };

@@ -42,7 +42,7 @@ void DoShutdownLogging();
 
 //--------------------------------------------------------------------------------------------------
 // libcrc
-enum class CrcType {
+enum class CRCType {
     CRC_8,
     CRC_16,
     CRC_MODBUS,
@@ -56,8 +56,8 @@ enum class CrcType {
     CRC_64_ECMA,
     CRC_64_WE,
 };
-std::vector<CrcType> GetSuportedCrcTypes();
-wxString GetCrcName(CrcType type);
+std::vector<CRCType> GetSuportedCrcTypes();
+wxString GetCrcName(CRCType type);
 
 //--------------------------------------------------------------------------------------------------
 // Common interface

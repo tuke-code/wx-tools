@@ -9,7 +9,7 @@
 #include "Popup.h"
 
 Popup::Popup(wxButton *controlButton, bool showOnBottom)
-    : wxPopupTransientWindow(controlButton, wxBORDER_THEME)
+    : wxPopupTransientWindow(controlButton, wxBORDER_THEME | wxPU_CONTAINS_CONTROLS)
     , m_controlButton(controlButton)
     , m_showOnBottom(showOnBottom)
 {

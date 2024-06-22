@@ -47,43 +47,43 @@ void DoShutdownLogging()
     google::ShutdownGoogleLogging();
 }
 
-std::vector<CrcType> GetSuportedCrcTypes()
+std::vector<CRCType> GetSuportedCrcTypes()
 {
-    static std::vector<CrcType> types;
+    static std::vector<CRCType> types;
     if (types.empty()) {
-        types.push_back(CrcType::CRC_8);
-        types.push_back(CrcType::CRC_16);
-        types.push_back(CrcType::CRC_MODBUS);
-        types.push_back(CrcType::CRC_XMODEM);
-        types.push_back(CrcType::CRC_CCITT_1D0F);
-        types.push_back(CrcType::CRC_CCITT_FFFF);
-        types.push_back(CrcType::CRC_KERMIT);
-        types.push_back(CrcType::CRC_SICK);
-        types.push_back(CrcType::CRC_DNP);
-        types.push_back(CrcType::CRC_32);
-        types.push_back(CrcType::CRC_64_ECMA);
-        types.push_back(CrcType::CRC_64_WE);
+        types.push_back(CRCType::CRC_8);
+        types.push_back(CRCType::CRC_16);
+        types.push_back(CRCType::CRC_MODBUS);
+        types.push_back(CRCType::CRC_XMODEM);
+        types.push_back(CRCType::CRC_CCITT_1D0F);
+        types.push_back(CRCType::CRC_CCITT_FFFF);
+        types.push_back(CRCType::CRC_KERMIT);
+        types.push_back(CRCType::CRC_SICK);
+        types.push_back(CRCType::CRC_DNP);
+        types.push_back(CRCType::CRC_32);
+        types.push_back(CRCType::CRC_64_ECMA);
+        types.push_back(CRCType::CRC_64_WE);
     }
 
     return types;
 }
 
-wxString GetCrcName(CrcType type)
+wxString GetCrcName(CRCType type)
 {
-    static std::map<CrcType, wxString> typeMap;
+    static std::map<CRCType, wxString> typeMap;
     if (typeMap.empty()) {
-        typeMap[CrcType::CRC_8] = "CRC-8";
-        typeMap[CrcType::CRC_16] = "CRC-16";
-        typeMap[CrcType::CRC_MODBUS] = "CRC-MODBUS";
-        typeMap[CrcType::CRC_XMODEM] = "CRC-XMODEM";
-        typeMap[CrcType::CRC_CCITT_1D0F] = "CRC-CCITT-1D0F";
-        typeMap[CrcType::CRC_CCITT_FFFF] = "CRC-CCITT-FFFF";
-        typeMap[CrcType::CRC_KERMIT] = "CRC-KERMIT";
-        typeMap[CrcType::CRC_SICK] = "CRC-SICK";
-        typeMap[CrcType::CRC_DNP] = "CRC-DNP";
-        typeMap[CrcType::CRC_32] = "CRC-32";
-        typeMap[CrcType::CRC_64_ECMA] = "CRC-64-ECMA";
-        typeMap[CrcType::CRC_64_WE] = "CRC-64-WE";
+        typeMap[CRCType::CRC_8] = "CRC-8";
+        typeMap[CRCType::CRC_16] = "CRC-16";
+        typeMap[CRCType::CRC_MODBUS] = "CRC-MODBUS";
+        typeMap[CRCType::CRC_XMODEM] = "CRC-XMODEM";
+        typeMap[CRCType::CRC_CCITT_1D0F] = "CRC-CCITT-1D0F";
+        typeMap[CRCType::CRC_CCITT_FFFF] = "CRC-CCITT-FFFF";
+        typeMap[CRCType::CRC_KERMIT] = "CRC-KERMIT";
+        typeMap[CRCType::CRC_SICK] = "CRC-SICK";
+        typeMap[CRCType::CRC_DNP] = "CRC-DNP";
+        typeMap[CRCType::CRC_32] = "CRC-32";
+        typeMap[CRCType::CRC_64_ECMA] = "CRC-64-ECMA";
+        typeMap[CRCType::CRC_64_WE] = "CRC-64-WE";
     }
 
     if (typeMap.find(type) == typeMap.end()) {
