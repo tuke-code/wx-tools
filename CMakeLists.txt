@@ -10,9 +10,11 @@ set(CMAKE_AUTORCC ON)
 set(wxBUILD_SHARED
     OFF
     CACHE BOOL "Build wxWidgets as shared libraries" FORCE)
-set(wxBUILD_USE_STATIC_RUNTIME
-    ON
-    CACHE BOOL "Build static runtime" FORCE)
+if(WIN32)
+  set(wxBUILD_USE_STATIC_RUNTIME
+      ON
+      CACHE BOOL "Build static runtime" FORCE)
+endif()
 
 include(CMake/json.cmake)
 include(CMake/asio.cmake)
