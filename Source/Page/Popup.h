@@ -21,5 +21,5 @@ private:
     bool m_showOnBottom;
 
 private:
-    void OnControlButtonClicked(wxCommandEvent &event);
+    void OnControlButtonClicked(wxMouseEvent &event);
 };

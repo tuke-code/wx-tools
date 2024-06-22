@@ -14,11 +14,12 @@ Popup::Popup(wxButton *controlButton, bool showOnBottom)
     , m_showOnBottom(showOnBottom)
 {
     if (controlButton) {
-        controlButton->Bind(wxEVT_BUTTON, &Popup::OnControlButtonClicked, this);
+        // 左键点击
+        controlButton->Bind(wxEVT_LEFT_DOWN, &Popup::OnControlButtonClicked, this);
     }
 }
 
-void Popup::OnControlButtonClicked(wxCommandEvent &event)
+void Popup::OnControlButtonClicked(wxMouseEvent &event)
 {
     wxPoint p = m_controlButton->ClientToScreen(wxPoint(0, 0));
     if (m_showOnBottom) {
@@ -28,7 +29,7 @@ void Popup::OnControlButtonClicked(wxCommandEvent &event)
     }
 
     if (IsShown()) {
-        Hide();
+        Dismiss();
     } else {
         Show();
     }
