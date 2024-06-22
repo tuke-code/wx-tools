@@ -13,20 +13,20 @@
 #include <wx/spinctrl.h>
 #include <wx/statline.h>
 
-#include "Unit/AdditionComboBox.h"
+#include "Unit/AdditionBoxSizer.h"
 #include "Unit/CRCTypeComboBox.h"
-#include "Unit/ESCComboBox.h"
+#include "Unit/ESCBoxSizer.h"
 
 InputPopup::InputPopup(wxButton *controlButton)
     : Popup(controlButton, false)
 {
     auto panel = new wxPanel(this);
     auto prefixLabel = new wxStaticText(panel, wxID_ANY, wxT("Prefix"));
-    auto prefixComboBox = new AdditionComboBox(panel);
+    auto prefixComboBox = new AdditionBoxSizer(panel);
     auto suffixLabel = new wxStaticText(panel, wxID_ANY, wxT("Suffix"));
-    auto suffixComboBox = new AdditionComboBox(panel);
+    auto suffixComboBox = new AdditionBoxSizer(panel);
     auto escLabel = new wxStaticText(panel, wxID_ANY, wxT("ESC"));
-    auto escComboBox = new AdditionComboBox(panel);
+    auto escComboBox = new ESCBoxSizer(panel);
 
     auto startIndexLabel = new wxStaticText(panel, wxID_ANY, wxT("Start Index"));
     auto startIndexSpinCtrl = new wxSpinCtrl(panel, wxID_ANY);
@@ -45,7 +45,6 @@ InputPopup::InputPopup(wxButton *controlButton)
     sizer->Add(escLabel, wxGBPosition(2, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
     sizer->Add(escComboBox, wxGBPosition(2, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
 
-    // 添加分割线
     auto line = new wxStaticLine(panel, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxLI_HORIZONTAL);
     sizer->Add(line, wxGBPosition(3, 0), wxGBSpan(1, 2), wxEXPAND | wxALL, 0);
 

@@ -8,9 +8,6 @@
  **************************************************************************************************/
 #include "CommunicationControlBox.h"
 
-#include <wx/gbsizer.h>
-#include <wx/popupwin.h>
-
 #include "Communication/CommunicationController.h"
 #include "Communication/CommunicationControllerFactory.h"
 #include "CommunicationPopup.h"
