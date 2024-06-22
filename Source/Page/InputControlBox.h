@@ -32,6 +32,10 @@ private:
     TextFormatComboBox *m_formatComboBox;
     InputPopup *m_popup;
 
+private:
     eToolsSignal<TextFormat> m_invokeWriteSignal;
     eToolsSignal<int> m_invokeStartTimerSignal;
+
+    void OnSendButtonClicked(wxCommandEvent &event);
+    wxComboBox *InitCycleIntervalComboBox();
 };
