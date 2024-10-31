@@ -1,10 +1,11 @@
-﻿set(packet_name "wxWidgets-3.2.6")
+﻿# 不要从github下载，从这里：https://www.wxwidgets.org/downloads/
+set(packet_name "wxWidgets-3.2.6")
 
 execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${packet_name}
                 WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/ThirdParty)
 if(NOT EXISTS ${CMAKE_SOURCE_DIR}/ThirdParty/${packet_name}/CMakeLists.txt)
   execute_process(
-    COMMAND ${CMAKE_COMMAND} -E tar xzf ${CMAKE_SOURCE_DIR}/ThirdParty/${packet_name}.7z
+    COMMAND ${CMAKE_COMMAND} -E tar x ${CMAKE_SOURCE_DIR}/ThirdParty/${packet_name}.7z
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/ThirdParty/${packet_name})
 endif()
 
