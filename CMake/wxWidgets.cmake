@@ -1,4 +1,4 @@
-﻿set(packet_name "wxWidgets-3.2.5")
+﻿set(packet_name "wxWidgets-3.2.6")
 
 execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${packet_name}
                 WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/ThirdParty)
