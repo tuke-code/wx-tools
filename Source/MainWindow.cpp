@@ -29,6 +29,9 @@ MainWindow::MainWindow()
         if (page != nullptr) {
             notebook->AddPage(page, GetCommunicationName(type));
             m_pageMap[type] = page;
+        } else {
+            int cookedType = static_cast<int>(type);
+            wxToolsLog(ERROR) << wxString::Format("Create page failed, type: %d", cookedType);
         }
     }
 
