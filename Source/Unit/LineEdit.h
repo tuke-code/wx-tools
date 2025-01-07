@@ -11,7 +11,7 @@
 #include <wx/textctrl.h>
 #include <wx/wx.h>
 
-#include "Common/eTools.h"
+#include "Common/wxTools.h"
 
 class LineEdit : public wxTextCtrl
 {

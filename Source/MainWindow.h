@@ -11,7 +11,7 @@
 #include <map>
 #include <wx/wx.h>
 
-#include "Common/eTools.h"
+#include "Common/wxTools.h"
 
 class Page;
 class MainWindow : public wxFrame

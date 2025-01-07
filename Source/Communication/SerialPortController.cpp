@@ -17,7 +17,7 @@
 #include "Unit/PortNameComboBox.h"
 #include "Unit/StopBitsComboBox.h"
 
-#include "Common/eTools.h"
+#include "Common/wxTools.h"
 #include "SerialPort.h"
 
 SerialPortController::SerialPortController(wxWindow *parent)

@@ -8,7 +8,7 @@
  **************************************************************************************************/
 #pragma once
 
-#include "Common/eTools.h"
+#include "Common/wxTools.h"
 #include "Page.h"
 
 class PageFactory

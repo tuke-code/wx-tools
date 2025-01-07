@@ -13,7 +13,7 @@
 #include <wx/filename.h>
 #include <wx/notebook.h>
 
-#include "Common/eTools.h"
+#include "Common/wxTools.h"
 #include "Page/PageFactory.h"
 
 MainWindow::MainWindow()

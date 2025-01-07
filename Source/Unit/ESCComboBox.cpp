@@ -8,7 +8,7 @@
  **************************************************************************************************/
 #include "ESCComboBox.h"
 
-#include "Common/eTools.h"
+#include "Common/wxTools.h"
 
 ESCComboBox::ESCComboBox(wxWindow *parent)
     : wxComboBox(parent,

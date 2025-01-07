@@ -10,7 +10,7 @@
 
 #include <wx/wx.h>
 
-#include "Common/eTools.h"
+#include "Common/wxTools.h"
 
 class CRCTypeComboBox : public wxComboBox
 {

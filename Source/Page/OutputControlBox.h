@@ -11,7 +11,7 @@
 #include <sigslot/signal.hpp>
 #include <wx/wx.h>
 
-#include "Common/eTools.h"
+#include "Common/wxTools.h"
 
 class OutputPopup;
 class TextFormatComboBox;

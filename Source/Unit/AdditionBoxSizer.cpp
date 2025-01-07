@@ -10,7 +10,7 @@
 
 #include <wx/checkbox.h>
 
-#include "Common/eTools.h"
+#include "Common/wxTools.h"
 
 AdditionBoxSizer::AdditionBoxSizer(wxWindow *parent)
     : wxBoxSizer(wxHORIZONTAL)

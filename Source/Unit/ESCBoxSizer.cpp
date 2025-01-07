@@ -8,7 +8,7 @@
  **************************************************************************************************/
 #include "ESCBoxSizer.h"
 
-#include "Common/eTools.h"
+#include "Common/wxTools.h"
 
 ESCBoxSizer::ESCBoxSizer(wxWindow *parent)
     : wxBoxSizer(wxHORIZONTAL)

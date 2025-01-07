@@ -8,7 +8,7 @@
  **************************************************************************************************/
 #include "Application.h"
 
-#include "Common/eTools.h"
+#include "Common/wxTools.h"
 #include "MainWindow.h"
 
 bool Application::OnInit()

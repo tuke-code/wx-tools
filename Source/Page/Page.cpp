@@ -10,7 +10,7 @@
 
 #include <wx/gbsizer.h>
 
-#include "Common/eTools.h"
+#include "Common/wxTools.h"
 #include "Communication/Communication.h"
 #include "Communication/CommunicationController.h"
 #include "CommunicationControlBox.h"

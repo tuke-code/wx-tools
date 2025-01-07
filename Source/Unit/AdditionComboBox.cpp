@@ -8,7 +8,7 @@
  **************************************************************************************************/
 #include "AdditionComboBox.h"
 
-#include "Common/eTools.h"
+#include "Common/wxTools.h"
 
 AdditionComboBox::AdditionComboBox(wxWindow *parent)
     : wxComboBox(parent,

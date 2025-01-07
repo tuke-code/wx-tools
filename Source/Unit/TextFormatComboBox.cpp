@@ -8,7 +8,7 @@
  **************************************************************************************************/
 #include "TextFormatComboBox.h"
 
-#include "Common/eTools.h"
+#include "Common/wxTools.h"
 
 TextFormatComboBox::TextFormatComboBox(wxWindow* parent)
     : wxComboBox(parent,

@@ -8,7 +8,7 @@
  **************************************************************************************************/
 #include "SerialPort.h"
 
-#include <Common/eTools.h>
+#include <Common/wxTools.h>
 
 SerialPort::SerialPort()
     : Communication()
