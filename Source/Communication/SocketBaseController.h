@@ -10,9 +10,13 @@
 
 #include "CommunicationController.h"
 
+class IpComboBox;
 class SocketBaseController : public CommunicationController
 {
 public:
     SocketBaseController(wxWindow *parent = nullptr);
     ~SocketBaseController();
+
+private:
+    IpComboBox *m_IpComboBox;
 };
