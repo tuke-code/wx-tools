@@ -33,9 +33,9 @@ include(CMake/CSerialPort.cmake)
 
 include_directories(Source)
 
-# Windows XP, Windows 7
+# Windows XP
 option(_WIN32_WINNT "Windows Version" 0x0501)
-# option(_WIN32_WINNT "Windows Version" 0x0601)
+# Windows 7 option(_WIN32_WINNT "Windows Version" 0x0601)
 
 file(GLOB_RECURSE WX_TOOLS_SOURCE Source/*.*)
 list(APPEND WX_TOOLS_SOURCE wxTools.rc)
