@@ -19,6 +19,15 @@ public:
     ~SocketBaseController();
 
 private:
+    wxStaticText *m_clientAddressLabel{nullptr};
+    wxStaticText *m_clientPortLabel{nullptr};
+    wxStaticText *m_serverAddressLabel{nullptr};
+    wxStaticText *m_serverPortLabel{nullptr};
+
+    wxStaticText *m_dataChannelLabel{nullptr};
+    wxStaticText *m_userNameLabel{nullptr};
+    wxStaticText *m_passwordLabel{nullptr};
+
     IpComboBox *m_clientComboBox{nullptr};
     wxSpinCtrl *m_clientPortCtrl{nullptr};
     IpComboBox *m_serverComboBox{nullptr};

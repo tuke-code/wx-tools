@@ -39,8 +39,12 @@ SocketBaseController::~SocketBaseController() {}
 
 void SocketBaseController::InitClientComboBox(const wxString &label, int row, wxWindow *parent)
 {
-    auto text = new wxStaticText(parent, wxID_ANY, label);
-    Add(text, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
+    m_clientAddressLabel = new wxStaticText(parent, wxID_ANY, label);
+    Add(m_clientAddressLabel,
+        wxGBPosition(row, 0),
+        wxGBSpan(1, 1),
+        wxALIGN_CENTER_VERTICAL | wxALL,
+        0);
 
     m_clientComboBox = new IpComboBox(parent);
     Add(m_clientComboBox, wxGBPosition(row, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
@@ -48,17 +52,23 @@ void SocketBaseController::InitClientComboBox(const wxString &label, int row, wx
 
 void SocketBaseController::InitClientPortCtrl(const wxString &label, int row, wxWindow *parent)
 {
-    auto text = new wxStaticText(parent, wxID_ANY, label);
-    Add(text, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
+    m_clientPortLabel = new wxStaticText(parent, wxID_ANY, label);
+    Add(m_clientPortLabel, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
 
     m_clientPortCtrl = new wxSpinCtrl(parent, wxID_ANY);
     Add(m_clientPortCtrl, wxGBPosition(row, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
+    m_clientPortCtrl->SetRange(1, 65535);
+    m_clientPortCtrl->SetValue(54321);
 }
 
 void SocketBaseController::InitServerComboBox(const wxString &label, int row, wxWindow *parent)
 {
-    auto text = new wxStaticText(parent, wxID_ANY, label);
-    Add(text, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
+    m_serverAddressLabel = new wxStaticText(parent, wxID_ANY, label);
+    Add(m_serverAddressLabel,
+        wxGBPosition(row, 0),
+        wxGBSpan(1, 1),
+        wxALIGN_CENTER_VERTICAL | wxALL,
+        0);
 
     m_serverComboBox = new IpComboBox(parent);
     Add(m_serverComboBox, wxGBPosition(row, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
@@ -66,11 +76,13 @@ void SocketBaseController::InitServerComboBox(const wxString &label, int row, wx
 
 void SocketBaseController::InitServerPortCtrl(const wxString &label, int row, wxWindow *parent)
 {
-    auto text = new wxStaticText(parent, wxID_ANY, label);
-    Add(text, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
+    m_serverPortLabel = new wxStaticText(parent, wxID_ANY, label);
+    Add(m_serverPortLabel, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
 
     m_serverPortCtrl = new wxSpinCtrl(parent, wxID_ANY);
     Add(m_serverPortCtrl, wxGBPosition(row, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
+    m_serverPortCtrl->SetRange(1, 65535);
+    m_serverPortCtrl->SetValue(51234);
 }
 
 void SocketBaseController::InitIsEnableAuthorizationCheckBox(const wxString &label,
@@ -89,8 +101,8 @@ void SocketBaseController::InitIsEnableAuthorizationCheckBox(const wxString &lab
 
 void SocketBaseController::InitDataChannelComboBox(const wxString &label, int row, wxWindow *parent)
 {
-    auto text = new wxStaticText(parent, wxID_ANY, label);
-    Add(text, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
+    m_dataChannelLabel = new wxStaticText(parent, wxID_ANY, label);
+    Add(m_dataChannelLabel, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
 
     m_dataChannelComboBox = new DataChannelComboBox(parent);
     Add(m_dataChannelComboBox, wxGBPosition(row, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
@@ -98,8 +110,8 @@ void SocketBaseController::InitDataChannelComboBox(const wxString &label, int ro
 
 void SocketBaseController::InitUserNameTextCtrl(const wxString &label, int row, wxWindow *parent)
 {
-    auto text = new wxStaticText(parent, wxID_ANY, label);
-    Add(text, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
+    m_userNameLabel = new wxStaticText(parent, wxID_ANY, label);
+    Add(m_userNameLabel, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
 
     m_userNameTextCtrl = new wxTextCtrl(parent, wxID_ANY, wxEmptyString);
     Add(m_userNameTextCtrl, wxGBPosition(row, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
@@ -107,8 +119,8 @@ void SocketBaseController::InitUserNameTextCtrl(const wxString &label, int row, 
 
 void SocketBaseController::InitPasswordTextCtrl(const wxString &label, int row, wxWindow *parent)
 {
-    auto text = new wxStaticText(parent, wxID_ANY, label);
-    Add(text, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
+    m_passwordLabel = new wxStaticText(parent, wxID_ANY, label);
+    Add(m_passwordLabel, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
 
     m_passwordTextCtrl = new wxTextCtrl(parent, wxID_ANY, wxEmptyString);
     Add(m_passwordTextCtrl, wxGBPosition(row, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
