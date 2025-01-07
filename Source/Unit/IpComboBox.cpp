@@ -27,6 +27,10 @@ IpComboBox::IpComboBox(wxWindow* parent)
     asio::ip::tcp::resolver::iterator end;
     while (iter != end) {
         asio::ip::tcp::endpoint ep = *iter++;
-        Append(ep.address().to_string());
+        if (ep.protocol() == asio::ip::tcp::v4()) {
+            Append(ep.address().to_string());
+        }
     }
+
+    SetSelection(0);
 }

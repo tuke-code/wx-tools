@@ -26,10 +26,16 @@ private:
 
     wxCheckBox *m_isEnableAuthorizationCheckBox{nullptr};
     DataChannelComboBox *m_dataChannelComboBox{nullptr};
-    wxTextEntry *m_userNameTextEntry{nullptr};
-    wxTextEntry *m_passwordTextEntry{nullptr};
+    wxTextCtrl *m_userNameTextCtrl{nullptr};
+    wxTextCtrl *m_passwordTextCtrl{nullptr};
 
 private:
     void InitClientComboBox(const wxString &label, int row, wxWindow *parent);
     void InitClientPortCtrl(const wxString &label, int row, wxWindow *parent);
+    void InitServerComboBox(const wxString &label, int row, wxWindow *parent);
+    void InitServerPortCtrl(const wxString &label, int row, wxWindow *parent);
+    void InitIsEnableAuthorizationCheckBox(const wxString &label, int row, wxWindow *parent);
+    void InitDataChannelComboBox(const wxString &label, int row, wxWindow *parent);
+    void InitUserNameTextCtrl(const wxString &label, int row, wxWindow *parent);
+    void InitPasswordTextCtrl(const wxString &label, int row, wxWindow *parent);
 };
