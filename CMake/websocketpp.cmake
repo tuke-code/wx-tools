@@ -7,3 +7,4 @@ if(NOT EXISTS ${CMAKE_SOURCE_DIR}/ThirdParty/${packet_name})
 endif()
 
 add_subdirectory(${CMAKE_SOURCE_DIR}/ThirdParty/${packet_name})
+include_directories(${CMAKE_SOURCE_DIR}/ThirdParty/${packet_name})

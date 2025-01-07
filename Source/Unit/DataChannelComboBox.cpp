@@ -8,6 +8,8 @@
  **************************************************************************************************/
 #include "DataChannelComboBox.h"
 
+#include <websocketpp/client.hpp>
+
 DataChannelComboBox::DataChannelComboBox(wxWindow* parent)
     : wxComboBox(parent,
                  wxID_ANY,
