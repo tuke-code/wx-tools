@@ -8,7 +8,7 @@
  **************************************************************************************************/
 #include "PageFactory.h"
 
-#include "HAL_IO/CommunicationControllerFactory.h"
+#include "Communication/CommunicationControllerFactory.h"
 
 PageFactory::PageFactory() {}
 
