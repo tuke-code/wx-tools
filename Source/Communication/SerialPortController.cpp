@@ -110,7 +110,7 @@ void SerialPortController::AboutToOpen(Communication *communication)
                                  static_cast<int>(stopBits),
                                  static_cast<int>(parity),
                                  static_cast<int>(flowControl));
-    eToolsInfo() << info;
+    wxToolsInfo() << info;
 
     serialPort->SetBaudRate(baudRate);
     serialPort->SetCharacterSize(dataBits);

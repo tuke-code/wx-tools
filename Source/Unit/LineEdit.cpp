@@ -19,9 +19,9 @@ void LineEdit::SetTextFormat(TextFormat format)
     m_textFormat = format;
 }
 
-eToolsConstBuffer LineEdit::GetBuffer() const
+wxToolsConstBuffer LineEdit::GetBuffer() const
 {
-    return eToolsConstBuffer();
+    return wxToolsConstBuffer();
 }
 
 void LineEdit::OnText(wxCommandEvent &event)

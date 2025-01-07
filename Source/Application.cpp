@@ -13,13 +13,13 @@
 
 bool Application::OnInit()
 {
-    SetAppName("eTools");
+    SetAppName("wxTools");
     SetVendorName("xTools");
 
 #if 0
-    InitGoogleLog("eTools");
+    InitGoogleLog("wxTools");
 #endif
-    eToolsInfo() << "Application::OnInit()";
+    wxToolsInfo() << "Application::OnInit()";
 
     auto* mainWindow = new MainWindow();
     mainWindow->Show(true);

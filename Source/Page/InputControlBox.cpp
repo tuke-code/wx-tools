@@ -59,17 +59,17 @@ TextFormat InputControlBox::GetTextFormat() const
     return m_formatComboBox->GetSelectedFormat();
 }
 
-eToolsSignal<TextFormat>& InputControlBox::GetInvokeWriteSignal()
+wxToolsSignal<TextFormat>& InputControlBox::GetInvokeWriteSignal()
 {
     return m_invokeWriteSignal;
 }
 
-eToolsSignal<int>& InputControlBox::GetInvokeStartTimerSignal()
+wxToolsSignal<int>& InputControlBox::GetInvokeStartTimerSignal()
 {
     return m_invokeStartTimerSignal;
 }
 
-eToolsSignal<TextFormat>& InputControlBox::GetTextFormatChangedSignal()
+wxToolsSignal<TextFormat>& InputControlBox::GetTextFormatChangedSignal()
 {
     return m_textFormatChangedSignal;
 }

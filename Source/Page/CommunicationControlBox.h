@@ -20,7 +20,7 @@ class CommunicationControlBox : public wxStaticBoxSizer
 public:
     CommunicationControlBox(CommunicationType type, wxWindow *parent);
     CommunicationController *GetController() const;
-    eToolsSignal<> &GetInvokeOpenSignal();
+    wxToolsSignal<> &GetInvokeOpenSignal();
     void SetOpenButtonLabel(const wxString &label);
 
 private:
@@ -28,7 +28,7 @@ private:
     wxButton *m_openButton;
     CommunicationPopup *m_popup;
 
-    eToolsSignal<> m_invokeOpenSignal;
+    wxToolsSignal<> m_invokeOpenSignal;
 
 private:
     void OnOpen(wxCommandEvent &event);

@@ -20,7 +20,7 @@ public:
 
     wxString GetInputText() const;
     void SetTextFormat(TextFormat format);
-    eToolsConstBuffer GetInputBuffer() const;
+    wxToolsConstBuffer GetInputBuffer() const;
 
 private:
     LineEdit *m_lineEdit;

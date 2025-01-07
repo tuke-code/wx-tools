@@ -28,7 +28,7 @@ void InputBox::SetTextFormat(TextFormat format)
     m_lineEdit->SetTextFormat(format);
 }
 
-eToolsConstBuffer InputBox::GetInputBuffer() const
+wxToolsConstBuffer InputBox::GetInputBuffer() const
 {
     return m_lineEdit->GetBuffer();
 }

@@ -48,11 +48,11 @@ private:
     void OnInvokeOpen();
     void OnInvokeWrite(TextFormat format);
     void OnInvokeStartTimer(int ms);
-    void OnBytesRead(eToolsConstBuffer &bytes, const wxString &from);
-    void OnBytesWritten(eToolsConstBuffer &bytes, const wxString &to);
+    void OnBytesRead(wxToolsConstBuffer &bytes, const wxString &from);
+    void OnBytesWritten(wxToolsConstBuffer &bytes, const wxString &to);
     void OnSendTimerTimeout();
     void OnClear();
     void OnTextFormatChanged(TextFormat format);
 
-    void OutputText(eToolsConstBuffer &bytes, const wxString &fromTo, bool isRx);
+    void OutputText(wxToolsConstBuffer &bytes, const wxString &fromTo, bool isRx);
 };

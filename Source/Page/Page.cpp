@@ -82,12 +82,12 @@ void Page::OnInvokeOpen()
         communicationController->Close();
         communicationController->Enable();
         communicationControlBox->SetOpenButtonLabel(wxT("Open"));
-        eToolsInfo() << "Close communication successfully.";
+        wxToolsInfo() << "Close communication successfully.";
     } else {
         if (communicationController->Open()) {
             communicationController->Disable();
             communicationControlBox->SetOpenButtonLabel(wxT("Close"));
-            eToolsInfo() << "Open communication successfully.";
+            wxToolsInfo() << "Open communication successfully.";
 
             Communication *communication = communicationController->GetCommunication();
             communication->GetBytesReadSignal().connect(&Page::OnBytesRead, this);
@@ -134,12 +134,12 @@ void Page::OnInvokeStartTimer(int ms)
     m_sendTimer.Start(ms);
 }
 
-void Page::OnBytesRead(eToolsConstBuffer &bytes, const wxString &from)
+void Page::OnBytesRead(wxToolsConstBuffer &bytes, const wxString &from)
 {
     OutputText(bytes, from, true);
 }
 
-void Page::OnBytesWritten(eToolsConstBuffer &bytes, const wxString &to)
+void Page::OnBytesWritten(wxToolsConstBuffer &bytes, const wxString &to)
 {
     OutputText(bytes, to, false);
 }
@@ -205,7 +205,7 @@ std::string flagString(bool isRx, const std::string &fromTo, bool showFlag)
     return stringStream.str();
 }
 
-void Page::OutputText(eToolsConstBuffer &bytes, const wxString &fromTo, bool isRx)
+void Page::OutputText(wxToolsConstBuffer &bytes, const wxString &fromTo, bool isRx)
 {
     OutputControlBox *outputControlBox = m_controlBoxes->GetOutputControlBox();
     TextFormat outputFormat = outputControlBox->GetTextFormat();

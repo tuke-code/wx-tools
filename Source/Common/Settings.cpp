@@ -11,10 +11,10 @@
 #include <wx/stdpaths.h>
 
 Settings::Settings()
-    : wxFileConfig("eTools", "xTools", "xTools/eTools/eTools.ini")
+    : wxFileConfig("eTools", "xTools", "xTools/wxTools/eTools.ini")
 {}
 
-Settings& Settings::GetInstance()
+Settings &Settings::GetInstance()
 {
     static Settings instance;
     return instance;

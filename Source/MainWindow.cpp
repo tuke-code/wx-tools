@@ -17,7 +17,7 @@
 #include "Page/PageFactory.h"
 
 MainWindow::MainWindow()
-    : wxFrame(nullptr, wxID_ANY, "eTools")
+    : wxFrame(nullptr, wxID_ANY, "wxTools")
     , m_statusBar(nullptr)
 {
     Init();
@@ -141,7 +141,7 @@ void MainWindow::LoadParameters()
         std::ifstream file(name.ToStdString());
         nlohmann::json json = nlohmann::json::parse(file);
 
-        eToolsLog(INFO) << wxString::Format("[%s]", name) << json;
+        wxToolsLog(INFO) << wxString::Format("[%s]", name) << json;
 
         if (it->first == CommunicationType::SerialPort) {
             page->LoadParameters(json);

@@ -15,30 +15,30 @@
 
 //--------------------------------------------------------------------------------------------------
 // Common
-#define eToolsNone -1
-#define eToolsOk 0
-#define eToolsUnknown -2
+#define wxToolsNone -1
+#define wxToolsOk 0
+#define wxToolsUnknown -2
 
-#define eToolsNoneStr wxT("None")
-#define eToolsOkStr wxT("Ok")
-#define eToolsUnknownStr wxT("Unknown")
+#define wxToolsNoneStr wxT("None")
+#define wxToolsOkStr wxT("Ok")
+#define wxToolsUnknownStr wxT("Unknown")
 
 //--------------------------------------------------------------------------------------------------
 // Google Log
-#define eToolsLog(severity) LOG(severity)
-#define eToolsInfo() LOG(INFO)
-#define eToolsWarning() LOG(WARNING)
-#define eToolError() LOG(ERROR)
+#define wxToolsLog(severity) LOG(severity)
+#define wxToolsInfo() LOG(INFO)
+#define wxToolsWarning() LOG(WARNING)
+#define wxToolError() LOG(ERROR)
 void DoInitLogging(const char *argv0);
 void DoShutdownLogging();
 
 //--------------------------------------------------------------------------------------------------
 // sigslot
-#define eToolsSignal sigslot::signal
+#define wxToolsSignal sigslot::signal
 
 //--------------------------------------------------------------------------------------------------
 // asio
-#define eToolsConstBuffer asio::const_buffer
+#define wxToolsConstBuffer asio::const_buffer
 
 //--------------------------------------------------------------------------------------------------
 // libcrc
@@ -68,8 +68,8 @@ std::string GetDateTimeString(const std::string &format = "%Y-%m-%d %H:%M:%S", b
 enum class TextFormat { Bin, Oct, Dec, Hex, Ascii, Utf8, Unknown = -1 };
 std::vector<wxString> GetSuportedTextFormats();
 wxString GetTextFormatName(TextFormat format);
-std::string DoDecodeText(eToolsConstBuffer &buffer, TextFormat format);
-eToolsConstBuffer DoEncodeText(const std::string &text, TextFormat format);
+std::string DoDecodeText(wxToolsConstBuffer &buffer, TextFormat format);
+wxToolsConstBuffer DoEncodeText(const std::string &text, TextFormat format);
 std::string GetBinString(uint8_t value);
 std::string GetOctString(uint8_t value);
 std::string GetDecString(uint8_t value);
@@ -92,12 +92,12 @@ wxString GetCommunicationName(CommunicationType type);
 
 //--------------------------------------------------------------------------------------------------
 // Addition
-enum class AdditionType { R, RN, N, NR, None = eToolsNone };
+enum class AdditionType { R, RN, N, NR, None = wxToolsNone };
 std::vector<AdditionType> GetSuportedAdditionTypes();
 wxString GetAdditionName(AdditionType type);
 
 //--------------------------------------------------------------------------------------------------
 // Escape character
-enum class EscapeType { R, RN, N, NR, R_N, None = eToolsNone };
+enum class EscapeType { R, RN, N, NR, R_N, None = wxToolsNone };
 std::vector<EscapeType> GetSuportedEscapeTypes();
 wxString GetEscapeName(EscapeType type);

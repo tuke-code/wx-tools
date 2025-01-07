@@ -22,9 +22,9 @@ public:
     void SetCycleIntervalComboBoxSelection(int selection);
     TextFormat GetTextFormat() const;
 
-    eToolsSignal<TextFormat> &GetInvokeWriteSignal();
-    eToolsSignal<int> &GetInvokeStartTimerSignal();
-    eToolsSignal<TextFormat> &GetTextFormatChangedSignal();
+    wxToolsSignal<TextFormat> &GetInvokeWriteSignal();
+    wxToolsSignal<int> &GetInvokeStartTimerSignal();
+    wxToolsSignal<TextFormat> &GetTextFormatChangedSignal();
 
 private:
     wxButton *m_settingsButton;
@@ -34,9 +34,9 @@ private:
     InputPopup *m_popup;
 
 private:
-    eToolsSignal<TextFormat> m_invokeWriteSignal;
-    eToolsSignal<int> m_invokeStartTimerSignal;
-    eToolsSignal<TextFormat> m_textFormatChangedSignal;
+    wxToolsSignal<TextFormat> m_invokeWriteSignal;
+    wxToolsSignal<int> m_invokeStartTimerSignal;
+    wxToolsSignal<TextFormat> m_textFormatChangedSignal;
 
     void OnSendButtonClicked(wxCommandEvent &event);
     void OnTextFormat(wxCommandEvent &event);

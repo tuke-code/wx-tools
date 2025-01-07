@@ -40,7 +40,7 @@ CommunicationController *CommunicationControlBox::GetController() const
     return m_controller;
 }
 
-eToolsSignal<> &CommunicationControlBox::GetInvokeOpenSignal()
+wxToolsSignal<> &CommunicationControlBox::GetInvokeOpenSignal()
 {
     return m_invokeOpenSignal;
 }
