@@ -8,6 +8,8 @@
  **************************************************************************************************/
 #pragma once
 
+#include <asio.hpp>
+
 #include "Communication.h"
 
 struct SocketBaseParameterKeys
@@ -28,10 +30,14 @@ public:
     SocketBase();
     ~SocketBase();
 
+    bool Open() override;
+    void Close() override;
+    void Write(const wxString &data, TextFormat format) override;
+
     void Load(const nlohmann::json &parameters) override;
     nlohmann::json Save() override;
 
-private:
+protected:
     wxString m_clientAddress;
     uint16_t m_clientPort;
     wxString m_serverAddress;
@@ -42,4 +48,8 @@ private:
     int m_dataChannel;
     wxString m_userName;
     wxString m_password;
+
+protected:
+    asio::io_context m_ioContext;
+    asio::ip::tcp::socket m_socket;
 };
