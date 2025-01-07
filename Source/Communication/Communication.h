@@ -21,8 +21,8 @@ public:
     Communication();
     ~Communication();
 
-    sigslot::signal<asio::const_buffer &, const wxString &> &GetBytesWrittenSignal();
-    sigslot::signal<asio::const_buffer &, const wxString &> &GetBytesReadSignal();
+    sigslot::signal<asio::const_buffer & /*bytes*/, const wxString & /*to*/> bytesWrittenSignal;
+    sigslot::signal<asio::const_buffer & /*bytes*/, const wxString & /*from*/> bytesReadSignal;
 
     virtual bool Open();
     virtual void Close();
@@ -33,6 +33,4 @@ public:
 
 protected:
     nlohmann::json m_parameters{nlohmann::json::object()};
-    sigslot::signal<asio::const_buffer &, const wxString &> m_bytesWrittenSignal;
-    sigslot::signal<asio::const_buffer &, const wxString &> m_bytesReadSignal;
 };

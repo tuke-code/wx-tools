@@ -12,15 +12,6 @@ SocketBase::SocketBase() {}
 
 SocketBase::~SocketBase() {}
 
-bool SocketBase::Open()
-{
-    return false;
-}
-
-void SocketBase::Close() {}
-
-void SocketBase::Write(const wxString &data, TextFormat format) {}
-
 void SocketBase::Load(const nlohmann::json &parameters)
 {
     SocketBaseParameterKeys keys;

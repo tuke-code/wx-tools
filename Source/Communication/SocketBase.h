@@ -30,10 +30,6 @@ public:
     SocketBase();
     ~SocketBase();
 
-    bool Open() override;
-    void Close() override;
-    void Write(const wxString &data, TextFormat format) override;
-
     void Load(const nlohmann::json &parameters) override;
     nlohmann::json Save() override;
 

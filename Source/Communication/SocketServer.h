@@ -8,9 +8,9 @@
  **************************************************************************************************/
 #pragma once
 
-#include "Communication.h"
+#include "SocketBase.h"
 
-class SocketServer : public Communication
+class SocketServer : public SocketBase
 {
 public:
     SocketServer();

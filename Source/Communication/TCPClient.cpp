@@ -11,3 +11,12 @@
 TCPClient::TCPClient() {}
 
 TCPClient::~TCPClient() {}
+
+bool TCPClient::Open()
+{
+    return false;
+}
+
+void TCPClient::Close() {}
+
+void TCPClient::Write(const wxString &data, TextFormat format) {}
