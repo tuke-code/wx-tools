@@ -9,6 +9,7 @@
 #pragma once
 
 #include <asio/buffer.hpp>
+#include <nlohmann/json.hpp>
 #include <sigslot/signal.hpp>
 #include <wx/wx.h>
 
@@ -27,7 +28,11 @@ public:
     virtual void Close();
     virtual void Write(const wxString &data, TextFormat format);
 
+    virtual void Load(const nlohmann::json &parameters);
+    virtual nlohmann::json Save();
+
 protected:
+    nlohmann::json m_parameters{nlohmann::json::object()};
     sigslot::signal<asio::const_buffer &, const wxString &> m_bytesWrittenSignal;
     sigslot::signal<asio::const_buffer &, const wxString &> m_bytesReadSignal;
 };
