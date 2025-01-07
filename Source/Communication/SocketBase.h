@@ -48,8 +48,4 @@ protected:
     int m_dataChannel;
     wxString m_userName;
     wxString m_password;
-
-protected:
-    asio::io_context m_ioContext;
-    asio::ip::tcp::socket m_socket;
 };
