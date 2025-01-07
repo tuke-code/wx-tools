@@ -18,5 +18,8 @@ public:
     ~SocketBaseController();
 
 private:
-    IpComboBox *m_IpComboBox;
+    IpComboBox *m_clientComboBox{nullptr};
+    wxSpinCtrl *m_clientPortCtrl{nullptr};
+    IpComboBox *m_serverComboBox{nullptr};
+    wxSpinCtrl *m_serverPortCtrl{nullptr};
 };

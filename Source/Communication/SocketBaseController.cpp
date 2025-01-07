@@ -8,6 +8,8 @@
  **************************************************************************************************/
 #include "SocketBaseController.h"
 
-SocketBaseController::SocketBaseController(wxWindow *parent) {}
+SocketBaseController::SocketBaseController(wxWindow *parent)
+    : m_IpComboBox{nullptr}
+{}
 
 SocketBaseController::~SocketBaseController() {}
