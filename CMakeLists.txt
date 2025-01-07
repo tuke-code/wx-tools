@@ -1,7 +1,7 @@
 cmake_minimum_required(VERSION 3.20)
 
 project(
-  eTools
+  wxTools
   VERSION 1.0.0
   LANGUAGES C CXX)
 
@@ -16,7 +16,9 @@ if(WIN32)
       CACHE BOOL "Build static runtime" FORCE)
 endif()
 
-if(WIN32 AND MSVC AND CMAKE_BUILD_TYPE STREQUAL "Release")
+if(WIN32
+   AND MSVC
+   AND CMAKE_BUILD_TYPE STREQUAL "Release")
   set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 endif()
 
@@ -35,18 +37,18 @@ include_directories(Source)
 option(_WIN32_WINNT "Windows Version" 0x0501)
 # option(_WIN32_WINNT "Windows Version" 0x0601)
 
-file(GLOB_RECURSE E_TOOLS_SOURCE Source/*.*)
-list(APPEND E_TOOLS_SOURCE eTools.rc)
-add_executable(eTools ${E_TOOLS_SOURCE})
+file(GLOB_RECURSE WX_TOOLS_SOURCE Source/*.*)
+list(APPEND WX_TOOLS_SOURCE wxTools.rc)
+add_executable(wxTools ${WX_TOOLS_SOURCE})
 
 set(PROJECT_LIBS libcserialport)
 list(APPEND PROJECT_LIBS libcrc)
 list(APPEND PROJECT_LIBS glog::glog)
 list(APPEND PROJECT_LIBS nlohmann_json)
 list(APPEND PROJECT_LIBS wx::core wx::aui)
-target_link_libraries(eTools PRIVATE ${PROJECT_LIBS})
+target_link_libraries(wxTools PRIVATE ${PROJECT_LIBS})
 set_target_properties(
-  eTools
+  wxTools
   PROPERTIES ${BUNDLE_ID_OPTION} MACOSX_BUNDLE_BUNDLE_VERSION
              ${PROJECT_VERSION} MACOSX_BUNDLE_SHORT_VERSION_STRING
              ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR} MACOSX_BUNDLE
