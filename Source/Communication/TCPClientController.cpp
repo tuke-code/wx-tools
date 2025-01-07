@@ -9,6 +9,7 @@
 #include "TCPClientController.h"
 
 TCPClientController::TCPClientController(wxWindow *parent)
+    : SocketClientController(parent)
 {
     // Constructor
 }

@@ -8,6 +8,8 @@
  **************************************************************************************************/
 #include "UDPClientController.h"
 
-UDPClientController::UDPClientController(wxWindow *parent) {}
+UDPClientController::UDPClientController(wxWindow *parent)
+    : SocketClientController(parent)
+{}
 
 UDPClientController::~UDPClientController() {}

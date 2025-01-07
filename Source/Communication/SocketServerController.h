@@ -8,9 +8,9 @@
  **************************************************************************************************/
 #pragma once
 
-#include "CommunicationController.h"
+#include "SocketBaseController.h"
 
-class SocketServerController : public CommunicationController
+class SocketServerController : public SocketBaseController
 {
 public:
     SocketServerController(wxWindow *parent = nullptr);

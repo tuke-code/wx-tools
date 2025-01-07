@@ -11,6 +11,7 @@
 #include "CommunicationController.h"
 
 class IpComboBox;
+class DataChannelComboBox;
 class SocketBaseController : public CommunicationController
 {
 public:
@@ -22,4 +23,13 @@ private:
     wxSpinCtrl *m_clientPortCtrl{nullptr};
     IpComboBox *m_serverComboBox{nullptr};
     wxSpinCtrl *m_serverPortCtrl{nullptr};
+
+    wxCheckBox *m_isEnableAuthorizationCheckBox{nullptr};
+    DataChannelComboBox *m_dataChannelComboBox{nullptr};
+    wxTextEntry *m_userNameTextEntry{nullptr};
+    wxTextEntry *m_passwordTextEntry{nullptr};
+
+private:
+    void InitClientComboBox(const wxString &label, int row, wxWindow *parent);
+    void InitClientPortCtrl(const wxString &label, int row, wxWindow *parent);
 };
