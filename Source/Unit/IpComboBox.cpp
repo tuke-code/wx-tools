@@ -1,5 +1,5 @@
 ﻿/***************************************************************************************************
- * Copyright 2024 x-tools-author(x-tools@outlook.com). All rights reserved.
+ * Copyright 2025 x-tools-author(x-tools@outlook.com). All rights reserved.
  *
  * The file is encoded using "utf8 with bom", it is a part of eTools project.
  *
@@ -7,6 +7,8 @@
  * code directory.
  **************************************************************************************************/
 #include "IpComboBox.h"
+
+#include <asio.hpp>
 
 IpComboBox::IpComboBox(wxWindow* parent)
     : wxComboBox(parent,
@@ -18,5 +20,13 @@ IpComboBox::IpComboBox(wxWindow* parent)
                  nullptr,
                  wxCB_READONLY)
 {
-
+    asio::io_service ioService;
+    asio::ip::tcp::resolver resolver(ioService);
+    asio::ip::tcp::resolver::query query(asio::ip::host_name(), "");
+    asio::ip::tcp::resolver::iterator iter = resolver.resolve(query);
+    asio::ip::tcp::resolver::iterator end;
+    while (iter != end) {
+        asio::ip::tcp::endpoint ep = *iter++;
+        Append(ep.address().to_string());
+    }
 }
