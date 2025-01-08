@@ -11,7 +11,12 @@
 TCPClientController::TCPClientController(wxWindow *parent)
     : SocketClientController(parent)
 {
-    // Constructor
+    DoHideClientComponents();
+    DoHideClientsComponents();
+    DoHideAuthorizationComponents();
+
+    // Auto adjust the size of the window
+    Fit(parent);
 }
 
 TCPClientController::~TCPClientController()

@@ -10,6 +10,9 @@
 
 WSServerController::WSServerController(wxWindow *parent)
     : SocketServerController(parent)
-{}
+{
+    DoHideClientComponents();
+    DoHideAuthorizationComponents();
+}
 
 WSServerController::~WSServerController() {}

@@ -39,6 +39,40 @@ SocketBaseController::SocketBaseController(wxWindow *parent)
 
 SocketBaseController::~SocketBaseController() {}
 
+void SocketBaseController::DoHideClientComponents()
+{
+    m_clientAddressLabel->Hide();
+    m_clientComboBox->Hide();
+    m_clientPortLabel->Hide();
+    m_clientPortCtrl->Hide();
+}
+
+void SocketBaseController::DoHideServerComponents()
+{
+    m_serverAddressLabel->Hide();
+    m_serverComboBox->Hide();
+    m_serverPortLabel->Hide();
+    m_serverComboBox->Hide();
+}
+
+void SocketBaseController::DoHideClientsComponents()
+{
+    m_clientsLabel->Hide();
+    m_clientsComboBox->Hide();
+    m_clearClientButton->Hide();
+}
+
+void SocketBaseController::DoHideAuthorizationComponents()
+{
+    m_isEnableAuthorizationCheckBox->Hide();
+    m_dataChannelLabel->Hide();
+    m_dataChannelComboBox->Hide();
+    m_userNameLabel->Hide();
+    m_userNameTextCtrl->Hide();
+    m_passwordLabel->Hide();
+    m_passwordTextCtrl->Hide();
+}
+
 void SocketBaseController::InitClientComboBox(const wxString &label, int row, wxWindow *parent)
 {
     m_clientAddressLabel = new wxStaticText(parent, wxID_ANY, label);

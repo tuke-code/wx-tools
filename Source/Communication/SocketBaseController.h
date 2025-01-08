@@ -18,6 +18,12 @@ public:
     SocketBaseController(wxWindow *parent = nullptr);
     ~SocketBaseController();
 
+protected:
+    void DoHideClientComponents();
+    void DoHideServerComponents();
+    void DoHideClientsComponents();
+    void DoHideAuthorizationComponents();
+
 private:
     wxStaticText *m_clientAddressLabel{nullptr};
     IpComboBox *m_clientComboBox{nullptr};

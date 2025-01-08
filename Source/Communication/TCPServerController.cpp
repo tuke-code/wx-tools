@@ -10,6 +10,9 @@
 
 TCPServerController::TCPServerController(wxWindow *parent)
     : SocketServerController(parent)
-{}
+{
+    DoHideClientComponents();
+    DoHideAuthorizationComponents();
+}
 
 TCPServerController::~TCPServerController() {}

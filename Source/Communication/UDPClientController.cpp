@@ -10,6 +10,13 @@
 
 UDPClientController::UDPClientController(wxWindow *parent)
     : SocketClientController(parent)
-{}
+{
+    DoHideClientComponents();
+    DoHideClientsComponents();
+    DoHideAuthorizationComponents();
+
+    // 隐藏部分控件后，重新布局
+    Fit(parent);
+}
 
 UDPClientController::~UDPClientController() {}

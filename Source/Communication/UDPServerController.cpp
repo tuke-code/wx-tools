@@ -10,6 +10,9 @@
 
 UDPServerController::UDPServerController(wxWindow *parent)
     : SocketServerController(parent)
-{}
+{
+    DoHideClientComponents();
+    DoHideAuthorizationComponents();
+}
 
 UDPServerController::~UDPServerController() {}

@@ -10,6 +10,8 @@
 
 WSClientController::WSClientController(wxWindow *parent)
     : SocketClientController(parent)
-{}
+{
+    DoHideClientComponents();
+}
 
 WSClientController::~WSClientController() {}
