@@ -11,8 +11,13 @@
 WSServerController::WSServerController(wxWindow *parent)
     : SocketServerController(parent)
 {
-    DoHideClientComponents();
-    DoHideAuthorizationComponents();
+    std::vector<void (SocketBaseController::*)(int, wxWindow *)> funcs;
+    funcs.push_back(&WSServerController::InitServerComboBox);
+    funcs.push_back(&WSServerController::InitServerPortCtrl);
+    funcs.push_back(&WSServerController::InitClientsComboBox);
+    funcs.push_back(&WSServerController::InitClearClientButton);
+
+    InitUiComponents(funcs, parent);
 }
 
 WSServerController::~WSServerController() {}

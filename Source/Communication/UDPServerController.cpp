@@ -11,8 +11,13 @@
 UDPServerController::UDPServerController(wxWindow *parent)
     : SocketServerController(parent)
 {
-    DoHideClientComponents();
-    DoHideAuthorizationComponents();
+    std::vector<void (SocketBaseController::*)(int, wxWindow *)> funcs;
+    funcs.push_back(&UDPServerController::InitServerComboBox);
+    funcs.push_back(&UDPServerController::InitServerPortCtrl);
+    funcs.push_back(&UDPServerController::InitClientsComboBox);
+    funcs.push_back(&UDPServerController::InitClearClientButton);
+
+    InitUiComponents(funcs, parent);
 }
 
 UDPServerController::~UDPServerController() {}

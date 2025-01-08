@@ -25,57 +25,22 @@ SocketBaseController::SocketBaseController(wxWindow *parent)
     , m_userNameTextCtrl{nullptr}
     , m_passwordTextCtrl{nullptr}
 {
-    InitClientComboBox(wxT("Client IP"), 0, parent);
-    InitClientPortCtrl(wxT("Client port"), 1, parent);
-    InitServerComboBox(wxT("Server IP"), 2, parent);
-    InitServerPortCtrl(wxT("Server port"), 3, parent);
-    InitClientsComboBox(wxT("Clients"), 4, parent);
-    InitClearClientButton(wxT("Disconnect All Client"), 5, parent);
-    InitIsEnableAuthorizationCheckBox(wxT("Enable authorization"), 6, parent);
-    InitDataChannelComboBox(wxT("Channel"), 7, parent);
-    InitUserNameTextCtrl(wxT("User name"), 8, parent);
-    InitPasswordTextCtrl(wxT("Password"), 9, parent);
+
 }
 
 SocketBaseController::~SocketBaseController() {}
 
-void SocketBaseController::DoHideClientComponents()
+void SocketBaseController::InitUiComponents(
+    const std::vector<void (SocketBaseController::*)(int, wxWindow *)> &funcs, wxWindow *parent)
 {
-    m_clientAddressLabel->Hide();
-    m_clientComboBox->Hide();
-    m_clientPortLabel->Hide();
-    m_clientPortCtrl->Hide();
+    for (int i = 0; i < funcs.size(); i++) {
+        (this->*funcs[i])(i, parent);
+    }
 }
 
-void SocketBaseController::DoHideServerComponents()
+void SocketBaseController::InitClientComboBox(int row, wxWindow *parent)
 {
-    m_serverAddressLabel->Hide();
-    m_serverComboBox->Hide();
-    m_serverPortLabel->Hide();
-    m_serverComboBox->Hide();
-}
-
-void SocketBaseController::DoHideClientsComponents()
-{
-    m_clientsLabel->Hide();
-    m_clientsComboBox->Hide();
-    m_clearClientButton->Hide();
-}
-
-void SocketBaseController::DoHideAuthorizationComponents()
-{
-    m_isEnableAuthorizationCheckBox->Hide();
-    m_dataChannelLabel->Hide();
-    m_dataChannelComboBox->Hide();
-    m_userNameLabel->Hide();
-    m_userNameTextCtrl->Hide();
-    m_passwordLabel->Hide();
-    m_passwordTextCtrl->Hide();
-}
-
-void SocketBaseController::InitClientComboBox(const wxString &label, int row, wxWindow *parent)
-{
-    m_clientAddressLabel = new wxStaticText(parent, wxID_ANY, label);
+    m_clientAddressLabel = new wxStaticText(parent, wxID_ANY, wxT("Client IP"));
     Add(m_clientAddressLabel,
         wxGBPosition(row, 0),
         wxGBSpan(1, 1),
@@ -86,9 +51,9 @@ void SocketBaseController::InitClientComboBox(const wxString &label, int row, wx
     Add(m_clientComboBox, wxGBPosition(row, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
 }
 
-void SocketBaseController::InitClientPortCtrl(const wxString &label, int row, wxWindow *parent)
+void SocketBaseController::InitClientPortCtrl(int row, wxWindow *parent)
 {
-    m_clientPortLabel = new wxStaticText(parent, wxID_ANY, label);
+    m_clientPortLabel = new wxStaticText(parent, wxID_ANY, wxT("Client port"));
     Add(m_clientPortLabel, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
 
     m_clientPortCtrl = new wxSpinCtrl(parent, wxID_ANY);
@@ -97,9 +62,9 @@ void SocketBaseController::InitClientPortCtrl(const wxString &label, int row, wx
     m_clientPortCtrl->SetValue(54321);
 }
 
-void SocketBaseController::InitServerComboBox(const wxString &label, int row, wxWindow *parent)
+void SocketBaseController::InitServerComboBox(int row, wxWindow *parent)
 {
-    m_serverAddressLabel = new wxStaticText(parent, wxID_ANY, label);
+    m_serverAddressLabel = new wxStaticText(parent, wxID_ANY, wxT("Server IP"));
     Add(m_serverAddressLabel,
         wxGBPosition(row, 0),
         wxGBSpan(1, 1),
@@ -110,9 +75,9 @@ void SocketBaseController::InitServerComboBox(const wxString &label, int row, wx
     Add(m_serverComboBox, wxGBPosition(row, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
 }
 
-void SocketBaseController::InitServerPortCtrl(const wxString &label, int row, wxWindow *parent)
+void SocketBaseController::InitServerPortCtrl(int row, wxWindow *parent)
 {
-    m_serverPortLabel = new wxStaticText(parent, wxID_ANY, label);
+    m_serverPortLabel = new wxStaticText(parent, wxID_ANY, wxT("Server port"));
     Add(m_serverPortLabel, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
 
     m_serverPortCtrl = new wxSpinCtrl(parent, wxID_ANY);
@@ -121,24 +86,22 @@ void SocketBaseController::InitServerPortCtrl(const wxString &label, int row, wx
     m_serverPortCtrl->SetValue(51234);
 }
 
-void SocketBaseController::InitClientsComboBox(const wxString &label, int row, wxWindow *parent)
+void SocketBaseController::InitClientsComboBox(int row, wxWindow *parent)
 {
-    m_clientsLabel = new wxStaticText(parent, wxID_ANY, label);
+    m_clientsLabel = new wxStaticText(parent, wxID_ANY, wxT("Clients"));
     Add(m_clientsLabel, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
 
     m_clientsComboBox = new wxComboBox(parent, wxID_ANY);
     Add(m_clientsComboBox, wxGBPosition(row, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
 }
 
-void SocketBaseController::InitClearClientButton(const wxString &label, int row, wxWindow *parent)
+void SocketBaseController::InitClearClientButton(int row, wxWindow *parent)
 {
-    m_clearClientButton = new wxButton(parent, wxID_ANY, label);
+    m_clearClientButton = new wxButton(parent, wxID_ANY, wxT("Disconnect All Client"));
     Add(m_clearClientButton, wxGBPosition(row, 0), wxGBSpan(1, 2), wxEXPAND | wxALL, 0);
 }
 
-void SocketBaseController::InitIsEnableAuthorizationCheckBox(const wxString &label,
-                                                             int row,
-                                                             wxWindow *parent)
+void SocketBaseController::InitIsEnableAuthorizationCheckBox(int row, wxWindow *parent)
 {
 #if 0
     auto text = new wxStaticText(parent, wxID_ANY, label);
@@ -146,31 +109,31 @@ void SocketBaseController::InitIsEnableAuthorizationCheckBox(const wxString &lab
 #endif
 
     m_isEnableAuthorizationCheckBox = new wxCheckBox(parent, wxID_ANY, wxEmptyString);
-    m_isEnableAuthorizationCheckBox->SetLabel(label);
+    m_isEnableAuthorizationCheckBox->SetLabel(wxT("Enable authorization"));
     Add(m_isEnableAuthorizationCheckBox, wxGBPosition(row, 0), wxGBSpan(1, 2), wxEXPAND | wxALL, 0);
 }
 
-void SocketBaseController::InitDataChannelComboBox(const wxString &label, int row, wxWindow *parent)
+void SocketBaseController::InitDataChannelComboBox(int row, wxWindow *parent)
 {
-    m_dataChannelLabel = new wxStaticText(parent, wxID_ANY, label);
+    m_dataChannelLabel = new wxStaticText(parent, wxID_ANY, wxT("Channel"));
     Add(m_dataChannelLabel, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
 
     m_dataChannelComboBox = new DataChannelComboBox(parent);
     Add(m_dataChannelComboBox, wxGBPosition(row, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
 }
 
-void SocketBaseController::InitUserNameTextCtrl(const wxString &label, int row, wxWindow *parent)
+void SocketBaseController::InitUserNameTextCtrl(int row, wxWindow *parent)
 {
-    m_userNameLabel = new wxStaticText(parent, wxID_ANY, label);
+    m_userNameLabel = new wxStaticText(parent, wxID_ANY, wxT("User name"));
     Add(m_userNameLabel, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
 
     m_userNameTextCtrl = new wxTextCtrl(parent, wxID_ANY, wxEmptyString);
     Add(m_userNameTextCtrl, wxGBPosition(row, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
 }
 
-void SocketBaseController::InitPasswordTextCtrl(const wxString &label, int row, wxWindow *parent)
+void SocketBaseController::InitPasswordTextCtrl(int row, wxWindow *parent)
 {
-    m_passwordLabel = new wxStaticText(parent, wxID_ANY, label);
+    m_passwordLabel = new wxStaticText(parent, wxID_ANY, wxT("Password"));
     Add(m_passwordLabel, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
 
     m_passwordTextCtrl = new wxTextCtrl(parent, wxID_ANY, wxEmptyString);

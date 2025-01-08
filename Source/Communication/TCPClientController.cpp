@@ -11,12 +11,11 @@
 TCPClientController::TCPClientController(wxWindow *parent)
     : SocketClientController(parent)
 {
-    DoHideClientComponents();
-    DoHideClientsComponents();
-    DoHideAuthorizationComponents();
+    std::vector<void (SocketBaseController::*)(int, wxWindow *)> funcs;
+    funcs.push_back(&TCPClientController::InitServerComboBox);
+    funcs.push_back(&TCPClientController::InitServerPortCtrl);
 
-    // Auto adjust the size of the window
-    Fit(parent);
+    InitUiComponents(funcs, parent);
 }
 
 TCPClientController::~TCPClientController()

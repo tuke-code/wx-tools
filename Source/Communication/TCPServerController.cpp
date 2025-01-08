@@ -11,8 +11,13 @@
 TCPServerController::TCPServerController(wxWindow *parent)
     : SocketServerController(parent)
 {
-    DoHideClientComponents();
-    DoHideAuthorizationComponents();
+    std::vector<void (SocketBaseController::*)(int, wxWindow *)> funcs;
+    funcs.push_back(&TCPServerController::InitServerComboBox);
+    funcs.push_back(&TCPServerController::InitServerPortCtrl);
+    funcs.push_back(&TCPServerController::InitClientsComboBox);
+    funcs.push_back(&TCPServerController::InitClearClientButton);
+
+    InitUiComponents(funcs, parent);
 }
 
 TCPServerController::~TCPServerController() {}

@@ -11,7 +11,15 @@
 WSClientController::WSClientController(wxWindow *parent)
     : SocketClientController(parent)
 {
-    DoHideClientComponents();
+    std::vector<void (SocketBaseController::*)(int, wxWindow *)> funcs;
+    funcs.push_back(&WSClientController::InitServerComboBox);
+    funcs.push_back(&WSClientController::InitServerPortCtrl);
+    funcs.push_back(&WSClientController::InitIsEnableAuthorizationCheckBox);
+    funcs.push_back(&WSClientController::InitDataChannelComboBox);
+    funcs.push_back(&WSClientController::InitUserNameTextCtrl);
+    funcs.push_back(&WSClientController::InitPasswordTextCtrl);
+
+    InitUiComponents(funcs, parent);
 }
 
 WSClientController::~WSClientController() {}

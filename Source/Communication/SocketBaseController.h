@@ -19,10 +19,19 @@ public:
     ~SocketBaseController();
 
 protected:
-    void DoHideClientComponents();
-    void DoHideServerComponents();
-    void DoHideClientsComponents();
-    void DoHideAuthorizationComponents();
+    // clang-format off
+    void InitUiComponents(const std::vector<void (SocketBaseController::*)(int, wxWindow *)> &funcs, wxWindow *parent);
+    void InitClientComboBox(int row, wxWindow *parent);
+    void InitClientPortCtrl(int row, wxWindow *parent);
+    void InitServerComboBox(int row, wxWindow *parent);
+    void InitServerPortCtrl(int row, wxWindow *parent);
+    void InitClientsComboBox(int row, wxWindow *parent);
+    void InitClearClientButton(int row, wxWindow *parent);
+    void InitIsEnableAuthorizationCheckBox(int row, wxWindow *parent);
+    void InitDataChannelComboBox(int row, wxWindow *parent);
+    void InitUserNameTextCtrl(int row, wxWindow *parent);
+    void InitPasswordTextCtrl(int row, wxWindow *parent);
+    // clang-format on
 
 private:
     wxStaticText *m_clientAddressLabel{nullptr};
@@ -45,16 +54,4 @@ private:
     wxStaticText *m_userNameLabel{nullptr};
     wxTextCtrl *m_passwordTextCtrl{nullptr};
     wxStaticText *m_passwordLabel{nullptr};
-
-private:
-    void InitClientComboBox(const wxString &label, int row, wxWindow *parent);
-    void InitClientPortCtrl(const wxString &label, int row, wxWindow *parent);
-    void InitServerComboBox(const wxString &label, int row, wxWindow *parent);
-    void InitServerPortCtrl(const wxString &label, int row, wxWindow *parent);
-    void InitClientsComboBox(const wxString &label, int row, wxWindow *parent);
-    void InitClearClientButton(const wxString &label, int row, wxWindow *parent);
-    void InitIsEnableAuthorizationCheckBox(const wxString &label, int row, wxWindow *parent);
-    void InitDataChannelComboBox(const wxString &label, int row, wxWindow *parent);
-    void InitUserNameTextCtrl(const wxString &label, int row, wxWindow *parent);
-    void InitPasswordTextCtrl(const wxString &label, int row, wxWindow *parent);
 };

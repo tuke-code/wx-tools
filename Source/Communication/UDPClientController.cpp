@@ -11,12 +11,11 @@
 UDPClientController::UDPClientController(wxWindow *parent)
     : SocketClientController(parent)
 {
-    DoHideClientComponents();
-    DoHideClientsComponents();
-    DoHideAuthorizationComponents();
+    std::vector<void (SocketBaseController::*)(int, wxWindow *)> funcs;
+    funcs.push_back(&UDPClientController::InitServerComboBox);
+    funcs.push_back(&UDPClientController::InitServerPortCtrl);
 
-    // 隐藏部分控件后，重新布局
-    Fit(parent);
+    InitUiComponents(funcs, parent);
 }
 
 UDPClientController::~UDPClientController() {}
