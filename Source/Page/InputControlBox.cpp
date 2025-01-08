@@ -12,7 +12,7 @@
 #include <wx/wx.h>
 
 #include "InputPopup.h"
-#include "Unit/TextFormatComboBox.h"
+#include "Utilities/TextFormatComboBox.h"
 
 InputControlBox::InputControlBox(wxWindow* parent)
     : wxStaticBoxSizer(wxVERTICAL, parent, wxT("Input Control"))

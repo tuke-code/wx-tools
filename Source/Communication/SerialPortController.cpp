@@ -10,12 +10,12 @@
 
 #include <wx/gbsizer.h>
 
-#include "Unit/BaudRateComboBox.h"
-#include "Unit/DataBitsComboBox.h"
-#include "Unit/FlowBitsComboBox.h"
-#include "Unit/ParityComboBox.h"
-#include "Unit/PortNameComboBox.h"
-#include "Unit/StopBitsComboBox.h"
+#include "Utilities/BaudRateComboBox.h"
+#include "Utilities/DataBitsComboBox.h"
+#include "Utilities/FlowBitsComboBox.h"
+#include "Utilities/ParityComboBox.h"
+#include "Utilities/PortNameComboBox.h"
+#include "Utilities/StopBitsComboBox.h"
 
 #include "Common/wxTools.h"
 #include "SerialPort.h"

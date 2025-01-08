@@ -11,8 +11,8 @@
 #include <wx/spinctrl.h>
 #include <wx/textctrl.h>
 
-#include "Unit/DataChannelComboBox.h"
-#include "Unit/IpComboBox.h"
+#include "Utilities/DataChannelComboBox.h"
+#include "Utilities/IpComboBox.h"
 
 SocketBaseController::SocketBaseController(wxWindow *parent)
     : CommunicationController(parent)

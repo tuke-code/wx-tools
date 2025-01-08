@@ -8,7 +8,7 @@
  **************************************************************************************************/
 #include "InputBox.h"
 
-#include "Unit/LineEdit.h"
+#include "Utilities/LineEdit.h"
 
 InputBox::InputBox(wxWindow *parent)
     : wxStaticBoxSizer(wxVERTICAL, parent, wxT("Input"))

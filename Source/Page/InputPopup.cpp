@@ -13,9 +13,9 @@
 #include <wx/spinctrl.h>
 #include <wx/statline.h>
 
-#include "Unit/AdditionComboBox.h"
-#include "Unit/CRCTypeComboBox.h"
-#include "Unit/ESCComboBox.h"
+#include "Utilities/AdditionComboBox.h"
+#include "Utilities/CRCTypeComboBox.h"
+#include "Utilities/ESCComboBox.h"
 
 InputPopup::InputPopup(wxButton *controlButton)
     : Popup(controlButton, false)
