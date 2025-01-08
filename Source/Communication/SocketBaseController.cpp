@@ -30,7 +30,7 @@ SocketBaseController::SocketBaseController(wxWindow *parent)
     InitServerComboBox(wxT("Server IP"), 2, parent);
     InitServerPortCtrl(wxT("Server port"), 3, parent);
     InitClientsComboBox(wxT("Clients"), 4, parent);
-    InitClearClientButton(wxT("Disconnect all client"), 5, parent);
+    InitClearClientButton(wxT("Disconnect All Client"), 5, parent);
     InitIsEnableAuthorizationCheckBox(wxT("Enable authorization"), 6, parent);
     InitDataChannelComboBox(wxT("Channel"), 7, parent);
     InitUserNameTextCtrl(wxT("User name"), 8, parent);

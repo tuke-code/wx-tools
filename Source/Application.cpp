@@ -22,6 +22,7 @@ bool Application::OnInit()
     wxToolsInfo() << "Application::OnInit()";
 
     auto* mainWindow = new MainWindow();
+    mainWindow->SetTransparent(50);
     mainWindow->Show(true);
     return true;
 }
