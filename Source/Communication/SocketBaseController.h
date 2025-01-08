@@ -1,5 +1,5 @@
 ﻿/***************************************************************************************************
- * Copyright 2024 x-tools-author(x-tools@outlook.com). All rights reserved.
+ * Copyright 2024-2025 x-tools-author(x-tools@outlook.com). All rights reserved.
  *
  * The file is encoded using "utf8 with bom", it is a part of eTools project.
  *
@@ -20,29 +20,33 @@ public:
 
 private:
     wxStaticText *m_clientAddressLabel{nullptr};
-    wxStaticText *m_clientPortLabel{nullptr};
-    wxStaticText *m_serverAddressLabel{nullptr};
-    wxStaticText *m_serverPortLabel{nullptr};
-
-    wxStaticText *m_dataChannelLabel{nullptr};
-    wxStaticText *m_userNameLabel{nullptr};
-    wxStaticText *m_passwordLabel{nullptr};
-
     IpComboBox *m_clientComboBox{nullptr};
+    wxStaticText *m_clientPortLabel{nullptr};
     wxSpinCtrl *m_clientPortCtrl{nullptr};
+    wxStaticText *m_serverAddressLabel{nullptr};
     IpComboBox *m_serverComboBox{nullptr};
+    wxStaticText *m_serverPortLabel{nullptr};
     wxSpinCtrl *m_serverPortCtrl{nullptr};
 
+    wxStaticText *m_clientsLabel{nullptr};
+    wxComboBox *m_clientsComboBox{nullptr};
+    wxButton *m_clearClientButton{nullptr};
+
     wxCheckBox *m_isEnableAuthorizationCheckBox{nullptr};
+    wxStaticText *m_dataChannelLabel{nullptr};
     DataChannelComboBox *m_dataChannelComboBox{nullptr};
     wxTextCtrl *m_userNameTextCtrl{nullptr};
+    wxStaticText *m_userNameLabel{nullptr};
     wxTextCtrl *m_passwordTextCtrl{nullptr};
+    wxStaticText *m_passwordLabel{nullptr};
 
 private:
     void InitClientComboBox(const wxString &label, int row, wxWindow *parent);
     void InitClientPortCtrl(const wxString &label, int row, wxWindow *parent);
     void InitServerComboBox(const wxString &label, int row, wxWindow *parent);
     void InitServerPortCtrl(const wxString &label, int row, wxWindow *parent);
+    void InitClientsComboBox(const wxString &label, int row, wxWindow *parent);
+    void InitClearClientButton(const wxString &label, int row, wxWindow *parent);
     void InitIsEnableAuthorizationCheckBox(const wxString &label, int row, wxWindow *parent);
     void InitDataChannelComboBox(const wxString &label, int row, wxWindow *parent);
     void InitUserNameTextCtrl(const wxString &label, int row, wxWindow *parent);

@@ -29,10 +29,12 @@ SocketBaseController::SocketBaseController(wxWindow *parent)
     InitClientPortCtrl(wxT("Client port"), 1, parent);
     InitServerComboBox(wxT("Server IP"), 2, parent);
     InitServerPortCtrl(wxT("Server port"), 3, parent);
-    InitIsEnableAuthorizationCheckBox(wxT("Enable authorization"), 4, parent);
-    InitDataChannelComboBox(wxT("Channel"), 5, parent);
-    InitUserNameTextCtrl(wxT("User name"), 6, parent);
-    InitPasswordTextCtrl(wxT("Password"), 7, parent);
+    InitClientsComboBox(wxT("Clients"), 4, parent);
+    InitClearClientButton(wxT("Disconnect all client"), 5, parent);
+    InitIsEnableAuthorizationCheckBox(wxT("Enable authorization"), 6, parent);
+    InitDataChannelComboBox(wxT("Channel"), 7, parent);
+    InitUserNameTextCtrl(wxT("User name"), 8, parent);
+    InitPasswordTextCtrl(wxT("Password"), 9, parent);
 }
 
 SocketBaseController::~SocketBaseController() {}
@@ -83,6 +85,21 @@ void SocketBaseController::InitServerPortCtrl(const wxString &label, int row, wx
     Add(m_serverPortCtrl, wxGBPosition(row, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
     m_serverPortCtrl->SetRange(1, 65535);
     m_serverPortCtrl->SetValue(51234);
+}
+
+void SocketBaseController::InitClientsComboBox(const wxString &label, int row, wxWindow *parent)
+{
+    m_clientsLabel = new wxStaticText(parent, wxID_ANY, label);
+    Add(m_clientsLabel, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
+
+    m_clientsComboBox = new wxComboBox(parent, wxID_ANY);
+    Add(m_clientsComboBox, wxGBPosition(row, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
+}
+
+void SocketBaseController::InitClearClientButton(const wxString &label, int row, wxWindow *parent)
+{
+    m_clearClientButton = new wxButton(parent, wxID_ANY, label);
+    Add(m_clearClientButton, wxGBPosition(row, 0), wxGBSpan(1, 2), wxEXPAND | wxALL, 0);
 }
 
 void SocketBaseController::InitIsEnableAuthorizationCheckBox(const wxString &label,
