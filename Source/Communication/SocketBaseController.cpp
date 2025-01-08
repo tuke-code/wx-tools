@@ -30,6 +30,19 @@ SocketBaseController::SocketBaseController(wxWindow *parent)
 
 SocketBaseController::~SocketBaseController() {}
 
+void SocketBaseController::Disable() {}
+
+void SocketBaseController::Enable() {}
+
+wxJSONValue SocketBaseController::SaveParameters() const
+{
+    wxJSONValue json;
+
+    return json;
+}
+
+void SocketBaseController::LoadParameters(const wxJSONValue &json) {}
+
 void SocketBaseController::InitUiComponents(
     const std::vector<void (SocketBaseController::*)(int, wxWindow *)> &funcs, wxWindow *parent)
 {

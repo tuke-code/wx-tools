@@ -12,8 +12,9 @@ SocketBase::SocketBase() {}
 
 SocketBase::~SocketBase() {}
 
-void SocketBase::Load(const nlohmann::json &parameters)
+void SocketBase::Load(const wxJSONValue &parameters)
 {
+#if 0
     SocketBaseParameterKeys keys;
     std::string clientAddress;
     m_clientAddress = parameters.at(std::string(keys.clientAddress.mb_str())).get_to(clientAddress);
@@ -24,14 +25,14 @@ void SocketBase::Load(const nlohmann::json &parameters)
     m_dataChannel = parameters.at(std::string(keys.dataChannel.mb_str())).get<int>();
     m_userName = parameters.at(std::string(keys.userName.mb_str())).get<std::string>();
     m_password = parameters.at(std::string(keys.password.mb_str())).get<std::string>();
-
+#endif
     Communication::Load(parameters);
 }
 
-nlohmann::json SocketBase::Save()
+wxJSONValue SocketBase::Save()
 {
     SocketBaseParameterKeys keys;
-    nlohmann::json parameters;
+    wxJSONValue parameters;
     parameters[std::string(keys.clientAddress.mb_str())] = m_clientAddress.ToStdString();
     parameters[std::string(keys.clientPort.mb_str())] = m_clientPort;
     parameters[std::string(keys.serverAddress.mb_str())] = m_serverAddress.ToStdString();

@@ -18,6 +18,11 @@ public:
     SocketBaseController(wxWindow *parent = nullptr);
     ~SocketBaseController();
 
+    void Disable() override;
+    void Enable() override;
+    wxJSONValue SaveParameters() const override;
+    void LoadParameters(const wxJSONValue &json) override;
+
 protected:
     // clang-format off
     void InitUiComponents(const std::vector<void (SocketBaseController::*)(int, wxWindow *)> &funcs, wxWindow *parent);

@@ -9,6 +9,7 @@
 #include "Page.h"
 
 #include <wx/gbsizer.h>
+#include <wx/jsonval.h>
 
 #include "Common/wxTools.h"
 #include "Communication/Communication.h"
@@ -53,17 +54,17 @@ Page::Page(CommunicationType type, wxWindow *parent)
     m_sendTimer.Bind(wxEVT_TIMER, [this](wxTimerEvent &event) { OnSendTimerTimeout(); });
 }
 
-void Page::LoadParameters(const nlohmann::json &json)
+void Page::LoadParameters(const wxJSONValue &json)
 {
-    auto controllerJson = json[m_parameterNames.communicationControlBox];
+    auto controllerJson = json.Get(m_parameterNames.communicationControlBox, wxJSONValue());
     m_communicationControlBox->GetController()->LoadParameters(controllerJson);
 }
 
-nlohmann::json Page::SaveParameters() const
+wxJSONValue Page::SaveParameters() const
 {
     auto *communicationController = m_communicationControlBox->GetController();
 
-    nlohmann::json json;
+    wxJSONValue json;
     json[m_parameterNames.communicationControlBox] = communicationController->SaveParameters();
     return json;
 }

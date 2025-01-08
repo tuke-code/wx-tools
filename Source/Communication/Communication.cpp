@@ -25,12 +25,12 @@ void Communication::Write(const wxString &data, TextFormat format)
     wxUnusedVar(format);
 }
 
-void Communication::Load(const nlohmann::json &parameters)
+void Communication::Load(const wxJSONValue &parameters)
 {
     m_parameters = parameters;
 }
 
-nlohmann::json Communication::Save()
+wxJSONValue Communication::Save()
 {
     return m_parameters;
 }

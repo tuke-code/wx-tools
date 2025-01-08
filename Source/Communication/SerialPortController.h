@@ -24,8 +24,8 @@ public:
 
     void Disable() override;
     void Enable() override;
-    nlohmann::json SaveParameters() const override;
-    void LoadParameters(const nlohmann::json &json) override;
+    wxJSONValue SaveParameters() const override;
+    void LoadParameters(const wxJSONValue &json) override;
 
 protected:
     Communication *CreateCommunication() override;
@@ -51,11 +51,11 @@ private:
 private:
     struct ParameterNames
     {
-        const std::string portName{"PortName"};
-        const std::string baudRate{"BaudRate"};
-        const std::string dataBits{"DataBits"};
-        const std::string stopBits{"StopBits"};
-        const std::string flowBits{"FlowBits"};
-        const std::string parity{"Parity"};
+        const wxString portName{"PortName"};
+        const wxString baudRate{"BaudRate"};
+        const wxString dataBits{"DataBits"};
+        const wxString stopBits{"StopBits"};
+        const wxString flowBits{"FlowBits"};
+        const wxString parity{"Parity"};
     } m_parameterNames;
 };

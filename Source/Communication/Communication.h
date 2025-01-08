@@ -9,8 +9,8 @@
 #pragma once
 
 #include <asio/buffer.hpp>
-#include <nlohmann/json.hpp>
 #include <sigslot/signal.hpp>
+#include <wx/jsonval.h>
 #include <wx/wx.h>
 
 #include "Common/wxTools.h"
@@ -28,9 +28,9 @@ public:
     virtual void Close();
     virtual void Write(const wxString &data, TextFormat format);
 
-    virtual void Load(const nlohmann::json &parameters);
-    virtual nlohmann::json Save();
+    virtual void Load(const wxJSONValue &parameters);
+    virtual wxJSONValue Save();
 
 protected:
-    nlohmann::json m_parameters{nlohmann::json::object()};
+    wxJSONValue m_parameters{wxJSONValue(wxJSONTYPE_OBJECT)};
 };

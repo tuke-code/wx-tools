@@ -55,13 +55,13 @@ void CommunicationController::Disable() {}
 
 void CommunicationController::Enable() {}
 
-nlohmann::json CommunicationController::SaveParameters() const
+wxJSONValue CommunicationController::SaveParameters() const
 {
-    nlohmann::json json;
+    wxJSONValue json;
     return json;
 }
 
-void CommunicationController::LoadParameters(const nlohmann::json &json)
+void CommunicationController::LoadParameters(const wxJSONValue &json)
 {
     wxUnusedVar(json);
 }

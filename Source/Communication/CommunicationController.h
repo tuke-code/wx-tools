@@ -10,6 +10,8 @@
 
 #include <nlohmann/json.hpp>
 #include <wx/gbsizer.h>
+#include <wx/jsonreader.h>
+#include <wx/jsonval.h>
 #include <wx/wx.h>
 
 #include "Communication.h"
@@ -27,8 +29,8 @@ public:
 
     virtual void Disable();
     virtual void Enable();
-    virtual nlohmann::json SaveParameters() const;
-    virtual void LoadParameters(const nlohmann::json &json);
+    virtual wxJSONValue SaveParameters() const;
+    virtual void LoadParameters(const wxJSONValue &json);
 
 protected:
     virtual Communication *CreateCommunication();

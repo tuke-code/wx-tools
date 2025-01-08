@@ -11,6 +11,8 @@
 #include <fstream>
 
 #include <wx/filename.h>
+#include <wx/jsonreader.h>
+#include <wx/jsonval.h>
 #include <wx/notebook.h>
 
 #include "Common/wxTools.h"
@@ -141,10 +143,9 @@ void MainWindow::LoadParameters()
             continue;
         }
 
-        std::ifstream file(name.ToStdString());
-        nlohmann::json json = nlohmann::json::parse(file);
-
-        wxToolsLog(INFO) << wxString::Format("[%s]", name) << json;
+        wxJSONReader jsonReader;
+        wxJSONValue json;
+        jsonReader.Parse(name, &json);
 
         if (it->first == CommunicationType::SerialPort) {
             page->LoadParameters(json);
@@ -159,6 +160,6 @@ void MainWindow::SaveParameters()
         auto json = page->SaveParameters();
         wxString name = GetPageParameterFileName(it->first);
         std::ofstream file(name.ToStdString());
-        file << json.dump(4);
+        file << json.AsString();
     }
 }

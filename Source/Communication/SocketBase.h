@@ -30,8 +30,8 @@ public:
     SocketBase();
     ~SocketBase();
 
-    void Load(const nlohmann::json &parameters) override;
-    nlohmann::json Save() override;
+    void Load(const wxJSONValue &parameters) override;
+    wxJSONValue Save() override;
 
 protected:
     wxString m_clientAddress;

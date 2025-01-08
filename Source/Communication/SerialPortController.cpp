@@ -61,10 +61,10 @@ void SerialPortController::Enable()
     m_parityComboBox->Enable();
 }
 
-nlohmann::json SerialPortController::SaveParameters() const
+wxJSONValue SerialPortController::SaveParameters() const
 {
-    nlohmann::json json;
-    json[m_parameterNames.portName] = m_portNameComboBox->GetPortName().ToStdString();
+    wxJSONValue json;
+    json[m_parameterNames.portName] = m_portNameComboBox->GetPortName();
     json[m_parameterNames.baudRate] = m_baudRateComboBox->GetBaudRate();
     json[m_parameterNames.dataBits] = m_dataBitsComboBox->GetDataBits().value();
     json[m_parameterNames.stopBits] = m_stopBitsComboBox->GetStopBits();
@@ -73,14 +73,21 @@ nlohmann::json SerialPortController::SaveParameters() const
     return json;
 }
 
-void SerialPortController::LoadParameters(const nlohmann::json &json)
+void SerialPortController::LoadParameters(const wxJSONValue &json)
 {
-    m_portNameComboBox->SetPortName(json[m_parameterNames.portName]);
-    m_baudRateComboBox->SetBaudRate(json[m_parameterNames.baudRate]);
-    m_dataBitsComboBox->SetDataBits(json[m_parameterNames.dataBits]);
-    m_stopBitsComboBox->SetStopBits(json[m_parameterNames.stopBits]);
-    m_flowBitsComboBox->SetFlowBits(json[m_parameterNames.flowBits]);
-    m_parityComboBox->SetParity(json[m_parameterNames.parity]);
+    wxString portName = json.Get(m_parameterNames.portName, wxJSONValue()).AsString();
+    int baudRate = json.Get(m_parameterNames.baudRate, wxJSONValue(9600)).AsInt();
+    int dataBits = json.Get(m_parameterNames.dataBits, wxJSONValue(8)).AsInt();
+    int stopBits = json.Get(m_parameterNames.stopBits, wxJSONValue(0)).AsInt();
+    int flowBits = json.Get(m_parameterNames.flowBits, wxJSONValue(0)).AsInt();
+    int parity = json.Get(m_parameterNames.parity, wxJSONValue(0)).AsInt();
+
+    m_portNameComboBox->SetPortName(portName);
+    m_baudRateComboBox->SetBaudRate(baudRate);
+    m_dataBitsComboBox->SetDataBits(dataBits);
+    m_stopBitsComboBox->SetStopBits(stopBits);
+    m_flowBitsComboBox->SetFlowBits(flowBits);
+    m_parityComboBox->SetParity(parity);
 }
 
 Communication *SerialPortController::CreateCommunication()

@@ -5,22 +5,16 @@ project(
   VERSION 1.0.0
   LANGUAGES C CXX)
 
+# cmake-format: off
 set(CMAKE_AUTORCC ON)
-
-set(wxBUILD_SHARED
-    OFF
-    CACHE BOOL "Build wxWidgets as shared libraries" FORCE)
+set(wxBUILD_SHARED OFF CACHE BOOL "Build wxWidgets as shared libraries" FORCE)
 if(WIN32)
-  set(wxBUILD_USE_STATIC_RUNTIME
-      ON
-      CACHE BOOL "Build static runtime" FORCE)
+  set(wxBUILD_USE_STATIC_RUNTIME ON CACHE BOOL "Build static runtime" FORCE)
 endif()
-
-if(WIN32
-   AND MSVC
-   AND CMAKE_BUILD_TYPE STREQUAL "Release")
+if(WIN32 AND MSVC AND CMAKE_BUILD_TYPE STREQUAL "Release")
   set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 endif()
+# cmake-format: on
 
 include(CMake/json.cmake)
 include(CMake/asio.cmake)
@@ -30,6 +24,7 @@ include(CMake/sigslot.cmake)
 include(CMake/wxWidgets.cmake)
 include(CMake/websocketpp.cmake)
 include(CMake/CSerialPort.cmake)
+include(CMake/wxjson.cmake)
 
 include_directories(Source)
 
