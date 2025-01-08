@@ -38,7 +38,7 @@ add_executable(wxTools ${WX_TOOLS_SOURCE})
 set(PROJECT_LIBS libcserialport)
 list(APPEND PROJECT_LIBS libcrc)
 list(APPEND PROJECT_LIBS glog::glog)
-list(APPEND PROJECT_LIBS wx::core wx::aui)
+list(APPEND PROJECT_LIBS wx::core wx::aui wxJSON)
 target_link_libraries(wxTools PRIVATE ${PROJECT_LIBS})
 set_target_properties(
   wxTools

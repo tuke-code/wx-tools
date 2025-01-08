@@ -8,7 +8,6 @@
  **************************************************************************************************/
 #pragma once
 
-#include <nlohmann/json.hpp>
 #include <wx/gbsizer.h>
 #include <wx/jsonreader.h>
 #include <wx/jsonval.h>
