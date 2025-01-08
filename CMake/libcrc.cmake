@@ -19,3 +19,4 @@ file(GLOB LIBCRC_C ${CMAKE_SOURCE_DIR}/ThirdParty/${packet_name}/src/*.*)
 
 include_directories(${CMAKE_SOURCE_DIR}/ThirdParty/${packet_name}/include)
 add_library(libcrc STATIC ${LIBCRC_H} ${LIBCRC_C})
+set_target_properties(libcrc PROPERTIES FOLDER "ThirdParty")
