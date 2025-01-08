@@ -30,9 +30,55 @@ SocketBaseController::SocketBaseController(wxWindow *parent)
 
 SocketBaseController::~SocketBaseController() {}
 
-void SocketBaseController::Disable() {}
+void SocketBaseController::Disable()
+{
+    if (m_clientComboBox) {
+        m_clientComboBox->Disable();
+    }
+    if (m_clientPortCtrl) {
+        m_clientPortCtrl->Disable();
+    }
+    if (m_serverComboBox) {
+        m_serverComboBox->Disable();
+    }
+    if (m_serverPortCtrl) {
+        m_serverPortCtrl->Disable();
+    }
+    if (m_isEnableAuthorizationCheckBox) {
+        m_isEnableAuthorizationCheckBox->Disable();
+    }
+    if (m_userNameTextCtrl) {
+        m_userNameTextCtrl->Disable();
+    }
+    if (m_passwordTextCtrl) {
+        m_passwordTextCtrl->Disable();
+    }
+}
 
-void SocketBaseController::Enable() {}
+void SocketBaseController::Enable()
+{
+    if (m_clientComboBox) {
+        m_clientComboBox->Enable();
+    }
+    if (m_clientPortCtrl) {
+        m_clientPortCtrl->Enable();
+    }
+    if (m_serverComboBox) {
+        m_serverComboBox->Enable();
+    }
+    if (m_serverPortCtrl) {
+        m_serverPortCtrl->Enable();
+    }
+    if (m_isEnableAuthorizationCheckBox) {
+        m_isEnableAuthorizationCheckBox->Enable();
+    }
+    if (m_userNameTextCtrl) {
+        m_userNameTextCtrl->Enable();
+    }
+    if (m_passwordTextCtrl) {
+        m_passwordTextCtrl->Enable();
+    }
+}
 
 wxJSONValue SocketBaseController::SaveParameters() const
 {
