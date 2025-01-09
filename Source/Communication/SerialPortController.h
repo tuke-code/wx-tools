@@ -30,7 +30,6 @@ public:
 protected:
     Communication *CreateCommunication() override;
     void AboutToOpen(Communication *communication) override;
-    void AboutToClose(Communication *communication) override;
 
 private:
     void InitPortNameComboBox(const wxString &label, int row, wxWindow *parent);

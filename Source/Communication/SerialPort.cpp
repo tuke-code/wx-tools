@@ -8,91 +8,21 @@
  **************************************************************************************************/
 #include "SerialPort.h"
 
-#include <Common/wxTools.h>
+#include "SerialPort_p.h"
 
 SerialPort::SerialPort()
     : Communication()
-    , m_serialPort(nullptr)
+    , d(new SerialPortPrivate())
 {}
 
-std::string SerialPort::GetPortName() const
+SerialPort::~SerialPort()
 {
-    return m_portName;
+    delete d;
 }
 
-void SerialPort::SetPortName(const std::string &portName)
+void ReadData(SerialPortPrivate *d, SerialPort *serialPort)
 {
-    m_portName = portName;
-}
-
-void SerialPort::SetBaudRate(int baudRate)
-{
-    if (m_serialPort) {
-        try {
-            m_serialPort->set_option(asio::serial_port::baud_rate(baudRate));
-        } catch (asio::system_error &e) {
-            std::string errorString = e.what();
-            errorString = "Set baud rate failed, error message: " + errorString;
-            wxToolsInfo() << errorString;
-        }
-    }
-}
-
-void SerialPort::SetFlowControl(asio::serial_port::flow_control::type flowControl)
-{
-    if (m_serialPort) {
-        try {
-            m_serialPort->set_option(asio::serial_port::flow_control(flowControl));
-        } catch (asio::system_error &e) {
-            std::string errorString = e.what();
-            errorString = "Set flow control failed, error message: " + errorString;
-            wxToolsInfo() << errorString;
-        }
-    }
-}
-
-void SerialPort::SetParity(asio::serial_port::parity::type parity)
-{
-    if (m_serialPort) {
-        try {
-            m_serialPort->set_option(asio::serial_port::parity(parity));
-        } catch (asio::system_error &e) {
-            std::string errorString = e.what();
-            errorString = "Set parity failed, error message: " + errorString;
-            wxToolsInfo() << errorString;
-        }
-    }
-}
-
-void SerialPort::SetStopBits(asio::serial_port::stop_bits::type stopBits)
-{
-    if (m_serialPort) {
-        try {
-            m_serialPort->set_option(asio::serial_port::stop_bits(stopBits));
-        } catch (asio::system_error &e) {
-            std::string errorString = e.what();
-            errorString = "Set stop bits failed, error message: " + errorString;
-            wxToolsInfo() << errorString;
-        }
-    }
-}
-
-void SerialPort::SetCharacterSize(asio::serial_port::character_size dataBits)
-{
-    if (m_serialPort) {
-        try {
-            m_serialPort->set_option(asio::serial_port::character_size(dataBits));
-        } catch (asio::system_error &e) {
-            std::string errorString = e.what();
-            errorString = "Set character size failed, error message: " + errorString;
-            wxToolsInfo() << errorString;
-        }
-    }
-}
-
-void ReadData(asio::serial_port *asioSerialPort, SerialPort *serialPort)
-{
-    if (!asioSerialPort || !serialPort) {
+    if (!d->serialPort || !serialPort) {
         return;
     }
 
@@ -100,7 +30,7 @@ void ReadData(asio::serial_port *asioSerialPort, SerialPort *serialPort)
     size_t receivedBytes = 0;
     while (1) {
         try {
-            receivedBytes = asioSerialPort->read_some(asio::buffer(buffer, sizeof(buffer)));
+            receivedBytes = d->serialPort->read_some(asio::buffer(buffer, sizeof(buffer)));
         } catch (asio::system_error &e) {
             std::string errorString = e.what();
             wxString msg = wxString::Format("Read data failed, error message: %s", errorString);
@@ -111,25 +41,25 @@ void ReadData(asio::serial_port *asioSerialPort, SerialPort *serialPort)
         if (receivedBytes > 0) {
             std::string data(buffer, receivedBytes);
             asio::const_buffer buffer(data.data(), data.size());
-            std::string portName = serialPort->GetPortName();
-            serialPort->bytesReadSignal(buffer, portName);
+            std::string portName = d->portName;
+            serialPort->bytesReadSignal(buffer, d->portName);
         }
     }
 
-    delete asioSerialPort;
+    delete d->serialPort;
 }
 
 bool SerialPort::Open()
 {
-    if (m_serialPort) {
-        m_serialPort->close();
+    if (d->serialPort) {
+        d->serialPort->close();
     }
 
-    m_serialPort = new asio::serial_port(m_ioService);
+    d->serialPort = new asio::serial_port(d->ioService);
     try {
-        m_serialPort->open(m_portName);
+        d->serialPort->open(d->portName);
     } catch (asio::system_error &e) {
-        m_ioService.stop();
+        d->ioService.stop();
 
         std::string errorString = e.what();
         errorString = "Open serial port failed, error message: " + errorString;
@@ -137,7 +67,7 @@ bool SerialPort::Open()
         return false;
     }
 
-    std::thread t(ReadData, m_serialPort, this);
+    std::thread t(ReadData, d, this);
     t.detach();
 
     return true;
@@ -145,21 +75,49 @@ bool SerialPort::Open()
 
 void SerialPort::Close()
 {
-    if (m_serialPort) {
-        m_serialPort->close();
+    if (d->serialPort) {
+        d->serialPort->close();
     }
 }
 
 void SerialPort::Write(const wxString &data, TextFormat format)
 {
     const std::string msg = data.ToStdString();
-    if (m_serialPort && m_serialPort->is_open() && !msg.empty()) {
+    if (d->serialPort && d->serialPort->is_open() && !msg.empty()) {
         auto buffer = asio::buffer(msg.data(), msg.size());
-        size_t ret = m_serialPort->write_some(buffer);
+        size_t ret = d->serialPort->write_some(buffer);
         if (ret > 0) {
-            bytesWrittenSignal(buffer, m_portName);
+            bytesWrittenSignal(buffer, d->portName);
         } else {
             wxToolsWarning() << "Write data failed.";
         }
     }
+}
+
+void SerialPort::Load(const wxJSONValue &parameters)
+{
+    // clang-format off
+    SerialPortParameterKeys keys;
+    d->portName = parameters.Get(keys.portName, wxJSONValue("")).AsString();
+    d->baudRate = parameters.Get(keys.baudRate, wxJSONValue(9600)).AsInt();
+    d->flowControl = static_cast<asio::serial_port::flow_control::type>(parameters.Get(keys.flowControl, wxJSONValue(asio::serial_port::flow_control::type::none)).AsInt());
+    d->parity = static_cast<asio::serial_port::parity::type>(parameters.Get(keys.parity, wxJSONValue(asio::serial_port::parity::type::none)).AsInt());
+    d->stopBits = static_cast<asio::serial_port::stop_bits::type>(parameters.Get(keys.stopBits, wxJSONValue(asio::serial_port::stop_bits::type::one)).AsInt());
+    d->dataBits = static_cast<asio::serial_port::character_size>(parameters.Get(keys.characterSize, wxJSONValue(8)).AsInt());
+    // clang-format on
+}
+
+wxJSONValue SerialPort::Save()
+{
+    wxJSONValue parameters;
+    // clang-format off
+    SerialPortParameterKeys keys;
+    parameters[keys.portName] = d->portName;
+    parameters[keys.baudRate] = d->baudRate;
+    parameters[keys.flowControl] = static_cast<int>(d->flowControl);
+    parameters[keys.parity] = static_cast<int>(d->parity);
+    parameters[keys.stopBits] = static_cast<int>(d->stopBits);
+    parameters[keys.characterSize] = static_cast<int>(d->dataBits.value());
+    // clang-format on
+    return parameters;
 }

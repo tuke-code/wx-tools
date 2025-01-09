@@ -97,37 +97,9 @@ Communication *SerialPortController::CreateCommunication()
 
 void SerialPortController::AboutToOpen(Communication *communication)
 {
-    auto serialPort = dynamic_cast<SerialPort *>(communication);
-    if (!serialPort) {
-        return;
-    }
-
-    const wxString portName = m_portNameComboBox->GetValue();
-    int baudRate = m_baudRateComboBox->GetBaudRate();
-    asio::serial_port::character_size dataBits = m_dataBitsComboBox->GetDataBits();
-    asio::serial_port::stop_bits::type stopBits = m_stopBitsComboBox->GetStopBits();
-    asio::serial_port::parity::type parity = m_parityComboBox->GetParity();
-    asio::serial_port::flow_control::type flowControl = m_flowBitsComboBox->GetFlowBits();
-
-    auto info = wxString::Format("Open serial port, port name: %s, baud rate: %d, data bits: %d, "
-                                 "stop bits: %d, parity: %d, flow control: %d",
-                                 portName,
-                                 static_cast<int>(baudRate),
-                                 dataBits.value(),
-                                 static_cast<int>(stopBits),
-                                 static_cast<int>(parity),
-                                 static_cast<int>(flowControl));
-    wxToolsInfo() << info;
-
-    serialPort->SetBaudRate(baudRate);
-    serialPort->SetCharacterSize(dataBits);
-    serialPort->SetFlowControl(flowControl);
-    serialPort->SetParity(parity);
-    serialPort->SetStopBits(stopBits);
-    serialPort->SetPortName(portName.ToStdString());
+    CommunicationController::AboutToOpen(communication);
+    wxLogInfo(communication->Save().Dump());
 }
-
-void SerialPortController::AboutToClose(Communication *communication) {}
 
 void SerialPortController::InitPortNameComboBox(const wxString &label, int row, wxWindow *parent)
 {
