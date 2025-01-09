@@ -110,7 +110,6 @@ void SerialPort::Load(const wxJSONValue &parameters)
 wxJSONValue SerialPort::Save()
 {
     wxJSONValue parameters;
-    // clang-format off
     SerialPortParameterKeys keys;
     parameters[keys.portName] = d->portName;
     parameters[keys.baudRate] = d->baudRate;
@@ -118,6 +117,5 @@ wxJSONValue SerialPort::Save()
     parameters[keys.parity] = static_cast<int>(d->parity);
     parameters[keys.stopBits] = static_cast<int>(d->stopBits);
     parameters[keys.characterSize] = static_cast<int>(d->dataBits.value());
-    // clang-format on
     return parameters;
 }
