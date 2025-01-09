@@ -20,5 +20,27 @@ DataChannelComboBox::DataChannelComboBox(wxWindow* parent)
                  nullptr,
                  wxCB_READONLY)
 {
+    m_dataChannels[0] = (wxString("Text channel"));
+    m_dataChannels[1] = (wxString("Binary channel"));
+}
 
+int DataChannelComboBox::GetDataChannel() const
+{
+    wxString txt = GetValue();
+    for (auto& pair : m_dataChannels) {
+        if (pair.second == txt) {
+            return pair.first;
+        }
+    }
+
+    return 0;
+}
+
+void DataChannelComboBox::SetDataChannel(int dataChannel)
+{
+    wxString txt = m_dataChannels[dataChannel];
+    int selection = FindString(txt);
+    if (selection != wxNOT_FOUND) {
+        SetSelection(selection);
+    }
 }

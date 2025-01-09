@@ -11,6 +11,7 @@
 #include <wx/spinctrl.h>
 #include <wx/textctrl.h>
 
+#include "SocketBase.h"
 #include "Utilities/DataChannelComboBox.h"
 #include "Utilities/IpComboBox.h"
 
@@ -83,11 +84,77 @@ void SocketBaseController::Enable()
 wxJSONValue SocketBaseController::SaveParameters() const
 {
     wxJSONValue json;
+    SocketBaseParameterKeys keys;
+    if (m_clientComboBox) {
+        json[keys.clientAddress] = m_clientComboBox->GetValue();
+    }
+    if (m_clientPortCtrl) {
+        json[keys.clientPort] = m_clientPortCtrl->GetValue();
+    }
+    if (m_serverComboBox) {
+        json[keys.serverAddress] = m_serverComboBox->GetValue();
+    }
+    if (m_serverPortCtrl) {
+        json[keys.serverPort] = m_serverPortCtrl->GetValue();
+    }
+    if (m_dataChannelComboBox) {
+        json[keys.dataChannel] = m_dataChannelComboBox->GetValue();
+    }
+    if (m_isEnableAuthorizationCheckBox) {
+        json[keys.isAuthorization] = m_isEnableAuthorizationCheckBox->GetValue();
+    }
+    if (m_userNameTextCtrl) {
+        json[keys.userName] = m_userNameTextCtrl->GetValue();
+    }
+    if (m_passwordTextCtrl) {
+        json[keys.password] = m_passwordTextCtrl->GetValue();
+    }
 
     return json;
 }
 
-void SocketBaseController::LoadParameters(const wxJSONValue &json) {}
+void SocketBaseController::LoadParameters(const wxJSONValue &json)
+{
+    SocketBaseParameterKeys keys;
+    if (m_clientComboBox) {
+        wxString clientAddress = json.Get(keys.clientAddress, wxJSONValue("127.0.0.1")).AsString();
+        int section = m_clientComboBox->FindString(clientAddress);
+        if (section != wxNOT_FOUND) {
+            m_clientComboBox->SetSelection(section);
+        }
+    }
+    if (m_clientPortCtrl) {
+        int clientPort = json.Get(keys.clientPort, wxJSONValue(54321)).AsInt();
+        m_clientPortCtrl->SetValue(clientPort);
+    }
+    if (m_serverComboBox) {
+        wxString serverAddress = json.Get(keys.serverAddress, wxJSONValue("127.0.0.1")).AsString();
+        int section = m_serverComboBox->FindString(serverAddress);
+        if (section != wxNOT_FOUND) {
+            m_serverComboBox->SetSelection(section);
+        }
+    }
+    if (m_serverPortCtrl) {
+        int serverPort = json.Get(keys.serverPort, wxJSONValue(54321)).AsInt();
+        m_serverPortCtrl->SetValue(serverPort);
+    }
+    if (m_dataChannelComboBox) {
+        int dataChannel = json.Get(keys.dataChannel, wxJSONValue(0)).AsInt();
+        m_dataChannelComboBox->SetDataChannel(dataChannel);
+    }
+    if (m_isEnableAuthorizationCheckBox) {
+        bool isAuthorization = json.Get(keys.isAuthorization, wxJSONValue(false)).AsBool();
+        m_isEnableAuthorizationCheckBox->SetValue(isAuthorization);
+    }
+    if (m_userNameTextCtrl) {
+        wxString userName = json.Get(keys.userName, wxJSONValue("")).AsString();
+        m_userNameTextCtrl->SetValue(userName);
+    }
+    if (m_passwordTextCtrl) {
+        wxString password = json.Get(keys.password, wxJSONValue("")).AsString();
+        m_passwordTextCtrl->SetValue(password);
+    }
+}
 
 void SocketBaseController::InitUiComponents(
     const std::vector<void (SocketBaseController::*)(int, wxWindow *)> &funcs, wxWindow *parent)
