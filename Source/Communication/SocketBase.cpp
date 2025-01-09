@@ -14,18 +14,16 @@ SocketBase::~SocketBase() {}
 
 void SocketBase::Load(const wxJSONValue &parameters)
 {
-#if 0
     SocketBaseParameterKeys keys;
-    std::string clientAddress;
-    m_clientAddress = parameters.at(std::string(keys.clientAddress.mb_str())).get_to(clientAddress);
-    m_clientPort = parameters.at(std::string(keys.clientPort.mb_str())).get<uint16_t>();
-    m_serverAddress = parameters.at(std::string(keys.serverAddress.mb_str())).get<std::string>();
-    m_serverPort = parameters.at(std::string(keys.serverPort.mb_str())).get<uint16_t>();
-    m_isEnableAuthorization = parameters.at(std::string(keys.isAuthorization.mb_str())).get<bool>();
-    m_dataChannel = parameters.at(std::string(keys.dataChannel.mb_str())).get<int>();
-    m_userName = parameters.at(std::string(keys.userName.mb_str())).get<std::string>();
-    m_password = parameters.at(std::string(keys.password.mb_str())).get<std::string>();
-#endif
+    m_clientAddress = parameters.Get(keys.clientAddress, wxJSONValue("127.0.0.0")).AsString();
+    m_clientPort = parameters.Get(keys.clientPort, wxJSONValue(54321)).AsUInt();
+    m_serverAddress = parameters.Get(keys.serverAddress, wxJSONValue("127.0.0.0")).AsString();
+    m_serverPort = parameters.Get(keys.serverPort, wxJSONValue(54321)).AsUInt();
+    m_isEnableAuthorization = parameters.Get(keys.isAuthorization, wxJSONValue(false)).AsBool();
+    m_dataChannel = parameters.Get(keys.dataChannel, wxJSONValue(0)).AsUInt();
+    m_userName = parameters.Get(keys.userName, wxJSONValue("")).AsString();
+    m_password = parameters.Get(keys.password, wxJSONValue("")).AsString();
+
     Communication::Load(parameters);
 }
 
@@ -42,4 +40,44 @@ wxJSONValue SocketBase::Save()
     parameters[std::string(keys.userName.mb_str())] = m_userName.ToStdString();
     parameters[std::string(keys.password.mb_str())] = m_password.ToStdString();
     return parameters;
+}
+
+wxString SocketBase::GetClientAddress() const
+{
+    return m_clientAddress;
+}
+
+uint16_t SocketBase::GetClientPort() const
+{
+    return m_clientPort;
+}
+
+wxString SocketBase::GetServerAddress() const
+{
+    return m_serverAddress;
+}
+
+uint16_t SocketBase::GetServerPort() const
+{
+    return m_serverPort;
+}
+
+bool SocketBase::GetIsEnableAuthorization() const
+{
+    return m_isEnableAuthorization;
+}
+
+int SocketBase::GetDataChannel() const
+{
+    return m_dataChannel;
+}
+
+wxString SocketBase::GetUserName() const
+{
+    return m_userName;
+}
+
+wxString SocketBase::GetPassword() const
+{
+    return m_password;
 }

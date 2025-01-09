@@ -33,6 +33,15 @@ public:
     void Load(const wxJSONValue &parameters) override;
     wxJSONValue Save() override;
 
+    wxString GetClientAddress() const;
+    uint16_t GetClientPort() const;
+    wxString GetServerAddress() const;
+    uint16_t GetServerPort() const;
+    bool GetIsEnableAuthorization() const;
+    int GetDataChannel() const;
+    wxString GetUserName() const;
+    wxString GetPassword() const;
+
 protected:
     wxString m_clientAddress;
     uint16_t m_clientPort;
