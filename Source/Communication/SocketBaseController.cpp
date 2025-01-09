@@ -79,7 +79,7 @@ void SocketBaseController::Enable()
     }
 }
 
-wxJSONValue SocketBaseController::SaveParameters() const
+wxJSONValue SocketBaseController::Save() const
 {
     wxJSONValue json;
     SocketBaseParameterKeys keys;
@@ -98,7 +98,7 @@ wxJSONValue SocketBaseController::SaveParameters() const
     return json;
 }
 
-void SocketBaseController::LoadParameters(const wxJSONValue &json)
+void SocketBaseController::Load(const wxJSONValue &json)
 {
     SocketBaseParameterKeys keys;
     if (m_clientComboBox) {

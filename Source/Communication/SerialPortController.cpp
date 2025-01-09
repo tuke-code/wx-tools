@@ -61,7 +61,7 @@ void SerialPortController::Enable()
     m_parityComboBox->Enable();
 }
 
-wxJSONValue SerialPortController::SaveParameters() const
+wxJSONValue SerialPortController::Save() const
 {
     wxJSONValue json;
     json[m_parameterNames.portName] = m_portNameComboBox->GetPortName();
@@ -73,7 +73,7 @@ wxJSONValue SerialPortController::SaveParameters() const
     return json;
 }
 
-void SerialPortController::LoadParameters(const wxJSONValue &json)
+void SerialPortController::Load(const wxJSONValue &json)
 {
     wxString portName = json.Get(m_parameterNames.portName, wxJSONValue()).AsString();
     int baudRate = json.Get(m_parameterNames.baudRate, wxJSONValue(9600)).AsInt();

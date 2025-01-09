@@ -20,8 +20,8 @@ public:
 
     void Disable() override;
     void Enable() override;
-    wxJSONValue SaveParameters() const override;
-    void LoadParameters(const wxJSONValue &json) override;
+    wxJSONValue Save() const override;
+    void Load(const wxJSONValue &json) override;
 
 protected:
     // clang-format off

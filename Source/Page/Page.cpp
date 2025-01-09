@@ -57,7 +57,7 @@ Page::Page(CommunicationType type, wxWindow *parent)
 void Page::LoadParameters(const wxJSONValue &json)
 {
     auto controllerJson = json.Get(m_parameterNames.communicationControlBox, wxJSONValue());
-    m_communicationControlBox->GetController()->LoadParameters(controllerJson);
+    m_communicationControlBox->GetController()->Load(controllerJson);
 }
 
 wxJSONValue Page::SaveParameters() const
@@ -65,7 +65,7 @@ wxJSONValue Page::SaveParameters() const
     auto *communicationController = m_communicationControlBox->GetController();
 
     wxJSONValue json;
-    json[m_parameterNames.communicationControlBox] = communicationController->SaveParameters();
+    json[m_parameterNames.communicationControlBox] = communicationController->Save();
     return json;
 }
 

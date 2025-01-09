@@ -28,8 +28,8 @@ public:
 
     virtual void Disable();
     virtual void Enable();
-    virtual wxJSONValue SaveParameters() const;
-    virtual void LoadParameters(const wxJSONValue &json);
+    virtual wxJSONValue Save() const;
+    virtual void Load(const wxJSONValue &json);
 
 protected:
     virtual Communication *CreateCommunication();

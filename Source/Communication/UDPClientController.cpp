@@ -38,7 +38,7 @@ void UDPClientController::AboutToOpen(Communication *communication)
         return;
     }
 
-    udpClient->Load(SaveParameters());
+    udpClient->Load(Save());
 }
 
 void UDPClientController::AboutToClose(Communication *communication)

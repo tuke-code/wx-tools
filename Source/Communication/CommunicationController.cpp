@@ -55,13 +55,13 @@ void CommunicationController::Disable() {}
 
 void CommunicationController::Enable() {}
 
-wxJSONValue CommunicationController::SaveParameters() const
+wxJSONValue CommunicationController::Save() const
 {
     wxJSONValue json;
     return json;
 }
 
-void CommunicationController::LoadParameters(const wxJSONValue &json)
+void CommunicationController::Load(const wxJSONValue &json)
 {
     wxUnusedVar(json);
 }
@@ -73,7 +73,7 @@ Communication *CommunicationController::CreateCommunication()
 
 void CommunicationController::AboutToOpen(Communication *communication)
 {
-    communication->Load(SaveParameters());
+    communication->Load(Save());
 }
 
 void CommunicationController::AboutToClose(Communication *communication)
