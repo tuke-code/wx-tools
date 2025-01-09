@@ -31,14 +31,14 @@ wxJSONValue SocketBase::Save()
 {
     SocketBaseParameterKeys keys;
     wxJSONValue parameters;
-    parameters[std::string(keys.clientAddress.mb_str())] = m_clientAddress.ToStdString();
-    parameters[std::string(keys.clientPort.mb_str())] = m_clientPort;
-    parameters[std::string(keys.serverAddress.mb_str())] = m_serverAddress.ToStdString();
-    parameters[std::string(keys.serverPort.mb_str())] = m_serverPort;
-    parameters[std::string(keys.isAuthorization.mb_str())] = m_isEnableAuthorization;
-    parameters[std::string(keys.dataChannel.mb_str())] = m_dataChannel;
-    parameters[std::string(keys.userName.mb_str())] = m_userName.ToStdString();
-    parameters[std::string(keys.password.mb_str())] = m_password.ToStdString();
+    parameters[keys.clientAddress.ToStdString()] = m_clientAddress.ToStdString();
+    parameters[keys.clientPort.ToStdString()] = m_clientPort;
+    parameters[keys.serverAddress.ToStdString()] = m_serverAddress.ToStdString();
+    parameters[keys.serverPort.ToStdString()] = m_serverPort;
+    parameters[keys.isAuthorization.ToStdString()] = m_isEnableAuthorization;
+    parameters[keys.dataChannel.ToStdString()] = m_dataChannel;
+    parameters[keys.userName.ToStdString()] = m_userName.ToStdString();
+    parameters[keys.password.ToStdString()] = m_password.ToStdString();
     return parameters;
 }
 
