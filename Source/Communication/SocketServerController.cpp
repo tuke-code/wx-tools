@@ -1,5 +1,5 @@
 ﻿/***************************************************************************************************
- * Copyright 2024 x-tools-author(x-tools@outlook.com). All rights reserved.
+ * Copyright 2024-2025 x-tools-author(x-tools@outlook.com). All rights reserved.
  *
  * The file is encoded using "utf8 with bom", it is a part of eTools project.
  *
@@ -13,3 +13,9 @@ SocketServerController::SocketServerController(wxWindow *parent)
 {}
 
 SocketServerController::~SocketServerController() {}
+
+wxString SocketServerController::DoMakeFlag(const wxString &ip, uint16_t port)
+{
+    // Such as: "127.0.0.1:55443"
+    return ip + ":" + std::to_string(port);
+}

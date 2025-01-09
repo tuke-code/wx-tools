@@ -15,4 +15,7 @@ class SocketServerController : public SocketBaseController
 public:
     SocketServerController(wxWindow *parent = nullptr);
     ~SocketServerController();
+
+protected:
+    wxString DoMakeFlag(const wxString &ip, uint16_t port);
 };
