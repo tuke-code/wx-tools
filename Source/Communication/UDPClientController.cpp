@@ -8,6 +8,8 @@
  **************************************************************************************************/
 #include "UDPClientController.h"
 
+#include "UDPClient.h"
+
 UDPClientController::UDPClientController(wxWindow *parent)
     : SocketClientController(parent)
 {
@@ -19,3 +21,27 @@ UDPClientController::UDPClientController(wxWindow *parent)
 }
 
 UDPClientController::~UDPClientController() {}
+
+Communication *UDPClientController::CreateCommunication()
+{
+    return new UDPClient();
+}
+
+void UDPClientController::AboutToOpen(Communication *communication)
+{
+    if (!communication) {
+        return;
+    }
+
+    UDPClient *udpClient = dynamic_cast<UDPClient *>(communication);
+    if (!udpClient) {
+        return;
+    }
+
+    udpClient->Load(SaveParameters());
+}
+
+void UDPClientController::AboutToClose(Communication *communication)
+{
+    // Nothing to do yet.
+}

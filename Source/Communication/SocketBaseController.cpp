@@ -21,13 +21,11 @@ SocketBaseController::SocketBaseController(wxWindow *parent)
     , m_clientPortCtrl{nullptr}
     , m_serverComboBox{nullptr}
     , m_serverPortCtrl{nullptr}
-    , m_isEnableAuthorizationCheckBox{nullptr}
+    , m_isAuthorizationCheckBox{nullptr}
     , m_dataChannelComboBox{nullptr}
     , m_userNameTextCtrl{nullptr}
     , m_passwordTextCtrl{nullptr}
-{
-
-}
+{}
 
 SocketBaseController::~SocketBaseController() {}
 
@@ -45,8 +43,8 @@ void SocketBaseController::Disable()
     if (m_serverPortCtrl) {
         m_serverPortCtrl->Disable();
     }
-    if (m_isEnableAuthorizationCheckBox) {
-        m_isEnableAuthorizationCheckBox->Disable();
+    if (m_isAuthorizationCheckBox) {
+        m_isAuthorizationCheckBox->Disable();
     }
     if (m_userNameTextCtrl) {
         m_userNameTextCtrl->Disable();
@@ -70,8 +68,8 @@ void SocketBaseController::Enable()
     if (m_serverPortCtrl) {
         m_serverPortCtrl->Enable();
     }
-    if (m_isEnableAuthorizationCheckBox) {
-        m_isEnableAuthorizationCheckBox->Enable();
+    if (m_isAuthorizationCheckBox) {
+        m_isAuthorizationCheckBox->Enable();
     }
     if (m_userNameTextCtrl) {
         m_userNameTextCtrl->Enable();
@@ -85,30 +83,17 @@ wxJSONValue SocketBaseController::SaveParameters() const
 {
     wxJSONValue json;
     SocketBaseParameterKeys keys;
-    if (m_clientComboBox) {
-        json[keys.clientAddress] = m_clientComboBox->GetValue();
-    }
-    if (m_clientPortCtrl) {
-        json[keys.clientPort] = m_clientPortCtrl->GetValue();
-    }
-    if (m_serverComboBox) {
-        json[keys.serverAddress] = m_serverComboBox->GetValue();
-    }
-    if (m_serverPortCtrl) {
-        json[keys.serverPort] = m_serverPortCtrl->GetValue();
-    }
-    if (m_dataChannelComboBox) {
-        json[keys.dataChannel] = m_dataChannelComboBox->GetValue();
-    }
-    if (m_isEnableAuthorizationCheckBox) {
-        json[keys.isAuthorization] = m_isEnableAuthorizationCheckBox->GetValue();
-    }
-    if (m_userNameTextCtrl) {
-        json[keys.userName] = m_userNameTextCtrl->GetValue();
-    }
-    if (m_passwordTextCtrl) {
-        json[keys.password] = m_passwordTextCtrl->GetValue();
-    }
+
+    // clang-format off
+    json[keys.clientAddress] = m_clientComboBox ? m_clientComboBox->GetValue() : "127.0.0.1";
+    json[keys.clientPort] = m_clientPortCtrl ? m_clientPortCtrl->GetValue() : 54321;
+    json[keys.serverAddress] = m_serverComboBox ? m_serverComboBox->GetValue() : "127.0.0.1";
+    json[keys.serverPort] = m_serverPortCtrl ? m_serverPortCtrl->GetValue() : 54321;
+    json[keys.isAuthorization] = m_isAuthorizationCheckBox ? m_isAuthorizationCheckBox->GetValue() : false;
+    json[keys.dataChannel] = m_dataChannelComboBox ? m_dataChannelComboBox->GetSelection() : 0;
+    json[keys.userName] = m_userNameTextCtrl ? m_userNameTextCtrl->GetValue() : "";
+    json[keys.password] = m_passwordTextCtrl ? m_passwordTextCtrl->GetValue() : "";
+    // clang-format on
 
     return json;
 }
@@ -142,9 +127,9 @@ void SocketBaseController::LoadParameters(const wxJSONValue &json)
         int dataChannel = json.Get(keys.dataChannel, wxJSONValue(0)).AsInt();
         m_dataChannelComboBox->SetDataChannel(dataChannel);
     }
-    if (m_isEnableAuthorizationCheckBox) {
+    if (m_isAuthorizationCheckBox) {
         bool isAuthorization = json.Get(keys.isAuthorization, wxJSONValue(false)).AsBool();
-        m_isEnableAuthorizationCheckBox->SetValue(isAuthorization);
+        m_isAuthorizationCheckBox->SetValue(isAuthorization);
     }
     if (m_userNameTextCtrl) {
         wxString userName = json.Get(keys.userName, wxJSONValue("")).AsString();
@@ -234,9 +219,9 @@ void SocketBaseController::InitIsEnableAuthorizationCheckBox(int row, wxWindow *
     Add(text, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
 #endif
 
-    m_isEnableAuthorizationCheckBox = new wxCheckBox(parent, wxID_ANY, wxEmptyString);
-    m_isEnableAuthorizationCheckBox->SetLabel(wxT("Enable authorization"));
-    Add(m_isEnableAuthorizationCheckBox, wxGBPosition(row, 0), wxGBSpan(1, 2), wxEXPAND | wxALL, 0);
+    m_isAuthorizationCheckBox = new wxCheckBox(parent, wxID_ANY, wxEmptyString);
+    m_isAuthorizationCheckBox->SetLabel(wxT("Enable authorization"));
+    Add(m_isAuthorizationCheckBox, wxGBPosition(row, 0), wxGBSpan(1, 2), wxEXPAND | wxALL, 0);
 }
 
 void SocketBaseController::InitDataChannelComboBox(int row, wxWindow *parent)

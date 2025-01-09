@@ -52,7 +52,7 @@ private:
     wxComboBox *m_clientsComboBox{nullptr};
     wxButton *m_clearClientButton{nullptr};
 
-    wxCheckBox *m_isEnableAuthorizationCheckBox{nullptr};
+    wxCheckBox *m_isAuthorizationCheckBox{nullptr};
     wxStaticText *m_dataChannelLabel{nullptr};
     DataChannelComboBox *m_dataChannelComboBox{nullptr};
     wxTextCtrl *m_userNameTextCtrl{nullptr};

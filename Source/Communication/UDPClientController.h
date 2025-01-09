@@ -15,4 +15,9 @@ class UDPClientController : public SocketClientController
 public:
     UDPClientController(wxWindow *parent = nullptr);
     ~UDPClientController();
+
+protected:
+    Communication *CreateCommunication() override;
+    void AboutToOpen(Communication *communication) override;
+    void AboutToClose(Communication *communication) override;
 };

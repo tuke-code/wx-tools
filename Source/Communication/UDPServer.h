@@ -15,4 +15,13 @@ class UDPServer : public SocketServer
 public:
     UDPServer();
     ~UDPServer();
+
+    bool Open() override;
+    void Close() override;
+    void Write(const wxString &data, TextFormat format) override;
+
+private:
+    asio::io_context m_ioContext;
+    asio::ip::udp::socket *m_socket;
+    asio::ip::udp::endpoint m_endpoint;
 };
