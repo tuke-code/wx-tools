@@ -73,8 +73,7 @@ Communication *CommunicationController::CreateCommunication()
 
 void CommunicationController::AboutToOpen(Communication *communication)
 {
-    wxUnusedVar(communication);
-    // Nothing to do
+    communication->Load(SaveParameters());
 }
 
 void CommunicationController::AboutToClose(Communication *communication)
