@@ -36,8 +36,9 @@ void ReadData(asio::ip::udp::socket *socket, UDPClient *udpClient)
         if (receivedBytes > 0) {
             std::string data(buffer, receivedBytes);
             asio::const_buffer buffer(data.data(), data.size());
-            std::string flag = "xxx.xxx.xxx.xxx";
-            udpClient->bytesReadSignal(buffer, flag);
+            std::string ip = socket->remote_endpoint().address().to_string();
+            std::string port = std::to_string(socket->remote_endpoint().port());
+            udpClient->bytesReadSignal(buffer, ip + ":" + port);
         }
     }
 
