@@ -77,7 +77,7 @@ void Page::OnInvokeOpen()
         m_sendTimer.Stop();
         m_inputControlBox->SetCycleIntervalComboBoxSelection(0);
 
-        Link *communication = communicationController->GetCommunication();
+        Link *communication = communicationController->GetLink();
         communication->bytesWrittenSignal.disconnect_all();
 
         communicationController->Close();
@@ -90,7 +90,7 @@ void Page::OnInvokeOpen()
             communicationControlBox->SetOpenButtonLabel(wxT("Close"));
             wxToolsInfo() << "Open communication successfully.";
 
-            Link *communication = communicationController->GetCommunication();
+            Link *communication = communicationController->GetLink();
             communication->bytesReadSignal.connect(&Page::OnBytesRead, this);
             communication->bytesWrittenSignal.connect(&Page::OnBytesWritten, this);
         } else {
@@ -107,7 +107,7 @@ void Page::OnInvokeWrite(TextFormat format)
         return;
     }
 
-    Link *communication = communicationController->GetCommunication();
+    Link *communication = communicationController->GetLink();
     wxString text = m_ioPanel->GetInputBox()->GetInputText();
 
     if (text.IsEmpty()) {

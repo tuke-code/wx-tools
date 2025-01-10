@@ -28,8 +28,8 @@ public:
     void Load(const wxJSONValue &json) override;
 
 protected:
-    Link *CreateCommunication() override;
-    void AboutToOpen(Link *communication) override;
+    Link *CreateLink() override;
+    void AboutToOpen(Link *link) override;
 
 private:
     void InitPortNameComboBox(const wxString &label, int row, wxWindow *parent);
@@ -46,15 +46,4 @@ private:
     StopBitsComboBox *m_stopBitsComboBox;
     FlowBitsComboBox *m_flowBitsComboBox;
     ParityComboBox *m_parityComboBox;
-
-private:
-    struct ParameterNames
-    {
-        const wxString portName{"PortName"};
-        const wxString baudRate{"BaudRate"};
-        const wxString dataBits{"DataBits"};
-        const wxString stopBits{"StopBits"};
-        const wxString flowBits{"FlowBits"};
-        const wxString parity{"Parity"};
-    } m_parameterNames;
 };

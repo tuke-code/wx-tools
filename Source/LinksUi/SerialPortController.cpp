@@ -62,24 +62,26 @@ void SerialPortController::Enable()
 
 wxJSONValue SerialPortController::Save() const
 {
-    wxJSONValue json;
-    json[m_parameterNames.portName] = m_portNameComboBox->GetPortName();
-    json[m_parameterNames.baudRate] = m_baudRateComboBox->GetBaudRate();
-    json[m_parameterNames.dataBits] = m_dataBitsComboBox->GetDataBits().value();
-    json[m_parameterNames.stopBits] = m_stopBitsComboBox->GetStopBits();
-    json[m_parameterNames.flowBits] = m_flowBitsComboBox->GetFlowBits();
-    json[m_parameterNames.parity] = m_parityComboBox->GetParity();
+    wxJSONValue json = wxJSONValue(wxJSONTYPE_OBJECT);
+    SerialPortParameterKeys keys;
+    json[keys.portName] = m_portNameComboBox->GetPortName();
+    json[keys.baudRate] = m_baudRateComboBox->GetBaudRate();
+    json[keys.characterSize] = m_dataBitsComboBox->GetDataBits().value();
+    json[keys.stopBits] = m_stopBitsComboBox->GetStopBits();
+    json[keys.flowControl] = m_flowBitsComboBox->GetFlowBits();
+    json[keys.parity] = m_parityComboBox->GetParity();
     return json;
 }
 
 void SerialPortController::Load(const wxJSONValue &json)
 {
-    wxString portName = json.Get(m_parameterNames.portName, wxJSONValue()).AsString();
-    int baudRate = json.Get(m_parameterNames.baudRate, wxJSONValue(9600)).AsInt();
-    int dataBits = json.Get(m_parameterNames.dataBits, wxJSONValue(8)).AsInt();
-    int stopBits = json.Get(m_parameterNames.stopBits, wxJSONValue(0)).AsInt();
-    int flowBits = json.Get(m_parameterNames.flowBits, wxJSONValue(0)).AsInt();
-    int parity = json.Get(m_parameterNames.parity, wxJSONValue(0)).AsInt();
+    SerialPortParameterKeys keys;
+    wxString portName = json.Get(keys.portName, wxJSONValue()).AsString();
+    int baudRate = json.Get(keys.baudRate, wxJSONValue(9600)).AsInt();
+    int dataBits = json.Get(keys.characterSize, wxJSONValue(8)).AsInt();
+    int stopBits = json.Get(keys.stopBits, wxJSONValue(0)).AsInt();
+    int flowBits = json.Get(keys.flowControl, wxJSONValue(0)).AsInt();
+    int parity = json.Get(keys.parity, wxJSONValue(0)).AsInt();
 
     m_portNameComboBox->SetPortName(portName);
     m_baudRateComboBox->SetBaudRate(baudRate);
@@ -89,15 +91,20 @@ void SerialPortController::Load(const wxJSONValue &json)
     m_parityComboBox->SetParity(parity);
 }
 
-Link *SerialPortController::CreateCommunication()
+Link *SerialPortController::CreateLink()
 {
     return new SerialPort();
 }
 
-void SerialPortController::AboutToOpen(Link *communication)
+void SerialPortController::AboutToOpen(Link *link)
 {
-    LinksController::AboutToOpen(communication);
-    wxLogInfo(communication->Save().Dump());
+    LinksController::AboutToOpen(link);
+
+#if 0
+    wxJSONValue json = link->Save();
+    wxString str = json.Dump();
+    wxLogInfo(str);
+#endif
 }
 
 void SerialPortController::InitPortNameComboBox(const wxString &label, int row, wxWindow *parent)

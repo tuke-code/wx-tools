@@ -20,7 +20,7 @@ class LinksController : public wxGridBagSizer
 public:
     LinksController(wxWindow *parent = nullptr);
     ~LinksController();
-    Link *GetCommunication() const;
+    Link *GetLink() const;
 
     bool Open();
     void Close();
@@ -32,9 +32,9 @@ public:
     virtual void Load(const wxJSONValue &json);
 
 protected:
-    virtual Link *CreateCommunication();
-    virtual void AboutToOpen(Link *communication);
-    virtual void AboutToClose(Link *communication);
+    virtual Link *CreateLink();
+    virtual void AboutToOpen(Link *link);
+    virtual void AboutToClose(Link *link);
 
 private:
     Link *m_communication;

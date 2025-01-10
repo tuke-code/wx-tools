@@ -22,7 +22,7 @@ UDPClientController::UDPClientController(wxWindow *parent)
 
 UDPClientController::~UDPClientController() {}
 
-Link *UDPClientController::CreateCommunication()
+Link *UDPClientController::CreateLink()
 {
     return new UDPClient();
 }
