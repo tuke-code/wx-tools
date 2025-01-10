@@ -13,42 +13,42 @@
 
 LinksController::LinksController(wxWindow *parent)
     : wxGridBagSizer(4, 4)
-    , m_communication(nullptr)
+    , m_link(nullptr)
 {}
 
 LinksController::~LinksController() {}
 
 Link *LinksController::GetLink() const
 {
-    return m_communication;
+    return m_link;
 }
 
 bool LinksController::Open()
 {
-    m_communication = CreateLink();
-    if (!m_communication) {
+    m_link = CreateLink();
+    if (!m_link) {
         return false;
     }
 
-    AboutToOpen(m_communication);
+    AboutToOpen(m_link);
 
-    return m_communication->Open();
+    return m_link->Open();
 }
 
 void LinksController::Close()
 {
-    if (m_communication) {
-        AboutToClose(m_communication);
+    if (m_link) {
+        AboutToClose(m_link);
 
-        m_communication->Close();
-        delete m_communication;
-        m_communication = nullptr;
+        m_link->Close();
+        delete m_link;
+        m_link = nullptr;
     }
 }
 
 bool LinksController::IsOpen() const
 {
-    return m_communication != nullptr;
+    return m_link != nullptr;
 }
 
 void LinksController::Disable() {}

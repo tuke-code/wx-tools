@@ -23,7 +23,6 @@ void SocketBase::Load(const nlohmann::json &parameters)
     m_dataChannel = parameters[keys.dataChannel].template get<int>();
     m_userName = parameters[keys.userName].template get<std::string>();
     m_password = parameters[keys.password].template get<std::string>();
-    Link::Load(parameters);
 }
 
 nlohmann::json SocketBase::Save()

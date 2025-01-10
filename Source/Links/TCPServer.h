@@ -15,4 +15,8 @@ class TCPServer : public SocketServer
 public:
     TCPServer();
     ~TCPServer();
+
+    bool Open() override;
+    void Close() override;
+    void Write(const wxString &data, TextFormat format) override;
 };

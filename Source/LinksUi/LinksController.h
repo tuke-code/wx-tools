@@ -36,5 +36,5 @@ protected:
     virtual void AboutToClose(Link *link);
 
 private:
-    Link *m_communication;
+    Link *m_link;
 };

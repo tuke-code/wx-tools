@@ -11,3 +11,12 @@
 TCPServer::TCPServer() {}
 
 TCPServer::~TCPServer() {}
+
+bool TCPServer::Open()
+{
+    return false;
+}
+
+void TCPServer::Close() {}
+
+void TCPServer::Write(const wxString &data, TextFormat format) {}

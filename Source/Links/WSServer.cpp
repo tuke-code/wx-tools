@@ -11,3 +11,12 @@
 WSServer::WSServer() {}
 
 WSServer::~WSServer() {}
+
+bool WSServer::Open()
+{
+    return false;
+}
+
+void WSServer::Close() {}
+
+void WSServer::Write(const wxString &data, TextFormat format) {}

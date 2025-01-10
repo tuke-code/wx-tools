@@ -15,4 +15,8 @@ class WSServer : public SocketServer
 public:
     WSServer();
     ~WSServer();
+
+    bool Open() override;
+    void Close() override;
+    void Write(const wxString &data, TextFormat format) override;
 };

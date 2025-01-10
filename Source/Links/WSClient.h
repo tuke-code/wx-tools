@@ -15,4 +15,8 @@ class WSClient : public SocketServer
 public:
     WSClient();
     ~WSClient();
+
+    bool Open() override;
+    void Close() override;
+    void Write(const wxString &data, TextFormat format) override;
 };

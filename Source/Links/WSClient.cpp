@@ -11,3 +11,12 @@
 WSClient::WSClient() {}
 
 WSClient::~WSClient() {}
+
+bool WSClient::Open()
+{
+    return false;
+}
+
+void WSClient::Close() {}
+
+void WSClient::Write(const wxString &data, TextFormat format) {}
