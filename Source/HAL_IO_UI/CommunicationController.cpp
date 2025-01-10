@@ -18,7 +18,7 @@ CommunicationController::CommunicationController(wxWindow *parent)
 
 CommunicationController::~CommunicationController() {}
 
-Communication *CommunicationController::GetCommunication() const
+HAL_IO *CommunicationController::GetCommunication() const
 {
     return m_communication;
 }
@@ -66,17 +66,17 @@ void CommunicationController::Load(const wxJSONValue &json)
     wxUnusedVar(json);
 }
 
-Communication *CommunicationController::CreateCommunication()
+HAL_IO *CommunicationController::CreateCommunication()
 {
     return nullptr;
 }
 
-void CommunicationController::AboutToOpen(Communication *communication)
+void CommunicationController::AboutToOpen(HAL_IO *communication)
 {
     communication->Load(Save());
 }
 
-void CommunicationController::AboutToClose(Communication *communication)
+void CommunicationController::AboutToClose(HAL_IO *communication)
 {
     wxUnusedVar(communication);
     // Nothing to do

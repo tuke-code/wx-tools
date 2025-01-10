@@ -17,7 +17,7 @@ public:
     ~UDPClientController();
 
 protected:
-    Communication *CreateCommunication() override;
-    void AboutToOpen(Communication *communication) override;
-    void AboutToClose(Communication *communication) override;
+    HAL_IO *CreateCommunication() override;
+    void AboutToOpen(HAL_IO *communication) override;
+    void AboutToClose(HAL_IO *communication) override;
 };

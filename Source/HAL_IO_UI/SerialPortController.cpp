@@ -89,12 +89,12 @@ void SerialPortController::Load(const wxJSONValue &json)
     m_parityComboBox->SetParity(parity);
 }
 
-Communication *SerialPortController::CreateCommunication()
+HAL_IO *SerialPortController::CreateCommunication()
 {
     return new SerialPort();
 }
 
-void SerialPortController::AboutToOpen(Communication *communication)
+void SerialPortController::AboutToOpen(HAL_IO *communication)
 {
     CommunicationController::AboutToOpen(communication);
     wxLogInfo(communication->Save().Dump());

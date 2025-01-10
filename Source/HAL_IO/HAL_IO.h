@@ -15,11 +15,11 @@
 
 #include "Common/wxTools.h"
 
-class Communication : wxObject
+class HAL_IO : wxObject
 {
 public:
-    Communication();
-    ~Communication();
+    HAL_IO();
+    ~HAL_IO();
 
     sigslot::signal<asio::const_buffer & /*bytes*/, const wxString & /*to*/> bytesWrittenSignal;
     sigslot::signal<asio::const_buffer & /*bytes*/, const wxString & /*from*/> bytesReadSignal;

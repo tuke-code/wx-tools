@@ -13,7 +13,7 @@
 
 #include "Common/wxTools.h"
 #include "CommunicationControlBox.h"
-#include "HAL_IO/Communication.h"
+#include "HAL_IO/HAL_IO.h"
 #include "HAL_IO_UI/CommunicationController.h"
 
 #include "ControlBoxes.h"
@@ -77,7 +77,7 @@ void Page::OnInvokeOpen()
         m_sendTimer.Stop();
         m_inputControlBox->SetCycleIntervalComboBoxSelection(0);
 
-        Communication *communication = communicationController->GetCommunication();
+        HAL_IO *communication = communicationController->GetCommunication();
         communication->bytesWrittenSignal.disconnect_all();
 
         communicationController->Close();
@@ -90,7 +90,7 @@ void Page::OnInvokeOpen()
             communicationControlBox->SetOpenButtonLabel(wxT("Close"));
             wxToolsInfo() << "Open communication successfully.";
 
-            Communication *communication = communicationController->GetCommunication();
+            HAL_IO *communication = communicationController->GetCommunication();
             communication->bytesReadSignal.connect(&Page::OnBytesRead, this);
             communication->bytesWrittenSignal.connect(&Page::OnBytesWritten, this);
         } else {
@@ -107,7 +107,7 @@ void Page::OnInvokeWrite(TextFormat format)
         return;
     }
 
-    Communication *communication = communicationController->GetCommunication();
+    HAL_IO *communication = communicationController->GetCommunication();
     wxString text = m_ioPanel->GetInputBox()->GetInputText();
 
     if (text.IsEmpty()) {

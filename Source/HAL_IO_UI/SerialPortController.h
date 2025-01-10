@@ -28,8 +28,8 @@ public:
     void Load(const wxJSONValue &json) override;
 
 protected:
-    Communication *CreateCommunication() override;
-    void AboutToOpen(Communication *communication) override;
+    HAL_IO *CreateCommunication() override;
+    void AboutToOpen(HAL_IO *communication) override;
 
 private:
     void InitPortNameComboBox(const wxString &label, int row, wxWindow *parent);

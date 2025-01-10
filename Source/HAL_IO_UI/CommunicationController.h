@@ -13,14 +13,14 @@
 #include <wx/jsonval.h>
 #include <wx/wx.h>
 
-#include "HAL_IO/Communication.h"
+#include "HAL_IO/HAL_IO.h"
 
 class CommunicationController : public wxGridBagSizer
 {
 public:
     CommunicationController(wxWindow *parent = nullptr);
     ~CommunicationController();
-    Communication *GetCommunication() const;
+    HAL_IO *GetCommunication() const;
 
     bool Open();
     void Close();
@@ -32,10 +32,10 @@ public:
     virtual void Load(const wxJSONValue &json);
 
 protected:
-    virtual Communication *CreateCommunication();
-    virtual void AboutToOpen(Communication *communication);
-    virtual void AboutToClose(Communication *communication);
+    virtual HAL_IO *CreateCommunication();
+    virtual void AboutToOpen(HAL_IO *communication);
+    virtual void AboutToClose(HAL_IO *communication);
 
 private:
-    Communication *m_communication;
+    HAL_IO *m_communication;
 };

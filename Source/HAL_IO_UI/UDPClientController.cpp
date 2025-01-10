@@ -22,12 +22,12 @@ UDPClientController::UDPClientController(wxWindow *parent)
 
 UDPClientController::~UDPClientController() {}
 
-Communication *UDPClientController::CreateCommunication()
+HAL_IO *UDPClientController::CreateCommunication()
 {
     return new UDPClient();
 }
 
-void UDPClientController::AboutToOpen(Communication *communication)
+void UDPClientController::AboutToOpen(HAL_IO *communication)
 {
     if (!communication) {
         return;
@@ -41,7 +41,7 @@ void UDPClientController::AboutToOpen(Communication *communication)
     udpClient->Load(Save());
 }
 
-void UDPClientController::AboutToClose(Communication *communication)
+void UDPClientController::AboutToClose(HAL_IO *communication)
 {
     // Nothing to do yet.
 }

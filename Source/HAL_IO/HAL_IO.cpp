@@ -6,31 +6,31 @@
  * eTools is licensed according to the terms in the file LICENCE(GPL V3) in the root of the source
  * code directory.
  **************************************************************************************************/
-#include "Communication.h"
+#include "HAL_IO.h"
 
-Communication::Communication() {}
+HAL_IO::HAL_IO() {}
 
-Communication::~Communication() {}
+HAL_IO::~HAL_IO() {}
 
-bool Communication::Open()
+bool HAL_IO::Open()
 {
     return false;
 }
 
-void Communication::Close() {}
+void HAL_IO::Close() {}
 
-void Communication::Write(const wxString &data, TextFormat format)
+void HAL_IO::Write(const wxString &data, TextFormat format)
 {
     wxUnusedVar(data);
     wxUnusedVar(format);
 }
 
-void Communication::Load(const wxJSONValue &parameters)
+void HAL_IO::Load(const wxJSONValue &parameters)
 {
     m_parameters = parameters;
 }
 
-wxJSONValue Communication::Save()
+wxJSONValue HAL_IO::Save()
 {
     return m_parameters;
 }

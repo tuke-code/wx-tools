@@ -10,7 +10,7 @@
 
 #include "Common/wxTools.h"
 
-class Communication;
+class HAL_IO;
 class CommunicationFactory
 {
 private:
@@ -20,5 +20,5 @@ private:
 
 public:
     static CommunicationFactory &Singleton();
-    Communication *CreateCommunication(CommunicationType type);
+    HAL_IO *CreateCommunication(CommunicationType type);
 };

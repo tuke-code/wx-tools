@@ -18,7 +18,7 @@ CommunicationFactory &CommunicationFactory::Singleton()
     return instance;
 }
 
-Communication *CreateCommunication(wxWindow *parent, CommunicationType type)
+HAL_IO *CreateCommunication(wxWindow *parent, CommunicationType type)
 {
     if (type == CommunicationType::SerialPort) {
         return new SerialPort();
