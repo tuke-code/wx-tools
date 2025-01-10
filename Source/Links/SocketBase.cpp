@@ -16,9 +16,9 @@ void SocketBase::Load(const nlohmann::json &parameters)
 {
     SocketBaseParameterKeys keys;
     m_clientAddress = parameters[keys.clientAddress].template get<std::string>();
-    m_clientPort = parameters[keys.clientPort].template get<uint16_t>();
+    m_clientPort = parameters[keys.clientPort].template get<int>();
     m_serverAddress = parameters[keys.serverAddress].template get<std::string>();
-    m_serverPort = parameters[keys.serverPort].template get<uint16_t>();
+    m_serverPort = parameters[keys.serverPort].template get<int>();
     m_isEnableAuthorization = parameters[keys.isAuthorization].template get<bool>();
     m_dataChannel = parameters[keys.dataChannel].template get<int>();
     m_userName = parameters[keys.userName].template get<std::string>();
