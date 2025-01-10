@@ -54,13 +54,13 @@ Page::Page(LinkType type, wxWindow *parent)
     m_sendTimer.Bind(wxEVT_TIMER, [this](wxTimerEvent &event) { OnSendTimerTimeout(); });
 }
 
-void Page::LoadParameters(const wxJSONValue &json)
+void Page::Load(const wxJSONValue &json)
 {
     auto controllerJson = json.Get(m_parameterNames.communicationControlBox, wxJSONValue());
     m_communicationControlBox->GetController()->Load(controllerJson);
 }
 
-wxJSONValue Page::SaveParameters() const
+wxJSONValue Page::Save() const
 {
     auto *communicationController = m_communicationControlBox->GetController();
 

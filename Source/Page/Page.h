@@ -25,8 +25,8 @@ class Page : public wxPanel
 public:
     Page(LinkType type, wxWindow *parent);
 
-    void LoadParameters(const wxJSONValue &json);
-    wxJSONValue SaveParameters() const;
+    void Load(const wxJSONValue &json);
+    wxJSONValue Save() const;
 
 private:
     InputControlBox *m_inputControlBox;
