@@ -13,7 +13,7 @@
 #include <wx/jsonval.h>
 #include <wx/wx.h>
 
-#include "Communication.h"
+#include "HAL_IO/Communication.h"
 
 class CommunicationController : public wxGridBagSizer
 {

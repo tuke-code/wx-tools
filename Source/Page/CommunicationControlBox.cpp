@@ -8,9 +8,9 @@
  **************************************************************************************************/
 #include "CommunicationControlBox.h"
 
-#include "Communication/CommunicationController.h"
-#include "Communication/CommunicationControllerFactory.h"
 #include "CommunicationPopup.h"
+#include "HAL_IO_UI/CommunicationController.h"
+#include "HAL_IO_UI/CommunicationControllerFactory.h"
 
 CommunicationControlBox::CommunicationControlBox(CommunicationType type, wxWindow *parent)
     : wxStaticBoxSizer(wxVERTICAL, parent, wxT("Communication Control"))

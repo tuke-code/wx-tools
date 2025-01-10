@@ -8,7 +8,7 @@
  **************************************************************************************************/
 #include "UDPClientController.h"
 
-#include "UDPClient.h"
+#include "HAL_IO/UDPClient.h"
 
 UDPClientController::UDPClientController(wxWindow *parent)
     : SocketClientController(parent)

@@ -12,9 +12,9 @@
 #include <wx/jsonval.h>
 
 #include "Common/wxTools.h"
-#include "Communication/Communication.h"
-#include "Communication/CommunicationController.h"
 #include "CommunicationControlBox.h"
+#include "HAL_IO/Communication.h"
+#include "HAL_IO_UI/CommunicationController.h"
 
 #include "ControlBoxes.h"
 #include "IOPanel.h"

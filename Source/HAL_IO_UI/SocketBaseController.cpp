@@ -11,7 +11,7 @@
 #include <wx/spinctrl.h>
 #include <wx/textctrl.h>
 
-#include "SocketBase.h"
+#include "HAL_IO/SocketBase.h"
 #include "Utilities/DataChannelComboBox.h"
 #include "Utilities/IpComboBox.h"
 

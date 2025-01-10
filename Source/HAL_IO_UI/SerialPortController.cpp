@@ -17,8 +17,7 @@
 #include "Utilities/PortNameComboBox.h"
 #include "Utilities/StopBitsComboBox.h"
 
-#include "Common/wxTools.h"
-#include "SerialPort.h"
+#include "HAL_IO/SerialPort.h"
 
 SerialPortController::SerialPortController(wxWindow *parent)
     : CommunicationController(parent)
