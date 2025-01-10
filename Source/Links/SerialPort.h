@@ -15,12 +15,12 @@
 
 struct SerialPortParameterKeys
 {
-    const wxString portName{"portName"};
-    const wxString baudRate{"baudRate"};
-    const wxString flowControl{"flowControl"};
-    const wxString parity{"parity"};
-    const wxString stopBits{"stopBits"};
-    const wxString characterSize{"characterSize"};
+    const std::string portName{"portName"};
+    const std::string baudRate{"baudRate"};
+    const std::string flowControl{"flowControl"};
+    const std::string parity{"parity"};
+    const std::string stopBits{"stopBits"};
+    const std::string characterSize{"characterSize"};
 };
 
 class SerialPortPrivate;
@@ -33,8 +33,8 @@ public:
     bool Open() override;
     void Close() override;
     void Write(const wxString &data, TextFormat format) override;
-    void Load(const wxJSONValue &parameters) override;
-    wxJSONValue Save() override;
+    void Load(const nlohmann::json &parameters) override;
+    nlohmann::json Save() override;
 
 private:
     SerialPortPrivate *d;

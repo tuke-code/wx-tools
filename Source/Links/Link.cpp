@@ -25,12 +25,12 @@ void Link::Write(const wxString &data, TextFormat format)
     wxUnusedVar(format);
 }
 
-void Link::Load(const wxJSONValue &parameters)
+void Link::Load(const nlohmann::json &parameters)
 {
     m_parameters = parameters;
 }
 
-wxJSONValue Link::Save()
+nlohmann::json Link::Save()
 {
     return m_parameters;
 }

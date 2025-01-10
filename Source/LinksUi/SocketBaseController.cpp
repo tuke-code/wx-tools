@@ -79,11 +79,10 @@ void SocketBaseController::Enable()
     }
 }
 
-wxJSONValue SocketBaseController::Save() const
+nlohmann::json SocketBaseController::Save() const
 {
-    wxJSONValue json;
+    nlohmann::json json;
     SocketBaseParameterKeys keys;
-
     // clang-format off
     json[keys.clientAddress] = m_clientComboBox ? m_clientComboBox->GetValue() : "127.0.0.1";
     json[keys.clientPort] = m_clientPortCtrl ? m_clientPortCtrl->GetValue() : 54321;
@@ -98,45 +97,45 @@ wxJSONValue SocketBaseController::Save() const
     return json;
 }
 
-void SocketBaseController::Load(const wxJSONValue &json)
+void SocketBaseController::Load(const nlohmann::json &json)
 {
     SocketBaseParameterKeys keys;
     if (m_clientComboBox) {
-        wxString clientAddress = json.Get(keys.clientAddress, wxJSONValue("127.0.0.1")).AsString();
+        wxString clientAddress = json[keys.clientAddress].template get<std::string>();
         int section = m_clientComboBox->FindString(clientAddress);
         if (section != wxNOT_FOUND) {
             m_clientComboBox->SetSelection(section);
         }
     }
     if (m_clientPortCtrl) {
-        int clientPort = json.Get(keys.clientPort, wxJSONValue(54321)).AsInt();
+        int clientPort = json[keys.clientPort].template get<int>();
         m_clientPortCtrl->SetValue(clientPort);
     }
     if (m_serverComboBox) {
-        wxString serverAddress = json.Get(keys.serverAddress, wxJSONValue("127.0.0.1")).AsString();
+        wxString serverAddress = json[keys.serverAddress].template get<std::string>();
         int section = m_serverComboBox->FindString(serverAddress);
         if (section != wxNOT_FOUND) {
             m_serverComboBox->SetSelection(section);
         }
     }
     if (m_serverPortCtrl) {
-        int serverPort = json.Get(keys.serverPort, wxJSONValue(54321)).AsInt();
+        int serverPort = json[keys.serverPort].template get<int>();
         m_serverPortCtrl->SetValue(serverPort);
     }
     if (m_dataChannelComboBox) {
-        int dataChannel = json.Get(keys.dataChannel, wxJSONValue(0)).AsInt();
+        int dataChannel = json[keys.dataChannel].template get<int>();
         m_dataChannelComboBox->SetDataChannel(dataChannel);
     }
     if (m_isAuthorizationCheckBox) {
-        bool isAuthorization = json.Get(keys.isAuthorization, wxJSONValue(false)).AsBool();
+        bool isAuthorization = json[keys.isAuthorization].template get<bool>();
         m_isAuthorizationCheckBox->SetValue(isAuthorization);
     }
     if (m_userNameTextCtrl) {
-        wxString userName = json.Get(keys.userName, wxJSONValue("")).AsString();
+        wxString userName = json[keys.userName].template get<std::string>();
         m_userNameTextCtrl->SetValue(userName);
     }
     if (m_passwordTextCtrl) {
-        wxString password = json.Get(keys.password, wxJSONValue("")).AsString();
+        wxString password = json[keys.password].template get<std::string>();
         m_passwordTextCtrl->SetValue(password);
     }
 }
@@ -214,11 +213,6 @@ void SocketBaseController::InitClearClientButton(int row, wxWindow *parent)
 
 void SocketBaseController::InitIsEnableAuthorizationCheckBox(int row, wxWindow *parent)
 {
-#if 0
-    auto text = new wxStaticText(parent, wxID_ANY, label);
-    Add(text, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
-#endif
-
     m_isAuthorizationCheckBox = new wxCheckBox(parent, wxID_ANY, wxEmptyString);
     m_isAuthorizationCheckBox->SetLabel(wxT("Enable authorization"));
     Add(m_isAuthorizationCheckBox, wxGBPosition(row, 0), wxGBSpan(1, 2), wxEXPAND | wxALL, 0);

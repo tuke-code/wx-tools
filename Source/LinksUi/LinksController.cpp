@@ -55,13 +55,13 @@ void LinksController::Disable() {}
 
 void LinksController::Enable() {}
 
-wxJSONValue LinksController::Save() const
+nlohmann::json LinksController::Save() const
 {
-    wxJSONValue json;
+    nlohmann::json json;
     return json;
 }
 
-void LinksController::Load(const wxJSONValue &json)
+void LinksController::Load(const nlohmann::json &json)
 {
     wxUnusedVar(json);
 }

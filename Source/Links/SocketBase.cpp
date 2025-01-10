@@ -12,33 +12,32 @@ SocketBase::SocketBase() {}
 
 SocketBase::~SocketBase() {}
 
-void SocketBase::Load(const wxJSONValue &parameters)
+void SocketBase::Load(const nlohmann::json &parameters)
 {
     SocketBaseParameterKeys keys;
-    m_clientAddress = parameters.Get(keys.clientAddress, wxJSONValue("127.0.0.0")).AsString();
-    m_clientPort = parameters.Get(keys.clientPort, wxJSONValue(54321)).AsUInt();
-    m_serverAddress = parameters.Get(keys.serverAddress, wxJSONValue("127.0.0.0")).AsString();
-    m_serverPort = parameters.Get(keys.serverPort, wxJSONValue(54321)).AsUInt();
-    m_isEnableAuthorization = parameters.Get(keys.isAuthorization, wxJSONValue(false)).AsBool();
-    m_dataChannel = parameters.Get(keys.dataChannel, wxJSONValue(0)).AsUInt();
-    m_userName = parameters.Get(keys.userName, wxJSONValue("")).AsString();
-    m_password = parameters.Get(keys.password, wxJSONValue("")).AsString();
-
+    m_clientAddress = parameters[keys.clientAddress].template get<std::string>();
+    m_clientPort = parameters[keys.clientPort].template get<uint16_t>();
+    m_serverAddress = parameters[keys.serverAddress].template get<std::string>();
+    m_serverPort = parameters[keys.serverPort].template get<uint16_t>();
+    m_isEnableAuthorization = parameters[keys.isAuthorization].template get<bool>();
+    m_dataChannel = parameters[keys.dataChannel].template get<int>();
+    m_userName = parameters[keys.userName].template get<std::string>();
+    m_password = parameters[keys.password].template get<std::string>();
     Link::Load(parameters);
 }
 
-wxJSONValue SocketBase::Save()
+nlohmann::json SocketBase::Save()
 {
     SocketBaseParameterKeys keys;
-    wxJSONValue parameters;
-    parameters[keys.clientAddress.ToStdString()] = m_clientAddress.ToStdString();
-    parameters[keys.clientPort.ToStdString()] = m_clientPort;
-    parameters[keys.serverAddress.ToStdString()] = m_serverAddress.ToStdString();
-    parameters[keys.serverPort.ToStdString()] = m_serverPort;
-    parameters[keys.isAuthorization.ToStdString()] = m_isEnableAuthorization;
-    parameters[keys.dataChannel.ToStdString()] = m_dataChannel;
-    parameters[keys.userName.ToStdString()] = m_userName.ToStdString();
-    parameters[keys.password.ToStdString()] = m_password.ToStdString();
+    nlohmann::json parameters;
+    parameters[keys.clientAddress] = m_clientAddress.ToStdString();
+    parameters[keys.clientPort] = m_clientPort;
+    parameters[keys.serverAddress] = m_serverAddress.ToStdString();
+    parameters[keys.serverPort] = m_serverPort;
+    parameters[keys.isAuthorization] = m_isEnableAuthorization;
+    parameters[keys.dataChannel] = m_dataChannel;
+    parameters[keys.userName] = m_userName.ToStdString();
+    parameters[keys.password] = m_password.ToStdString();
     return parameters;
 }
 

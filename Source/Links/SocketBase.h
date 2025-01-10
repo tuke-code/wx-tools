@@ -14,14 +14,14 @@
 
 struct SocketBaseParameterKeys
 {
-    const wxString clientAddress{"clientAddress"};
-    const wxString clientPort{"clientPort"};
-    const wxString serverAddress{"serverAddress"};
-    const wxString serverPort{"serverPort"};
-    const wxString isAuthorization{"isEnableAuthorization"};
-    const wxString dataChannel{"dataChannel"};
-    const wxString userName{"userName"};
-    const wxString password{"password"};
+    const std::string clientAddress{"clientAddress"};
+    const std::string clientPort{"clientPort"};
+    const std::string serverAddress{"serverAddress"};
+    const std::string serverPort{"serverPort"};
+    const std::string isAuthorization{"isEnableAuthorization"};
+    const std::string dataChannel{"dataChannel"};
+    const std::string userName{"userName"};
+    const std::string password{"password"};
 };
 
 class SocketBase : public Link
@@ -30,8 +30,8 @@ public:
     SocketBase();
     ~SocketBase();
 
-    void Load(const wxJSONValue &parameters) override;
-    wxJSONValue Save() override;
+    void Load(const nlohmann::json &parameters) override;
+    nlohmann::json Save() override;
 
     wxString GetClientAddress() const;
     uint16_t GetClientPort() const;

@@ -9,7 +9,6 @@
 #include "Page.h"
 
 #include <wx/gbsizer.h>
-#include <wx/jsonval.h>
 
 #include "Common/wxTools.h"
 #include "LinkControlBox.h"
@@ -54,17 +53,19 @@ Page::Page(LinkType type, wxWindow *parent)
     m_sendTimer.Bind(wxEVT_TIMER, [this](wxTimerEvent &event) { OnSendTimerTimeout(); });
 }
 
-void Page::Load(const wxJSONValue &json)
+void Page::Load(const nlohmann::json &json)
 {
+#if 0
     auto controllerJson = json.Get(m_parameterNames.communicationControlBox, wxJSONValue());
     m_communicationControlBox->GetController()->Load(controllerJson);
+#endif
 }
 
-wxJSONValue Page::Save() const
+nlohmann::json Page::Save() const
 {
     auto *communicationController = m_communicationControlBox->GetController();
 
-    wxJSONValue json;
+    nlohmann::json json;
     json[m_parameterNames.communicationControlBox] = communicationController->Save();
     return json;
 }

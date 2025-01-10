@@ -9,6 +9,7 @@
 #include "SerialPortController.h"
 
 #include <wx/gbsizer.h>
+#include <wx/string.h>
 
 #include "Utilities/BaudRateComboBox.h"
 #include "Utilities/DataBitsComboBox.h"
@@ -60,11 +61,11 @@ void SerialPortController::Enable()
     m_parityComboBox->Enable();
 }
 
-wxJSONValue SerialPortController::Save() const
+nlohmann::json SerialPortController::Save() const
 {
-    wxJSONValue json = wxJSONValue(wxJSONTYPE_OBJECT);
+    nlohmann::json json = nlohmann::json(nlohmann::json::object());
     SerialPortParameterKeys keys;
-    json[keys.portName] = m_portNameComboBox->GetPortName();
+    json[keys.portName] = m_portNameComboBox->GetPortName().ToStdString();
     json[keys.baudRate] = static_cast<int>(m_baudRateComboBox->GetBaudRate());
     json[keys.characterSize] = static_cast<int>(m_dataBitsComboBox->GetDataBits().value());
     json[keys.stopBits] = static_cast<int>(m_stopBitsComboBox->GetStopBits());
@@ -73,15 +74,15 @@ wxJSONValue SerialPortController::Save() const
     return json;
 }
 
-void SerialPortController::Load(const wxJSONValue &json)
+void SerialPortController::Load(const nlohmann::json &json)
 {
     SerialPortParameterKeys keys;
-    wxString portName = json.Get(keys.portName, wxJSONValue()).AsString();
-    int baudRate = json.Get(keys.baudRate, wxJSONValue(9600)).AsInt();
-    int dataBits = json.Get(keys.characterSize, wxJSONValue(8)).AsInt();
-    int stopBits = json.Get(keys.stopBits, wxJSONValue(0)).AsInt();
-    int flowBits = json.Get(keys.flowControl, wxJSONValue(0)).AsInt();
-    int parity = json.Get(keys.parity, wxJSONValue(0)).AsInt();
+    wxString portName = json[keys.portName].template get<std::string>();
+    int baudRate = json[keys.baudRate].template get<int>();
+    int dataBits = json[keys.characterSize].template get<int>();
+    int stopBits = json[keys.stopBits].template get<int>();
+    int flowBits = json[keys.flowControl].template get<int>();
+    int parity = json[keys.parity].template get<int>();
 
     m_portNameComboBox->SetPortName(portName);
     m_baudRateComboBox->SetBaudRate(baudRate);
@@ -98,18 +99,11 @@ Link *SerialPortController::CreateLink()
 
 void SerialPortController::AboutToOpen(Link *link)
 {
-#if 1
-    wxJSONValue json = Save();
-    wxString str = json.Dump();
-    return;
-    wxLogInfo(str);
-#endif
     LinksController::AboutToOpen(link);
 
-#if 0
-    wxJSONValue json = Save();
-    wxString str = json.Dump();
-    wxLogInfo(str);
+#if 1
+    nlohmann::json json = link->Save();
+    wxToolsLog(INFO) << json.dump();
 #endif
 }
 

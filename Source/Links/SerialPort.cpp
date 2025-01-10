@@ -7,7 +7,6 @@
  * code directory.
  **************************************************************************************************/
 #include "SerialPort.h"
-
 #include "SerialPort_p.h"
 
 SerialPort::SerialPort()
@@ -94,22 +93,22 @@ void SerialPort::Write(const wxString &data, TextFormat format)
     }
 }
 
-void SerialPort::Load(const wxJSONValue &parameters)
+void SerialPort::Load(const nlohmann::json &parameters)
 {
     // clang-format off
     SerialPortParameterKeys keys;
-    d->portName = parameters.Get(keys.portName, wxJSONValue("")).AsString();
-    d->baudRate = parameters.Get(keys.baudRate, wxJSONValue(9600)).AsInt();
-    d->flowControl = static_cast<asio::serial_port::flow_control::type>(parameters.Get(keys.flowControl, wxJSONValue(asio::serial_port::flow_control::type::none)).AsInt());
-    d->parity = static_cast<asio::serial_port::parity::type>(parameters.Get(keys.parity, wxJSONValue(asio::serial_port::parity::type::none)).AsInt());
-    d->stopBits = static_cast<asio::serial_port::stop_bits::type>(parameters.Get(keys.stopBits, wxJSONValue(asio::serial_port::stop_bits::type::one)).AsInt());
-    d->dataBits = static_cast<asio::serial_port::character_size>(parameters.Get(keys.characterSize, wxJSONValue(8)).AsInt());
+    d->portName = parameters[keys.portName].template get<std::string>();
+    d->baudRate = parameters[keys.baudRate].template get<int>();
+    d->flowControl = static_cast<asio::serial_port::flow_control::type>(parameters[keys.flowControl].template get<int>());
+    d->parity = static_cast<asio::serial_port::parity::type>(parameters[keys.parity].template get<int>());
+    d->stopBits = static_cast<asio::serial_port::stop_bits::type>(parameters[keys.stopBits].template get<int>());
+    d->dataBits = static_cast<asio::serial_port::character_size>(parameters[keys.characterSize].template get<int>());
     // clang-format on
 }
 
-wxJSONValue SerialPort::Save()
+nlohmann::json SerialPort::Save()
 {
-    wxJSONValue parameters;
+    nlohmann::json parameters;
     SerialPortParameterKeys keys;
     parameters[keys.portName] = d->portName;
     parameters[keys.baudRate] = d->baudRate;

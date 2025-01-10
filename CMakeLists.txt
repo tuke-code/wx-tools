@@ -18,12 +18,12 @@ endif()
 
 include(CMake/asio.cmake)
 include(CMake/glog.cmake)
+include(CMake/json.cmake)
 include(CMake/libcrc.cmake)
 include(CMake/sigslot.cmake)
 include(CMake/wxWidgets.cmake)
 include(CMake/websocketpp.cmake)
 include(CMake/CSerialPort.cmake)
-include(CMake/wxjson.cmake)
 
 include_directories(Source)
 
@@ -38,7 +38,7 @@ add_executable(wxTools ${WX_TOOLS_SOURCE})
 set(PROJECT_LIBS libcserialport)
 list(APPEND PROJECT_LIBS libcrc)
 list(APPEND PROJECT_LIBS glog::glog)
-list(APPEND PROJECT_LIBS wx::core wx::aui wxJSON)
+list(APPEND PROJECT_LIBS wx::core wx::aui)
 target_link_libraries(wxTools PRIVATE ${PROJECT_LIBS})
 set_target_properties(
   wxTools

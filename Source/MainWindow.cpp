@@ -10,9 +10,8 @@
 
 #include <fstream>
 
+#include <nlohmann/json.hpp>
 #include <wx/filename.h>
-#include <wx/jsonreader.h>
-#include <wx/jsonval.h>
 #include <wx/notebook.h>
 
 #include "Common/wxTools.h"
@@ -136,6 +135,7 @@ std::string GetPageParameterFileName(LinkType type)
 
 void MainWindow::LoadParameters()
 {
+#if 0
     for (auto it = m_pageMap.begin(); it != m_pageMap.end(); ++it) {
         auto* page = it->second;
         wxString name = GetPageParameterFileName(it->first);
@@ -151,10 +151,12 @@ void MainWindow::LoadParameters()
             page->Load(json);
         }
     }
+#endif
 }
 
 void MainWindow::SaveParameters()
 {
+#if 0
     for (auto it = m_pageMap.begin(); it != m_pageMap.end(); ++it) {
         auto* page = it->second;
         auto json = page->Save();
@@ -162,4 +164,5 @@ void MainWindow::SaveParameters()
         std::ofstream file(name.ToStdString());
         file << json.AsString();
     }
+#endif
 }

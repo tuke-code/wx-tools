@@ -8,9 +8,8 @@
  **************************************************************************************************/
 #pragma once
 
+#include <nlohmann/json.hpp>
 #include <wx/gbsizer.h>
-#include <wx/jsonreader.h>
-#include <wx/jsonval.h>
 #include <wx/wx.h>
 
 #include "Links/Link.h"
@@ -28,8 +27,8 @@ public:
 
     virtual void Disable();
     virtual void Enable();
-    virtual wxJSONValue Save() const;
-    virtual void Load(const wxJSONValue &json);
+    virtual nlohmann::json Save() const;
+    virtual void Load(const nlohmann::json &json);
 
 protected:
     virtual Link *CreateLink();

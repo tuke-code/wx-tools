@@ -24,8 +24,8 @@ public:
 
     void Disable() override;
     void Enable() override;
-    wxJSONValue Save() const override;
-    void Load(const wxJSONValue &json) override;
+    nlohmann::json Save() const override;
+    void Load(const nlohmann::json &json) override;
 
 protected:
     Link *CreateLink() override;
