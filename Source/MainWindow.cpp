@@ -148,7 +148,7 @@ void MainWindow::LoadParameters()
         jsonReader.Parse(name, &json);
 
         if (it->first == LinkType::SerialPort) {
-            page->LoadParameters(json);
+            page->Load(json);
         }
     }
 }
@@ -157,7 +157,7 @@ void MainWindow::SaveParameters()
 {
     for (auto it = m_pageMap.begin(); it != m_pageMap.end(); ++it) {
         auto* page = it->second;
-        auto json = page->SaveParameters();
+        auto json = page->Save();
         wxString name = GetPageParameterFileName(it->first);
         std::ofstream file(name.ToStdString());
         file << json.AsString();

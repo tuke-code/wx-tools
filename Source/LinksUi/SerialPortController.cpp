@@ -65,11 +65,11 @@ wxJSONValue SerialPortController::Save() const
     wxJSONValue json = wxJSONValue(wxJSONTYPE_OBJECT);
     SerialPortParameterKeys keys;
     json[keys.portName] = m_portNameComboBox->GetPortName();
-    json[keys.baudRate] = m_baudRateComboBox->GetBaudRate();
-    json[keys.characterSize] = m_dataBitsComboBox->GetDataBits().value();
-    json[keys.stopBits] = m_stopBitsComboBox->GetStopBits();
-    json[keys.flowControl] = m_flowBitsComboBox->GetFlowBits();
-    json[keys.parity] = m_parityComboBox->GetParity();
+    json[keys.baudRate] = static_cast<int>(m_baudRateComboBox->GetBaudRate());
+    json[keys.characterSize] = static_cast<int>(m_dataBitsComboBox->GetDataBits().value());
+    json[keys.stopBits] = static_cast<int>(m_stopBitsComboBox->GetStopBits());
+    json[keys.flowControl] = static_cast<int>(m_flowBitsComboBox->GetFlowBits());
+    json[keys.parity] = static_cast<int>(m_parityComboBox->GetParity());
     return json;
 }
 
@@ -98,10 +98,16 @@ Link *SerialPortController::CreateLink()
 
 void SerialPortController::AboutToOpen(Link *link)
 {
+#if 1
+    wxJSONValue json = Save();
+    wxString str = json.Dump();
+    return;
+    wxLogInfo(str);
+#endif
     LinksController::AboutToOpen(link);
 
 #if 0
-    wxJSONValue json = link->Save();
+    wxJSONValue json = Save();
     wxString str = json.Dump();
     wxLogInfo(str);
 #endif
