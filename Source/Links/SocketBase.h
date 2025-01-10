@@ -10,7 +10,7 @@
 
 #include <asio.hpp>
 
-#include "HAL_IO.h"
+#include "Links.h"
 
 struct SocketBaseParameterKeys
 {
@@ -24,7 +24,7 @@ struct SocketBaseParameterKeys
     const wxString password{"password"};
 };
 
-class SocketBase : public HAL_IO
+class SocketBase : public Links
 {
 public:
     SocketBase();

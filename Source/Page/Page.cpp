@@ -13,8 +13,8 @@
 
 #include "Common/wxTools.h"
 #include "CommunicationControlBox.h"
-#include "HAL_IO/HAL_IO.h"
-#include "HAL_IO_UI/CommunicationController.h"
+#include "Links/Links.h"
+#include "LinksUi/LinksController.h"
 
 #include "ControlBoxes.h"
 #include "IOPanel.h"
@@ -72,12 +72,12 @@ wxJSONValue Page::SaveParameters() const
 void Page::OnInvokeOpen()
 {
     CommunicationControlBox *communicationControlBox = m_controlBoxes->GetCommunicationControlBox();
-    CommunicationController *communicationController = communicationControlBox->GetController();
+    LinksController *communicationController = communicationControlBox->GetController();
     if (communicationController->IsOpen()) {
         m_sendTimer.Stop();
         m_inputControlBox->SetCycleIntervalComboBoxSelection(0);
 
-        HAL_IO *communication = communicationController->GetCommunication();
+        Links *communication = communicationController->GetCommunication();
         communication->bytesWrittenSignal.disconnect_all();
 
         communicationController->Close();
@@ -90,7 +90,7 @@ void Page::OnInvokeOpen()
             communicationControlBox->SetOpenButtonLabel(wxT("Close"));
             wxToolsInfo() << "Open communication successfully.";
 
-            HAL_IO *communication = communicationController->GetCommunication();
+            Links *communication = communicationController->GetCommunication();
             communication->bytesReadSignal.connect(&Page::OnBytesRead, this);
             communication->bytesWrittenSignal.connect(&Page::OnBytesWritten, this);
         } else {
@@ -101,13 +101,13 @@ void Page::OnInvokeOpen()
 
 void Page::OnInvokeWrite(TextFormat format)
 {
-    CommunicationController *communicationController = m_communicationControlBox->GetController();
+    LinksController *communicationController = m_communicationControlBox->GetController();
     if (!communicationController->IsOpen()) {
         wxMessageBox(wxT("Communication is not open."), wxT("Error"), wxICON_ERROR);
         return;
     }
 
-    HAL_IO *communication = communicationController->GetCommunication();
+    Links *communication = communicationController->GetCommunication();
     wxString text = m_ioPanel->GetInputBox()->GetInputText();
 
     if (text.IsEmpty()) {
@@ -125,7 +125,7 @@ void Page::OnInvokeStartTimer(int ms)
     }
 
     CommunicationControlBox *communicationControlBox = m_controlBoxes->GetCommunicationControlBox();
-    CommunicationController *communicationController = communicationControlBox->GetController();
+    LinksController *communicationController = communicationControlBox->GetController();
     if (!communicationController->IsOpen()) {
         m_inputControlBox->SetCycleIntervalComboBoxSelection(0);
         wxMessageBox(wxT("Communication is not open."), wxT("Error"), wxICON_ERROR);

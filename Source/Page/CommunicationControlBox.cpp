@@ -9,15 +9,15 @@
 #include "CommunicationControlBox.h"
 
 #include "CommunicationPopup.h"
-#include "HAL_IO_UI/CommunicationController.h"
-#include "HAL_IO_UI/CommunicationControllerFactory.h"
+#include "LinksUi/LinksController.h"
+#include "LinksUi/LinksControllerFactory.h"
 
 CommunicationControlBox::CommunicationControlBox(CommunicationType type, wxWindow *parent)
     : wxStaticBoxSizer(wxVERTICAL, parent, wxT("Communication Control"))
     , m_controller(nullptr)
     , m_popup(nullptr)
 {
-    auto &factory = CommunicationControllerFactory::singleton();
+    auto &factory = LinksControllerFactory::singleton();
     m_controller = factory.CreateCommunicationController(type, GetStaticBox());
     Add(m_controller, 0, wxEXPAND, 0);
 
@@ -35,7 +35,7 @@ CommunicationControlBox::CommunicationControlBox(CommunicationType type, wxWindo
     Add(buttonSizer, 0, wxEXPAND, 0);
 }
 
-CommunicationController *CommunicationControlBox::GetController() const
+LinksController *CommunicationControlBox::GetController() const
 {
     return m_controller;
 }

@@ -14,17 +14,17 @@
 #include "Common/wxTools.h"
 
 class CommunicationPopup;
-class CommunicationController;
+class LinksController;
 class CommunicationControlBox : public wxStaticBoxSizer
 {
 public:
     CommunicationControlBox(CommunicationType type, wxWindow *parent);
-    CommunicationController *GetController() const;
+    LinksController *GetController() const;
     wxToolsSignal<> &GetInvokeOpenSignal();
     void SetOpenButtonLabel(const wxString &label);
 
 private:
-    CommunicationController *m_controller;
+    LinksController *m_controller;
     wxButton *m_openButton;
     CommunicationPopup *m_popup;
 

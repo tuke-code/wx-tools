@@ -8,7 +8,7 @@
  **************************************************************************************************/
 #pragma once
 
-#include "CommunicationController.h"
+#include "LinksController.h"
 
 class BaudRateComboBox;
 class DataBitsComboBox;
@@ -16,7 +16,7 @@ class FlowBitsComboBox;
 class ParityComboBox;
 class PortNameComboBox;
 class StopBitsComboBox;
-class SerialPortController : public CommunicationController
+class SerialPortController : public LinksController
 {
 public:
     SerialPortController(wxWindow *parent = nullptr);
@@ -28,8 +28,8 @@ public:
     void Load(const wxJSONValue &json) override;
 
 protected:
-    HAL_IO *CreateCommunication() override;
-    void AboutToOpen(HAL_IO *communication) override;
+    Links *CreateCommunication() override;
+    void AboutToOpen(Links *communication) override;
 
 private:
     void InitPortNameComboBox(const wxString &label, int row, wxWindow *parent);

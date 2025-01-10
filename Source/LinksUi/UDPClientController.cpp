@@ -8,7 +8,7 @@
  **************************************************************************************************/
 #include "UDPClientController.h"
 
-#include "HAL_IO/UDPClient.h"
+#include "Links/UDPClient.h"
 
 UDPClientController::UDPClientController(wxWindow *parent)
     : SocketClientController(parent)
@@ -22,12 +22,12 @@ UDPClientController::UDPClientController(wxWindow *parent)
 
 UDPClientController::~UDPClientController() {}
 
-HAL_IO *UDPClientController::CreateCommunication()
+Links *UDPClientController::CreateCommunication()
 {
     return new UDPClient();
 }
 
-void UDPClientController::AboutToOpen(HAL_IO *communication)
+void UDPClientController::AboutToOpen(Links *communication)
 {
     if (!communication) {
         return;
@@ -41,7 +41,7 @@ void UDPClientController::AboutToOpen(HAL_IO *communication)
     udpClient->Load(Save());
 }
 
-void UDPClientController::AboutToClose(HAL_IO *communication)
+void UDPClientController::AboutToClose(Links *communication)
 {
     // Nothing to do yet.
 }

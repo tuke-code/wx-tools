@@ -6,24 +6,24 @@
  * eTools is licensed according to the terms in the file LICENCE(GPL V3) in the root of the source
  * code directory.
  **************************************************************************************************/
-#include "CommunicationController.h"
+#include "LinksController.h"
 
 #include <wx/event.h>
 #include <wx/wx.h>
 
-CommunicationController::CommunicationController(wxWindow *parent)
+LinksController::LinksController(wxWindow *parent)
     : wxGridBagSizer(4, 4)
     , m_communication(nullptr)
 {}
 
-CommunicationController::~CommunicationController() {}
+LinksController::~LinksController() {}
 
-HAL_IO *CommunicationController::GetCommunication() const
+Links *LinksController::GetCommunication() const
 {
     return m_communication;
 }
 
-bool CommunicationController::Open()
+bool LinksController::Open()
 {
     m_communication = CreateCommunication();
     if (!m_communication) {
@@ -35,7 +35,7 @@ bool CommunicationController::Open()
     return m_communication->Open();
 }
 
-void CommunicationController::Close()
+void LinksController::Close()
 {
     if (m_communication) {
         AboutToClose(m_communication);
@@ -46,37 +46,37 @@ void CommunicationController::Close()
     }
 }
 
-bool CommunicationController::IsOpen() const
+bool LinksController::IsOpen() const
 {
     return m_communication != nullptr;
 }
 
-void CommunicationController::Disable() {}
+void LinksController::Disable() {}
 
-void CommunicationController::Enable() {}
+void LinksController::Enable() {}
 
-wxJSONValue CommunicationController::Save() const
+wxJSONValue LinksController::Save() const
 {
     wxJSONValue json;
     return json;
 }
 
-void CommunicationController::Load(const wxJSONValue &json)
+void LinksController::Load(const wxJSONValue &json)
 {
     wxUnusedVar(json);
 }
 
-HAL_IO *CommunicationController::CreateCommunication()
+Links *LinksController::CreateCommunication()
 {
     return nullptr;
 }
 
-void CommunicationController::AboutToOpen(HAL_IO *communication)
+void LinksController::AboutToOpen(Links *communication)
 {
     communication->Load(Save());
 }
 
-void CommunicationController::AboutToClose(HAL_IO *communication)
+void LinksController::AboutToClose(Links *communication)
 {
     wxUnusedVar(communication);
     // Nothing to do

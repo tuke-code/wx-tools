@@ -8,11 +8,11 @@
  **************************************************************************************************/
 #pragma once
 
-#include "CommunicationController.h"
+#include "LinksController.h"
 
 class IpComboBox;
 class DataChannelComboBox;
-class SocketBaseController : public CommunicationController
+class SocketBaseController : public LinksController
 {
 public:
     SocketBaseController(wxWindow *parent = nullptr);

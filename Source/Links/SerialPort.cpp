@@ -11,7 +11,7 @@
 #include "SerialPort_p.h"
 
 SerialPort::SerialPort()
-    : HAL_IO()
+    : Links()
     , d(new SerialPortPrivate())
 {}
 

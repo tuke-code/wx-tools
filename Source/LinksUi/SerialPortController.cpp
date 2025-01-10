@@ -17,10 +17,10 @@
 #include "Utilities/PortNameComboBox.h"
 #include "Utilities/StopBitsComboBox.h"
 
-#include "HAL_IO/SerialPort.h"
+#include "Links/SerialPort.h"
 
 SerialPortController::SerialPortController(wxWindow *parent)
-    : CommunicationController(parent)
+    : LinksController(parent)
     , m_portNameComboBox(nullptr)
     , m_baudRateComboBox(nullptr)
     , m_dataBitsComboBox(nullptr)
@@ -89,14 +89,14 @@ void SerialPortController::Load(const wxJSONValue &json)
     m_parityComboBox->SetParity(parity);
 }
 
-HAL_IO *SerialPortController::CreateCommunication()
+Links *SerialPortController::CreateCommunication()
 {
     return new SerialPort();
 }
 
-void SerialPortController::AboutToOpen(HAL_IO *communication)
+void SerialPortController::AboutToOpen(Links *communication)
 {
-    CommunicationController::AboutToOpen(communication);
+    LinksController::AboutToOpen(communication);
     wxLogInfo(communication->Save().Dump());
 }
 

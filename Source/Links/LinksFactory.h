@@ -10,15 +10,15 @@
 
 #include "Common/wxTools.h"
 
-class HAL_IO;
-class CommunicationFactory
+class Links;
+class LinksFactory
 {
 private:
-    CommunicationFactory();
-    CommunicationFactory(const CommunicationFactory &) = delete;
-    CommunicationFactory &operator=(const CommunicationFactory &) = delete;
+    LinksFactory();
+    LinksFactory(const LinksFactory &) = delete;
+    LinksFactory &operator=(const LinksFactory &) = delete;
 
 public:
-    static CommunicationFactory &Singleton();
-    HAL_IO *CreateCommunication(CommunicationType type);
+    static LinksFactory &Singleton();
+    Links *CreateCommunication(CommunicationType type);
 };

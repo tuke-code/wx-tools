@@ -24,7 +24,7 @@ void SocketBase::Load(const wxJSONValue &parameters)
     m_userName = parameters.Get(keys.userName, wxJSONValue("")).AsString();
     m_password = parameters.Get(keys.password, wxJSONValue("")).AsString();
 
-    HAL_IO::Load(parameters);
+    Links::Load(parameters);
 }
 
 wxJSONValue SocketBase::Save()

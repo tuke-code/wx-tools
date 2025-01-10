@@ -6,31 +6,31 @@
  * eTools is licensed according to the terms in the file LICENCE(GPL V3) in the root of the source
  * code directory.
  **************************************************************************************************/
-#include "HAL_IO.h"
+#include "Links.h"
 
-HAL_IO::HAL_IO() {}
+Links::Links() {}
 
-HAL_IO::~HAL_IO() {}
+Links::~Links() {}
 
-bool HAL_IO::Open()
+bool Links::Open()
 {
     return false;
 }
 
-void HAL_IO::Close() {}
+void Links::Close() {}
 
-void HAL_IO::Write(const wxString &data, TextFormat format)
+void Links::Write(const wxString &data, TextFormat format)
 {
     wxUnusedVar(data);
     wxUnusedVar(format);
 }
 
-void HAL_IO::Load(const wxJSONValue &parameters)
+void Links::Load(const wxJSONValue &parameters)
 {
     m_parameters = parameters;
 }
 
-wxJSONValue HAL_IO::Save()
+wxJSONValue Links::Save()
 {
     return m_parameters;
 }

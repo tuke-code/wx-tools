@@ -15,11 +15,11 @@
 
 #include "Common/wxTools.h"
 
-class HAL_IO : wxObject
+class Links : wxObject
 {
 public:
-    HAL_IO();
-    ~HAL_IO();
+    Links();
+    ~Links();
 
     sigslot::signal<asio::const_buffer & /*bytes*/, const wxString & /*to*/> bytesWrittenSignal;
     sigslot::signal<asio::const_buffer & /*bytes*/, const wxString & /*from*/> bytesReadSignal;

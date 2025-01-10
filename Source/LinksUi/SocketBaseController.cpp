@@ -11,12 +11,12 @@
 #include <wx/spinctrl.h>
 #include <wx/textctrl.h>
 
-#include "HAL_IO/SocketBase.h"
+#include "Links/SocketBase.h"
 #include "Utilities/DataChannelComboBox.h"
 #include "Utilities/IpComboBox.h"
 
 SocketBaseController::SocketBaseController(wxWindow *parent)
-    : CommunicationController(parent)
+    : LinksController(parent)
     , m_clientComboBox{nullptr}
     , m_clientPortCtrl{nullptr}
     , m_serverComboBox{nullptr}

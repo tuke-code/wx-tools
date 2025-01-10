@@ -12,15 +12,15 @@
 
 #include "Common/wxTools.h"
 
-class CommunicationController;
-class CommunicationControllerFactory
+class LinksController;
+class LinksControllerFactory
 {
 private:
-    CommunicationControllerFactory();
-    CommunicationControllerFactory(const CommunicationControllerFactory &) = delete;
-    CommunicationControllerFactory &operator=(const CommunicationControllerFactory &) = delete;
+    LinksControllerFactory();
+    LinksControllerFactory(const LinksControllerFactory &) = delete;
+    LinksControllerFactory &operator=(const LinksControllerFactory &) = delete;
 
 public:
-    static CommunicationControllerFactory &singleton();
-    CommunicationController *CreateCommunicationController(CommunicationType type, wxWindow *parent);
+    static LinksControllerFactory &singleton();
+    LinksController *CreateCommunicationController(CommunicationType type, wxWindow *parent);
 };

@@ -1,7 +1,7 @@
 ﻿/***************************************************************************************************
  * 版权声明 © 2024 声菲特. 保留所有版权。
  **************************************************************************************************/
-#include "CommunicationControllerFactory.h"
+#include "LinksControllerFactory.h"
 
 #include "SerialPortController.h"
 #include "TCPClientController.h"
@@ -11,15 +11,15 @@
 #include "WSClientController.h"
 #include "WSServerController.h"
 
-CommunicationControllerFactory::CommunicationControllerFactory() {}
+LinksControllerFactory::LinksControllerFactory() {}
 
-CommunicationControllerFactory &CommunicationControllerFactory::singleton()
+LinksControllerFactory &LinksControllerFactory::singleton()
 {
-    static CommunicationControllerFactory instance;
+    static LinksControllerFactory instance;
     return instance;
 }
 
-CommunicationController *CommunicationControllerFactory::CreateCommunicationController(
+LinksController *LinksControllerFactory::CreateCommunicationController(
     CommunicationType type, wxWindow *parent)
 {
     if (type == CommunicationType::SerialPort) {
