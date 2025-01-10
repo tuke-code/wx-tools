@@ -10,15 +10,15 @@
 
 #include "Common/wxTools.h"
 
-class Links;
-class LinksFactory
+class Link;
+class LinkFactory
 {
 private:
-    LinksFactory();
-    LinksFactory(const LinksFactory &) = delete;
-    LinksFactory &operator=(const LinksFactory &) = delete;
+    LinkFactory();
+    LinkFactory(const LinkFactory &) = delete;
+    LinkFactory &operator=(const LinkFactory &) = delete;
 
 public:
-    static LinksFactory &Singleton();
-    Links *CreateCommunication(CommunicationType type);
+    static LinkFactory &Singleton();
+    Link *CreateLink(LinkType type);
 };

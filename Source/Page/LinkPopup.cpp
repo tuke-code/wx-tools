@@ -6,13 +6,13 @@
  * eTools is licensed according to the terms in the file LICENCE(GPL V3) in the root of the source
  * code directory.
  **************************************************************************************************/
-#include "CommunicationPopup.h"
+#include "LinkPopup.h"
 
 #include <wx/gbsizer.h>
 #include <wx/statline.h>
 #include <wx/wx.h>
 
-CommunicationPopup::CommunicationPopup(wxButton *controlButton)
+LinkPopup::LinkPopup(wxButton *controlButton)
     : Popup(controlButton)
     , m_enableTxMask(nullptr)
     , m_txMask(nullptr)

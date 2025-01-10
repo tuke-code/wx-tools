@@ -21,5 +21,5 @@ private:
 public:
     static PageFactory &singleton();
 
-    Page *CreatePage(CommunicationType type, wxWindow *parent);
+    Page *CreatePage(LinkType type, wxWindow *parent);
 };

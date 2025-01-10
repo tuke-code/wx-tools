@@ -89,12 +89,12 @@ void SerialPortController::Load(const wxJSONValue &json)
     m_parityComboBox->SetParity(parity);
 }
 
-Links *SerialPortController::CreateCommunication()
+Link *SerialPortController::CreateCommunication()
 {
     return new SerialPort();
 }
 
-void SerialPortController::AboutToOpen(Links *communication)
+void SerialPortController::AboutToOpen(Link *communication)
 {
     LinksController::AboutToOpen(communication);
     wxLogInfo(communication->Save().Dump());

@@ -18,7 +18,7 @@ PageFactory &PageFactory::singleton()
     return instance;
 }
 
-Page *PageFactory::CreatePage(CommunicationType type, wxWindow *parent)
+Page *PageFactory::CreatePage(LinkType type, wxWindow *parent)
 {
     auto *page = new Page(type, parent);
     return page;

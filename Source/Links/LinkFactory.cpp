@@ -6,21 +6,21 @@
  * eTools is licensed according to the terms in the file LICENCE(GPL V3) in the root of the source
  * code directory.
  **************************************************************************************************/
-#include "LinksFactory.h"
+#include "LinkFactory.h"
 
 #include "SerialPort.h"
 
-LinksFactory::LinksFactory() {}
+LinkFactory::LinkFactory() {}
 
-LinksFactory &LinksFactory::Singleton()
+LinkFactory &LinkFactory::Singleton()
 {
-    static LinksFactory instance;
+    static LinkFactory instance;
     return instance;
 }
 
-Links *CreateCommunication(wxWindow *parent, CommunicationType type)
+Link *CreateCommunication(wxWindow *parent, LinkType type)
 {
-    if (type == CommunicationType::SerialPort) {
+    if (type == LinkType::SerialPort) {
         return new SerialPort();
     }
     return nullptr;

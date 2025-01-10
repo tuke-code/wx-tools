@@ -17,7 +17,7 @@ public:
     ~UDPClientController();
 
 protected:
-    Links *CreateCommunication() override;
-    void AboutToOpen(Links *communication) override;
-    void AboutToClose(Links *communication) override;
+    Link *CreateCommunication() override;
+    void AboutToOpen(Link *communication) override;
+    void AboutToClose(Link *communication) override;
 };

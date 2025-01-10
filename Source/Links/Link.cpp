@@ -6,31 +6,31 @@
  * eTools is licensed according to the terms in the file LICENCE(GPL V3) in the root of the source
  * code directory.
  **************************************************************************************************/
-#include "Links.h"
+#include "Link.h"
 
-Links::Links() {}
+Link::Link() {}
 
-Links::~Links() {}
+Link::~Link() {}
 
-bool Links::Open()
+bool Link::Open()
 {
     return false;
 }
 
-void Links::Close() {}
+void Link::Close() {}
 
-void Links::Write(const wxString &data, TextFormat format)
+void Link::Write(const wxString &data, TextFormat format)
 {
     wxUnusedVar(data);
     wxUnusedVar(format);
 }
 
-void Links::Load(const wxJSONValue &parameters)
+void Link::Load(const wxJSONValue &parameters)
 {
     m_parameters = parameters;
 }
 
-wxJSONValue Links::Save()
+wxJSONValue Link::Save()
 {
     return m_parameters;
 }

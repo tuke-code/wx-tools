@@ -18,7 +18,7 @@ LinksController::LinksController(wxWindow *parent)
 
 LinksController::~LinksController() {}
 
-Links *LinksController::GetCommunication() const
+Link *LinksController::GetCommunication() const
 {
     return m_communication;
 }
@@ -66,17 +66,17 @@ void LinksController::Load(const wxJSONValue &json)
     wxUnusedVar(json);
 }
 
-Links *LinksController::CreateCommunication()
+Link *LinksController::CreateCommunication()
 {
     return nullptr;
 }
 
-void LinksController::AboutToOpen(Links *communication)
+void LinksController::AboutToOpen(Link *communication)
 {
     communication->Load(Save());
 }
 
-void LinksController::AboutToClose(Links *communication)
+void LinksController::AboutToClose(Link *communication)
 {
     wxUnusedVar(communication);
     // Nothing to do

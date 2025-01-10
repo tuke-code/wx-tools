@@ -28,8 +28,8 @@ public:
     void Load(const wxJSONValue &json) override;
 
 protected:
-    Links *CreateCommunication() override;
-    void AboutToOpen(Links *communication) override;
+    Link *CreateCommunication() override;
+    void AboutToOpen(Link *communication) override;
 
 private:
     void InitPortNameComboBox(const wxString &label, int row, wxWindow *parent);

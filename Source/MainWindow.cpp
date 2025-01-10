@@ -127,7 +127,7 @@ void MainWindow::OnHello(wxCommandEvent& event)
     wxLogMessage("Hello world from wxWidgets!");
 }
 
-std::string GetPageParameterFileName(CommunicationType type)
+std::string GetPageParameterFileName(LinkType type)
 {
     wxString name = GetCommunicationName(type);
     name.Replace(" ", "");
@@ -147,7 +147,7 @@ void MainWindow::LoadParameters()
         wxJSONValue json;
         jsonReader.Parse(name, &json);
 
-        if (it->first == CommunicationType::SerialPort) {
+        if (it->first == LinkType::SerialPort) {
             page->LoadParameters(json);
         }
     }

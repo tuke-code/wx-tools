@@ -10,11 +10,11 @@
 
 #include <wx/stattext.h>
 
-#include "CommunicationControlBox.h"
+#include "LinkControlBox.h"
 #include "InputControlBox.h"
 #include "OutputControlBox.h"
 
-ControlBoxes::ControlBoxes(CommunicationType type, wxWindow *parent)
+ControlBoxes::ControlBoxes(LinkType type, wxWindow *parent)
     : wxBoxSizer(wxVERTICAL)
     , m_inputControlBox(nullptr)
     , m_outputControlBox(nullptr)

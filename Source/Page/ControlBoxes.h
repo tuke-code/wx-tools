@@ -19,7 +19,7 @@ class CommunicationControlBox;
 class ControlBoxes : public wxBoxSizer
 {
 public:
-    ControlBoxes(CommunicationType type, wxWindow *parent);
+    ControlBoxes(LinkType type, wxWindow *parent);
 
     InputControlBox *GetInputControlBox() const;
     OutputControlBox *GetOutputControlBox() const;

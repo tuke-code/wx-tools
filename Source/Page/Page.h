@@ -23,7 +23,7 @@ class OutputControlBox;
 class Page : public wxPanel
 {
 public:
-    Page(CommunicationType type, wxWindow *parent);
+    Page(LinkType type, wxWindow *parent);
 
     void LoadParameters(const wxJSONValue &json);
     wxJSONValue SaveParameters() const;

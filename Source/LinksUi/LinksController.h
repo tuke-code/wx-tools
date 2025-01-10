@@ -13,14 +13,14 @@
 #include <wx/jsonval.h>
 #include <wx/wx.h>
 
-#include "Links/Links.h"
+#include "Links/Link.h"
 
 class LinksController : public wxGridBagSizer
 {
 public:
     LinksController(wxWindow *parent = nullptr);
     ~LinksController();
-    Links *GetCommunication() const;
+    Link *GetCommunication() const;
 
     bool Open();
     void Close();
@@ -32,10 +32,10 @@ public:
     virtual void Load(const wxJSONValue &json);
 
 protected:
-    virtual Links *CreateCommunication();
-    virtual void AboutToOpen(Links *communication);
-    virtual void AboutToClose(Links *communication);
+    virtual Link *CreateCommunication();
+    virtual void AboutToOpen(Link *communication);
+    virtual void AboutToClose(Link *communication);
 
 private:
-    Links *m_communication;
+    Link *m_communication;
 };

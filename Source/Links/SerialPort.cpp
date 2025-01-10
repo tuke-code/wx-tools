@@ -11,7 +11,7 @@
 #include "SerialPort_p.h"
 
 SerialPort::SerialPort()
-    : Links()
+    : Link()
     , d(new SerialPortPrivate())
 {}
 

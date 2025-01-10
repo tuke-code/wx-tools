@@ -77,7 +77,7 @@ std::string GetHexString(uint8_t value);
 
 //--------------------------------------------------------------------------------------------------
 // Text format
-enum class CommunicationType {
+enum class LinkType {
     SerialPort,
     UDPClient,
     UDPServer,
@@ -87,8 +87,8 @@ enum class CommunicationType {
     WSServer,
     Unknown = -1
 };
-std::vector<CommunicationType> GetSuportedCommunicationTypes();
-wxString GetCommunicationName(CommunicationType type);
+std::vector<LinkType> GetSuportedCommunicationTypes();
+wxString GetCommunicationName(LinkType type);
 
 //--------------------------------------------------------------------------------------------------
 // Addition

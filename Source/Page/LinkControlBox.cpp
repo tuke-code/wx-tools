@@ -6,13 +6,13 @@
  * eTools is licensed according to the terms in the file LICENCE(GPL V3) in the root of the source
  * code directory.
  **************************************************************************************************/
-#include "CommunicationControlBox.h"
+#include "LinkControlBox.h"
 
-#include "CommunicationPopup.h"
+#include "LinkPopup.h"
 #include "LinksUi/LinksController.h"
 #include "LinksUi/LinksControllerFactory.h"
 
-CommunicationControlBox::CommunicationControlBox(CommunicationType type, wxWindow *parent)
+CommunicationControlBox::CommunicationControlBox(LinkType type, wxWindow *parent)
     : wxStaticBoxSizer(wxVERTICAL, parent, wxT("Communication Control"))
     , m_controller(nullptr)
     , m_popup(nullptr)
@@ -24,7 +24,7 @@ CommunicationControlBox::CommunicationControlBox(CommunicationType type, wxWindo
     AddSpacer(4);
 
     auto settingsButton = new wxButton(GetStaticBox(), wxID_ANY, wxT("Settings"));
-    m_popup = new CommunicationPopup(settingsButton);
+    m_popup = new LinkPopup(settingsButton);
 
     m_openButton = new wxButton(GetStaticBox(), wxID_ANY, wxT("Open"));
     m_openButton->Bind(wxEVT_BUTTON, &CommunicationControlBox::OnOpen, this);

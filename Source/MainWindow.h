@@ -39,7 +39,7 @@ private:
     void SaveParameters();
 
 private:
-    std::map<CommunicationType, Page*> m_pageMap;
+    std::map<LinkType, Page*> m_pageMap;
     wxStatusBar* m_statusBar;
     wxTimer m_updateTimeTimer;
 };

@@ -11,7 +11,7 @@
 #include <asio/io_service.hpp>
 #include <asio/serial_port.hpp>
 
-#include "Links.h"
+#include "Link.h"
 
 struct SerialPortParameterKeys
 {
@@ -24,7 +24,7 @@ struct SerialPortParameterKeys
 };
 
 class SerialPortPrivate;
-class SerialPort : public Links
+class SerialPort : public Link
 {
 public:
     SerialPort();

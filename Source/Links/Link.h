@@ -15,11 +15,11 @@
 
 #include "Common/wxTools.h"
 
-class Links : wxObject
+class Link : wxObject
 {
 public:
-    Links();
-    ~Links();
+    Link();
+    ~Link();
 
     sigslot::signal<asio::const_buffer & /*bytes*/, const wxString & /*to*/> bytesWrittenSignal;
     sigslot::signal<asio::const_buffer & /*bytes*/, const wxString & /*from*/> bytesReadSignal;

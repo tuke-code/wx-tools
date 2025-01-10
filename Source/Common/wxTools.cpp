@@ -337,33 +337,33 @@ std::string GetHexString(uint8_t value)
     return list[value];
 }
 
-std::vector<CommunicationType> GetSuportedCommunicationTypes()
+std::vector<LinkType> GetSuportedCommunicationTypes()
 {
-    static std::vector<CommunicationType> types;
+    static std::vector<LinkType> types;
     if (types.empty()) {
-        types.push_back(CommunicationType::SerialPort);
-        types.push_back(CommunicationType::UDPClient);
-        types.push_back(CommunicationType::UDPServer);
-        types.push_back(CommunicationType::TCPClient);
-        types.push_back(CommunicationType::TCPServer);
-        types.push_back(CommunicationType::WSClient);
-        types.push_back(CommunicationType::WSServer);
+        types.push_back(LinkType::SerialPort);
+        types.push_back(LinkType::UDPClient);
+        types.push_back(LinkType::UDPServer);
+        types.push_back(LinkType::TCPClient);
+        types.push_back(LinkType::TCPServer);
+        types.push_back(LinkType::WSClient);
+        types.push_back(LinkType::WSServer);
     }
 
     return types;
 }
 
-wxString GetCommunicationName(CommunicationType type)
+wxString GetCommunicationName(LinkType type)
 {
-    static std::map<CommunicationType, wxString> typeMap;
+    static std::map<LinkType, wxString> typeMap;
     if (typeMap.empty()) {
-        typeMap[CommunicationType::SerialPort] = wxT("Serial Port");
-        typeMap[CommunicationType::UDPClient] = wxT("UDP Client");
-        typeMap[CommunicationType::UDPServer] = wxT("UDP Server");
-        typeMap[CommunicationType::TCPClient] = wxT("TCP Client");
-        typeMap[CommunicationType::TCPServer] = wxT("TCP Server");
-        typeMap[CommunicationType::WSClient] = wxT("Web Socket Client");
-        typeMap[CommunicationType::WSServer] = wxT("Web Socket Server");
+        typeMap[LinkType::SerialPort] = wxT("Serial Port");
+        typeMap[LinkType::UDPClient] = wxT("UDP Client");
+        typeMap[LinkType::UDPServer] = wxT("UDP Server");
+        typeMap[LinkType::TCPClient] = wxT("TCP Client");
+        typeMap[LinkType::TCPServer] = wxT("TCP Server");
+        typeMap[LinkType::WSClient] = wxT("Web Socket Client");
+        typeMap[LinkType::WSServer] = wxT("Web Socket Server");
     }
 
     if (typeMap.find(type) == typeMap.end()) {

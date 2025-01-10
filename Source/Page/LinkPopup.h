@@ -13,10 +13,10 @@
 
 #include "Popup.h"
 
-class CommunicationPopup : public Popup
+class LinkPopup : public Popup
 {
 public:
-    CommunicationPopup(wxButton *controlButton);
+    LinkPopup(wxButton *controlButton);
 
 private:
     wxSpinCtrl *m_txMask;
