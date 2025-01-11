@@ -24,6 +24,7 @@ struct SocketBaseParameterKeys
     const std::string password{"password"};
 };
 
+class SocketBasePrivate;
 class SocketBase : public Link
 {
 public:

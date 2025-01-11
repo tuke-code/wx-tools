@@ -8,12 +8,19 @@
  **************************************************************************************************/
 #pragma once
 
-#include <asio.hpp>
+#include <wx/wx.h>
 
-class UDPClientPrivate
+class SocketBasePrivate
 {
 public:
-    asio::io_context ioContext;
-    asio::ip::udp::socket *socket;
-    asio::ip::udp::endpoint endpoint;
+    wxString clientAddress;
+    uint16_t clientPort;
+    wxString serverAddress;
+    uint16_t serverPort;
+
+    // The members for web socket
+    bool m_isEnableAuthorization;
+    int m_dataChannel;
+    wxString m_userName;
+    wxString m_password;
 };
