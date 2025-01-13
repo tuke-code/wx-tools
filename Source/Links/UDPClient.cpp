@@ -13,6 +13,7 @@ using asio::ip::udp;
 
 UDPClient::UDPClient()
     : d(new UDPClientPrivate)
+    , SocketClient(d)
 {}
 
 UDPClient::~UDPClient()
@@ -71,9 +72,11 @@ bool UDPClient::Open()
 
 void UDPClient::Close()
 {
-    d->socket->close();
-    delete d->socket;
-    d->socket = nullptr;
+    if (d->socket) {
+        d->socket->close();
+        delete d->socket;
+        d->socket = nullptr;
+    }
 }
 
 void UDPClient::Write(const wxString &data, TextFormat format)

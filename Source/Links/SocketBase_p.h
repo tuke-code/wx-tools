@@ -19,8 +19,8 @@ public:
     uint16_t serverPort;
 
     // The members for web socket
-    bool m_isEnableAuthorization;
-    int m_dataChannel;
-    wxString m_userName;
-    wxString m_password;
+    bool isEnableAuthorization;
+    int dataChannel;
+    wxString userName;
+    wxString password;
 };

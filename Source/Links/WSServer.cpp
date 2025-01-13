@@ -7,8 +7,12 @@
  * code directory.
  **************************************************************************************************/
 #include "WSServer.h"
+#include "WSServer_p.h"
 
-WSServer::WSServer() {}
+WSServer::WSServer()
+    : d(new WSServerPrivate)
+    , SocketServer(d)
+{}
 
 WSServer::~WSServer() {}
 

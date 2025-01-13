@@ -10,7 +10,9 @@
 
 #include <asio.hpp>
 
-class UDPClientPrivate
+#include "SocketClient_p.h"
+
+class UDPClientPrivate : public SocketClientPrivate
 {
 public:
     asio::io_context ioContext;

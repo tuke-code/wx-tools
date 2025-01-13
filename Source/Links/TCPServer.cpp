@@ -7,8 +7,12 @@
  * code directory.
  **************************************************************************************************/
 #include "TCPServer.h"
+#include "TCPServer_p.h"
 
-TCPServer::TCPServer() {}
+TCPServer::TCPServer()
+    : d(new TCPServerPrivate)
+    , SocketServer(d)
+{}
 
 TCPServer::~TCPServer() {}
 

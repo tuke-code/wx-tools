@@ -7,10 +7,14 @@
  * code directory.
  **************************************************************************************************/
 #include "UDPServer.h"
+#include "UDPServer_p.h"
 
 using asio::ip::udp;
 
-UDPServer::UDPServer() {}
+UDPServer::UDPServer()
+    : d(new UDPServerPrivate)
+    , SocketServer(d)
+{}
 
 UDPServer::~UDPServer() {}
 
@@ -49,14 +53,14 @@ bool UDPServer::Open()
 {
     Close();
 
-    m_socket = new udp::socket(m_ioContext, udp::endpoint(udp::v4(), 0));
-    udp::resolver resolver(m_ioContext);
-    std::string ip = std::string(m_serverAddress.mb_str());
-    std::string port = std::to_string(m_serverPort);
+    d->socket = new udp::socket(d->ioContext, udp::endpoint(udp::v4(), 0));
+    udp::resolver resolver(d->ioContext);
+    std::string ip = std::string(d->serverAddress.mb_str());
+    std::string port = std::to_string(d->serverPort);
     auto endpoints = resolver.resolve(udp::v4(), ip, port);
-    m_endpoint = *endpoints.begin();
+    d->endpoint = *endpoints.begin();
 
-    std::thread t(ReadData, m_socket, this);
+    std::thread t(ReadData, d->socket, this);
     t.detach();
 
     return true;
@@ -64,16 +68,16 @@ bool UDPServer::Open()
 
 void UDPServer::Close()
 {
-    m_socket->close();
-    delete m_socket;
-    m_socket = nullptr;
+    d->socket->close();
+    delete d->socket;
+    d->socket = nullptr;
 }
 
 void UDPServer::Write(const wxString &data, TextFormat format)
 {
     auto msg = data.ToStdString();
     auto buffer = asio::buffer(msg.data(), msg.size());
-    auto ret = m_socket->send_to(asio::buffer(msg), m_endpoint);
+    auto ret = d->socket->send_to(asio::buffer(msg), d->endpoint);
     if (ret > 0) {
         bytesWrittenSignal(buffer, "127.0.0.1");
     }

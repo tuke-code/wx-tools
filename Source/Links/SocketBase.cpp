@@ -8,7 +8,9 @@
  **************************************************************************************************/
 #include "SocketBase.h"
 
-SocketBase::SocketBase() {}
+SocketBase::SocketBase(SocketBasePrivate *dPtr)
+    : d(dPtr)
+{}
 
 SocketBase::~SocketBase() {}
 

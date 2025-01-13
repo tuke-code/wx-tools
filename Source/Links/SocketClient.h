@@ -13,6 +13,6 @@
 class SocketClient : public SocketBase
 {
 public:
-    SocketClient();
+    SocketClient(SocketBasePrivate *dPtr);
     ~SocketClient();
 };

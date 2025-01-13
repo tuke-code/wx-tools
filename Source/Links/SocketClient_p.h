@@ -1,5 +1,5 @@
 ﻿/***************************************************************************************************
- * Copyright 2024 x-tools-author(x-tools@outlook.com). All rights reserved.
+ * Copyright 2024-2025 x-tools-author(x-tools@outlook.com). All rights reserved.
  *
  * The file is encoded using "utf8 with bom", it is a part of eTools project.
  *
@@ -8,19 +8,9 @@
  **************************************************************************************************/
 #pragma once
 
-#include "SocketServer.h"
+#include "SocketBase_p.h"
 
-class TCPServerPrivate;
-class TCPServer : public SocketServer
+class SocketClientPrivate : public SocketBasePrivate
 {
 public:
-    TCPServer();
-    ~TCPServer();
-
-    bool Open() override;
-    void Close() override;
-    void Write(const wxString &data, TextFormat format) override;
-
-private:
-    TCPServerPrivate *d;
 };

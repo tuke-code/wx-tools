@@ -10,6 +10,7 @@
 
 #include "SocketServer.h"
 
+class WSServerPrivate;
 class WSServer : public SocketServer
 {
 public:
@@ -19,4 +20,7 @@ public:
     bool Open() override;
     void Close() override;
     void Write(const wxString &data, TextFormat format) override;
+
+private:
+    WSServerPrivate *d;
 };

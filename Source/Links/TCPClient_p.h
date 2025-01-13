@@ -1,5 +1,5 @@
 ﻿/***************************************************************************************************
- * Copyright 2024 x-tools-author(x-tools@outlook.com). All rights reserved.
+ * Copyright 2024-2025 x-tools-author(x-tools@outlook.com). All rights reserved.
  *
  * The file is encoded using "utf8 with bom", it is a part of eTools project.
  *
@@ -8,19 +8,14 @@
  **************************************************************************************************/
 #pragma once
 
-#include "SocketServer.h"
+#include <asio.hpp>
 
-class TCPServerPrivate;
-class TCPServer : public SocketServer
+#include "SocketClient_p.h"
+
+class TCPClientPrivate : public SocketClientPrivate
 {
 public:
-    TCPServer();
-    ~TCPServer();
-
-    bool Open() override;
-    void Close() override;
-    void Write(const wxString &data, TextFormat format) override;
-
-private:
-    TCPServerPrivate *d;
+    asio::io_context ioContext;
+    asio::ip::udp::socket *socket;
+    asio::ip::udp::endpoint remoteEndpoint;
 };

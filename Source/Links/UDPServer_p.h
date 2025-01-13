@@ -8,19 +8,12 @@
  **************************************************************************************************/
 #pragma once
 
-#include "SocketServer.h"
+#include "SocketServer_p.h"
 
-class TCPServerPrivate;
-class TCPServer : public SocketServer
+class UDPServerPrivate : public SocketServerPrivate
 {
 public:
-    TCPServer();
-    ~TCPServer();
-
-    bool Open() override;
-    void Close() override;
-    void Write(const wxString &data, TextFormat format) override;
-
-private:
-    TCPServerPrivate *d;
+    asio::io_context ioContext;
+    asio::ip::udp::socket *socket;
+    asio::ip::udp::endpoint endpoint;
 };

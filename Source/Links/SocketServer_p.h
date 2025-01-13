@@ -8,19 +8,9 @@
  **************************************************************************************************/
 #pragma once
 
-#include "SocketServer.h"
+#include "SocketBase_p.h"
 
-class TCPServerPrivate;
-class TCPServer : public SocketServer
+class SocketServerPrivate : public SocketBasePrivate
 {
 public:
-    TCPServer();
-    ~TCPServer();
-
-    bool Open() override;
-    void Close() override;
-    void Write(const wxString &data, TextFormat format) override;
-
-private:
-    TCPServerPrivate *d;
 };

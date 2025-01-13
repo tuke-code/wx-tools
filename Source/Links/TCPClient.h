@@ -12,6 +12,7 @@
 
 #include "SocketClient.h"
 
+class TCPClientPrivate;
 class TCPClient : public SocketClient
 {
 public:
@@ -23,7 +24,5 @@ public:
     void Write(const wxString &data, TextFormat format) override;
 
 private:
-    asio::io_context m_ioContext;
-    asio::ip::udp::socket *m_socket;
-    asio::ip::udp::endpoint m_remoteEndpoint;
+    TCPClientPrivate *d;
 };

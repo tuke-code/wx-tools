@@ -8,6 +8,8 @@
  **************************************************************************************************/
 #include "SocketClient.h"
 
-SocketClient::SocketClient() {}
+SocketClient::SocketClient(SocketBasePrivate *dPtr)
+    : SocketBase(dPtr)
+{}
 
 SocketClient::~SocketClient() {}

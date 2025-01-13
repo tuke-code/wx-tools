@@ -28,7 +28,7 @@ class SocketBasePrivate;
 class SocketBase : public Link
 {
 public:
-    SocketBase();
+    SocketBase(SocketBasePrivate *d);
     ~SocketBase();
 
     void Load(const nlohmann::json &parameters) override;
@@ -42,6 +42,9 @@ public:
     int GetDataChannel() const;
     wxString GetUserName() const;
     wxString GetPassword() const;
+
+private:
+    SocketBasePrivate *d;
 
 protected:
     wxString m_clientAddress;

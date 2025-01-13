@@ -7,10 +7,18 @@
  * code directory.
  **************************************************************************************************/
 #include "TCPClient.h"
+#include "TCPClient_p.h"
 
-TCPClient::TCPClient() {}
+TCPClient::TCPClient()
+    : d(new TCPClientPrivate)
+    , SocketClient(d)
+{}
 
-TCPClient::~TCPClient() {}
+TCPClient::~TCPClient()
+{
+    delete d;
+    d = nullptr;
+}
 
 bool TCPClient::Open()
 {

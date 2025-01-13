@@ -7,8 +7,12 @@
  * code directory.
  **************************************************************************************************/
 #include "WSClient.h"
+#include "WSClient_p.h"
 
-WSClient::WSClient() {}
+WSClient::WSClient()
+    : d(new WSClientPrivate)
+    , SocketClient(d)
+{}
 
 WSClient::~WSClient() {}
 
