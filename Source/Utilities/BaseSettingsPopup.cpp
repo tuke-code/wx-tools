@@ -6,9 +6,9 @@
  * eTools is licensed according to the terms in the file LICENCE(GPL V3) in the root of the source
  * code directory.
  **************************************************************************************************/
-#include "Popup.h"
+#include "BaseSettingsPopup.h"
 
-Popup::Popup(wxButton *controlButton, bool showOnBottom)
+BaseSettingsPopup::BaseSettingsPopup(wxButton *controlButton, bool showOnBottom)
 #if defined(__WXMSW__)
     : wxPopupTransientWindow(controlButton, wxBORDER_THEME | wxPU_CONTAINS_CONTROLS)
 #else
@@ -18,16 +18,16 @@ Popup::Popup(wxButton *controlButton, bool showOnBottom)
     , m_showOnBottom(showOnBottom)
 {
     if (controlButton) {
-        controlButton->Bind(wxEVT_LEFT_DOWN, &Popup::OnControlButtonClicked, this);
+        controlButton->Bind(wxEVT_LEFT_DOWN, &BaseSettingsPopup::OnControlButtonClicked, this);
     }
 }
 
-bool Popup::ProcessLeftDown(wxMouseEvent &event)
+bool BaseSettingsPopup::ProcessLeftDown(wxMouseEvent &event)
 {
     return wxPopupTransientWindow::ProcessLeftDown(event);
 }
 
-void Popup::OnControlButtonClicked(wxMouseEvent &event)
+void BaseSettingsPopup::OnControlButtonClicked(wxMouseEvent &event)
 {
     wxPoint p = m_controlButton->ClientToScreen(wxPoint(0, 0));
     if (m_showOnBottom) {

@@ -8,9 +8,9 @@
  **************************************************************************************************/
 #pragma once
 
-#include "Utilities/Popup.h"
+#include "Utilities/BaseSettingsPopup.h"
 
-class PageSettingsInputPopup : public Popup
+class PageSettingsInputPopup : public BaseSettingsPopup
 {
 public:
     PageSettingsInputPopup(wxButton *controlButton);

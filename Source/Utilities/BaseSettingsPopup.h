@@ -11,10 +11,10 @@
 #include <wx/popupwin.h>
 #include <wx/wx.h>
 
-class Popup : public wxPopupTransientWindow
+class BaseSettingsPopup : public wxPopupTransientWindow
 {
 public:
-    Popup(wxButton *controlButton, bool showOnBottom = true);
+    BaseSettingsPopup(wxButton *controlButton, bool showOnBottom = true);
 
 protected:
     bool ProcessLeftDown(wxMouseEvent &event) override;

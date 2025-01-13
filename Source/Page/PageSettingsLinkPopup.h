@@ -11,9 +11,9 @@
 #include <wx/spinctrl.h>
 #include <wx/wx.h>
 
-#include "Utilities/Popup.h"
+#include "Utilities/BaseSettingsPopup.h"
 
-class PageSettingsLinkPopup : public Popup
+class PageSettingsLinkPopup : public BaseSettingsPopup
 {
 public:
     PageSettingsLinkPopup(wxButton *controlButton);

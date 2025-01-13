@@ -13,7 +13,7 @@
 #include <wx/wx.h>
 
 PageSettingsLinkPopup::PageSettingsLinkPopup(wxButton *controlButton)
-    : Popup(controlButton)
+    : BaseSettingsPopup(controlButton)
     , m_enableTxMask(nullptr)
     , m_txMask(nullptr)
     , m_refresh(nullptr)

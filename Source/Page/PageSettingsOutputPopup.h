@@ -8,11 +8,11 @@
  **************************************************************************************************/
 #pragma once
 
-#include "Utilities/Popup.h"
+#include "Utilities/BaseSettingsPopup.h"
 
 #include <wx/textctrl.h>
 
-class PageSettingsOutputPopup : public Popup
+class PageSettingsOutputPopup : public BaseSettingsPopup
 {
 public:
     PageSettingsOutputPopup(wxButton *controlButton);

@@ -11,7 +11,7 @@
 #include <wx/gbsizer.h>
 
 PageSettingsOutputPopup::PageSettingsOutputPopup(wxButton *controlButton)
-    : Popup(controlButton)
+    : BaseSettingsPopup(controlButton)
 {
     auto panel = new wxPanel(this);
 

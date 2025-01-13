@@ -18,7 +18,7 @@
 #include "Utilities/ESCComboBox.h"
 
 PageSettingsInputPopup::PageSettingsInputPopup(wxButton *controlButton)
-    : Popup(controlButton, false)
+    : BaseSettingsPopup(controlButton, false)
 {
     auto panel = new wxPanel(this);
     auto prefixLabel = new wxStaticText(panel, wxID_ANY, wxT("Prefix"));
