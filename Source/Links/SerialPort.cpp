@@ -28,6 +28,10 @@ void ReadData(SerialPortPrivate *d, SerialPort *serialPort)
     char buffer[1024] = {0};
     size_t receivedBytes = 0;
     while (1) {
+        if (!d->serialPort->is_open()) {
+            break;
+        }
+
         try {
             receivedBytes = d->serialPort->read_some(asio::buffer(buffer, sizeof(buffer)));
         } catch (asio::system_error &e) {

@@ -1,5 +1,5 @@
 ﻿/***************************************************************************************************
- * Copyright 2024 x-tools-author(x-tools@outlook.com). All rights reserved.
+ * Copyright 2024-2025 x-tools-author(x-tools@outlook.com). All rights reserved.
  *
  * The file is encoded using "utf8 with bom", it is a part of eTools project.
  *
@@ -20,6 +20,7 @@
 MainWindow::MainWindow()
     : wxFrame(nullptr, wxID_ANY, "wxTools")
     , m_statusBar(nullptr)
+    , m_settings(new wxFileConfig("wxTools", "xTools", "xTools/wxTools/wxTools.ini"))
 {
     Init();
 

@@ -1,5 +1,5 @@
 ﻿/***************************************************************************************************
- * Copyright 2024 x-tools-author(x-tools@outlook.com). All rights reserved.
+ * Copyright 2024-2025 x-tools-author(x-tools@outlook.com). All rights reserved.
  *
  * The file is encoded using "utf8 with bom", it is a part of eTools project.
  *
@@ -9,6 +9,7 @@
 #pragma once
 
 #include <map>
+#include <wx/fileconf.h>
 #include <wx/wx.h>
 
 #include "Common/wxTools.h"
@@ -42,4 +43,5 @@ private:
     std::map<LinkType, Page*> m_pageMap;
     wxStatusBar* m_statusBar;
     wxTimer m_updateTimeTimer;
+    wxFileConfig* m_settings{nullptr};
 };
