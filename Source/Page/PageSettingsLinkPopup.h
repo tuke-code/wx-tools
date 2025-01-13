@@ -11,15 +11,25 @@
 #include <wx/spinctrl.h>
 #include <wx/wx.h>
 
+#include "Common/wxTools.h"
 #include "Utilities/BaseSettingsPopup.h"
+
+struct PageSettingsLinkPopupParameterKeys
+{
+    std::string autoReconnect = "autoReconnect";
+};
 
 class PageSettingsLinkPopup : public BaseSettingsPopup
 {
 public:
     PageSettingsLinkPopup(wxButton *controlButton);
 
+    wxToolsSignal<> emitRefreshSignal;
+
+    void Load(const wxToolsJson &parameters);
+    wxToolsJson Save() const;
+
 private:
-    wxSpinCtrl *m_txMask;
-    wxCheckBox *m_enableTxMask;
     wxButton *m_refresh;
+    wxCheckBox *m_autoReconnect;
 };

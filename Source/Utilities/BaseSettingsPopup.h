@@ -20,9 +20,9 @@ protected:
     bool ProcessLeftDown(wxMouseEvent &event) override;
 
 private:
-    wxButton *m_controlButton;
+    wxButton *m_settingsButton;
     bool m_showOnBottom;
 
 private:
-    void OnControlButtonClicked(wxMouseEvent &event);
+    void OnSettingsButtonClicked(wxMouseEvent &event);
 };

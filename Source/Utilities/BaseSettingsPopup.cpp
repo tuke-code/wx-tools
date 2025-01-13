@@ -14,11 +14,11 @@ BaseSettingsPopup::BaseSettingsPopup(wxButton *controlButton, bool showOnBottom)
 #else
     : wxPopupTransientWindow(controlButton, wxBORDER_THEME)
 #endif
-    , m_controlButton(controlButton)
+    , m_settingsButton(controlButton)
     , m_showOnBottom(showOnBottom)
 {
     if (controlButton) {
-        controlButton->Bind(wxEVT_LEFT_DOWN, &BaseSettingsPopup::OnControlButtonClicked, this);
+        controlButton->Bind(wxEVT_LEFT_DOWN, &BaseSettingsPopup::OnSettingsButtonClicked, this);
     }
 }
 
@@ -27,11 +27,11 @@ bool BaseSettingsPopup::ProcessLeftDown(wxMouseEvent &event)
     return wxPopupTransientWindow::ProcessLeftDown(event);
 }
 
-void BaseSettingsPopup::OnControlButtonClicked(wxMouseEvent &event)
+void BaseSettingsPopup::OnSettingsButtonClicked(wxMouseEvent &event)
 {
-    wxPoint p = m_controlButton->ClientToScreen(wxPoint(0, 0));
+    wxPoint p = m_settingsButton->ClientToScreen(wxPoint(0, 0));
     if (m_showOnBottom) {
-        SetPosition(wxPoint(p.x, p.y + m_controlButton->GetSize().GetHeight()));
+        SetPosition(wxPoint(p.x, p.y + m_settingsButton->GetSize().GetHeight()));
     } else {
         SetPosition(wxPoint(p.x, p.y - GetSize().GetHeight()));
     }
