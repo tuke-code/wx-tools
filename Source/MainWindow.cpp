@@ -8,8 +8,6 @@
  **************************************************************************************************/
 #include "MainWindow.h"
 
-#include <fstream>
-
 #include <nlohmann/json.hpp>
 #include <wx/filename.h>
 #include <wx/notebook.h>
