@@ -15,7 +15,7 @@
 #include "Utilities/TextFormatComboBox.h"
 
 PageSettingsInput::PageSettingsInput(wxWindow* parent)
-    : wxStaticBoxSizer(wxVERTICAL, parent, wxT("Input Control"))
+    : wxStaticBoxSizer(wxVERTICAL, parent, wxT("Input Settings"))
     , m_settingsButton(nullptr)
     , m_sendButton(nullptr)
 {

@@ -19,7 +19,7 @@
 #include "PageSettingsLinkPopup.h"
 
 PageSettingsLink::PageSettingsLink(LinkType type, wxWindow *parent)
-    : wxStaticBoxSizer(wxVERTICAL, parent, wxT("Link Control"))
+    : wxStaticBoxSizer(wxVERTICAL, parent, wxT("Link Settings"))
     , m_controller(nullptr)
     , m_popup(nullptr)
 {

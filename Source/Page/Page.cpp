@@ -24,30 +24,30 @@
 
 Page::Page(LinkType type, wxWindow *parent)
     : wxPanel(parent, wxID_ANY)
-    , m_controlBoxes(nullptr)
-    , m_ioPanel(nullptr)
-    , m_inputControlBox(nullptr)
+    , m_pageSettings(nullptr)
+    , m_ioSettings(nullptr)
+    , m_inputSettings(nullptr)
     , m_linkControlBox(nullptr)
 {
     auto sizer = new wxBoxSizer(wxHORIZONTAL);
     SetSizerAndFit(sizer);
 
-    m_controlBoxes = new PageSettings(type, this);
-    sizer->Add(m_controlBoxes, 0, wxEXPAND | wxALL, 4);
+    m_pageSettings = new PageSettings(type, this);
+    sizer->Add(m_pageSettings, 0, wxEXPAND | wxALL, 4);
 
-    m_ioPanel = new PageIO(this);
-    sizer->Add(m_ioPanel, 1, wxEXPAND | wxALL, 4);
+    m_ioSettings = new PageIO(this);
+    sizer->Add(m_ioSettings, 1, wxEXPAND | wxALL, 4);
     Layout();
 
-    m_inputControlBox = m_controlBoxes->GetInputControlBox();
-    m_inputControlBox->GetInvokeWriteSignal().connect(&Page::OnInvokeWrite, this);
-    m_inputControlBox->GetInvokeStartTimerSignal().connect(&Page::OnInvokeStartTimer, this);
-    m_inputControlBox->GetTextFormatChangedSignal().connect(&Page::OnTextFormatChanged, this);
+    m_inputSettings = m_pageSettings->GetInputControlBox();
+    m_inputSettings->GetInvokeWriteSignal().connect(&Page::OnInvokeWrite, this);
+    m_inputSettings->GetInvokeStartTimerSignal().connect(&Page::OnInvokeStartTimer, this);
+    m_inputSettings->GetTextFormatChangedSignal().connect(&Page::OnTextFormatChanged, this);
 
-    m_linkControlBox = m_controlBoxes->GetCommunicationControlBox();
+    m_linkControlBox = m_pageSettings->GetCommunicationControlBox();
     m_linkControlBox->GetInvokeOpenSignal().connect(&Page::OnInvokeOpen, this);
 
-    m_outputControlBox = m_controlBoxes->GetOutputControlBox();
+    m_outputControlBox = m_pageSettings->GetOutputControlBox();
     m_outputControlBox->GetClearSignal().connect(&Page::OnClear, this);
 
     m_sendTimer.Bind(wxEVT_TIMER, [this](wxTimerEvent &event) { OnSendTimerTimeout(); });
@@ -70,11 +70,11 @@ wxToolsJson Page::Save() const
 
 void Page::OnInvokeOpen()
 {
-    PageSettingsLink *communicationControlBox = m_controlBoxes->GetCommunicationControlBox();
+    PageSettingsLink *communicationControlBox = m_pageSettings->GetCommunicationControlBox();
     LinkUi *communicationController = communicationControlBox->GetController();
     if (communicationController->IsOpen()) {
         m_sendTimer.Stop();
-        m_inputControlBox->SetCycleIntervalComboBoxSelection(0);
+        m_inputSettings->SetCycleIntervalComboBoxSelection(0);
 
         Link *communication = communicationController->GetLink();
         communication->bytesWrittenSignal.disconnect_all();
@@ -107,7 +107,7 @@ void Page::OnInvokeWrite(TextFormat format)
     }
 
     Link *communication = communicationController->GetLink();
-    wxString text = m_ioPanel->GetInputBox()->GetInputText();
+    wxString text = m_ioSettings->GetInputBox()->GetInputText();
 
     if (text.IsEmpty()) {
         text = wxString::FromAscii("(null)");
@@ -123,10 +123,10 @@ void Page::OnInvokeStartTimer(int ms)
         return;
     }
 
-    PageSettingsLink *communicationControlBox = m_controlBoxes->GetCommunicationControlBox();
+    PageSettingsLink *communicationControlBox = m_pageSettings->GetCommunicationControlBox();
     LinkUi *communicationController = communicationControlBox->GetController();
     if (!communicationController->IsOpen()) {
-        m_inputControlBox->SetCycleIntervalComboBoxSelection(0);
+        m_inputSettings->SetCycleIntervalComboBoxSelection(0);
         wxMessageBox(wxT("Communication is not open."), wxT("Error"), wxICON_ERROR);
         return;
     }
@@ -150,18 +150,18 @@ void Page::OnSendTimerTimeout()
         return;
     }
 
-    TextFormat format = m_inputControlBox->GetTextFormat();
+    TextFormat format = m_inputSettings->GetTextFormat();
     OnInvokeWrite(format);
 }
 
 void Page::OnClear()
 {
-    m_ioPanel->GetOutputBox()->Clear();
+    m_ioSettings->GetOutputBox()->Clear();
 }
 
 void Page::OnTextFormatChanged(TextFormat format)
 {
-    m_ioPanel->GetInputBox()->SetTextFormat(format);
+    m_ioSettings->GetInputBox()->SetTextFormat(format);
 }
 
 std::string dateTimeString(bool showDate, bool showTime, bool showMs)
@@ -207,7 +207,7 @@ std::string flagString(bool isRx, const std::string &fromTo, bool showFlag)
 
 void Page::OutputText(wxToolsConstBuffer &bytes, const wxString &fromTo, bool isRx)
 {
-    PageSettingsOutput *outputControlBox = m_controlBoxes->GetOutputControlBox();
+    PageSettingsOutput *outputControlBox = m_pageSettings->GetOutputControlBox();
     TextFormat outputFormat = outputControlBox->GetTextFormat();
     bool showDate = outputControlBox->GetShowDate();
     bool showTime = outputControlBox->GetShowTime();
@@ -234,5 +234,5 @@ void Page::OutputText(wxToolsConstBuffer &bytes, const wxString &fromTo, bool is
         str = wxString::Format("[%s %s] %s", dateTimeString, flagString, text);
     }
 
-    m_ioPanel->GetOutputBox()->AppendText(str);
+    m_ioSettings->GetOutputBox()->AppendText(str);
 }

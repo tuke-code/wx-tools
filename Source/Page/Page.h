@@ -29,10 +29,10 @@ public:
     wxToolsJson Save() const;
 
 private:
-    PageSettingsInput *m_inputControlBox;
-    PageSettings *m_controlBoxes;
+    PageSettingsInput *m_inputSettings;
+    PageSettings *m_pageSettings;
     PageSettingsLink *m_linkControlBox;
-    PageIO *m_ioPanel;
+    PageIO *m_ioSettings;
     wxTimer m_sendTimer;
     PageSettingsOutput *m_outputControlBox;
 

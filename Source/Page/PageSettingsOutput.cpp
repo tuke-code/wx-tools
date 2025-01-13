@@ -14,7 +14,7 @@
 #include "Utilities/TextFormatComboBox.h"
 
 PageSettingsOutput::PageSettingsOutput(wxWindow *parent)
-    : wxStaticBoxSizer(wxHORIZONTAL, parent, wxT("Output Control"))
+    : wxStaticBoxSizer(wxHORIZONTAL, parent, wxT("Output Settings"))
     , m_showDate(nullptr)
     , m_showTime(nullptr)
     , m_showMs(nullptr)
