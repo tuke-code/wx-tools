@@ -18,7 +18,7 @@
 class IOPanel;
 class ControlBoxes;
 class InputControlBox;
-class CommunicationControlBox;
+class LinkControlBox;
 class OutputControlBox;
 class Page : public wxPanel
 {
@@ -31,7 +31,7 @@ public:
 private:
     InputControlBox *m_inputControlBox;
     ControlBoxes *m_controlBoxes;
-    CommunicationControlBox *m_communicationControlBox;
+    LinkControlBox *m_communicationControlBox;
     IOPanel *m_ioPanel;
     wxTimer m_sendTimer;
     OutputControlBox *m_outputControlBox;

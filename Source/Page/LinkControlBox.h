@@ -15,10 +15,10 @@
 
 class LinkPopup;
 class LinksController;
-class CommunicationControlBox : public wxStaticBoxSizer
+class LinkControlBox : public wxStaticBoxSizer
 {
 public:
-    CommunicationControlBox(LinkType type, wxWindow *parent);
+    LinkControlBox(LinkType type, wxWindow *parent);
     LinksController *GetController() const;
     wxToolsSignal<> &GetInvokeOpenSignal();
     void SetOpenButtonLabel(const wxString &label);

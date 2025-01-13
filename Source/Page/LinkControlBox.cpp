@@ -12,7 +12,7 @@
 #include "LinksUi/LinksController.h"
 #include "LinksUi/LinksControllerFactory.h"
 
-CommunicationControlBox::CommunicationControlBox(LinkType type, wxWindow *parent)
+LinkControlBox::LinkControlBox(LinkType type, wxWindow *parent)
     : wxStaticBoxSizer(wxVERTICAL, parent, wxT("Communication Control"))
     , m_controller(nullptr)
     , m_popup(nullptr)
@@ -27,7 +27,7 @@ CommunicationControlBox::CommunicationControlBox(LinkType type, wxWindow *parent
     m_popup = new LinkPopup(settingsButton);
 
     m_openButton = new wxButton(GetStaticBox(), wxID_ANY, wxT("Open"));
-    m_openButton->Bind(wxEVT_BUTTON, &CommunicationControlBox::OnOpen, this);
+    m_openButton->Bind(wxEVT_BUTTON, &LinkControlBox::OnOpen, this);
 
     auto buttonSizer = new wxBoxSizer(wxHORIZONTAL);
     buttonSizer->Add(settingsButton, 1, wxEXPAND | wxALL, 0);
@@ -35,22 +35,22 @@ CommunicationControlBox::CommunicationControlBox(LinkType type, wxWindow *parent
     Add(buttonSizer, 0, wxEXPAND, 0);
 }
 
-LinksController *CommunicationControlBox::GetController() const
+LinksController *LinkControlBox::GetController() const
 {
     return m_controller;
 }
 
-wxToolsSignal<> &CommunicationControlBox::GetInvokeOpenSignal()
+wxToolsSignal<> &LinkControlBox::GetInvokeOpenSignal()
 {
     return m_invokeOpenSignal;
 }
 
-void CommunicationControlBox::SetOpenButtonLabel(const wxString &label)
+void LinkControlBox::SetOpenButtonLabel(const wxString &label)
 {
     m_openButton->SetLabel(label);
 }
 
-void CommunicationControlBox::OnOpen(wxCommandEvent &event)
+void LinkControlBox::OnOpen(wxCommandEvent &event)
 {
 #if 0
     static wxPopupTransientWindow *popup = new wxPopupTransientWindow(m_openButton, wxBORDER_SIMPLE);

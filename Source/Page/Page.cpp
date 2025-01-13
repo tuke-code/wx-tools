@@ -72,7 +72,7 @@ nlohmann::json Page::Save() const
 
 void Page::OnInvokeOpen()
 {
-    CommunicationControlBox *communicationControlBox = m_controlBoxes->GetCommunicationControlBox();
+    LinkControlBox *communicationControlBox = m_controlBoxes->GetCommunicationControlBox();
     LinksController *communicationController = communicationControlBox->GetController();
     if (communicationController->IsOpen()) {
         m_sendTimer.Stop();
@@ -125,7 +125,7 @@ void Page::OnInvokeStartTimer(int ms)
         return;
     }
 
-    CommunicationControlBox *communicationControlBox = m_controlBoxes->GetCommunicationControlBox();
+    LinkControlBox *communicationControlBox = m_controlBoxes->GetCommunicationControlBox();
     LinksController *communicationController = communicationControlBox->GetController();
     if (!communicationController->IsOpen()) {
         m_inputControlBox->SetCycleIntervalComboBoxSelection(0);

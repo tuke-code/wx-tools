@@ -15,7 +15,7 @@
 
 class InputControlBox;
 class OutputControlBox;
-class CommunicationControlBox;
+class LinkControlBox;
 class ControlBoxes : public wxBoxSizer
 {
 public:
@@ -23,10 +23,10 @@ public:
 
     InputControlBox *GetInputControlBox() const;
     OutputControlBox *GetOutputControlBox() const;
-    CommunicationControlBox *GetCommunicationControlBox() const;
+    LinkControlBox *GetCommunicationControlBox() const;
 
 private:
     InputControlBox *m_inputControlBox;
     OutputControlBox *m_outputControlBox;
-    CommunicationControlBox *m_communicationControlBox;
+    LinkControlBox *m_communicationControlBox;
 };

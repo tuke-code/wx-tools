@@ -10,8 +10,8 @@
 
 #include <wx/stattext.h>
 
-#include "LinkControlBox.h"
 #include "InputControlBox.h"
+#include "LinkControlBox.h"
 #include "OutputControlBox.h"
 
 ControlBoxes::ControlBoxes(LinkType type, wxWindow *parent)
@@ -20,7 +20,7 @@ ControlBoxes::ControlBoxes(LinkType type, wxWindow *parent)
     , m_outputControlBox(nullptr)
     , m_communicationControlBox(nullptr)
 {
-    m_communicationControlBox = new CommunicationControlBox(type, parent);
+    m_communicationControlBox = new LinkControlBox(type, parent);
     Add(m_communicationControlBox, 0, wxEXPAND | wxALL);
 
     m_outputControlBox = new OutputControlBox(parent);
@@ -42,7 +42,7 @@ OutputControlBox *ControlBoxes::GetOutputControlBox() const
     return m_outputControlBox;
 }
 
-CommunicationControlBox *ControlBoxes::GetCommunicationControlBox() const
+LinkControlBox *ControlBoxes::GetCommunicationControlBox() const
 {
     return m_communicationControlBox;
 }
