@@ -10,10 +10,10 @@
 
 #include <wx/wx.h>
 
-class OutputBox : public wxStaticBoxSizer
+class IOPanelOutput : public wxStaticBoxSizer
 {
 public:
-    OutputBox(wxWindow *parent);
+    IOPanelOutput(wxWindow *parent);
 
     void AppendText(const wxString &text);
     void SetWrap(bool wrap);

@@ -8,8 +8,8 @@
  **************************************************************************************************/
 #include "IOPanel.h"
 
-#include "InputBox.h"
-#include "OutputBox.h"
+#include "IOPanelInput.h"
+#include "IOPanelOutput.h"
 
 IOPanel::IOPanel(wxWindow* parent)
     : wxPanel(parent, wxID_ANY)
@@ -17,19 +17,19 @@ IOPanel::IOPanel(wxWindow* parent)
     auto* sizer = new wxBoxSizer(wxVERTICAL);
     SetSizerAndFit(sizer);
 
-    m_outputBox = new OutputBox(this);
+    m_outputBox = new IOPanelOutput(this);
     sizer->Add(m_outputBox, 1, wxEXPAND | wxALL, 0);
 
-    m_inputBox = new InputBox(this);
+    m_inputBox = new IOPanelInput(this);
     sizer->Add(m_inputBox, 0, wxEXPAND | wxALL, 0);
 }
 
-InputBox *IOPanel::GetInputBox() const
+IOPanelInput *IOPanel::GetInputBox() const
 {
     return m_inputBox;
 }
 
-OutputBox *IOPanel::GetOutputBox() const
+IOPanelOutput *IOPanel::GetOutputBox() const
 {
     return m_outputBox;
 }

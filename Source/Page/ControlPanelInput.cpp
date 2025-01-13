@@ -1,20 +1,20 @@
 ﻿/***************************************************************************************************
- * Copyright 2024 x-tools-author(x-tools@outlook.com). All rights reserved.
+ * Copyright 2024-2025 x-tools-author(x-tools@outlook.com). All rights reserved.
  *
  * The file is encoded using "utf8 with bom", it is a part of eTools project.
  *
  * eTools is licensed according to the terms in the file LICENCE(GPL V3) in the root of the source
  * code directory.
  **************************************************************************************************/
-#include "InputControlBox.h"
+#include "ControlPanelInput.h"
 
 #include <wx/gbsizer.h>
 #include <wx/wx.h>
 
-#include "InputPopup.h"
+#include "ControlPanelInputPopup.h"
 #include "Utilities/TextFormatComboBox.h"
 
-InputControlBox::InputControlBox(wxWindow* parent)
+ControlPanelInput::ControlPanelInput(wxWindow* parent)
     : wxStaticBoxSizer(wxVERTICAL, parent, wxT("Input Control"))
     , m_settingsButton(nullptr)
     , m_sendButton(nullptr)
@@ -23,11 +23,11 @@ InputControlBox::InputControlBox(wxWindow* parent)
     m_cycleIntervalComboBox = InitCycleIntervalComboBox();
     auto formatText = new wxStaticText(GetStaticBox(), wxID_ANY, wxT("Format"));
     m_formatComboBox = new TextFormatComboBox(GetStaticBox());
-    m_formatComboBox->Bind(wxEVT_COMBOBOX, &InputControlBox::OnTextFormat, this);
+    m_formatComboBox->Bind(wxEVT_COMBOBOX, &ControlPanelInput::OnTextFormat, this);
     m_settingsButton = new wxButton(GetStaticBox(), wxID_ANY, wxT("Settings"));
     m_sendButton = new wxButton(GetStaticBox(), wxID_ANY, wxT("Send"));
-    m_popup = new InputPopup(m_settingsButton);
-    m_sendButton->Bind(wxEVT_BUTTON, &InputControlBox::OnSendButtonClicked, this);
+    m_popup = new ControlPanelInputPopup(m_settingsButton);
+    m_sendButton->Bind(wxEVT_BUTTON, &ControlPanelInput::OnSendButtonClicked, this);
 
     auto* sizer = new wxGridBagSizer(4, 4);
     sizer->Add(cycleText, wxGBPosition(0, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
@@ -45,7 +45,7 @@ InputControlBox::InputControlBox(wxWindow* parent)
     Add(buttonSizer, 0, wxEXPAND | wxALL, 0);
 }
 
-void InputControlBox::SetCycleIntervalComboBoxSelection(int selection)
+void ControlPanelInput::SetCycleIntervalComboBoxSelection(int selection)
 {
     if (selection < 0 || selection >= m_cycleIntervalComboBox->GetCount()) {
         return;
@@ -54,39 +54,39 @@ void InputControlBox::SetCycleIntervalComboBoxSelection(int selection)
     m_cycleIntervalComboBox->SetSelection(selection);
 }
 
-TextFormat InputControlBox::GetTextFormat() const
+TextFormat ControlPanelInput::GetTextFormat() const
 {
     return m_formatComboBox->GetSelectedFormat();
 }
 
-wxToolsSignal<TextFormat>& InputControlBox::GetInvokeWriteSignal()
+wxToolsSignal<TextFormat>& ControlPanelInput::GetInvokeWriteSignal()
 {
     return m_invokeWriteSignal;
 }
 
-wxToolsSignal<int>& InputControlBox::GetInvokeStartTimerSignal()
+wxToolsSignal<int>& ControlPanelInput::GetInvokeStartTimerSignal()
 {
     return m_invokeStartTimerSignal;
 }
 
-wxToolsSignal<TextFormat>& InputControlBox::GetTextFormatChangedSignal()
+wxToolsSignal<TextFormat>& ControlPanelInput::GetTextFormatChangedSignal()
 {
     return m_textFormatChangedSignal;
 }
 
-void InputControlBox::OnSendButtonClicked(wxCommandEvent& event)
+void ControlPanelInput::OnSendButtonClicked(wxCommandEvent& event)
 {
     wxUnusedVar(event);
     m_invokeWriteSignal(m_formatComboBox->GetSelectedFormat());
 }
 
-void InputControlBox::OnTextFormat(wxCommandEvent& event)
+void ControlPanelInput::OnTextFormat(wxCommandEvent& event)
 {
     wxUnusedVar(event);
     m_textFormatChangedSignal(m_formatComboBox->GetSelectedFormat());
 }
 
-wxComboBox* InputControlBox::InitCycleIntervalComboBox()
+wxComboBox* ControlPanelInput::InitCycleIntervalComboBox()
 {
     auto cb = new wxComboBox(GetStaticBox(),
                              wxID_ANY,

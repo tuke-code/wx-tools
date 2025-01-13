@@ -13,12 +13,12 @@
 
 #include "Common/wxTools.h"
 
-class LinkPopup;
+class ControlPanelLinkPopup;
 class LinksController;
-class LinkControlBox : public wxStaticBoxSizer
+class ControlPanelLink : public wxStaticBoxSizer
 {
 public:
-    LinkControlBox(LinkType type, wxWindow *parent);
+    ControlPanelLink(LinkType type, wxWindow *parent);
     LinksController *GetController() const;
     wxToolsSignal<> &GetInvokeOpenSignal();
     void SetOpenButtonLabel(const wxString &label);
@@ -26,7 +26,7 @@ public:
 private:
     LinksController *m_controller;
     wxButton *m_openButton;
-    LinkPopup *m_popup;
+    ControlPanelLinkPopup *m_popup;
 
     wxToolsSignal<> m_invokeOpenSignal;
 

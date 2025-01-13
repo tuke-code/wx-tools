@@ -6,9 +6,9 @@
  * eTools is licensed according to the terms in the file LICENCE(GPL V3) in the root of the source
  * code directory.
  **************************************************************************************************/
-#include "OutputBox.h"
+#include "IOPanelOutput.h"
 
-OutputBox::OutputBox(wxWindow *parent)
+IOPanelOutput::IOPanelOutput(wxWindow *parent)
     : wxStaticBoxSizer(wxVERTICAL, parent, _("Output"))
 {
     m_textCtrl = new wxTextCtrl(parent,
@@ -22,18 +22,18 @@ OutputBox::OutputBox(wxWindow *parent)
     m_textCtrl->SetEditable(false);
 }
 
-void OutputBox::AppendText(const wxString &text)
+void IOPanelOutput::AppendText(const wxString &text)
 {
     m_textCtrl->AppendText(text + "\n");
 }
 
-void OutputBox::SetWrap(bool wrap)
+void IOPanelOutput::SetWrap(bool wrap)
 {
     int wrapMode = wrap ? wxTE_WORDWRAP : wxTE_DONTWRAP;
     m_textCtrl->SetWindowStyleFlag(m_textCtrl->GetWindowStyleFlag() & wrapMode);
 }
 
-void OutputBox::Clear()
+void IOPanelOutput::Clear()
 {
     m_textCtrl->Clear();
 }

@@ -13,7 +13,7 @@
 #include <wx/notebook.h>
 
 #include "Common/wxTools.h"
-#include "Page/PageFactory.h"
+#include "Page/Page.h"
 
 MainWindow::MainWindow()
     : wxFrame(nullptr, wxID_ANY, "wxTools")
@@ -25,7 +25,7 @@ MainWindow::MainWindow()
     auto* notebook = new wxNotebook(this, wxID_ANY);
     auto types = GetSuportedCommunicationTypes();
     for (auto type : types) {
-        auto* page = PageFactory::singleton().CreatePage(type, notebook);
+        auto* page = new Page(type, notebook);
         if (page != nullptr) {
             notebook->AddPage(page, GetCommunicationName(type));
             m_pageMap[type] = page;

@@ -10,8 +10,8 @@
 
 #include "Popup.h"
 
-class InputPopup : public Popup
+class ControlPanelInputPopup : public Popup
 {
 public:
-    InputPopup(wxButton *controlButton);
+    ControlPanelInputPopup(wxButton *controlButton);
 };

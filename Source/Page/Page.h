@@ -16,10 +16,10 @@
 #include "Common/wxTools.h"
 
 class IOPanel;
-class ControlBoxes;
-class InputControlBox;
-class LinkControlBox;
-class OutputControlBox;
+class ControlPanel;
+class ControlPanelInput;
+class ControlPanelLink;
+class ControlPanelOutput;
 class Page : public wxPanel
 {
 public:
@@ -29,12 +29,12 @@ public:
     wxToolsJson Save() const;
 
 private:
-    InputControlBox *m_inputControlBox;
-    ControlBoxes *m_controlBoxes;
-    LinkControlBox *m_linkControlBox;
+    ControlPanelInput *m_inputControlBox;
+    ControlPanel *m_controlBoxes;
+    ControlPanelLink *m_linkControlBox;
     IOPanel *m_ioPanel;
     wxTimer m_sendTimer;
-    OutputControlBox *m_outputControlBox;
+    ControlPanelOutput *m_outputControlBox;
 
 private:
     struct ParameterKeys

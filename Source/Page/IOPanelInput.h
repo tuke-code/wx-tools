@@ -13,10 +13,10 @@
 #include "Common/wxTools.h"
 
 class LineEdit;
-class InputBox : public wxStaticBoxSizer
+class IOPanelInput : public wxStaticBoxSizer
 {
 public:
-    InputBox(wxWindow *parent);
+    IOPanelInput(wxWindow *parent);
 
     wxString GetInputText() const;
     void SetTextFormat(TextFormat format);

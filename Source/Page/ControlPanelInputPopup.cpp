@@ -6,7 +6,7 @@
  * eTools is licensed according to the terms in the file LICENCE(GPL V3) in the root of the source
  * code directory.
  **************************************************************************************************/
-#include "InputPopup.h"
+#include "ControlPanelInputPopup.h"
 
 #include <wx/gbsizer.h>
 #include <wx/popupwin.h>
@@ -17,7 +17,7 @@
 #include "Utilities/CRCTypeComboBox.h"
 #include "Utilities/ESCComboBox.h"
 
-InputPopup::InputPopup(wxButton *controlButton)
+ControlPanelInputPopup::ControlPanelInputPopup(wxButton *controlButton)
     : Popup(controlButton, false)
 {
     auto panel = new wxPanel(this);

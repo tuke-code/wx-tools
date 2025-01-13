@@ -1,5 +1,5 @@
 ﻿/***************************************************************************************************
- * Copyright 2024 x-tools-author(x-tools@outlook.com). All rights reserved.
+ * Copyright 2024-2025 x-tools-author(x-tools@outlook.com). All rights reserved.
  *
  * The file is encoded using "utf8 with bom", it is a part of eTools project.
  *
@@ -13,20 +13,20 @@
 
 #include "Common/wxTools.h"
 
-class InputControlBox;
-class OutputControlBox;
-class LinkControlBox;
-class ControlBoxes : public wxBoxSizer
+class ControlPanelInput;
+class ControlPanelOutput;
+class ControlPanelLink;
+class ControlPanel : public wxBoxSizer
 {
 public:
-    ControlBoxes(LinkType type, wxWindow *parent);
+    ControlPanel(LinkType type, wxWindow *parent);
 
-    InputControlBox *GetInputControlBox() const;
-    OutputControlBox *GetOutputControlBox() const;
-    LinkControlBox *GetCommunicationControlBox() const;
+    ControlPanelInput *GetInputControlBox() const;
+    ControlPanelOutput *GetOutputControlBox() const;
+    ControlPanelLink *GetCommunicationControlBox() const;
 
 private:
-    InputControlBox *m_inputControlBox;
-    OutputControlBox *m_outputControlBox;
-    LinkControlBox *m_communicationControlBox;
+    ControlPanelInput *m_inputControlBox;
+    ControlPanelOutput *m_outputControlBox;
+    ControlPanelLink *m_communicationControlBox;
 };

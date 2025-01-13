@@ -10,17 +10,17 @@
 
 #include <wx/wx.h>
 
-class InputBox;
-class OutputBox;
+class IOPanelInput;
+class IOPanelOutput;
 class IOPanel : public wxPanel
 {
 public:
     IOPanel(wxWindow* parent);
 
-    InputBox *GetInputBox() const;
-    OutputBox *GetOutputBox() const;
+    IOPanelInput *GetInputBox() const;
+    IOPanelOutput *GetOutputBox() const;
 
 private:
-    InputBox *m_inputBox;
-    OutputBox *m_outputBox;
+    IOPanelInput *m_inputBox;
+    IOPanelOutput *m_outputBox;
 };

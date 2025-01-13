@@ -1,5 +1,5 @@
 ﻿/***************************************************************************************************
- * Copyright 2024 x-tools-author(x-tools@outlook.com). All rights reserved.
+ * Copyright 2024-2025 x-tools-author(x-tools@outlook.com). All rights reserved.
  *
  * The file is encoded using "utf8 with bom", it is a part of eTools project.
  *
@@ -13,12 +13,12 @@
 
 #include "Common/wxTools.h"
 
-class OutputPopup;
+class ControlPanelOutputPopup;
 class TextFormatComboBox;
-class OutputControlBox : public wxStaticBoxSizer
+class ControlPanelOutput : public wxStaticBoxSizer
 {
 public:
-    OutputControlBox(wxWindow *parent);
+    ControlPanelOutput(wxWindow *parent);
     TextFormat GetTextFormat() const;
     bool GetShowDate() const;
     bool GetShowTime() const;
@@ -38,7 +38,7 @@ private:
     wxCheckBox *m_showRx;
     wxCheckBox *m_showTx;
     wxCheckBox *m_showFlag;
-    OutputPopup *m_popup;
+    ControlPanelOutputPopup *m_popup;
 
     wxToolsSignal<> m_clearSignal;
 };

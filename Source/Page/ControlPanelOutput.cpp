@@ -1,19 +1,19 @@
 ﻿/***************************************************************************************************
- * Copyright 2024 x-tools-author(x-tools@outlook.com). All rights reserved.
+ * Copyright 2024-2025 x-tools-author(x-tools@outlook.com). All rights reserved.
  *
  * The file is encoded using "utf8 with bom", it is a part of eTools project.
  *
  * eTools is licensed according to the terms in the file LICENCE(GPL V3) in the root of the source
  * code directory.
  **************************************************************************************************/
-#include "OutputControlBox.h"
+#include "ControlPanelOutput.h"
 
 #include <wx/gbsizer.h>
 
-#include "OutputPopup.h"
+#include "ControlPanelOutputPopup.h"
 #include "Utilities/TextFormatComboBox.h"
 
-OutputControlBox::OutputControlBox(wxWindow *parent)
+ControlPanelOutput::ControlPanelOutput(wxWindow *parent)
     : wxStaticBoxSizer(wxHORIZONTAL, parent, wxT("Output Control"))
     , m_showDate(nullptr)
     , m_showTime(nullptr)
@@ -51,7 +51,7 @@ OutputControlBox::OutputControlBox(wxWindow *parent)
     buttonsSizer->Add(settingsButton, 1, wxEXPAND | wxALL, 0);
     buttonsSizer->Add(clearButton, 1, wxEXPAND | wxALL, 0);
 
-    m_popup = new OutputPopup(settingsButton);
+    m_popup = new ControlPanelOutputPopup(settingsButton);
 
     auto *sizer = new wxGridBagSizer(4, 4);
     sizer->Add(formatText, wxGBPosition(0, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
@@ -64,42 +64,42 @@ OutputControlBox::OutputControlBox(wxWindow *parent)
     clearButton->Bind(wxEVT_BUTTON, [=](wxCommandEvent &event) { m_clearSignal(); });
 }
 
-TextFormat OutputControlBox::GetTextFormat() const
+TextFormat ControlPanelOutput::GetTextFormat() const
 {
     return m_textFormatComboBox->GetSelectedFormat();
 }
 
-bool OutputControlBox::GetShowDate() const
+bool ControlPanelOutput::GetShowDate() const
 {
     return m_showDate->GetValue();
 }
 
-bool OutputControlBox::GetShowTime() const
+bool ControlPanelOutput::GetShowTime() const
 {
     return m_showTime->GetValue();
 }
 
-bool OutputControlBox::GetShowMs() const
+bool ControlPanelOutput::GetShowMs() const
 {
     return m_showMs->GetValue();
 }
 
-bool OutputControlBox::GetShowRx() const
+bool ControlPanelOutput::GetShowRx() const
 {
     return m_showRx->GetValue();
 }
 
-bool OutputControlBox::GetShowTx() const
+bool ControlPanelOutput::GetShowTx() const
 {
     return m_showTx->GetValue();
 }
 
-bool OutputControlBox::GetShowFlag() const
+bool ControlPanelOutput::GetShowFlag() const
 {
     return m_showFlag->GetValue();
 }
 
-wxToolsSignal<> &OutputControlBox::GetClearSignal()
+wxToolsSignal<> &ControlPanelOutput::GetClearSignal()
 {
     return m_clearSignal;
 }
