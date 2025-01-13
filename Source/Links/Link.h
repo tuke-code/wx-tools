@@ -19,8 +19,8 @@
 class Link : wxObject
 {
 public:
-    wxToolsSignal<wxToolsConstBuffer & /*bytes*/, const wxString & /*to*/> bytesWrittenSignal;
-    wxToolsSignal<wxToolsConstBuffer & /*bytes*/, const wxString & /*from*/> bytesReadSignal;
+    wxToolsSignal<wxToolsConstBuffer & /*bytes*/, const wxString & /*to*/> emitBytesWrittenSignal;
+    wxToolsSignal<wxToolsConstBuffer & /*bytes*/, const wxString & /*from*/> emitBytesReadSignal;
 
     virtual bool Open() = 0;
     virtual void Close() = 0;

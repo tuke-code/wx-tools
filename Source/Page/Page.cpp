@@ -77,7 +77,7 @@ void Page::OnInvokeOpen()
         m_inputSettings->SetCycleIntervalComboBoxSelection(0);
 
         Link *communication = communicationController->GetLink();
-        communication->bytesWrittenSignal.disconnect_all();
+        communication->emitBytesWrittenSignal.disconnect_all();
 
         communicationController->Close();
         communicationController->Enable();
@@ -90,8 +90,8 @@ void Page::OnInvokeOpen()
             wxToolsInfo() << "Open communication successfully.";
 
             Link *communication = communicationController->GetLink();
-            communication->bytesReadSignal.connect(&Page::OnBytesRead, this);
-            communication->bytesWrittenSignal.connect(&Page::OnBytesWritten, this);
+            communication->emitBytesReadSignal.connect(&Page::OnBytesRead, this);
+            communication->emitBytesWrittenSignal.connect(&Page::OnBytesWritten, this);
         } else {
             wxMessageBox(wxT("Failed to open communication."), wxT("Error"), wxICON_ERROR);
         }
