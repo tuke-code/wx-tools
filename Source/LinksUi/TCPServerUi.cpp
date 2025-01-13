@@ -6,18 +6,18 @@
  * eTools is licensed according to the terms in the file LICENCE(GPL V3) in the root of the source
  * code directory.
  **************************************************************************************************/
-#include "TCPServerController.h"
+#include "TCPServerUi.h"
 
-TCPServerController::TCPServerController(wxWindow *parent)
-    : SocketServerController(parent)
+TCPServerUi::TCPServerUi(wxWindow *parent)
+    : SocketServerUi(parent)
 {
-    std::vector<void (SocketBaseController::*)(int, wxWindow *)> funcs;
-    funcs.push_back(&TCPServerController::InitServerComboBox);
-    funcs.push_back(&TCPServerController::InitServerPortCtrl);
-    funcs.push_back(&TCPServerController::InitClientsComboBox);
-    funcs.push_back(&TCPServerController::InitClearClientButton);
+    std::vector<void (SocketBaseUi::*)(int, wxWindow *)> funcs;
+    funcs.push_back(&TCPServerUi::InitServerComboBox);
+    funcs.push_back(&TCPServerUi::InitServerPortCtrl);
+    funcs.push_back(&TCPServerUi::InitClientsComboBox);
+    funcs.push_back(&TCPServerUi::InitClearClientButton);
 
     InitUiComponents(funcs, parent);
 }
 
-TCPServerController::~TCPServerController() {}
+TCPServerUi::~TCPServerUi() {}

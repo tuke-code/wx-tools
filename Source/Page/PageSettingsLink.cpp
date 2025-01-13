@@ -8,14 +8,14 @@
  **************************************************************************************************/
 #include "PageSettingsLink.h"
 
-#include "LinksUi/LinksController.h"
-#include "LinksUi/SerialPortController.h"
-#include "LinksUi/TCPClientController.h"
-#include "LinksUi/TCPServerController.h"
-#include "LinksUi/UDPClientController.h"
-#include "LinksUi/UDPServerController.h"
-#include "LinksUi/WSClientController.h"
-#include "LinksUi/WSServerController.h"
+#include "LinksUi/LinkUi.h"
+#include "LinksUi/SerialPortUi.h"
+#include "LinksUi/TCPClientUi.h"
+#include "LinksUi/TCPServerUi.h"
+#include "LinksUi/UDPClientUi.h"
+#include "LinksUi/UDPServerUi.h"
+#include "LinksUi/WSClientUi.h"
+#include "LinksUi/WSServerUi.h"
 #include "PageSettingsLinkPopup.h"
 
 PageSettingsLink::PageSettingsLink(LinkType type, wxWindow *parent)
@@ -40,7 +40,7 @@ PageSettingsLink::PageSettingsLink(LinkType type, wxWindow *parent)
     Add(buttonSizer, 0, wxEXPAND, 0);
 }
 
-LinksController *PageSettingsLink::GetController() const
+LinkUi *PageSettingsLink::GetController() const
 {
     return m_controller;
 }
@@ -68,22 +68,22 @@ void PageSettingsLink::OnOpen(wxCommandEvent &event)
     m_invokeOpenSignal();
 }
 
-LinksController *PageSettingsLink::CreateLinkController(LinkType type, wxWindow *parent)
+LinkUi *PageSettingsLink::CreateLinkController(LinkType type, wxWindow *parent)
 {
     if (type == LinkType::SerialPort) {
-        return new SerialPortController(parent);
+        return new SerialPortUi(parent);
     } else if (type == LinkType::UDPClient) {
-        return new UDPClientController(parent);
+        return new UDPClientUi(parent);
     } else if (type == LinkType::UDPServer) {
-        return new UDPServerController(parent);
+        return new UDPServerUi(parent);
     } else if (type == LinkType::TCPClient) {
-        return new TCPClientController(parent);
+        return new TCPClientUi(parent);
     } else if (type == LinkType::TCPServer) {
-        return new TCPServerController(parent);
+        return new TCPServerUi(parent);
     } else if (type == LinkType::WSClient) {
-        return new WSClientController(parent);
+        return new WSClientUi(parent);
     } else if (type == LinkType::WSServer) {
-        return new WSServerController(parent);
+        return new WSServerUi(parent);
     }
 
     return nullptr;

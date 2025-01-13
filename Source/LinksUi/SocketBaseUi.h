@@ -8,15 +8,15 @@
  **************************************************************************************************/
 #pragma once
 
-#include "LinksController.h"
+#include "LinkUi.h"
 
 class IpComboBox;
 class DataChannelComboBox;
-class SocketBaseController : public LinksController
+class SocketBaseUi : public LinkUi
 {
 public:
-    SocketBaseController(wxWindow *parent = nullptr);
-    ~SocketBaseController();
+    SocketBaseUi(wxWindow *parent = nullptr);
+    ~SocketBaseUi();
 
     void Disable() override;
     void Enable() override;
@@ -25,7 +25,7 @@ public:
 
 protected:
     // clang-format off
-    void InitUiComponents(const std::vector<void (SocketBaseController::*)(int, wxWindow *)> &funcs, wxWindow *parent);
+    void InitUiComponents(const std::vector<void (SocketBaseUi::*)(int, wxWindow *)> &funcs, wxWindow *parent);
     void InitClientComboBox(int row, wxWindow *parent);
     void InitClientPortCtrl(int row, wxWindow *parent);
     void InitServerComboBox(int row, wxWindow *parent);

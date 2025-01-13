@@ -6,7 +6,7 @@
  * eTools is licensed according to the terms in the file LICENCE(GPL V3) in the root of the source
  * code directory.
  **************************************************************************************************/
-#include "SocketBaseController.h"
+#include "SocketBaseUi.h"
 
 #include <wx/spinctrl.h>
 #include <wx/textctrl.h>
@@ -15,8 +15,8 @@
 #include "Utilities/DataChannelComboBox.h"
 #include "Utilities/IpComboBox.h"
 
-SocketBaseController::SocketBaseController(wxWindow *parent)
-    : LinksController(parent)
+SocketBaseUi::SocketBaseUi(wxWindow *parent)
+    : LinkUi(parent)
     , m_clientComboBox{nullptr}
     , m_clientPortCtrl{nullptr}
     , m_serverComboBox{nullptr}
@@ -27,9 +27,9 @@ SocketBaseController::SocketBaseController(wxWindow *parent)
     , m_passwordTextCtrl{nullptr}
 {}
 
-SocketBaseController::~SocketBaseController() {}
+SocketBaseUi::~SocketBaseUi() {}
 
-void SocketBaseController::Disable()
+void SocketBaseUi::Disable()
 {
     if (m_clientComboBox) {
         m_clientComboBox->Disable();
@@ -54,7 +54,7 @@ void SocketBaseController::Disable()
     }
 }
 
-void SocketBaseController::Enable()
+void SocketBaseUi::Enable()
 {
     if (m_clientComboBox) {
         m_clientComboBox->Enable();
@@ -79,7 +79,7 @@ void SocketBaseController::Enable()
     }
 }
 
-nlohmann::json SocketBaseController::Save() const
+nlohmann::json SocketBaseUi::Save() const
 {
     nlohmann::json json;
     SocketBaseParameterKeys keys;
@@ -97,7 +97,7 @@ nlohmann::json SocketBaseController::Save() const
     return json;
 }
 
-void SocketBaseController::Load(const nlohmann::json &json)
+void SocketBaseUi::Load(const nlohmann::json &json)
 {
     SocketBaseParameterKeys keys;
     if (m_clientComboBox) {
@@ -140,15 +140,15 @@ void SocketBaseController::Load(const nlohmann::json &json)
     }
 }
 
-void SocketBaseController::InitUiComponents(
-    const std::vector<void (SocketBaseController::*)(int, wxWindow *)> &funcs, wxWindow *parent)
+void SocketBaseUi::InitUiComponents(
+    const std::vector<void (SocketBaseUi::*)(int, wxWindow *)> &funcs, wxWindow *parent)
 {
     for (int i = 0; i < funcs.size(); i++) {
         (this->*funcs[i])(i, parent);
     }
 }
 
-void SocketBaseController::InitClientComboBox(int row, wxWindow *parent)
+void SocketBaseUi::InitClientComboBox(int row, wxWindow *parent)
 {
     m_clientAddressLabel = new wxStaticText(parent, wxID_ANY, wxT("Client IP"));
     Add(m_clientAddressLabel,
@@ -161,7 +161,7 @@ void SocketBaseController::InitClientComboBox(int row, wxWindow *parent)
     Add(m_clientComboBox, wxGBPosition(row, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
 }
 
-void SocketBaseController::InitClientPortCtrl(int row, wxWindow *parent)
+void SocketBaseUi::InitClientPortCtrl(int row, wxWindow *parent)
 {
     m_clientPortLabel = new wxStaticText(parent, wxID_ANY, wxT("Client port"));
     Add(m_clientPortLabel, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
@@ -172,7 +172,7 @@ void SocketBaseController::InitClientPortCtrl(int row, wxWindow *parent)
     m_clientPortCtrl->SetValue(54321);
 }
 
-void SocketBaseController::InitServerComboBox(int row, wxWindow *parent)
+void SocketBaseUi::InitServerComboBox(int row, wxWindow *parent)
 {
     m_serverAddressLabel = new wxStaticText(parent, wxID_ANY, wxT("Server IP"));
     Add(m_serverAddressLabel,
@@ -185,7 +185,7 @@ void SocketBaseController::InitServerComboBox(int row, wxWindow *parent)
     Add(m_serverComboBox, wxGBPosition(row, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
 }
 
-void SocketBaseController::InitServerPortCtrl(int row, wxWindow *parent)
+void SocketBaseUi::InitServerPortCtrl(int row, wxWindow *parent)
 {
     m_serverPortLabel = new wxStaticText(parent, wxID_ANY, wxT("Server port"));
     Add(m_serverPortLabel, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
@@ -196,7 +196,7 @@ void SocketBaseController::InitServerPortCtrl(int row, wxWindow *parent)
     m_serverPortCtrl->SetValue(51234);
 }
 
-void SocketBaseController::InitClientsComboBox(int row, wxWindow *parent)
+void SocketBaseUi::InitClientsComboBox(int row, wxWindow *parent)
 {
     m_clientsLabel = new wxStaticText(parent, wxID_ANY, wxT("Clients"));
     Add(m_clientsLabel, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
@@ -205,20 +205,20 @@ void SocketBaseController::InitClientsComboBox(int row, wxWindow *parent)
     Add(m_clientsComboBox, wxGBPosition(row, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
 }
 
-void SocketBaseController::InitClearClientButton(int row, wxWindow *parent)
+void SocketBaseUi::InitClearClientButton(int row, wxWindow *parent)
 {
     m_clearClientButton = new wxButton(parent, wxID_ANY, wxT("Disconnect All Client"));
     Add(m_clearClientButton, wxGBPosition(row, 0), wxGBSpan(1, 2), wxEXPAND | wxALL, 0);
 }
 
-void SocketBaseController::InitIsEnableAuthorizationCheckBox(int row, wxWindow *parent)
+void SocketBaseUi::InitIsEnableAuthorizationCheckBox(int row, wxWindow *parent)
 {
     m_isAuthorizationCheckBox = new wxCheckBox(parent, wxID_ANY, wxEmptyString);
     m_isAuthorizationCheckBox->SetLabel(wxT("Enable authorization"));
     Add(m_isAuthorizationCheckBox, wxGBPosition(row, 0), wxGBSpan(1, 2), wxEXPAND | wxALL, 0);
 }
 
-void SocketBaseController::InitDataChannelComboBox(int row, wxWindow *parent)
+void SocketBaseUi::InitDataChannelComboBox(int row, wxWindow *parent)
 {
     m_dataChannelLabel = new wxStaticText(parent, wxID_ANY, wxT("Channel"));
     Add(m_dataChannelLabel, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
@@ -227,7 +227,7 @@ void SocketBaseController::InitDataChannelComboBox(int row, wxWindow *parent)
     Add(m_dataChannelComboBox, wxGBPosition(row, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
 }
 
-void SocketBaseController::InitUserNameTextCtrl(int row, wxWindow *parent)
+void SocketBaseUi::InitUserNameTextCtrl(int row, wxWindow *parent)
 {
     m_userNameLabel = new wxStaticText(parent, wxID_ANY, wxT("User name"));
     Add(m_userNameLabel, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
@@ -236,7 +236,7 @@ void SocketBaseController::InitUserNameTextCtrl(int row, wxWindow *parent)
     Add(m_userNameTextCtrl, wxGBPosition(row, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
 }
 
-void SocketBaseController::InitPasswordTextCtrl(int row, wxWindow *parent)
+void SocketBaseUi::InitPasswordTextCtrl(int row, wxWindow *parent)
 {
     m_passwordLabel = new wxStaticText(parent, wxID_ANY, wxT("Password"));
     Add(m_passwordLabel, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);

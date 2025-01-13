@@ -6,10 +6,10 @@
  * eTools is licensed according to the terms in the file LICENCE(GPL V3) in the root of the source
  * code directory.
  **************************************************************************************************/
-#include "SocketClientController.h"
+#include "SocketClientUi.h"
 
-SocketClientController::SocketClientController(wxWindow *parent)
-    : SocketBaseController(parent)
+SocketClientUi::SocketClientUi(wxWindow *parent)
+    : SocketBaseUi(parent)
 {}
 
-SocketClientController::~SocketClientController() {}
+SocketClientUi::~SocketClientUi() {}

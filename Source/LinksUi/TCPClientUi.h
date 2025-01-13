@@ -8,11 +8,11 @@
  **************************************************************************************************/
 #pragma once
 
-#include "SocketClientController.h"
+#include "SocketClientUi.h"
 
-class TCPClientController : public SocketClientController
+class TCPClientUi : public SocketClientUi
 {
 public:
-    TCPClientController(wxWindow *parent = nullptr);
-    ~TCPClientController();
+    TCPClientUi(wxWindow *parent = nullptr);
+    ~TCPClientUi();
 };

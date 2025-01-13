@@ -6,15 +6,15 @@
  * eTools is licensed according to the terms in the file LICENCE(GPL V3) in the root of the source
  * code directory.
  **************************************************************************************************/
-#include "SocketServerController.h"
+#include "SocketServerUi.h"
 
-SocketServerController::SocketServerController(wxWindow *parent)
-    : SocketBaseController(parent)
+SocketServerUi::SocketServerUi(wxWindow *parent)
+    : SocketBaseUi(parent)
 {}
 
-SocketServerController::~SocketServerController() {}
+SocketServerUi::~SocketServerUi() {}
 
-wxString SocketServerController::DoMakeFlag(const wxString &ip, uint16_t port)
+wxString SocketServerUi::DoMakeFlag(const wxString &ip, uint16_t port)
 {
     // Such as: "127.0.0.1:55443"
     return ip + ":" + std::to_string(port);

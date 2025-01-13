@@ -8,13 +8,13 @@
  **************************************************************************************************/
 #pragma once
 
-#include "SocketBaseController.h"
+#include "SocketBaseUi.h"
 
-class SocketServerController : public SocketBaseController
+class SocketServerUi : public SocketBaseUi
 {
 public:
-    SocketServerController(wxWindow *parent = nullptr);
-    ~SocketServerController();
+    SocketServerUi(wxWindow *parent = nullptr);
+    ~SocketServerUi();
 
 protected:
     wxString DoMakeFlag(const wxString &ip, uint16_t port);

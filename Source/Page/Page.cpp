@@ -13,7 +13,7 @@
 #include "Common/wxTools.h"
 #include "PageSettingsLink.h"
 #include "Links/Link.h"
-#include "LinksUi/LinksController.h"
+#include "LinksUi/LinkUi.h"
 
 #include "PageSettings.h"
 #include "PageIO.h"
@@ -71,7 +71,7 @@ wxToolsJson Page::Save() const
 void Page::OnInvokeOpen()
 {
     PageSettingsLink *communicationControlBox = m_controlBoxes->GetCommunicationControlBox();
-    LinksController *communicationController = communicationControlBox->GetController();
+    LinkUi *communicationController = communicationControlBox->GetController();
     if (communicationController->IsOpen()) {
         m_sendTimer.Stop();
         m_inputControlBox->SetCycleIntervalComboBoxSelection(0);
@@ -100,7 +100,7 @@ void Page::OnInvokeOpen()
 
 void Page::OnInvokeWrite(TextFormat format)
 {
-    LinksController *communicationController = m_linkControlBox->GetController();
+    LinkUi *communicationController = m_linkControlBox->GetController();
     if (!communicationController->IsOpen()) {
         wxMessageBox(wxT("Communication is not open."), wxT("Error"), wxICON_ERROR);
         return;
@@ -124,7 +124,7 @@ void Page::OnInvokeStartTimer(int ms)
     }
 
     PageSettingsLink *communicationControlBox = m_controlBoxes->GetCommunicationControlBox();
-    LinksController *communicationController = communicationControlBox->GetController();
+    LinkUi *communicationController = communicationControlBox->GetController();
     if (!communicationController->IsOpen()) {
         m_inputControlBox->SetCycleIntervalComboBoxSelection(0);
         wxMessageBox(wxT("Communication is not open."), wxT("Error"), wxICON_ERROR);

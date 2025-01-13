@@ -8,11 +8,11 @@
  **************************************************************************************************/
 #pragma once
 
-#include "SocketServerController.h"
+#include "SocketServerUi.h"
 
-class WSServerController : public SocketServerController
+class WSServerUi : public SocketServerUi
 {
 public:
-    WSServerController(wxWindow *parent = nullptr);
-    ~WSServerController();
+    WSServerUi(wxWindow *parent = nullptr);
+    ~WSServerUi();
 };

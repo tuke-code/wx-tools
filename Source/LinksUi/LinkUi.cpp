@@ -6,24 +6,24 @@
  * eTools is licensed according to the terms in the file LICENCE(GPL V3) in the root of the source
  * code directory.
  **************************************************************************************************/
-#include "LinksController.h"
+#include "LinkUi.h"
 
 #include <wx/event.h>
 #include <wx/wx.h>
 
-LinksController::LinksController(wxWindow *parent)
+LinkUi::LinkUi(wxWindow *parent)
     : wxGridBagSizer(4, 4)
     , m_link(nullptr)
 {}
 
-LinksController::~LinksController() {}
+LinkUi::~LinkUi() {}
 
-Link *LinksController::GetLink() const
+Link *LinkUi::GetLink() const
 {
     return m_link;
 }
 
-bool LinksController::Open()
+bool LinkUi::Open()
 {
     m_link = CreateLink();
     if (!m_link) {
@@ -35,7 +35,7 @@ bool LinksController::Open()
     return m_link->Open();
 }
 
-void LinksController::Close()
+void LinkUi::Close()
 {
     if (m_link) {
         AboutToClose(m_link);
@@ -46,37 +46,37 @@ void LinksController::Close()
     }
 }
 
-bool LinksController::IsOpen() const
+bool LinkUi::IsOpen() const
 {
     return m_link != nullptr;
 }
 
-void LinksController::Disable() {}
+void LinkUi::Disable() {}
 
-void LinksController::Enable() {}
+void LinkUi::Enable() {}
 
-nlohmann::json LinksController::Save() const
+nlohmann::json LinkUi::Save() const
 {
     nlohmann::json json;
     return json;
 }
 
-void LinksController::Load(const nlohmann::json &json)
+void LinkUi::Load(const nlohmann::json &json)
 {
     wxUnusedVar(json);
 }
 
-Link *LinksController::CreateLink()
+Link *LinkUi::CreateLink()
 {
     return nullptr;
 }
 
-void LinksController::AboutToOpen(Link *link)
+void LinkUi::AboutToOpen(Link *link)
 {
     link->Load(Save());
 }
 
-void LinksController::AboutToClose(Link *link)
+void LinkUi::AboutToClose(Link *link)
 {
     wxUnusedVar(link);
     // Nothing to do

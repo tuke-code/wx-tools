@@ -14,11 +14,11 @@
 
 #include "Links/Link.h"
 
-class LinksController : public wxGridBagSizer
+class LinkUi : public wxGridBagSizer
 {
 public:
-    LinksController(wxWindow *parent = nullptr);
-    ~LinksController();
+    LinkUi(wxWindow *parent = nullptr);
+    ~LinkUi();
     Link *GetLink() const;
 
     bool Open();

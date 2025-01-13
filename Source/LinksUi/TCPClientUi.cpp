@@ -6,19 +6,19 @@
  * eTools is licensed according to the terms in the file LICENCE(GPL V3) in the root of the source
  * code directory.
  **************************************************************************************************/
-#include "TCPClientController.h"
+#include "TCPClientUi.h"
 
-TCPClientController::TCPClientController(wxWindow *parent)
-    : SocketClientController(parent)
+TCPClientUi::TCPClientUi(wxWindow *parent)
+    : SocketClientUi(parent)
 {
-    std::vector<void (SocketBaseController::*)(int, wxWindow *)> funcs;
-    funcs.push_back(&TCPClientController::InitServerComboBox);
-    funcs.push_back(&TCPClientController::InitServerPortCtrl);
+    std::vector<void (SocketBaseUi::*)(int, wxWindow *)> funcs;
+    funcs.push_back(&TCPClientUi::InitServerComboBox);
+    funcs.push_back(&TCPClientUi::InitServerPortCtrl);
 
     InitUiComponents(funcs, parent);
 }
 
-TCPClientController::~TCPClientController()
+TCPClientUi::~TCPClientUi()
 {
     // Destructor
 }

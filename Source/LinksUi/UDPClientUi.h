@@ -8,13 +8,13 @@
  **************************************************************************************************/
 #pragma once
 
-#include "SocketClientController.h"
+#include "SocketClientUi.h"
 
-class UDPClientController : public SocketClientController
+class UDPClientUi : public SocketClientUi
 {
 public:
-    UDPClientController(wxWindow *parent = nullptr);
-    ~UDPClientController();
+    UDPClientUi(wxWindow *parent = nullptr);
+    ~UDPClientUi();
 
 protected:
     Link *CreateLink() override;

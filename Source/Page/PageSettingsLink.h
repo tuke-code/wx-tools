@@ -14,17 +14,17 @@
 #include "Common/wxTools.h"
 
 class PageSettingsLinkPopup;
-class LinksController;
+class LinkUi;
 class PageSettingsLink : public wxStaticBoxSizer
 {
 public:
     PageSettingsLink(LinkType type, wxWindow *parent);
-    LinksController *GetController() const;
+    LinkUi *GetController() const;
     wxToolsSignal<> &GetInvokeOpenSignal();
     void SetOpenButtonLabel(const wxString &label);
 
 private:
-    LinksController *m_controller;
+    LinkUi *m_controller;
     wxButton *m_openButton;
     PageSettingsLinkPopup *m_popup;
 
@@ -32,5 +32,5 @@ private:
 
 private:
     void OnOpen(wxCommandEvent &event);
-    LinksController *CreateLinkController(LinkType type, wxWindow *parent);
+    LinkUi *CreateLinkController(LinkType type, wxWindow *parent);
 };

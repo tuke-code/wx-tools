@@ -6,7 +6,7 @@
  * eTools is licensed according to the terms in the file LICENCE(GPL V3) in the root of the source
  * code directory.
  **************************************************************************************************/
-#include "SerialPortController.h"
+#include "SerialPortUi.h"
 
 #include <wx/gbsizer.h>
 #include <wx/string.h>
@@ -20,8 +20,8 @@
 
 #include "Links/SerialPort.h"
 
-SerialPortController::SerialPortController(wxWindow *parent)
-    : LinksController(parent)
+SerialPortUi::SerialPortUi(wxWindow *parent)
+    : LinkUi(parent)
     , m_portNameComboBox(nullptr)
     , m_baudRateComboBox(nullptr)
     , m_dataBitsComboBox(nullptr)
@@ -39,9 +39,9 @@ SerialPortController::SerialPortController(wxWindow *parent)
     AddGrowableCol(1);
 }
 
-SerialPortController::~SerialPortController() {}
+SerialPortUi::~SerialPortUi() {}
 
-void SerialPortController::Disable()
+void SerialPortUi::Disable()
 {
     m_portNameComboBox->Disable();
     m_baudRateComboBox->Disable();
@@ -51,7 +51,7 @@ void SerialPortController::Disable()
     m_parityComboBox->Disable();
 }
 
-void SerialPortController::Enable()
+void SerialPortUi::Enable()
 {
     m_portNameComboBox->Enable();
     m_baudRateComboBox->Enable();
@@ -61,7 +61,7 @@ void SerialPortController::Enable()
     m_parityComboBox->Enable();
 }
 
-nlohmann::json SerialPortController::Save() const
+nlohmann::json SerialPortUi::Save() const
 {
     nlohmann::json json = nlohmann::json(nlohmann::json::object());
     SerialPortParameterKeys keys;
@@ -74,7 +74,7 @@ nlohmann::json SerialPortController::Save() const
     return json;
 }
 
-void SerialPortController::Load(const nlohmann::json &json)
+void SerialPortUi::Load(const nlohmann::json &json)
 {
     SerialPortParameterKeys keys;
     wxString portName = json[keys.portName].template get<std::string>();
@@ -92,14 +92,14 @@ void SerialPortController::Load(const nlohmann::json &json)
     m_parityComboBox->SetParity(parity);
 }
 
-Link *SerialPortController::CreateLink()
+Link *SerialPortUi::CreateLink()
 {
     return new SerialPort();
 }
 
-void SerialPortController::AboutToOpen(Link *link)
+void SerialPortUi::AboutToOpen(Link *link)
 {
-    LinksController::AboutToOpen(link);
+    LinkUi::AboutToOpen(link);
 
 #if 1
     nlohmann::json json = link->Save();
@@ -107,7 +107,7 @@ void SerialPortController::AboutToOpen(Link *link)
 #endif
 }
 
-void SerialPortController::InitPortNameComboBox(const wxString &label, int row, wxWindow *parent)
+void SerialPortUi::InitPortNameComboBox(const wxString &label, int row, wxWindow *parent)
 {
     auto text = new wxStaticText(parent, wxID_ANY, label);
     Add(text, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
@@ -116,7 +116,7 @@ void SerialPortController::InitPortNameComboBox(const wxString &label, int row, 
     Add(m_portNameComboBox, wxGBPosition(row, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
 }
 
-void SerialPortController::InitBaudRateComboBox(const wxString &label, int row, wxWindow *parent)
+void SerialPortUi::InitBaudRateComboBox(const wxString &label, int row, wxWindow *parent)
 {
     auto text = new wxStaticText(parent, wxID_ANY, label);
     Add(text, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
@@ -125,7 +125,7 @@ void SerialPortController::InitBaudRateComboBox(const wxString &label, int row, 
     Add(m_baudRateComboBox, wxGBPosition(row, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
 }
 
-void SerialPortController::InitDataBitsComboBox(const wxString &label, int row, wxWindow *parent)
+void SerialPortUi::InitDataBitsComboBox(const wxString &label, int row, wxWindow *parent)
 {
     auto text = new wxStaticText(parent, wxID_ANY, label);
     Add(text, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
@@ -134,7 +134,7 @@ void SerialPortController::InitDataBitsComboBox(const wxString &label, int row, 
     Add(m_dataBitsComboBox, wxGBPosition(row, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
 }
 
-void SerialPortController::InitStopBitsComboBox(const wxString &label, int row, wxWindow *parent)
+void SerialPortUi::InitStopBitsComboBox(const wxString &label, int row, wxWindow *parent)
 {
     auto text = new wxStaticText(parent, wxID_ANY, label);
     Add(text, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
@@ -143,7 +143,7 @@ void SerialPortController::InitStopBitsComboBox(const wxString &label, int row, 
     Add(m_stopBitsComboBox, wxGBPosition(row, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
 }
 
-void SerialPortController::InitParityComboBox(const wxString &label, int row, wxWindow *parent)
+void SerialPortUi::InitParityComboBox(const wxString &label, int row, wxWindow *parent)
 {
     auto text = new wxStaticText(parent, wxID_ANY, label);
     Add(text, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
@@ -152,7 +152,7 @@ void SerialPortController::InitParityComboBox(const wxString &label, int row, wx
     Add(m_parityComboBox, wxGBPosition(row, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
 }
 
-void SerialPortController::InitFlowBitsComboBox(const wxString &label, int row, wxWindow *parent)
+void SerialPortUi::InitFlowBitsComboBox(const wxString &label, int row, wxWindow *parent)
 {
     auto text = new wxStaticText(parent, wxID_ANY, label);
     Add(text, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);

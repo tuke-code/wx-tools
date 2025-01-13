@@ -8,7 +8,7 @@
  **************************************************************************************************/
 #pragma once
 
-#include "LinksController.h"
+#include "LinkUi.h"
 
 class BaudRateComboBox;
 class DataBitsComboBox;
@@ -16,11 +16,11 @@ class FlowBitsComboBox;
 class ParityComboBox;
 class PortNameComboBox;
 class StopBitsComboBox;
-class SerialPortController : public LinksController
+class SerialPortUi : public LinkUi
 {
 public:
-    SerialPortController(wxWindow *parent = nullptr);
-    ~SerialPortController();
+    SerialPortUi(wxWindow *parent = nullptr);
+    ~SerialPortUi();
 
     void Disable() override;
     void Enable() override;

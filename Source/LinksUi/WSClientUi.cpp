@@ -6,20 +6,20 @@
  * eTools is licensed according to the terms in the file LICENCE(GPL V3) in the root of the source
  * code directory.
  **************************************************************************************************/
-#include "WSClientController.h"
+#include "WSClientUi.h"
 
-WSClientController::WSClientController(wxWindow *parent)
-    : SocketClientController(parent)
+WSClientUi::WSClientUi(wxWindow *parent)
+    : SocketClientUi(parent)
 {
-    std::vector<void (SocketBaseController::*)(int, wxWindow *)> funcs;
-    funcs.push_back(&WSClientController::InitServerComboBox);
-    funcs.push_back(&WSClientController::InitServerPortCtrl);
-    funcs.push_back(&WSClientController::InitIsEnableAuthorizationCheckBox);
-    funcs.push_back(&WSClientController::InitDataChannelComboBox);
-    funcs.push_back(&WSClientController::InitUserNameTextCtrl);
-    funcs.push_back(&WSClientController::InitPasswordTextCtrl);
+    std::vector<void (SocketBaseUi::*)(int, wxWindow *)> funcs;
+    funcs.push_back(&WSClientUi::InitServerComboBox);
+    funcs.push_back(&WSClientUi::InitServerPortCtrl);
+    funcs.push_back(&WSClientUi::InitIsEnableAuthorizationCheckBox);
+    funcs.push_back(&WSClientUi::InitDataChannelComboBox);
+    funcs.push_back(&WSClientUi::InitUserNameTextCtrl);
+    funcs.push_back(&WSClientUi::InitPasswordTextCtrl);
 
     InitUiComponents(funcs, parent);
 }
 
-WSClientController::~WSClientController() {}
+WSClientUi::~WSClientUi() {}

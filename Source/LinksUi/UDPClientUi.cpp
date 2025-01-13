@@ -6,28 +6,28 @@
  * eTools is licensed according to the terms in the file LICENCE(GPL V3) in the root of the source
  * code directory.
  **************************************************************************************************/
-#include "UDPClientController.h"
+#include "UDPClientUi.h"
 
 #include "Links/UDPClient.h"
 
-UDPClientController::UDPClientController(wxWindow *parent)
-    : SocketClientController(parent)
+UDPClientUi::UDPClientUi(wxWindow *parent)
+    : SocketClientUi(parent)
 {
-    std::vector<void (SocketBaseController::*)(int, wxWindow *)> funcs;
-    funcs.push_back(&UDPClientController::InitServerComboBox);
-    funcs.push_back(&UDPClientController::InitServerPortCtrl);
+    std::vector<void (SocketBaseUi::*)(int, wxWindow *)> funcs;
+    funcs.push_back(&UDPClientUi::InitServerComboBox);
+    funcs.push_back(&UDPClientUi::InitServerPortCtrl);
 
     InitUiComponents(funcs, parent);
 }
 
-UDPClientController::~UDPClientController() {}
+UDPClientUi::~UDPClientUi() {}
 
-Link *UDPClientController::CreateLink()
+Link *UDPClientUi::CreateLink()
 {
     return new UDPClient();
 }
 
-void UDPClientController::AboutToOpen(Link *communication)
+void UDPClientUi::AboutToOpen(Link *communication)
 {
     if (!communication) {
         return;
@@ -41,7 +41,7 @@ void UDPClientController::AboutToOpen(Link *communication)
     udpClient->Load(Save());
 }
 
-void UDPClientController::AboutToClose(Link *communication)
+void UDPClientUi::AboutToClose(Link *communication)
 {
     // Nothing to do yet.
 }

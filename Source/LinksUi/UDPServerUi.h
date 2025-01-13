@@ -8,11 +8,11 @@
  **************************************************************************************************/
 #pragma once
 
-#include "SocketServerController.h"
+#include "SocketServerUi.h"
 
-class UDPServerController : public SocketServerController
+class UDPServerUi : public SocketServerUi
 {
 public:
-    UDPServerController(wxWindow *parent = nullptr);
-    ~UDPServerController();
+    UDPServerUi(wxWindow *parent = nullptr);
+    ~UDPServerUi();
 };

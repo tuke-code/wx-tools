@@ -6,18 +6,18 @@
  * eTools is licensed according to the terms in the file LICENCE(GPL V3) in the root of the source
  * code directory.
  **************************************************************************************************/
-#include "UDPServerController.h"
+#include "UDPServerUi.h"
 
-UDPServerController::UDPServerController(wxWindow *parent)
-    : SocketServerController(parent)
+UDPServerUi::UDPServerUi(wxWindow *parent)
+    : SocketServerUi(parent)
 {
-    std::vector<void (SocketBaseController::*)(int, wxWindow *)> funcs;
-    funcs.push_back(&UDPServerController::InitServerComboBox);
-    funcs.push_back(&UDPServerController::InitServerPortCtrl);
-    funcs.push_back(&UDPServerController::InitClientsComboBox);
-    funcs.push_back(&UDPServerController::InitClearClientButton);
+    std::vector<void (SocketBaseUi::*)(int, wxWindow *)> funcs;
+    funcs.push_back(&UDPServerUi::InitServerComboBox);
+    funcs.push_back(&UDPServerUi::InitServerPortCtrl);
+    funcs.push_back(&UDPServerUi::InitClientsComboBox);
+    funcs.push_back(&UDPServerUi::InitClearClientButton);
 
     InitUiComponents(funcs, parent);
 }
 
-UDPServerController::~UDPServerController() {}
+UDPServerUi::~UDPServerUi() {}
