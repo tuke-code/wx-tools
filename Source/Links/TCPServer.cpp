@@ -14,7 +14,11 @@ TCPServer::TCPServer()
     , SocketServer(d)
 {}
 
-TCPServer::~TCPServer() {}
+TCPServer::~TCPServer()
+{
+    delete d;
+    d = nullptr;
+}
 
 bool TCPServer::Open()
 {

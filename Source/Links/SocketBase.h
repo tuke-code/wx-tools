@@ -45,16 +45,4 @@ public:
 
 private:
     SocketBasePrivate *d;
-
-protected:
-    wxString m_clientAddress;
-    uint16_t m_clientPort;
-    wxString m_serverAddress;
-    uint16_t m_serverPort;
-
-    // The members for web socket
-    bool m_isEnableAuthorization;
-    int m_dataChannel;
-    wxString m_userName;
-    wxString m_password;
 };

@@ -7,6 +7,7 @@
  * code directory.
  **************************************************************************************************/
 #include "SocketBase.h"
+#include "SocketBase_p.h"
 
 SocketBase::SocketBase(SocketBasePrivate *dPtr)
     : d(dPtr)
@@ -17,67 +18,67 @@ SocketBase::~SocketBase() {}
 void SocketBase::Load(const nlohmann::json &parameters)
 {
     SocketBaseParameterKeys keys;
-    m_clientAddress = parameters[keys.clientAddress].template get<std::string>();
-    m_clientPort = parameters[keys.clientPort].template get<int>();
-    m_serverAddress = parameters[keys.serverAddress].template get<std::string>();
-    m_serverPort = parameters[keys.serverPort].template get<int>();
-    m_isEnableAuthorization = parameters[keys.isAuthorization].template get<bool>();
-    m_dataChannel = parameters[keys.dataChannel].template get<int>();
-    m_userName = parameters[keys.userName].template get<std::string>();
-    m_password = parameters[keys.password].template get<std::string>();
+    d->clientAddress = parameters[keys.clientAddress].template get<std::string>();
+    d->clientPort = parameters[keys.clientPort].template get<int>();
+    d->serverAddress = parameters[keys.serverAddress].template get<std::string>();
+    d->serverPort = parameters[keys.serverPort].template get<int>();
+    d->isEnableAuthorization = parameters[keys.isAuthorization].template get<bool>();
+    d->dataChannel = parameters[keys.dataChannel].template get<int>();
+    d->userName = parameters[keys.userName].template get<std::string>();
+    d->password = parameters[keys.password].template get<std::string>();
 }
 
 nlohmann::json SocketBase::Save()
 {
     SocketBaseParameterKeys keys;
     nlohmann::json parameters;
-    parameters[keys.clientAddress] = m_clientAddress.ToStdString();
-    parameters[keys.clientPort] = m_clientPort;
-    parameters[keys.serverAddress] = m_serverAddress.ToStdString();
-    parameters[keys.serverPort] = m_serverPort;
-    parameters[keys.isAuthorization] = m_isEnableAuthorization;
-    parameters[keys.dataChannel] = m_dataChannel;
-    parameters[keys.userName] = m_userName.ToStdString();
-    parameters[keys.password] = m_password.ToStdString();
+    parameters[keys.clientAddress] = d->clientAddress.ToStdString();
+    parameters[keys.clientPort] = d->clientPort;
+    parameters[keys.serverAddress] = d->serverAddress.ToStdString();
+    parameters[keys.serverPort] = d->serverPort;
+    parameters[keys.isAuthorization] = d->isEnableAuthorization;
+    parameters[keys.dataChannel] = d->dataChannel;
+    parameters[keys.userName] = d->userName.ToStdString();
+    parameters[keys.password] = d->password.ToStdString();
     return parameters;
 }
 
 wxString SocketBase::GetClientAddress() const
 {
-    return m_clientAddress;
+    return d->clientAddress;
 }
 
 uint16_t SocketBase::GetClientPort() const
 {
-    return m_clientPort;
+    return d->clientPort;
 }
 
 wxString SocketBase::GetServerAddress() const
 {
-    return m_serverAddress;
+    return d->serverAddress;
 }
 
 uint16_t SocketBase::GetServerPort() const
 {
-    return m_serverPort;
+    return d->serverPort;
 }
 
 bool SocketBase::GetIsEnableAuthorization() const
 {
-    return m_isEnableAuthorization;
+    return d->isEnableAuthorization;
 }
 
 int SocketBase::GetDataChannel() const
 {
-    return m_dataChannel;
+    return d->dataChannel;
 }
 
 wxString SocketBase::GetUserName() const
 {
-    return m_userName;
+    return d->userName;
 }
 
 wxString SocketBase::GetPassword() const
 {
-    return m_password;
+    return d->password;
 }

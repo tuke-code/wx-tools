@@ -14,7 +14,11 @@ WSServer::WSServer()
     , SocketServer(d)
 {}
 
-WSServer::~WSServer() {}
+WSServer::~WSServer()
+{
+    delete d;
+    d = nullptr;
+}
 
 bool WSServer::Open()
 {

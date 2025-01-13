@@ -16,7 +16,11 @@ UDPServer::UDPServer()
     , SocketServer(d)
 {}
 
-UDPServer::~UDPServer() {}
+UDPServer::~UDPServer()
+{
+    delete d;
+    d = nullptr;
+}
 
 void ReadData(asio::ip::udp::socket *socket, UDPServer *UDPServer)
 {

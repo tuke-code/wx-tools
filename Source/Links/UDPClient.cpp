@@ -59,8 +59,8 @@ bool UDPClient::Open()
 
     d->socket = new udp::socket(d->ioContext, udp::endpoint(udp::v4(), 0));
     udp::resolver resolver(d->ioContext);
-    std::string ip = std::string(m_serverAddress.mb_str());
-    std::string port = std::to_string(m_serverPort);
+    std::string ip = std::string(d->serverAddress.mb_str());
+    std::string port = std::to_string(d->serverPort);
     auto endpoints = resolver.resolve(udp::v4(), ip, port);
     d->endpoint = *endpoints.begin();
 

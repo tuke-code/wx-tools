@@ -14,7 +14,11 @@ WSClient::WSClient()
     , SocketClient(d)
 {}
 
-WSClient::~WSClient() {}
+WSClient::~WSClient()
+{
+    delete d;
+    d = nullptr;
+}
 
 bool WSClient::Open()
 {
