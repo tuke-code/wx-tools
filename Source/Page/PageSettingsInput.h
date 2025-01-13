@@ -13,12 +13,12 @@
 
 #include "Common/wxTools.h"
 
-class ControlPanelInputPopup;
+class PageSettingsInputPopup;
 class TextFormatComboBox;
-class ControlPanelInput : public wxStaticBoxSizer
+class PageSettingsInput : public wxStaticBoxSizer
 {
 public:
-    ControlPanelInput(wxWindow *parent);
+    PageSettingsInput(wxWindow *parent);
     void SetCycleIntervalComboBoxSelection(int selection);
     TextFormat GetTextFormat() const;
 
@@ -31,7 +31,7 @@ private:
     wxButton *m_sendButton;
     wxComboBox *m_cycleIntervalComboBox;
     TextFormatComboBox *m_formatComboBox;
-    ControlPanelInputPopup *m_popup;
+    PageSettingsInputPopup *m_popup;
 
 private:
     wxToolsSignal<TextFormat> m_invokeWriteSignal;

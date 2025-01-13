@@ -6,29 +6,29 @@
  * eTools is licensed according to the terms in the file LICENCE(GPL V3) in the root of the source
  * code directory.
  **************************************************************************************************/
-#include "IOPanelInput.h"
+#include "PageIOInput.h"
 
 #include "Utilities/LineEdit.h"
 
-IOPanelInput::IOPanelInput(wxWindow *parent)
+PageIOInput::PageIOInput(wxWindow *parent)
     : wxStaticBoxSizer(wxVERTICAL, parent, wxT("Input"))
 {
     m_lineEdit = new LineEdit(parent);
     Add(m_lineEdit, 1, wxEXPAND | wxALL, 0);
 }
 
-wxString IOPanelInput::GetInputText() const
+wxString PageIOInput::GetInputText() const
 {
     return m_lineEdit->GetValue();
 }
 
-void IOPanelInput::SetTextFormat(TextFormat format)
+void PageIOInput::SetTextFormat(TextFormat format)
 {
     m_lineEdit->Clear();
     m_lineEdit->SetTextFormat(format);
 }
 
-wxToolsConstBuffer IOPanelInput::GetInputBuffer() const
+wxToolsConstBuffer PageIOInput::GetInputBuffer() const
 {
     return m_lineEdit->GetBuffer();
 }

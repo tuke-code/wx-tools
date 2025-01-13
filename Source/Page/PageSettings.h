@@ -13,20 +13,20 @@
 
 #include "Common/wxTools.h"
 
-class ControlPanelInput;
-class ControlPanelOutput;
-class ControlPanelLink;
-class ControlPanel : public wxBoxSizer
+class PageSettingsInput;
+class PageSettingsOutput;
+class PageSettingsLink;
+class PageSettings : public wxBoxSizer
 {
 public:
-    ControlPanel(LinkType type, wxWindow *parent);
+    PageSettings(LinkType type, wxWindow *parent);
 
-    ControlPanelInput *GetInputControlBox() const;
-    ControlPanelOutput *GetOutputControlBox() const;
-    ControlPanelLink *GetCommunicationControlBox() const;
+    PageSettingsInput *GetInputControlBox() const;
+    PageSettingsOutput *GetOutputControlBox() const;
+    PageSettingsLink *GetCommunicationControlBox() const;
 
 private:
-    ControlPanelInput *m_inputControlBox;
-    ControlPanelOutput *m_outputControlBox;
-    ControlPanelLink *m_communicationControlBox;
+    PageSettingsInput *m_inputControlBox;
+    PageSettingsOutput *m_outputControlBox;
+    PageSettingsLink *m_communicationControlBox;
 };

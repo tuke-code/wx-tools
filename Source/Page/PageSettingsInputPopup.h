@@ -1,5 +1,5 @@
 /***************************************************************************************************
- * Copyright 2024 x-tools-author(x-tools@outlook.com). All rights reserved.
+ * Copyright 2024-2025 x-tools-author(x-tools@outlook.com). All rights reserved.
  *
  * The file is encoded using "utf8 with bom", it is a part of eTools project.
  *
@@ -8,10 +8,10 @@
  **************************************************************************************************/
 #pragma once
 
-#include "Popup.h"
+#include "Utilities/Popup.h"
 
-class ControlPanelInputPopup : public Popup
+class PageSettingsInputPopup : public Popup
 {
 public:
-    ControlPanelInputPopup(wxButton *controlButton);
+    PageSettingsInputPopup(wxButton *controlButton);
 };

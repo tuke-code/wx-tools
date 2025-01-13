@@ -6,30 +6,30 @@
  * eTools is licensed according to the terms in the file LICENCE(GPL V3) in the root of the source
  * code directory.
  **************************************************************************************************/
-#include "IOPanel.h"
+#include "PageIO.h"
 
-#include "IOPanelInput.h"
-#include "IOPanelOutput.h"
+#include "PageIOInput.h"
+#include "PageIOOutput.h"
 
-IOPanel::IOPanel(wxWindow* parent)
+PageIO::PageIO(wxWindow* parent)
     : wxPanel(parent, wxID_ANY)
 {
     auto* sizer = new wxBoxSizer(wxVERTICAL);
     SetSizerAndFit(sizer);
 
-    m_outputBox = new IOPanelOutput(this);
+    m_outputBox = new PageIOOutput(this);
     sizer->Add(m_outputBox, 1, wxEXPAND | wxALL, 0);
 
-    m_inputBox = new IOPanelInput(this);
+    m_inputBox = new PageIOInput(this);
     sizer->Add(m_inputBox, 0, wxEXPAND | wxALL, 0);
 }
 
-IOPanelInput *IOPanel::GetInputBox() const
+PageIOInput *PageIO::GetInputBox() const
 {
     return m_inputBox;
 }
 
-IOPanelOutput *IOPanel::GetOutputBox() const
+PageIOOutput *PageIO::GetOutputBox() const
 {
     return m_outputBox;
 }

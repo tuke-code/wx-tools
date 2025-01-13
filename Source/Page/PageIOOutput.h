@@ -1,5 +1,5 @@
 ﻿/***************************************************************************************************
- * Copyright 2024 x-tools-author(x-tools@outlook.com). All rights reserved.
+ * Copyright 2024-2025 x-tools-author(x-tools@outlook.com). All rights reserved.
  *
  * The file is encoded using "utf8 with bom", it is a part of eTools project.
  *
@@ -10,10 +10,10 @@
 
 #include <wx/wx.h>
 
-class IOPanelOutput : public wxStaticBoxSizer
+class PageIOOutput : public wxStaticBoxSizer
 {
 public:
-    IOPanelOutput(wxWindow *parent);
+    PageIOOutput(wxWindow *parent);
 
     void AppendText(const wxString &text);
     void SetWrap(bool wrap);

@@ -11,16 +11,16 @@
 #include <wx/gbsizer.h>
 
 #include "Common/wxTools.h"
-#include "ControlPanelLink.h"
+#include "PageSettingsLink.h"
 #include "Links/Link.h"
 #include "LinksUi/LinksController.h"
 
-#include "ControlPanel.h"
-#include "IOPanel.h"
-#include "IOPanelInput.h"
-#include "IOPanelOutput.h"
-#include "ControlPanelInput.h"
-#include "ControlPanelOutput.h"
+#include "PageSettings.h"
+#include "PageIO.h"
+#include "PageIOInput.h"
+#include "PageIOOutput.h"
+#include "PageSettingsInput.h"
+#include "PageSettingsOutput.h"
 
 Page::Page(LinkType type, wxWindow *parent)
     : wxPanel(parent, wxID_ANY)
@@ -32,10 +32,10 @@ Page::Page(LinkType type, wxWindow *parent)
     auto sizer = new wxBoxSizer(wxHORIZONTAL);
     SetSizerAndFit(sizer);
 
-    m_controlBoxes = new ControlPanel(type, this);
+    m_controlBoxes = new PageSettings(type, this);
     sizer->Add(m_controlBoxes, 0, wxEXPAND | wxALL, 4);
 
-    m_ioPanel = new IOPanel(this);
+    m_ioPanel = new PageIO(this);
     sizer->Add(m_ioPanel, 1, wxEXPAND | wxALL, 4);
     Layout();
 
@@ -70,7 +70,7 @@ wxToolsJson Page::Save() const
 
 void Page::OnInvokeOpen()
 {
-    ControlPanelLink *communicationControlBox = m_controlBoxes->GetCommunicationControlBox();
+    PageSettingsLink *communicationControlBox = m_controlBoxes->GetCommunicationControlBox();
     LinksController *communicationController = communicationControlBox->GetController();
     if (communicationController->IsOpen()) {
         m_sendTimer.Stop();
@@ -123,7 +123,7 @@ void Page::OnInvokeStartTimer(int ms)
         return;
     }
 
-    ControlPanelLink *communicationControlBox = m_controlBoxes->GetCommunicationControlBox();
+    PageSettingsLink *communicationControlBox = m_controlBoxes->GetCommunicationControlBox();
     LinksController *communicationController = communicationControlBox->GetController();
     if (!communicationController->IsOpen()) {
         m_inputControlBox->SetCycleIntervalComboBoxSelection(0);
@@ -207,7 +207,7 @@ std::string flagString(bool isRx, const std::string &fromTo, bool showFlag)
 
 void Page::OutputText(wxToolsConstBuffer &bytes, const wxString &fromTo, bool isRx)
 {
-    ControlPanelOutput *outputControlBox = m_controlBoxes->GetOutputControlBox();
+    PageSettingsOutput *outputControlBox = m_controlBoxes->GetOutputControlBox();
     TextFormat outputFormat = outputControlBox->GetTextFormat();
     bool showDate = outputControlBox->GetShowDate();
     bool showTime = outputControlBox->GetShowTime();

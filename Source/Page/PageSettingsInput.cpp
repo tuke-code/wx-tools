@@ -6,15 +6,15 @@
  * eTools is licensed according to the terms in the file LICENCE(GPL V3) in the root of the source
  * code directory.
  **************************************************************************************************/
-#include "ControlPanelInput.h"
+#include "PageSettingsInput.h"
 
 #include <wx/gbsizer.h>
 #include <wx/wx.h>
 
-#include "ControlPanelInputPopup.h"
+#include "PageSettingsInputPopup.h"
 #include "Utilities/TextFormatComboBox.h"
 
-ControlPanelInput::ControlPanelInput(wxWindow* parent)
+PageSettingsInput::PageSettingsInput(wxWindow* parent)
     : wxStaticBoxSizer(wxVERTICAL, parent, wxT("Input Control"))
     , m_settingsButton(nullptr)
     , m_sendButton(nullptr)
@@ -23,11 +23,11 @@ ControlPanelInput::ControlPanelInput(wxWindow* parent)
     m_cycleIntervalComboBox = InitCycleIntervalComboBox();
     auto formatText = new wxStaticText(GetStaticBox(), wxID_ANY, wxT("Format"));
     m_formatComboBox = new TextFormatComboBox(GetStaticBox());
-    m_formatComboBox->Bind(wxEVT_COMBOBOX, &ControlPanelInput::OnTextFormat, this);
+    m_formatComboBox->Bind(wxEVT_COMBOBOX, &PageSettingsInput::OnTextFormat, this);
     m_settingsButton = new wxButton(GetStaticBox(), wxID_ANY, wxT("Settings"));
     m_sendButton = new wxButton(GetStaticBox(), wxID_ANY, wxT("Send"));
-    m_popup = new ControlPanelInputPopup(m_settingsButton);
-    m_sendButton->Bind(wxEVT_BUTTON, &ControlPanelInput::OnSendButtonClicked, this);
+    m_popup = new PageSettingsInputPopup(m_settingsButton);
+    m_sendButton->Bind(wxEVT_BUTTON, &PageSettingsInput::OnSendButtonClicked, this);
 
     auto* sizer = new wxGridBagSizer(4, 4);
     sizer->Add(cycleText, wxGBPosition(0, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
@@ -45,7 +45,7 @@ ControlPanelInput::ControlPanelInput(wxWindow* parent)
     Add(buttonSizer, 0, wxEXPAND | wxALL, 0);
 }
 
-void ControlPanelInput::SetCycleIntervalComboBoxSelection(int selection)
+void PageSettingsInput::SetCycleIntervalComboBoxSelection(int selection)
 {
     if (selection < 0 || selection >= m_cycleIntervalComboBox->GetCount()) {
         return;
@@ -54,39 +54,39 @@ void ControlPanelInput::SetCycleIntervalComboBoxSelection(int selection)
     m_cycleIntervalComboBox->SetSelection(selection);
 }
 
-TextFormat ControlPanelInput::GetTextFormat() const
+TextFormat PageSettingsInput::GetTextFormat() const
 {
     return m_formatComboBox->GetSelectedFormat();
 }
 
-wxToolsSignal<TextFormat>& ControlPanelInput::GetInvokeWriteSignal()
+wxToolsSignal<TextFormat>& PageSettingsInput::GetInvokeWriteSignal()
 {
     return m_invokeWriteSignal;
 }
 
-wxToolsSignal<int>& ControlPanelInput::GetInvokeStartTimerSignal()
+wxToolsSignal<int>& PageSettingsInput::GetInvokeStartTimerSignal()
 {
     return m_invokeStartTimerSignal;
 }
 
-wxToolsSignal<TextFormat>& ControlPanelInput::GetTextFormatChangedSignal()
+wxToolsSignal<TextFormat>& PageSettingsInput::GetTextFormatChangedSignal()
 {
     return m_textFormatChangedSignal;
 }
 
-void ControlPanelInput::OnSendButtonClicked(wxCommandEvent& event)
+void PageSettingsInput::OnSendButtonClicked(wxCommandEvent& event)
 {
     wxUnusedVar(event);
     m_invokeWriteSignal(m_formatComboBox->GetSelectedFormat());
 }
 
-void ControlPanelInput::OnTextFormat(wxCommandEvent& event)
+void PageSettingsInput::OnTextFormat(wxCommandEvent& event)
 {
     wxUnusedVar(event);
     m_textFormatChangedSignal(m_formatComboBox->GetSelectedFormat());
 }
 
-wxComboBox* ControlPanelInput::InitCycleIntervalComboBox()
+wxComboBox* PageSettingsInput::InitCycleIntervalComboBox()
 {
     auto cb = new wxComboBox(GetStaticBox(),
                              wxID_ANY,

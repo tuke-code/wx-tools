@@ -13,12 +13,12 @@
 
 #include "Common/wxTools.h"
 
-class ControlPanelOutputPopup;
+class PageSettingsOutputPopup;
 class TextFormatComboBox;
-class ControlPanelOutput : public wxStaticBoxSizer
+class PageSettingsOutput : public wxStaticBoxSizer
 {
 public:
-    ControlPanelOutput(wxWindow *parent);
+    PageSettingsOutput(wxWindow *parent);
     TextFormat GetTextFormat() const;
     bool GetShowDate() const;
     bool GetShowTime() const;
@@ -38,7 +38,7 @@ private:
     wxCheckBox *m_showRx;
     wxCheckBox *m_showTx;
     wxCheckBox *m_showFlag;
-    ControlPanelOutputPopup *m_popup;
+    PageSettingsOutputPopup *m_popup;
 
     wxToolsSignal<> m_clearSignal;
 };

@@ -11,12 +11,12 @@
 #include <wx/spinctrl.h>
 #include <wx/wx.h>
 
-#include "Popup.h"
+#include "Utilities/Popup.h"
 
-class ControlPanelLinkPopup : public Popup
+class PageSettingsLinkPopup : public Popup
 {
 public:
-    ControlPanelLinkPopup(wxButton *controlButton);
+    PageSettingsLinkPopup(wxButton *controlButton);
 
 private:
     wxSpinCtrl *m_txMask;

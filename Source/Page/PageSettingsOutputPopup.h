@@ -8,12 +8,12 @@
  **************************************************************************************************/
 #pragma once
 
-#include "Popup.h"
+#include "Utilities/Popup.h"
 
 #include <wx/textctrl.h>
 
-class ControlPanelOutputPopup : public Popup
+class PageSettingsOutputPopup : public Popup
 {
 public:
-    ControlPanelOutputPopup(wxButton *controlButton);
+    PageSettingsOutputPopup(wxButton *controlButton);
 };

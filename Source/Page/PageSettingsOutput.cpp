@@ -6,14 +6,14 @@
  * eTools is licensed according to the terms in the file LICENCE(GPL V3) in the root of the source
  * code directory.
  **************************************************************************************************/
-#include "ControlPanelOutput.h"
+#include "PageSettingsOutput.h"
 
 #include <wx/gbsizer.h>
 
-#include "ControlPanelOutputPopup.h"
+#include "PageSettingsOutputPopup.h"
 #include "Utilities/TextFormatComboBox.h"
 
-ControlPanelOutput::ControlPanelOutput(wxWindow *parent)
+PageSettingsOutput::PageSettingsOutput(wxWindow *parent)
     : wxStaticBoxSizer(wxHORIZONTAL, parent, wxT("Output Control"))
     , m_showDate(nullptr)
     , m_showTime(nullptr)
@@ -51,7 +51,7 @@ ControlPanelOutput::ControlPanelOutput(wxWindow *parent)
     buttonsSizer->Add(settingsButton, 1, wxEXPAND | wxALL, 0);
     buttonsSizer->Add(clearButton, 1, wxEXPAND | wxALL, 0);
 
-    m_popup = new ControlPanelOutputPopup(settingsButton);
+    m_popup = new PageSettingsOutputPopup(settingsButton);
 
     auto *sizer = new wxGridBagSizer(4, 4);
     sizer->Add(formatText, wxGBPosition(0, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
@@ -64,42 +64,42 @@ ControlPanelOutput::ControlPanelOutput(wxWindow *parent)
     clearButton->Bind(wxEVT_BUTTON, [=](wxCommandEvent &event) { m_clearSignal(); });
 }
 
-TextFormat ControlPanelOutput::GetTextFormat() const
+TextFormat PageSettingsOutput::GetTextFormat() const
 {
     return m_textFormatComboBox->GetSelectedFormat();
 }
 
-bool ControlPanelOutput::GetShowDate() const
+bool PageSettingsOutput::GetShowDate() const
 {
     return m_showDate->GetValue();
 }
 
-bool ControlPanelOutput::GetShowTime() const
+bool PageSettingsOutput::GetShowTime() const
 {
     return m_showTime->GetValue();
 }
 
-bool ControlPanelOutput::GetShowMs() const
+bool PageSettingsOutput::GetShowMs() const
 {
     return m_showMs->GetValue();
 }
 
-bool ControlPanelOutput::GetShowRx() const
+bool PageSettingsOutput::GetShowRx() const
 {
     return m_showRx->GetValue();
 }
 
-bool ControlPanelOutput::GetShowTx() const
+bool PageSettingsOutput::GetShowTx() const
 {
     return m_showTx->GetValue();
 }
 
-bool ControlPanelOutput::GetShowFlag() const
+bool PageSettingsOutput::GetShowFlag() const
 {
     return m_showFlag->GetValue();
 }
 
-wxToolsSignal<> &ControlPanelOutput::GetClearSignal()
+wxToolsSignal<> &PageSettingsOutput::GetClearSignal()
 {
     return m_clearSignal;
 }

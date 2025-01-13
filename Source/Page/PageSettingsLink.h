@@ -1,5 +1,5 @@
 ﻿/***************************************************************************************************
- * Copyright 2024 x-tools-author(x-tools@outlook.com). All rights reserved.
+ * Copyright 2024-2025 x-tools-author(x-tools@outlook.com). All rights reserved.
  *
  * The file is encoded using "utf8 with bom", it is a part of eTools project.
  *
@@ -13,12 +13,12 @@
 
 #include "Common/wxTools.h"
 
-class ControlPanelLinkPopup;
+class PageSettingsLinkPopup;
 class LinksController;
-class ControlPanelLink : public wxStaticBoxSizer
+class PageSettingsLink : public wxStaticBoxSizer
 {
 public:
-    ControlPanelLink(LinkType type, wxWindow *parent);
+    PageSettingsLink(LinkType type, wxWindow *parent);
     LinksController *GetController() const;
     wxToolsSignal<> &GetInvokeOpenSignal();
     void SetOpenButtonLabel(const wxString &label);
@@ -26,7 +26,7 @@ public:
 private:
     LinksController *m_controller;
     wxButton *m_openButton;
-    ControlPanelLinkPopup *m_popup;
+    PageSettingsLinkPopup *m_popup;
 
     wxToolsSignal<> m_invokeOpenSignal;
 

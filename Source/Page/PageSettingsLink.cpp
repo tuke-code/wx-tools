@@ -1,18 +1,18 @@
 ﻿/***************************************************************************************************
- * Copyright 2024 x-tools-author(x-tools@outlook.com). All rights reserved.
+ * Copyright 2024-2025 x-tools-author(x-tools@outlook.com). All rights reserved.
  *
  * The file is encoded using "utf8 with bom", it is a part of eTools project.
  *
  * eTools is licensed according to the terms in the file LICENCE(GPL V3) in the root of the source
  * code directory.
  **************************************************************************************************/
-#include "ControlPanelLink.h"
+#include "PageSettingsLink.h"
 
-#include "ControlPanelLinkPopup.h"
 #include "LinksUi/LinksController.h"
 #include "LinksUi/LinksControllerFactory.h"
+#include "PageSettingsLinkPopup.h"
 
-ControlPanelLink::ControlPanelLink(LinkType type, wxWindow *parent)
+PageSettingsLink::PageSettingsLink(LinkType type, wxWindow *parent)
     : wxStaticBoxSizer(wxVERTICAL, parent, wxT("Link Control"))
     , m_controller(nullptr)
     , m_popup(nullptr)
@@ -24,10 +24,10 @@ ControlPanelLink::ControlPanelLink(LinkType type, wxWindow *parent)
     AddSpacer(4);
 
     auto settingsButton = new wxButton(GetStaticBox(), wxID_ANY, wxT("Settings"));
-    m_popup = new ControlPanelLinkPopup(settingsButton);
+    m_popup = new PageSettingsLinkPopup(settingsButton);
 
     m_openButton = new wxButton(GetStaticBox(), wxID_ANY, wxT("Open"));
-    m_openButton->Bind(wxEVT_BUTTON, &ControlPanelLink::OnOpen, this);
+    m_openButton->Bind(wxEVT_BUTTON, &PageSettingsLink::OnOpen, this);
 
     auto buttonSizer = new wxBoxSizer(wxHORIZONTAL);
     buttonSizer->Add(settingsButton, 1, wxEXPAND | wxALL, 0);
@@ -35,22 +35,22 @@ ControlPanelLink::ControlPanelLink(LinkType type, wxWindow *parent)
     Add(buttonSizer, 0, wxEXPAND, 0);
 }
 
-LinksController *ControlPanelLink::GetController() const
+LinksController *PageSettingsLink::GetController() const
 {
     return m_controller;
 }
 
-wxToolsSignal<> &ControlPanelLink::GetInvokeOpenSignal()
+wxToolsSignal<> &PageSettingsLink::GetInvokeOpenSignal()
 {
     return m_invokeOpenSignal;
 }
 
-void ControlPanelLink::SetOpenButtonLabel(const wxString &label)
+void PageSettingsLink::SetOpenButtonLabel(const wxString &label)
 {
     m_openButton->SetLabel(label);
 }
 
-void ControlPanelLink::OnOpen(wxCommandEvent &event)
+void PageSettingsLink::OnOpen(wxCommandEvent &event)
 {
 #if 0
     static wxPopupTransientWindow *popup = new wxPopupTransientWindow(m_openButton, wxBORDER_SIMPLE);

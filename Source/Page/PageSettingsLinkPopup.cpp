@@ -6,13 +6,13 @@
  * eTools is licensed according to the terms in the file LICENCE(GPL V3) in the root of the source
  * code directory.
  **************************************************************************************************/
-#include "ControlPanelLinkPopup.h"
+#include "PageSettingsLinkPopup.h"
 
 #include <wx/gbsizer.h>
 #include <wx/statline.h>
 #include <wx/wx.h>
 
-ControlPanelLinkPopup::ControlPanelLinkPopup(wxButton *controlButton)
+PageSettingsLinkPopup::PageSettingsLinkPopup(wxButton *controlButton)
     : Popup(controlButton)
     , m_enableTxMask(nullptr)
     , m_txMask(nullptr)
