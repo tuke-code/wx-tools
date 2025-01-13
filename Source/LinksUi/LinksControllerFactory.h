@@ -22,5 +22,5 @@ private:
 
 public:
     static LinksControllerFactory &singleton();
-    LinksController *CreateCommunicationController(LinkType type, wxWindow *parent);
+    LinksController *CreateLinkController(LinkType type, wxWindow *parent);
 };

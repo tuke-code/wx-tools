@@ -18,7 +18,7 @@ LinkFactory &LinkFactory::Singleton()
     return instance;
 }
 
-Link *CreateCommunication(wxWindow *parent, LinkType type)
+Link *LinkFactory::CreateLink(LinkType type)
 {
     if (type == LinkType::SerialPort) {
         return new SerialPort();

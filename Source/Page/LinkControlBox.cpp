@@ -18,7 +18,7 @@ CommunicationControlBox::CommunicationControlBox(LinkType type, wxWindow *parent
     , m_popup(nullptr)
 {
     auto &factory = LinksControllerFactory::singleton();
-    m_controller = factory.CreateCommunicationController(type, GetStaticBox());
+    m_controller = factory.CreateLinkController(type, GetStaticBox());
     Add(m_controller, 0, wxEXPAND, 0);
 
     AddSpacer(4);

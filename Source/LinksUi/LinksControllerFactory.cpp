@@ -19,8 +19,7 @@ LinksControllerFactory &LinksControllerFactory::singleton()
     return instance;
 }
 
-LinksController *LinksControllerFactory::CreateCommunicationController(
-    LinkType type, wxWindow *parent)
+LinksController *LinksControllerFactory::CreateLinkController(LinkType type, wxWindow *parent)
 {
     if (type == LinkType::SerialPort) {
         return new SerialPortController(parent);
