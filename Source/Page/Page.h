@@ -1,5 +1,5 @@
 ﻿/***************************************************************************************************
- * Copyright 2024 x-tools-author(x-tools@outlook.com). All rights reserved.
+ * Copyright 2024-2025 x-tools-author(x-tools@outlook.com). All rights reserved.
  *
  * The file is encoded using "utf8 with bom", it is a part of eTools project.
  *
@@ -25,13 +25,13 @@ class Page : public wxPanel
 public:
     Page(LinkType type, wxWindow *parent);
 
-    void Load(const nlohmann::json &json);
-    nlohmann::json Save() const;
+    void Load(const wxToolsJson &json);
+    wxToolsJson Save() const;
 
 private:
     InputControlBox *m_inputControlBox;
     ControlBoxes *m_controlBoxes;
-    LinkControlBox *m_communicationControlBox;
+    LinkControlBox *m_linkControlBox;
     IOPanel *m_ioPanel;
     wxTimer m_sendTimer;
     OutputControlBox *m_outputControlBox;
@@ -39,7 +39,7 @@ private:
 private:
     struct ParameterNames
     {
-        const std::string communicationControlBox{"CommunicationController"};
+        const std::string linkControlBox{"LinkControlBox"};
         const std::string outputControlBox{"OutputController"};
         const std::string inputControlBox{"InputController"};
     } m_parameterNames;

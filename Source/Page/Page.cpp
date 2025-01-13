@@ -1,5 +1,5 @@
 ﻿/***************************************************************************************************
- * Copyright 2024 x-tools-author(x-tools@outlook.com). All rights reserved.
+ * Copyright 2024-2025 x-tools-author(x-tools@outlook.com). All rights reserved.
  *
  * The file is encoded using "utf8 with bom", it is a part of eTools project.
  *
@@ -27,7 +27,7 @@ Page::Page(LinkType type, wxWindow *parent)
     , m_controlBoxes(nullptr)
     , m_ioPanel(nullptr)
     , m_inputControlBox(nullptr)
-    , m_communicationControlBox(nullptr)
+    , m_linkControlBox(nullptr)
 {
     auto sizer = new wxBoxSizer(wxHORIZONTAL);
     SetSizerAndFit(sizer);
@@ -44,8 +44,8 @@ Page::Page(LinkType type, wxWindow *parent)
     m_inputControlBox->GetInvokeStartTimerSignal().connect(&Page::OnInvokeStartTimer, this);
     m_inputControlBox->GetTextFormatChangedSignal().connect(&Page::OnTextFormatChanged, this);
 
-    m_communicationControlBox = m_controlBoxes->GetCommunicationControlBox();
-    m_communicationControlBox->GetInvokeOpenSignal().connect(&Page::OnInvokeOpen, this);
+    m_linkControlBox = m_controlBoxes->GetCommunicationControlBox();
+    m_linkControlBox->GetInvokeOpenSignal().connect(&Page::OnInvokeOpen, this);
 
     m_outputControlBox = m_controlBoxes->GetOutputControlBox();
     m_outputControlBox->GetClearSignal().connect(&Page::OnClear, this);
@@ -53,20 +53,18 @@ Page::Page(LinkType type, wxWindow *parent)
     m_sendTimer.Bind(wxEVT_TIMER, [this](wxTimerEvent &event) { OnSendTimerTimeout(); });
 }
 
-void Page::Load(const nlohmann::json &json)
+void Page::Load(const wxToolsJson &json)
 {
-#if 0
-    auto controllerJson = json.Get(m_parameterNames.communicationControlBox, wxJSONValue());
-    m_communicationControlBox->GetController()->Load(controllerJson);
-#endif
+    wxToolsJson controllerJson = json[m_parameterNames.linkControlBox].template get<wxToolsJson>();
+    m_linkControlBox->GetController()->Load(controllerJson);
 }
 
-nlohmann::json Page::Save() const
+wxToolsJson Page::Save() const
 {
-    auto *communicationController = m_communicationControlBox->GetController();
+    auto *linkController = m_linkControlBox->GetController();
 
-    nlohmann::json json;
-    json[m_parameterNames.communicationControlBox] = communicationController->Save();
+    wxToolsJson json;
+    json[m_parameterNames.linkControlBox] = linkController->Save();
     return json;
 }
 
@@ -102,7 +100,7 @@ void Page::OnInvokeOpen()
 
 void Page::OnInvokeWrite(TextFormat format)
 {
-    LinksController *communicationController = m_communicationControlBox->GetController();
+    LinksController *communicationController = m_linkControlBox->GetController();
     if (!communicationController->IsOpen()) {
         wxMessageBox(wxT("Communication is not open."), wxT("Error"), wxICON_ERROR);
         return;
@@ -148,7 +146,7 @@ void Page::OnBytesWritten(wxToolsConstBuffer &bytes, const wxString &to)
 
 void Page::OnSendTimerTimeout()
 {
-    if (!m_communicationControlBox->GetController()->IsOpen()) {
+    if (!m_linkControlBox->GetController()->IsOpen()) {
         return;
     }
 
