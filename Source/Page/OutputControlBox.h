@@ -27,8 +27,8 @@ public:
     bool GetShowTx() const;
     bool GetShowFlag() const;
 
-    sigslot::signal<bool> &GetWrapSignal();
-    sigslot::signal<> &GetClearSignal();
+    wxToolsSignal<bool> &GetWrapSignal();
+    wxToolsSignal<> &GetClearSignal();
 
 private:
     TextFormatComboBox *m_textFormatComboBox;
@@ -40,5 +40,5 @@ private:
     wxCheckBox *m_showFlag;
     OutputPopup *m_popup;
 
-    sigslot::signal<> m_clearSignal;
+    wxToolsSignal<> m_clearSignal;
 };

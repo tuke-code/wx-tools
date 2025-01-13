@@ -99,7 +99,7 @@ bool OutputControlBox::GetShowFlag() const
     return m_showFlag->GetValue();
 }
 
-sigslot::signal<> &OutputControlBox::GetClearSignal()
+wxToolsSignal<> &OutputControlBox::GetClearSignal()
 {
     return m_clearSignal;
 }
