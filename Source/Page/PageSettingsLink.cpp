@@ -9,7 +9,13 @@
 #include "PageSettingsLink.h"
 
 #include "LinksUi/LinksController.h"
-#include "LinksUi/LinksControllerFactory.h"
+#include "LinksUi/SerialPortController.h"
+#include "LinksUi/TCPClientController.h"
+#include "LinksUi/TCPServerController.h"
+#include "LinksUi/UDPClientController.h"
+#include "LinksUi/UDPServerController.h"
+#include "LinksUi/WSClientController.h"
+#include "LinksUi/WSServerController.h"
 #include "PageSettingsLinkPopup.h"
 
 PageSettingsLink::PageSettingsLink(LinkType type, wxWindow *parent)
@@ -17,8 +23,7 @@ PageSettingsLink::PageSettingsLink(LinkType type, wxWindow *parent)
     , m_controller(nullptr)
     , m_popup(nullptr)
 {
-    auto &factory = LinksControllerFactory::singleton();
-    m_controller = factory.CreateLinkController(type, GetStaticBox());
+    m_controller = CreateLinkController(type, GetStaticBox());
     Add(m_controller, 0, wxEXPAND, 0);
 
     AddSpacer(4);
@@ -61,4 +66,25 @@ void PageSettingsLink::OnOpen(wxCommandEvent &event)
 
     wxUnusedVar(event);
     m_invokeOpenSignal();
+}
+
+LinksController *PageSettingsLink::CreateLinkController(LinkType type, wxWindow *parent)
+{
+    if (type == LinkType::SerialPort) {
+        return new SerialPortController(parent);
+    } else if (type == LinkType::UDPClient) {
+        return new UDPClientController(parent);
+    } else if (type == LinkType::UDPServer) {
+        return new UDPServerController(parent);
+    } else if (type == LinkType::TCPClient) {
+        return new TCPClientController(parent);
+    } else if (type == LinkType::TCPServer) {
+        return new TCPServerController(parent);
+    } else if (type == LinkType::WSClient) {
+        return new WSClientController(parent);
+    } else if (type == LinkType::WSServer) {
+        return new WSServerController(parent);
+    }
+
+    return nullptr;
 }

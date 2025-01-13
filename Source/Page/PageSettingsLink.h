@@ -32,4 +32,5 @@ private:
 
 private:
     void OnOpen(wxCommandEvent &event);
+    LinksController *CreateLinkController(LinkType type, wxWindow *parent);
 };
