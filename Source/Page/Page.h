@@ -37,12 +37,12 @@ private:
     OutputControlBox *m_outputControlBox;
 
 private:
-    struct ParameterNames
+    struct ParameterKeys
     {
         const std::string linkControlBox{"LinkControlBox"};
         const std::string outputControlBox{"OutputController"};
         const std::string inputControlBox{"InputController"};
-    } m_parameterNames;
+    } m_parameterKeys;
 
 private:
     void OnInvokeOpen();

@@ -55,7 +55,7 @@ Page::Page(LinkType type, wxWindow *parent)
 
 void Page::Load(const wxToolsJson &json)
 {
-    wxToolsJson controllerJson = json[m_parameterNames.linkControlBox].template get<wxToolsJson>();
+    wxToolsJson controllerJson = json[m_parameterKeys.linkControlBox].template get<wxToolsJson>();
     m_linkControlBox->GetController()->Load(controllerJson);
 }
 
@@ -64,7 +64,7 @@ wxToolsJson Page::Save() const
     auto *linkController = m_linkControlBox->GetController();
 
     wxToolsJson json;
-    json[m_parameterNames.linkControlBox] = linkController->Save();
+    json[m_parameterKeys.linkControlBox] = linkController->Save();
     return json;
 }
 
