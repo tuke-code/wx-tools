@@ -97,7 +97,7 @@ void SerialPort::Write(const wxString &data, TextFormat format)
     }
 }
 
-void SerialPort::Load(const nlohmann::json &parameters)
+void SerialPort::Load(const wxToolsJson &parameters)
 {
     // clang-format off
     SerialPortParameterKeys keys;
@@ -110,9 +110,9 @@ void SerialPort::Load(const nlohmann::json &parameters)
     // clang-format on
 }
 
-nlohmann::json SerialPort::Save()
+wxToolsJson SerialPort::Save()
 {
-    nlohmann::json parameters;
+    wxToolsJson parameters;
     SerialPortParameterKeys keys;
     parameters[keys.portName] = d->portName;
     parameters[keys.baudRate] = d->baudRate;

@@ -19,13 +19,13 @@
 class Link : wxObject
 {
 public:
-    sigslot::signal<asio::const_buffer & /*bytes*/, const wxString & /*to*/> bytesWrittenSignal;
-    sigslot::signal<asio::const_buffer & /*bytes*/, const wxString & /*from*/> bytesReadSignal;
+    wxToolsSignal<wxToolsConstBuffer & /*bytes*/, const wxString & /*to*/> bytesWrittenSignal;
+    wxToolsSignal<wxToolsConstBuffer & /*bytes*/, const wxString & /*from*/> bytesReadSignal;
 
     virtual bool Open() = 0;
     virtual void Close() = 0;
     virtual void Write(const wxString &data, TextFormat format) = 0;
 
-    virtual void Load(const nlohmann::json &parameters) = 0;
-    virtual nlohmann::json Save() = 0;
+    virtual void Load(const wxToolsJson &parameters) = 0;
+    virtual wxToolsJson Save() = 0;
 };

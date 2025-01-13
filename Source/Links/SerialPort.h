@@ -33,8 +33,8 @@ public:
     bool Open() override;
     void Close() override;
     void Write(const wxString &data, TextFormat format) override;
-    void Load(const nlohmann::json &parameters) override;
-    nlohmann::json Save() override;
+    void Load(const wxToolsJson &parameters) override;
+    wxToolsJson Save() override;
 
 private:
     SerialPortPrivate *d;
