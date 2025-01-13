@@ -10,6 +10,7 @@
 
 #include <asio/buffer.hpp>
 #include <glog/logging.h>
+#include <nlohmann/json.hpp>
 #include <sigslot/signal.hpp>
 #include <wx/wx.h>
 
@@ -33,12 +34,16 @@ void DoInitLogging(const char *argv0);
 void DoShutdownLogging();
 
 //--------------------------------------------------------------------------------------------------
+// json
+typedef nlohmann::json wxToolsJson;
+
+//--------------------------------------------------------------------------------------------------
 // sigslot
 #define wxToolsSignal sigslot::signal
 
 //--------------------------------------------------------------------------------------------------
 // asio
-#define wxToolsConstBuffer asio::const_buffer
+typedef asio::const_buffer wxToolsConstBuffer;
 
 //--------------------------------------------------------------------------------------------------
 // libcrc
