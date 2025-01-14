@@ -40,9 +40,9 @@ Page::Page(LinkType type, wxWindow *parent)
     Layout();
 
     m_inputSettings = m_pageSettings->GetInputControlBox();
-    m_inputSettings->GetInvokeWriteSignal().connect(&Page::OnInvokeWrite, this);
-    m_inputSettings->GetInvokeStartTimerSignal().connect(&Page::OnInvokeStartTimer, this);
-    m_inputSettings->GetTextFormatChangedSignal().connect(&Page::OnTextFormatChanged, this);
+    m_inputSettings->invokeWriteSignal.connect(&Page::OnInvokeWrite, this);
+    m_inputSettings->invokeStartTimerSignal.connect(&Page::OnInvokeStartTimer, this);
+    m_inputSettings->textFormatChangedSignal.connect(&Page::OnTextFormatChanged, this);
 
     m_linkControlBox = m_pageSettings->GetCommunicationControlBox();
     m_linkControlBox->GetInvokeOpenSignal().connect(&Page::OnInvokeOpen, this);

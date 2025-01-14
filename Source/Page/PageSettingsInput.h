@@ -13,6 +13,13 @@
 
 #include "Common/wxTools.h"
 
+struct PageSettingsInputParameterKeys
+{
+    std::string cycleInterval = {"cycleInterval"};
+    std::string textFormat = {"textFormat"};
+    std::string popup = {"popup"};
+};
+
 class PageSettingsInputPopup;
 class TextFormatComboBox;
 class PageSettingsInput : public wxStaticBoxSizer
@@ -22,22 +29,18 @@ public:
     void SetCycleIntervalComboBoxSelection(int selection);
     TextFormat GetTextFormat() const;
 
-    wxToolsSignal<TextFormat> &GetInvokeWriteSignal();
-    wxToolsSignal<int> &GetInvokeStartTimerSignal();
-    wxToolsSignal<TextFormat> &GetTextFormatChangedSignal();
+    wxToolsSignal<TextFormat> invokeWriteSignal;
+    wxToolsSignal<int> invokeStartTimerSignal;
+    wxToolsSignal<TextFormat> textFormatChangedSignal;
 
 private:
-    wxButton *m_settingsButton;
-    wxButton *m_sendButton;
-    wxComboBox *m_cycleIntervalComboBox;
-    TextFormatComboBox *m_formatComboBox;
-    PageSettingsInputPopup *m_popup;
+    wxButton *m_settingsButton{nullptr};
+    wxButton *m_sendButton{nullptr};
+    wxComboBox *m_cycleIntervalComboBox{nullptr};
+    TextFormatComboBox *m_formatComboBox{nullptr};
+    PageSettingsInputPopup *m_popup{nullptr};
 
 private:
-    wxToolsSignal<TextFormat> m_invokeWriteSignal;
-    wxToolsSignal<int> m_invokeStartTimerSignal;
-    wxToolsSignal<TextFormat> m_textFormatChangedSignal;
-
     void OnSendButtonClicked(wxCommandEvent &event);
     void OnTextFormat(wxCommandEvent &event);
 

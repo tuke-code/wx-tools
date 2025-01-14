@@ -59,31 +59,16 @@ TextFormat PageSettingsInput::GetTextFormat() const
     return m_formatComboBox->GetSelectedFormat();
 }
 
-wxToolsSignal<TextFormat>& PageSettingsInput::GetInvokeWriteSignal()
-{
-    return m_invokeWriteSignal;
-}
-
-wxToolsSignal<int>& PageSettingsInput::GetInvokeStartTimerSignal()
-{
-    return m_invokeStartTimerSignal;
-}
-
-wxToolsSignal<TextFormat>& PageSettingsInput::GetTextFormatChangedSignal()
-{
-    return m_textFormatChangedSignal;
-}
-
 void PageSettingsInput::OnSendButtonClicked(wxCommandEvent& event)
 {
     wxUnusedVar(event);
-    m_invokeWriteSignal(m_formatComboBox->GetSelectedFormat());
+    invokeWriteSignal(m_formatComboBox->GetSelectedFormat());
 }
 
 void PageSettingsInput::OnTextFormat(wxCommandEvent& event)
 {
     wxUnusedVar(event);
-    m_textFormatChangedSignal(m_formatComboBox->GetSelectedFormat());
+    textFormatChangedSignal(m_formatComboBox->GetSelectedFormat());
 }
 
 wxComboBox* PageSettingsInput::InitCycleIntervalComboBox()
@@ -117,7 +102,7 @@ wxComboBox* PageSettingsInput::InitCycleIntervalComboBox()
     cb->Bind(wxEVT_COMBOBOX, [=](wxCommandEvent& event) {
         int selection = cb->GetSelection();
         int value = *static_cast<int*>(cb->GetClientData(selection));
-        m_invokeStartTimerSignal(value);
+        this->invokeStartTimerSignal(value);
     });
 
     return cb;

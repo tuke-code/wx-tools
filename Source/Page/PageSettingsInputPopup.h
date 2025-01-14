@@ -8,10 +8,42 @@
  **************************************************************************************************/
 #pragma once
 
+#include "Common/wxTools.h"
 #include "Utilities/BaseSettingsPopup.h"
+
+struct PageSettingsInputPopupParameterKeys
+{
+    std::string prefixIndex = {"prefix"};
+    std::string suffixIndex = {"suffix"};
+    std::string escIndex = {"esc"};
+
+    std::string startIndex = {"startIndex"};
+    std::string endIndex = {"endIndex"};
+    std::string algorithmIndex = {"algorithm"};
+    std::string addCr = {"addCrc"};
+    std::string bigEndian = {"bigEndian"};
+};
 
 class PageSettingsInputPopup : public BaseSettingsPopup
 {
 public:
     PageSettingsInputPopup(wxButton *controlButton);
+
+    wxToolsSignal<> parametersChangedSignal;
+    void Load(const wxToolsJson &json);
+    wxToolsJson Save() const;
+
+private:
+    wxComboBox *m_prefixComboBox{nullptr};
+    wxComboBox *m_suffixComboBox{nullptr};
+    wxComboBox *m_escComboBox{nullptr};
+
+    wxSpinCtrl *m_startIndexSpinCtrl{nullptr};
+    wxSpinCtrl *m_endIndexSpinCtrl{nullptr};
+    wxComboBox *m_algorithmComboBox{nullptr};
+    wxCheckBox *m_addCrcCheckBox{nullptr};
+    wxCheckBox *m_bigEndianCheckBox{nullptr};
+
+private:
+    void OnParametersChanged(wxCommandEvent &event);
 };
