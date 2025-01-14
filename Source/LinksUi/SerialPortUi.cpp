@@ -109,8 +109,8 @@ void SerialPortUi::AboutToOpen(Link *link)
     LinkUi::AboutToOpen(link);
 
 #if 1
-    nlohmann::json json = link->Save();
-    wxToolsLog(INFO) << json.dump();
+    wxToolsJson json = link->Save();
+    wxToolsInfo() << json.dump();
 #endif
 }
 
