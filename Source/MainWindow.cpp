@@ -134,36 +134,38 @@ std::string GetPageParameterFileName(LinkType type)
 void MainWindow::LoadParameters()
 {
     wxString settingsPath = wxToolsGetSettingsPath();
+    wxString fileName = wxToolsGetSettingsFileName();
+    if (!wxFileName::Exists(fileName)) {
+        return;
+    }
+
+    std::ifstream ifs(fileName.ToStdString());
+    wxToolsJson json;
+    ifs >> json;
+
     for (auto it = m_pageMap.begin(); it != m_pageMap.end(); ++it) {
         Page* page = it->second;
         wxString name = GetPageParameterFileName(it->first);
-        name = settingsPath + wxToolsPathSeparator + name;
-
-        if (!wxFileName::Exists(name)) {
-            continue;
+        wxToolsJson pageJson = json[name.ToStdString()];
+        if (!pageJson.is_null()) {
+            page->Load(pageJson);
         }
-
-        // Read json from file
-        std::ifstream ifs(name.ToStdString());
-        wxToolsJson json;
-        ifs >> json;
-        page->Load(json);
     }
 }
 
 void MainWindow::SaveParameters()
 {
-    wxString settingsPath = wxToolsGetSettingsPath();
+    wxToolsJson wxTools;
     for (auto it = m_pageMap.begin(); it != m_pageMap.end(); ++it) {
         Page* page = it->second;
         wxToolsJson json = page->Save();
-
         wxString name = GetPageParameterFileName(it->first);
-        name = settingsPath + wxToolsPathSeparator + name;
-
-        // Write json to file
-        std::ofstream ofs(name.ToStdString());
-        ofs << json.dump(4);
-        ofs.close();
+        wxTools[name.ToStdString()] = json;
     }
+
+    // Write json to file
+    wxString fileName = wxToolsGetSettingsFileName();
+    std::ofstream ofs(fileName.ToStdString());
+    ofs << wxTools.dump(4);
+    ofs.close();
 }

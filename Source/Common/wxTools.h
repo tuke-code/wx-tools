@@ -24,12 +24,6 @@
 #define wxToolsOkStr wxT("Ok")
 #define wxToolsUnknownStr wxT("Unknown")
 
-#ifdef _WINDOWS
-#define wxToolsPathSeparator "\\"
-#else
-#define wxToolsPathSeparator "/"
-#endif
-
 //--------------------------------------------------------------------------------------------------
 // Google Log
 #define wxToolsLog(severity) LOG(severity)
@@ -118,3 +112,4 @@ wxString GetEscapeName(EscapeType type);
 // wxWidgets
 void wxToolsSetComboBoxSectionByIntClientData(wxComboBox *comboBox, int clientDataValue);
 wxString wxToolsGetSettingsPath();
+wxString wxToolsGetSettingsFileName();

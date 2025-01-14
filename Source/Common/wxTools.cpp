@@ -13,6 +13,7 @@
 #include <sstream>
 #include <string>
 
+#include <wx/filename.h>
 #include <wx/stdpaths.h>
 
 void FailureWriter(const char *data, size_t size) {}
@@ -484,4 +485,9 @@ wxString wxToolsGetSettingsPath()
     }
 
     return path;
+}
+
+wxString wxToolsGetSettingsFileName()
+{
+    return wxToolsGetSettingsPath() + wxFileName::GetPathSeparator() + wxT("wxTools.json");
 }
