@@ -8,12 +8,14 @@
  **************************************************************************************************/
 #pragma once
 
+#include <asio.hpp>
+
 #include "SocketServer_p.h"
 
 class UDPServerPrivate : public SocketServerPrivate
 {
 public:
     asio::io_context ioContext;
-    asio::ip::udp::socket *socket;
+    asio::ip::udp::socket *socket{nullptr};
     asio::ip::udp::endpoint endpoint;
 };

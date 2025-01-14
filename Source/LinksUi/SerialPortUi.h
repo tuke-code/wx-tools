@@ -29,7 +29,6 @@ public:
 
 protected:
     Link *CreateLink() override;
-    void AboutToOpen(Link *link) override;
 
 private:
     void SetupComboBox(wxComboBox *cb, const wxString &label, int row, wxWindow *parent);

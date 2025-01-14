@@ -15,4 +15,6 @@ class SocketServer : public SocketBase
 public:
     SocketServer(SocketBasePrivate *dPtr);
     ~SocketServer();
+
+    wxToolsSignal<std::string, uint16_t> newClientSignal;
 };

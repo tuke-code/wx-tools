@@ -79,9 +79,9 @@ void SocketBaseUi::Enable()
     }
 }
 
-nlohmann::json SocketBaseUi::Save() const
+wxToolsJson SocketBaseUi::Save() const
 {
-    nlohmann::json json;
+    wxToolsJson json;
     SocketBaseParameterKeys keys;
     // clang-format off
     json[keys.clientAddress] = m_clientComboBox ? m_clientComboBox->GetValue() : "127.0.0.1";
@@ -97,7 +97,7 @@ nlohmann::json SocketBaseUi::Save() const
     return json;
 }
 
-void SocketBaseUi::Load(const nlohmann::json &json)
+void SocketBaseUi::Load(const wxToolsJson &json)
 {
     SocketBaseParameterKeys keys;
     if (m_clientComboBox) {

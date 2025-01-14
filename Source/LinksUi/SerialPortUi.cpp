@@ -104,16 +104,6 @@ Link *SerialPortUi::CreateLink()
     return new SerialPort();
 }
 
-void SerialPortUi::AboutToOpen(Link *link)
-{
-    LinkUi::AboutToOpen(link);
-
-#if 1
-    wxToolsJson json = link->Save();
-    wxToolsInfo() << json.dump();
-#endif
-}
-
 void SerialPortUi::SetupComboBox(wxComboBox *cb, const wxString &label, int row, wxWindow *parent)
 {
     auto text = new wxStaticText(parent, wxID_ANY, label);

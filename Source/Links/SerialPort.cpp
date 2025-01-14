@@ -53,7 +53,7 @@ void ReadData(SerialPortPrivate *d, SerialPort *serialPort)
             std::string data(buffer, receivedBytes);
             asio::const_buffer buffer(data.data(), data.size());
             std::string portName = d->portName;
-            serialPort->emitBytesReadSignal(buffer, d->portName);
+            serialPort->bytesReadSignal(buffer, d->portName);
         }
     }
 }
@@ -96,7 +96,7 @@ void SerialPort::Write(const wxString &data, TextFormat format)
         auto buffer = asio::buffer(msg.data(), msg.size());
         size_t ret = d->serialPort->write_some(buffer);
         if (ret > 0) {
-            emitBytesWrittenSignal(buffer, d->portName);
+            bytesWrittenSignal(buffer, d->portName);
         } else {
             wxToolsWarning() << "Write data failed.";
         }

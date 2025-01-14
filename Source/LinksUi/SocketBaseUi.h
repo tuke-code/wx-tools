@@ -20,8 +20,8 @@ public:
 
     void Disable() override;
     void Enable() override;
-    nlohmann::json Save() const override;
-    void Load(const nlohmann::json &json) override;
+    wxToolsJson Save() const override;
+    void Load(const wxToolsJson &json) override;
 
 protected:
     // clang-format off

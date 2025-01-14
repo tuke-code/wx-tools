@@ -12,28 +12,34 @@
 using asio::ip::udp;
 
 UDPServer::UDPServer()
-    : d(new UDPServerPrivate)
-    , SocketServer(d)
+    : SocketServer(d = new UDPServerPrivate)
 {}
 
 UDPServer::~UDPServer()
 {
+    if (d->socket) {
+        d->socket->close();
+        delete d->socket;
+        d->socket = nullptr;
+    }
+
     delete d;
     d = nullptr;
 }
 
-void ReadData(asio::ip::udp::socket *socket, UDPServer *UDPServer)
+void ReadData(asio::ip::udp::socket *socket, UDPServer *udpServer)
 {
-    if (!socket || !UDPServer) {
+    if (!socket || !udpServer) {
         return;
     }
 
-    char buffer[1024] = {0};
+    char buffer[1024 * 1024] = {0};
     size_t receivedBytes = 0;
     while (1) {
         try {
             udp::endpoint senderEndpoint;
-            receivedBytes = socket->receive_from(asio::buffer(buffer, 1024), senderEndpoint);
+            auto asioBuffer = asio::buffer(buffer, sizeof(buffer));
+            receivedBytes = socket->receive_from(asioBuffer, senderEndpoint);
         } catch (asio::system_error &e) {
             std::string errorString = e.what();
             wxString msg = wxString::Format("Read data failed, error message: %s", errorString);
@@ -46,11 +52,10 @@ void ReadData(asio::ip::udp::socket *socket, UDPServer *UDPServer)
             asio::const_buffer buffer(data.data(), data.size());
             std::string ip = socket->remote_endpoint().address().to_string();
             std::string port = std::to_string(socket->remote_endpoint().port());
-            UDPServer->emitBytesReadSignal(buffer, ip + ":" + port);
+            udpServer->bytesReadSignal(buffer, ip + ":" + port);
+            udpServer->newClientSignal(ip, socket->remote_endpoint().port());
         }
     }
-
-    delete socket;
 }
 
 bool UDPServer::Open()
@@ -72,9 +77,9 @@ bool UDPServer::Open()
 
 void UDPServer::Close()
 {
-    d->socket->close();
-    delete d->socket;
-    d->socket = nullptr;
+    if (d->socket) {
+        d->socket->close();
+    }
 }
 
 void UDPServer::Write(const wxString &data, TextFormat format)
@@ -83,6 +88,8 @@ void UDPServer::Write(const wxString &data, TextFormat format)
     auto buffer = asio::buffer(msg.data(), msg.size());
     auto ret = d->socket->send_to(asio::buffer(msg), d->endpoint);
     if (ret > 0) {
-        emitBytesWrittenSignal(buffer, "127.0.0.1");
+        std::string ip = d->endpoint.address().to_string();
+        std::string port = std::to_string(d->endpoint.port());
+        bytesWrittenSignal(buffer, ip + ":" + port);
     }
 }

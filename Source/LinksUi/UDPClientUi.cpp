@@ -26,22 +26,3 @@ Link *UDPClientUi::CreateLink()
 {
     return new UDPClient();
 }
-
-void UDPClientUi::AboutToOpen(Link *communication)
-{
-    if (!communication) {
-        return;
-    }
-
-    UDPClient *udpClient = dynamic_cast<UDPClient *>(communication);
-    if (!udpClient) {
-        return;
-    }
-
-    udpClient->Load(Save());
-}
-
-void UDPClientUi::AboutToClose(Link *communication)
-{
-    // Nothing to do yet.
-}
