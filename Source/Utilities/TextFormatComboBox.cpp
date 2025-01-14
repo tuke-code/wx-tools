@@ -20,9 +20,9 @@ TextFormatComboBox::TextFormatComboBox(wxWindow* parent)
                  nullptr,
                  wxCB_READONLY)
 {
-    std::vector<wxString> formats = GetSuportedTextFormats();
-    for (const wxString& format : formats) {
-        AppendString(format);
+    std::vector<int> formats = GetSuportedFormats();
+    for (int format : formats) {
+        Append(GetTextFormatName(static_cast<TextFormat>(format)), new int(format));
     }
     SetSelection(3);
 }

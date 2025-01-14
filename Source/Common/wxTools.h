@@ -71,6 +71,7 @@ std::string GetDateTimeString(const std::string &format = "%Y-%m-%d %H:%M:%S", b
 //--------------------------------------------------------------------------------------------------
 // Text format
 enum class TextFormat { Bin, Oct, Dec, Hex, Ascii, Utf8, Unknown = -1 };
+std::vector<int> GetSuportedFormats();
 std::vector<wxString> GetSuportedTextFormats();
 wxString GetTextFormatName(TextFormat format);
 std::string DoDecodeText(wxToolsConstBuffer &buffer, TextFormat format);
@@ -110,3 +111,4 @@ wxString GetEscapeName(EscapeType type);
 //--------------------------------------------------------------------------------------------------
 // wxWidgets
 void wxToolsSetComboBoxSectionByIntClientData(wxComboBox *comboBox, int clientDataValue);
+wxString wxToolsGetSettingsPath();

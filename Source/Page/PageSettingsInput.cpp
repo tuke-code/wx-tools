@@ -62,11 +62,20 @@ wxToolsJson PageSettingsInput::Save() const
     PageSettingsInputParameterKeys keys;
     wxToolsJson parameters;
 
-    int cycleInterval = *reinterpret_cast<int*>(m_cycleIntervalComboBox->GetClientData());
-    int textFormat = *reinterpret_cast<int*>(m_formatComboBox->GetClientData());
+    int selection = m_cycleIntervalComboBox->GetSelection();
+    void* clientData = m_cycleIntervalComboBox->GetClientData(selection);
+    if (clientData) {
+        int cycleInterval = *static_cast<int*>(clientData);
+        parameters[keys.cycleInterval] = cycleInterval;
+    }
 
-    parameters[keys.cycleInterval] = cycleInterval;
-    parameters[keys.textFormat] = textFormat;
+    selection = m_formatComboBox->GetSelection();
+    clientData = m_formatComboBox->GetClientData(selection);
+    if (clientData) {
+        int textFormat = *static_cast<int*>(clientData);
+        parameters[keys.textFormat] = textFormat;
+    }
+
     parameters[keys.popup] = m_popup->Save();
     return parameters;
 }

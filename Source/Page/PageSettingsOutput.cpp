@@ -89,7 +89,12 @@ wxToolsJson PageSettingsOutput::Save() const
     wxToolsJson parameters;
     PageSettingsOutputParameterKeys keys;
 
-    parameters[keys.textFormat] = *reinterpret_cast<int *>(m_textFormatComboBox->GetClientData());
+    int selection = m_textFormatComboBox->GetSelection();
+    void *clientData = m_textFormatComboBox->GetClientData(selection);
+    if (clientData) {
+        parameters[keys.textFormat] = *static_cast<int *>(clientData);
+    }
+
     parameters[keys.showDate] = m_showDate->GetValue();
     parameters[keys.showTime] = m_showTime->GetValue();
     parameters[keys.showMs] = m_showMs->GetValue();

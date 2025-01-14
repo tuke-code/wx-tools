@@ -43,5 +43,4 @@ private:
     std::map<LinkType, Page*> m_pageMap;
     wxStatusBar* m_statusBar;
     wxTimer m_updateTimeTimer;
-    wxFileConfig* m_settings{nullptr};
 };

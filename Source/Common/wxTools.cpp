@@ -13,6 +13,8 @@
 #include <sstream>
 #include <string>
 
+#include <wx/stdpaths.h>
+
 void FailureWriter(const char *data, size_t size) {}
 
 std::string LogPath()
@@ -110,6 +112,18 @@ std::string GetDateTimeString(const std::string &format, bool showMs)
         std::strftime(buffer, 80, format.c_str(), tm);
         return std::string(buffer);
     }
+}
+
+std::vector<int> GetSuportedFormats()
+{
+    std::vector<int> formats;
+    formats.push_back(static_cast<int>(TextFormat::Bin));
+    formats.push_back(static_cast<int>(TextFormat::Oct));
+    formats.push_back(static_cast<int>(TextFormat::Dec));
+    formats.push_back(static_cast<int>(TextFormat::Hex));
+    formats.push_back(static_cast<int>(TextFormat::Ascii));
+    formats.push_back(static_cast<int>(TextFormat::Utf8));
+    return formats;
 }
 
 std::vector<wxString> GetSuportedTextFormats()
@@ -458,4 +472,17 @@ void wxToolsSetComboBoxSectionByIntClientData(wxComboBox *comboBox, int clientDa
             break;
         }
     }
+}
+
+wxString wxToolsGetSettingsPath()
+{
+    wxStandardPaths &stdPaths = wxStandardPaths::Get();
+    wxString path = stdPaths.GetUserDataDir();
+    // Make full dir...
+    if (!wxDirExists(path)) {
+        wxMkDir(path);
+    }
+
+    wxToolsInfo() << "Settings path: " << path;
+    return path;
 }

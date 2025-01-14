@@ -8,17 +8,16 @@
  **************************************************************************************************/
 #include "MainWindow.h"
 
-#include <nlohmann/json.hpp>
+#include <fstream>
+
 #include <wx/filename.h>
 #include <wx/notebook.h>
 
-#include "Common/wxTools.h"
 #include "Page/Page.h"
 
 MainWindow::MainWindow()
     : wxFrame(nullptr, wxID_ANY, "wxTools")
     , m_statusBar(nullptr)
-    , m_settings(new wxFileConfig("wxTools", "xTools", "xTools/wxTools/wxTools.ini"))
 {
     Init();
 
@@ -134,34 +133,37 @@ std::string GetPageParameterFileName(LinkType type)
 
 void MainWindow::LoadParameters()
 {
-#if 0
+    wxString settingsPath = wxToolsGetSettingsPath();
     for (auto it = m_pageMap.begin(); it != m_pageMap.end(); ++it) {
-        auto* page = it->second;
+        Page* page = it->second;
         wxString name = GetPageParameterFileName(it->first);
+        name = settingsPath + wxString("\\") + name;
+
         if (!wxFileName::Exists(name)) {
             continue;
         }
 
-        wxJSONReader jsonReader;
-        wxJSONValue json;
-        jsonReader.Parse(name, &json);
-
-        if (it->first == LinkType::SerialPort) {
-            page->Load(json);
-        }
+        // Read json from file
+        std::ifstream ifs(name.ToStdString());
+        wxToolsJson json;
+        ifs >> json;
+        page->Load(json);
     }
-#endif
 }
 
 void MainWindow::SaveParameters()
 {
-#if 0
+    wxString settingsPath = wxToolsGetSettingsPath();
     for (auto it = m_pageMap.begin(); it != m_pageMap.end(); ++it) {
-        auto* page = it->second;
-        auto json = page->Save();
+        Page* page = it->second;
+        wxToolsJson json = page->Save();
+
         wxString name = GetPageParameterFileName(it->first);
-        std::ofstream file(name.ToStdString());
-        file << json.AsString();
+        name = settingsPath + wxString("\\") + name;
+
+        // Write json to file
+        std::ofstream ofs(name.ToStdString());
+        ofs << json.dump(4);
+        ofs.close();
     }
-#endif
 }

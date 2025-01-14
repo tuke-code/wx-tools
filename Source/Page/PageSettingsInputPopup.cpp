@@ -108,14 +108,21 @@ wxToolsJson PageSettingsInputPopup::Save() const
     PageSettingsInputPopupParameterKeys keys;
     wxToolsJson json;
 
-    json[keys.prefix] = *reinterpret_cast<int *>(m_prefixComboBox->GetClientData());
-    json[keys.suffix] = *reinterpret_cast<int *>(m_suffixComboBox->GetClientData());
-    json[keys.escIndex] = *reinterpret_cast<int *>(m_escComboBox->GetClientData());
+    int prefixSelection = m_prefixComboBox->GetSelection();
+    int suffixSelection = m_suffixComboBox->GetSelection();
+    int escSelection = m_escComboBox->GetSelection();
+    int algorithmSelection = m_algorithmComboBox->GetSelection();
+
+    // clang-format off
+    json[keys.prefix] = *static_cast<int *>(m_prefixComboBox->GetClientData(prefixSelection));
+    json[keys.suffix] = *static_cast<int *>(m_suffixComboBox->GetClientData(suffixSelection));
+    json[keys.escIndex] = *static_cast<int *>(m_escComboBox->GetClientData(escSelection));
     json[keys.startIndex] = m_startIndexSpinCtrl->GetValue();
     json[keys.endIndex] = m_endIndexSpinCtrl->GetValue();
-    json[keys.algorithm] = *reinterpret_cast<int *>(m_algorithmComboBox->GetClientData());
+    json[keys.algorithm] = *static_cast<int *>(m_algorithmComboBox->GetClientData(algorithmSelection));
     json[keys.addCr] = m_addCrcCheckBox->GetValue();
     json[keys.bigEndian] = m_bigEndianCheckBox->GetValue();
+    // clang-format on
 
     return json;
 }
