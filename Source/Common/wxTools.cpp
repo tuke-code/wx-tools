@@ -483,6 +483,5 @@ wxString wxToolsGetSettingsPath()
         wxMkDir(path);
     }
 
-    wxToolsInfo() << "Settings path: " << path;
     return path;
 }

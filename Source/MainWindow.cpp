@@ -137,7 +137,7 @@ void MainWindow::LoadParameters()
     for (auto it = m_pageMap.begin(); it != m_pageMap.end(); ++it) {
         Page* page = it->second;
         wxString name = GetPageParameterFileName(it->first);
-        name = settingsPath + wxString("\\") + name;
+        name = settingsPath + wxToolsPathSeparator + name;
 
         if (!wxFileName::Exists(name)) {
             continue;
@@ -159,7 +159,7 @@ void MainWindow::SaveParameters()
         wxToolsJson json = page->Save();
 
         wxString name = GetPageParameterFileName(it->first);
-        name = settingsPath + wxString("\\") + name;
+        name = settingsPath + wxToolsPathSeparator + name;
 
         // Write json to file
         std::ofstream ofs(name.ToStdString());
