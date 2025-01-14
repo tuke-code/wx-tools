@@ -29,48 +29,21 @@ UDPClient::~UDPClient()
 
 void ReadData(UDPClientPrivate *d, UDPClient *udpClient)
 {
-#if 0
-    if (!socket || !udpClient) {
-        return;
-    }
-
-    char buffer[1024 * 1024] = {0};
-    size_t receivedBytes = 0;
-    while (1) {
-        try {
-            udp::endpoint senderEndpoint;
-            auto asioBuffer = asio::buffer(buffer, sizeof(buffer));
-            receivedBytes = socket->receive_from(asioBuffer, senderEndpoint);
-        } catch (asio::system_error &e) {
-            std::string errorString = e.what();
-            wxString msg = wxString::Format("Read data failed, error message: %s", errorString);
-            wxToolsInfo() << msg;
-            break;
-        }
-
-        if (receivedBytes > 0) {
-            std::string data(buffer, receivedBytes);
-            asio::const_buffer buffer(data.data(), data.size());
-            std::string ip = socket->remote_endpoint().address().to_string();
-            std::string port = std::to_string(socket->remote_endpoint().port());
-            udpClient->bytesReadSignal(buffer, ip + ":" + port);
-        }
-    }
-#endif
-    const int maxLength = 1024 * 1024;
-    char data[maxLength];
     asio::io_context ioContext;
+    udp::socket socket(ioContext, udp::endpoint(udp::v4(), 0));
+
+    udp::resolver resolver(ioContext);
+    udp::resolver::results_type endpoints = resolver.resolve(udp::v4(),
+                                                             d->serverAddress.ToStdString(),
+                                                             std::to_string(d->serverPort));
+
+    const int maxLangth = 1024 * 1024;
+    char request[maxLangth];
+    //socket.send_to(asio::buffer(request, request_length), *endpoints.begin());
+
+    char reply[maxLangth];
     udp::endpoint senderEndpoint;
-    asio::ip::udp::socket socket(ioContext, asio::ip::udp::endpoint(asio::ip::udp::v4(), 0));
-    socket.async_receive_from(asio::buffer(data, maxLength),
-                              senderEndpoint,
-                              [](std::error_code ec, std::size_t bytes_recvd) {
-                                  if (!ec && bytes_recvd > 0) {
-                                      //
-                                  } else {
-                                      //
-                                  }
-                              });
+    size_t bytesLength = socket.receive_from(asio::buffer(reply, maxLangth), senderEndpoint);
 }
 
 bool UDPClient::Open()
