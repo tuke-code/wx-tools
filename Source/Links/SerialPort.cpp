@@ -42,6 +42,7 @@ void ReadData(SerialPortPrivate *d, SerialPort *serialPort)
             receivedBytes = d->serialPort->read_some(asio::buffer(buffer, sizeof(buffer)));
         } catch (asio::system_error &e) {
             if (e.code().value() != 995) {
+                // 995: The I/O operation has been aborted because of either a thread exit or an application request.
                 wxToolsInfo() << wxString::Format("Read data failed, error message: %s", e.what());
             }
 

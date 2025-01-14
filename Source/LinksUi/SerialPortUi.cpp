@@ -29,12 +29,19 @@ SerialPortUi::SerialPortUi(wxWindow *parent)
     , m_parityComboBox(nullptr)
     , m_flowBitsComboBox(nullptr)
 {
-    InitPortNameComboBox(wxT("Port name"), 0, parent);
-    InitBaudRateComboBox(wxT("Baud rate"), 1, parent);
-    InitDataBitsComboBox(wxT("Data bits"), 2, parent);
-    InitStopBitsComboBox(wxT("Stop bits"), 3, parent);
-    InitParityComboBox(wxT("Parity"), 4, parent);
-    InitFlowBitsComboBox(wxT("Flow bits"), 5, parent);
+    m_portNameComboBox = new PortNameComboBox(parent);
+    m_baudRateComboBox = new BaudRateComboBox(parent);
+    m_dataBitsComboBox = new DataBitsComboBox(parent);
+    m_stopBitsComboBox = new StopBitsComboBox(parent);
+    m_flowBitsComboBox = new FlowBitsComboBox(parent);
+    m_parityComboBox = new ParityComboBox(parent);
+
+    SetupComboBox(m_portNameComboBox, wxT("Port name"), 0, parent);
+    SetupComboBox(m_baudRateComboBox, wxT("Baud rate"), 1, parent);
+    SetupComboBox(m_dataBitsComboBox, wxT("Data bits"), 2, parent);
+    SetupComboBox(m_stopBitsComboBox, wxT("Stop bits"), 3, parent);
+    SetupComboBox(m_flowBitsComboBox, wxT("Parity"), 4, parent);
+    SetupComboBox(m_parityComboBox, wxT("Flow bits"), 5, parent);
 
     AddGrowableCol(1);
 }
@@ -61,7 +68,7 @@ void SerialPortUi::Enable()
     m_parityComboBox->Enable();
 }
 
-nlohmann::json SerialPortUi::Save() const
+wxToolsJson SerialPortUi::Save() const
 {
     nlohmann::json json = nlohmann::json(nlohmann::json::object());
     SerialPortParameterKeys keys;
@@ -74,7 +81,7 @@ nlohmann::json SerialPortUi::Save() const
     return json;
 }
 
-void SerialPortUi::Load(const nlohmann::json &json)
+void SerialPortUi::Load(const wxToolsJson &json)
 {
     SerialPortParameterKeys keys;
     wxString portName = json[keys.portName].template get<std::string>();
@@ -107,56 +114,9 @@ void SerialPortUi::AboutToOpen(Link *link)
 #endif
 }
 
-void SerialPortUi::InitPortNameComboBox(const wxString &label, int row, wxWindow *parent)
+void SerialPortUi::SetupComboBox(wxComboBox *cb, const wxString &label, int row, wxWindow *parent)
 {
     auto text = new wxStaticText(parent, wxID_ANY, label);
     Add(text, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
-
-    m_portNameComboBox = new PortNameComboBox(parent);
-    Add(m_portNameComboBox, wxGBPosition(row, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
-}
-
-void SerialPortUi::InitBaudRateComboBox(const wxString &label, int row, wxWindow *parent)
-{
-    auto text = new wxStaticText(parent, wxID_ANY, label);
-    Add(text, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
-
-    m_baudRateComboBox = new BaudRateComboBox(parent);
-    Add(m_baudRateComboBox, wxGBPosition(row, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
-}
-
-void SerialPortUi::InitDataBitsComboBox(const wxString &label, int row, wxWindow *parent)
-{
-    auto text = new wxStaticText(parent, wxID_ANY, label);
-    Add(text, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
-
-    m_dataBitsComboBox = new DataBitsComboBox(parent);
-    Add(m_dataBitsComboBox, wxGBPosition(row, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
-}
-
-void SerialPortUi::InitStopBitsComboBox(const wxString &label, int row, wxWindow *parent)
-{
-    auto text = new wxStaticText(parent, wxID_ANY, label);
-    Add(text, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
-
-    m_stopBitsComboBox = new StopBitsComboBox(parent);
-    Add(m_stopBitsComboBox, wxGBPosition(row, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
-}
-
-void SerialPortUi::InitParityComboBox(const wxString &label, int row, wxWindow *parent)
-{
-    auto text = new wxStaticText(parent, wxID_ANY, label);
-    Add(text, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
-
-    m_parityComboBox = new ParityComboBox(parent);
-    Add(m_parityComboBox, wxGBPosition(row, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
-}
-
-void SerialPortUi::InitFlowBitsComboBox(const wxString &label, int row, wxWindow *parent)
-{
-    auto text = new wxStaticText(parent, wxID_ANY, label);
-    Add(text, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
-
-    m_flowBitsComboBox = new FlowBitsComboBox(parent);
-    Add(m_flowBitsComboBox, wxGBPosition(row, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
+    Add(cb, wxGBPosition(row, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
 }

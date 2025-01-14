@@ -24,20 +24,15 @@ public:
 
     void Disable() override;
     void Enable() override;
-    nlohmann::json Save() const override;
-    void Load(const nlohmann::json &json) override;
+    wxToolsJson Save() const override;
+    void Load(const wxToolsJson &json) override;
 
 protected:
     Link *CreateLink() override;
     void AboutToOpen(Link *link) override;
 
 private:
-    void InitPortNameComboBox(const wxString &label, int row, wxWindow *parent);
-    void InitBaudRateComboBox(const wxString &label, int row, wxWindow *parent);
-    void InitDataBitsComboBox(const wxString &label, int row, wxWindow *parent);
-    void InitStopBitsComboBox(const wxString &label, int row, wxWindow *parent);
-    void InitParityComboBox(const wxString &label, int row, wxWindow *parent);
-    void InitFlowBitsComboBox(const wxString &label, int row, wxWindow *parent);
+    void SetupComboBox(wxComboBox *cb, const wxString &label, int row, wxWindow *parent);
 
 private:
     PortNameComboBox *m_portNameComboBox;
