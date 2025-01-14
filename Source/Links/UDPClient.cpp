@@ -12,12 +12,17 @@
 using asio::ip::udp;
 
 UDPClient::UDPClient()
-    : d(new UDPClientPrivate)
-    , SocketClient(d)
+    : SocketClient(d = new UDPClientPrivate)
 {}
 
 UDPClient::~UDPClient()
 {
+    if (d->socket) {
+        d->socket->close();
+        delete d->socket;
+        d->socket = nullptr;
+    }
+
     delete d;
     d = nullptr;
 }
@@ -49,8 +54,6 @@ void ReadData(asio::ip::udp::socket *socket, UDPClient *udpClient)
             udpClient->emitBytesReadSignal(buffer, ip + ":" + port);
         }
     }
-
-    delete socket;
 }
 
 bool UDPClient::Open()
@@ -74,8 +77,6 @@ void UDPClient::Close()
 {
     if (d->socket) {
         d->socket->close();
-        delete d->socket;
-        d->socket = nullptr;
     }
 }
 

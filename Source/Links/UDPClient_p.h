@@ -16,6 +16,6 @@ class UDPClientPrivate : public SocketClientPrivate
 {
 public:
     asio::io_context ioContext;
-    asio::ip::udp::socket *socket;
+    asio::ip::udp::socket *socket{nullptr};
     asio::ip::udp::endpoint endpoint;
 };
