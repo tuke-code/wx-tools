@@ -16,6 +16,12 @@ SerialPort::SerialPort()
 
 SerialPort::~SerialPort()
 {
+    if (d->serialPort) {
+        d->serialPort->close();
+        delete d->serialPort;
+        d->serialPort = nullptr;
+    }
+
     delete d;
 }
 
@@ -35,9 +41,10 @@ void ReadData(SerialPortPrivate *d, SerialPort *serialPort)
         try {
             receivedBytes = d->serialPort->read_some(asio::buffer(buffer, sizeof(buffer)));
         } catch (asio::system_error &e) {
-            std::string errorString = e.what();
-            wxString msg = wxString::Format("Read data failed, error message: %s", errorString);
-            wxToolsInfo() << msg;
+            if (e.code().value() != 995) {
+                wxToolsInfo() << wxString::Format("Read data failed, error message: %s", e.what());
+            }
+
             break;
         }
 
@@ -48,8 +55,6 @@ void ReadData(SerialPortPrivate *d, SerialPort *serialPort)
             serialPort->emitBytesReadSignal(buffer, d->portName);
         }
     }
-
-    //delete d->serialPort;
 }
 
 bool SerialPort::Open()
