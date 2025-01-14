@@ -50,11 +50,8 @@ bool UDPClient::Open()
 {
     Close();
 
-    d->socket = new udp::socket(d->ioContext, udp::endpoint(udp::v4(), 0));
-    d->ioContext.run();
-
-    //std::thread t(ReadData, d->socket, this);
-    //t.detach();
+    std::thread t(ReadData, d, this);
+    t.detach();
 
     return true;
 }
