@@ -27,8 +27,9 @@ UDPClient::~UDPClient()
     d = nullptr;
 }
 
-void ReadData(asio::ip::udp::socket *socket, UDPClient *udpClient)
+void ReadData(UDPClientPrivate *d, UDPClient *udpClient)
 {
+#if 0
     if (!socket || !udpClient) {
         return;
     }
@@ -55,6 +56,21 @@ void ReadData(asio::ip::udp::socket *socket, UDPClient *udpClient)
             udpClient->bytesReadSignal(buffer, ip + ":" + port);
         }
     }
+#endif
+    const int maxLength = 1024 * 1024;
+    char data[maxLength];
+    asio::io_context ioContext;
+    udp::endpoint senderEndpoint;
+    asio::ip::udp::socket socket(ioContext, asio::ip::udp::endpoint(asio::ip::udp::v4(), 0));
+    socket.async_receive_from(asio::buffer(data, maxLength),
+                              senderEndpoint,
+                              [](std::error_code ec, std::size_t bytes_recvd) {
+                                  if (!ec && bytes_recvd > 0) {
+                                      //
+                                  } else {
+                                      //
+                                  }
+                              });
 }
 
 bool UDPClient::Open()
@@ -64,8 +80,8 @@ bool UDPClient::Open()
     d->socket = new udp::socket(d->ioContext, udp::endpoint(udp::v4(), 0));
     d->ioContext.run();
 
-    std::thread t(ReadData, d->socket, this);
-    t.detach();
+    //std::thread t(ReadData, d->socket, this);
+    //t.detach();
 
     return true;
 }
