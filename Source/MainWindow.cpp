@@ -12,6 +12,7 @@
 
 #include <wx/filename.h>
 #include <wx/notebook.h>
+#include <wx/stdpaths.h>
 
 #include "Page/Page.h"
 
@@ -44,31 +45,60 @@ MainWindow::MainWindow()
     Centre();
 
     Bind(wxEVT_CLOSE_WINDOW, &MainWindow::OnClose, this, GetId());
-    m_updateTimeTimer.Bind(wxEVT_TIMER, &MainWindow::OnTimer, this);
+    m_updateTimeTimer.Bind(wxEVT_TIMER, [=](wxTimerEvent&) {
+        m_statusBar->SetStatusText(wxDateTime::Now().FormatTime(), 1);
+    });
 }
 
-void MainWindow::OnExit(wxCommandEvent& event)
+void MainWindow::OnOpen(wxCommandEvent&)
+{
+    wxFileDialog openFileDialog(this,
+                                wxT("Open parameters file"),
+                                wxStandardPaths::Get().GetUserDir(wxStandardPaths::Dir_Desktop),
+                                "wxTools.json",
+                                "JSON files (*.json)|*.json",
+                                wxFD_OPEN | wxFD_FILE_MUST_EXIST);
+    openFileDialog.ShowModal();
+    wxString fileName = openFileDialog.GetPath();
+    LoadParameters(fileName);
+}
+
+void MainWindow::OnSave(wxCommandEvent&)
+{
+    SaveParameters();
+}
+
+void MainWindow::OnSaveAs(wxCommandEvent&)
+{
+    wxFileDialog saveFileDialog(this,
+                                wxT("Save parameters file"),
+                                wxStandardPaths::Get().GetUserDir(wxStandardPaths::Dir_Desktop),
+                                "wxTools.json",
+                                "JSON files (*.json)|*.json",
+                                wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
+    saveFileDialog.ShowModal();
+    wxString fileName = saveFileDialog.GetPath();
+    wxToolsInfo() << fileName;
+    SaveParameters(fileName);
+}
+
+void MainWindow::OnExit(wxCommandEvent&)
 {
     wxLogMessage("The application will be closed!");
     Close(true);
 }
 
-void MainWindow::OnAbout(wxCommandEvent& event)
+void MainWindow::OnAbout(wxCommandEvent&)
 {
     wxMessageBox("This is a wxWidgets Hello World example",
                  "About Hello World",
                  wxOK | wxICON_INFORMATION);
 }
 
-void MainWindow::OnClose(wxCloseEvent& event)
+void MainWindow::OnClose(wxCloseEvent&)
 {
     SaveParameters();
     Destroy();
-}
-
-void MainWindow::OnTimer(wxTimerEvent& event)
-{
-    m_statusBar->SetStatusText(wxDateTime::Now().FormatTime(), 1);
 }
 
 void MainWindow::Init()
@@ -89,14 +119,17 @@ void MainWindow::InitMenu()
 void MainWindow::InitMenuFile(wxMenuBar* menuBar)
 {
     wxMenu* menuFile = new wxMenu;
-    menuFile->Append(ID_Hello,
-                     "&Hello...\tCtrl-H",
-                     "Help string shown in status bar for this menu item");
+    menuBar->Append(menuFile, wxT("&File"));
+
+    menuFile->Append(wxID_OPEN);
+    menuFile->Append(wxID_SAVE);
+    menuFile->Append(wxID_SAVEAS);
     menuFile->AppendSeparator();
     menuFile->Append(wxID_EXIT);
-    menuBar->Append(menuFile, _("&File"));
 
-    Bind(wxEVT_MENU, &MainWindow::OnHello, this, ID_Hello);
+    Bind(wxEVT_MENU, &MainWindow::OnOpen, this, wxID_OPEN);
+    Bind(wxEVT_MENU, &MainWindow::OnSave, this, wxID_SAVE);
+    Bind(wxEVT_MENU, &MainWindow::OnSaveAs, this, wxID_SAVEAS);
     Bind(wxEVT_MENU, &MainWindow::OnExit, this, wxID_EXIT);
 }
 
@@ -119,11 +152,6 @@ void MainWindow::InitStatusBar()
     m_updateTimeTimer.Start(1000);
 }
 
-void MainWindow::OnHello(wxCommandEvent& event)
-{
-    wxLogMessage("Hello world from wxWidgets!");
-}
-
 std::string GetPageParameterFileName(LinkType type)
 {
     wxString name = GetCommunicationName(type);
@@ -131,10 +159,12 @@ std::string GetPageParameterFileName(LinkType type)
     return name.ToStdString() + ".json";
 }
 
-void MainWindow::LoadParameters()
+void MainWindow::LoadParameters(wxString fileName)
 {
-    wxString settingsPath = wxToolsGetSettingsPath();
-    wxString fileName = wxToolsGetSettingsFileName();
+    if (fileName.IsEmpty()) {
+        fileName = wxToolsGetSettingsFileName();
+    }
+
     if (!wxFileName::Exists(fileName)) {
         return;
     }
@@ -153,7 +183,7 @@ void MainWindow::LoadParameters()
     }
 }
 
-void MainWindow::SaveParameters()
+void MainWindow::SaveParameters(wxString fileName)
 {
     wxToolsJson wxTools;
     for (auto it = m_pageMap.begin(); it != m_pageMap.end(); ++it) {
@@ -164,7 +194,10 @@ void MainWindow::SaveParameters()
     }
 
     // Write json to file
-    wxString fileName = wxToolsGetSettingsFileName();
+    if (fileName.IsEmpty()) {
+        fileName = wxToolsGetSettingsFileName();
+    }
+
     std::ofstream ofs(fileName.ToStdString());
     ofs << wxTools.dump(4);
     ofs.close();

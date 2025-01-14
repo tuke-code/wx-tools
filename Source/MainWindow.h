@@ -21,7 +21,7 @@ public:
     MainWindow();
 
 public:
-    enum { ID_Hello = 1 };
+    enum { ID_Import = 1, ID_Outport };
 
 private:
     void Init();
@@ -30,14 +30,16 @@ private:
     void InitMenuHelp(wxMenuBar* menuBar);
     void InitStatusBar();
 
-    void OnHello(wxCommandEvent& event);
-    void OnExit(wxCommandEvent& event);
-    void OnAbout(wxCommandEvent& event);
-    void OnClose(wxCloseEvent& event);
-    void OnTimer(wxTimerEvent& event);
+    void OnOpen(wxCommandEvent&);
+    void OnSave(wxCommandEvent&);
+    void OnSaveAs(wxCommandEvent&);
+    void OnExit(wxCommandEvent&);
 
-    void LoadParameters();
-    void SaveParameters();
+    void OnAbout(wxCommandEvent&);
+    void OnClose(wxCloseEvent&);
+
+    void LoadParameters(wxString fileName = wxString());
+    void SaveParameters(wxString fileName = wxString());
 
 private:
     std::map<LinkType, Page*> m_pageMap;
