@@ -55,15 +55,20 @@ void LinkUi::Disable() {}
 
 void LinkUi::Enable() {}
 
-nlohmann::json LinkUi::Save() const
+wxToolsJson LinkUi::Save() const
 {
-    nlohmann::json json;
+    wxToolsJson json;
     return json;
 }
 
-void LinkUi::Load(const nlohmann::json &json)
+void LinkUi::Load(const wxToolsJson &json)
 {
     wxUnusedVar(json);
+}
+
+void LinkUi::Refresh()
+{
+    // Nothing to do yet...
 }
 
 Link *LinkUi::CreateLink()

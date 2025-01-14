@@ -27,8 +27,9 @@ public:
 
     virtual void Disable();
     virtual void Enable();
-    virtual nlohmann::json Save() const;
-    virtual void Load(const nlohmann::json &json);
+    virtual wxToolsJson Save() const;
+    virtual void Load(const wxToolsJson &json);
+    virtual void Refresh();
 
 protected:
     virtual Link *CreateLink();
