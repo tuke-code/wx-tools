@@ -19,9 +19,7 @@ class MainWindow : public wxFrame
 {
 public:
     MainWindow();
-
-public:
-    enum { ID_Import = 1, ID_Outport };
+    ~MainWindow();
 
 private:
     void Init();
@@ -36,7 +34,6 @@ private:
     void OnExit(wxCommandEvent&);
 
     void OnAbout(wxCommandEvent&);
-    void OnClose(wxCloseEvent&);
 
     void LoadParameters(wxString fileName = wxString());
     void SaveParameters(wxString fileName = wxString());

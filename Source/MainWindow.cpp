@@ -35,6 +35,10 @@ MainWindow::MainWindow()
         }
     }
 
+    m_updateTimeTimer.Bind(wxEVT_TIMER, [=](wxTimerEvent&) {
+        m_statusBar->SetStatusText(wxDateTime::Now().FormatTime(), 1);
+    });
+
     LoadParameters();
 
     auto const sizer = new wxBoxSizer(wxVERTICAL);
@@ -43,11 +47,11 @@ MainWindow::MainWindow()
 
     SetSize(wxSize(1024, 600));
     Centre();
+}
 
-    Bind(wxEVT_CLOSE_WINDOW, &MainWindow::OnClose, this, GetId());
-    m_updateTimeTimer.Bind(wxEVT_TIMER, [=](wxTimerEvent&) {
-        m_statusBar->SetStatusText(wxDateTime::Now().FormatTime(), 1);
-    });
+MainWindow::~MainWindow()
+{
+    SaveParameters();
 }
 
 void MainWindow::OnOpen(wxCommandEvent&)
@@ -93,12 +97,6 @@ void MainWindow::OnAbout(wxCommandEvent&)
     wxMessageBox("This is a wxWidgets Hello World example",
                  "About Hello World",
                  wxOK | wxICON_INFORMATION);
-}
-
-void MainWindow::OnClose(wxCloseEvent&)
-{
-    SaveParameters();
-    Destroy();
 }
 
 void MainWindow::Init()
