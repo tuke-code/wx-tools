@@ -62,20 +62,7 @@ bool UDPClient::Open()
     Close();
 
     d->socket = new udp::socket(d->ioContext, udp::endpoint(udp::v4(), 0));
-    udp::resolver resolver(d->ioContext);
-    std::string ip = std::string(d->serverAddress.mb_str());
-    std::string port = std::to_string(d->serverPort);
-    auto endpoints = resolver.resolve(udp::v4(), ip, port);
-    d->endpoint = *endpoints.begin();
-    try {
-        d->socket->connect(d->endpoint);
-    } catch (asio::system_error &e) {
-        d->ioContext.stop();
-        std::string errorString = e.what();
-        wxString msg = wxString::Format("Connect to server failed, error message: %s", errorString);
-        wxToolsInfo() << msg;
-        return false;
-    }
+    d->ioContext.run();
 
     std::thread t(ReadData, d->socket, this);
     t.detach();
