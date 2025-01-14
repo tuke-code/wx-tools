@@ -67,6 +67,15 @@ bool UDPClient::Open()
     std::string port = std::to_string(d->serverPort);
     auto endpoints = resolver.resolve(udp::v4(), ip, port);
     d->endpoint = *endpoints.begin();
+    try {
+        d->socket->connect(d->endpoint);
+    } catch (asio::system_error &e) {
+        d->ioContext.stop();
+        std::string errorString = e.what();
+        wxString msg = wxString::Format("Connect to server failed, error message: %s", errorString);
+        wxToolsInfo() << msg;
+        return false;
+    }
 
     std::thread t(ReadData, d->socket, this);
     t.detach();

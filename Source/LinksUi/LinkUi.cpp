@@ -79,6 +79,10 @@ Link *LinkUi::CreateLink()
 void LinkUi::AboutToOpen(Link *link)
 {
     link->Load(Save());
+
+    if (link) {
+        wxToolsInfo() << link->Save().dump();
+    }
 }
 
 void LinkUi::AboutToClose(Link *link)
