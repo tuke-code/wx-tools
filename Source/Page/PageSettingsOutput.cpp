@@ -61,7 +61,43 @@ PageSettingsOutput::PageSettingsOutput(wxWindow *parent)
     Add(sizer, 1, wxEXPAND | wxALL, 0);
     sizer->AddGrowableCol(1);
 
-    clearButton->Bind(wxEVT_BUTTON, [=](wxCommandEvent &event) { m_clearSignal(); });
+    clearButton->Bind(wxEVT_BUTTON, [=](wxCommandEvent &event) { clearSignal(); });
+}
+
+void PageSettingsOutput::Load(const wxToolsJson &parameters)
+{
+    PageSettingsOutputParameterKeys keys;
+    int format = parameters[keys.textFormat].get<int>();
+    bool showDate = parameters[keys.showDate].get<bool>();
+    bool showTime = parameters[keys.showTime].get<bool>();
+    bool showMs = parameters[keys.showMs].get<bool>();
+    bool showRx = parameters[keys.showRx].get<bool>();
+    bool showTx = parameters[keys.showTx].get<bool>();
+    bool showFlag = parameters[keys.showFlag].get<bool>();
+
+    wxToolsSetComboBoxSectionByIntClientData(m_textFormatComboBox, format);
+    m_showDate->SetValue(showDate);
+    m_showTime->SetValue(showTime);
+    m_showMs->SetValue(showMs);
+    m_showRx->SetValue(showRx);
+    m_showTx->SetValue(showTx);
+    m_showFlag->SetValue(showFlag);
+}
+
+wxToolsJson PageSettingsOutput::Save() const
+{
+    wxToolsJson parameters;
+    PageSettingsOutputParameterKeys keys;
+
+    parameters[keys.textFormat] = *reinterpret_cast<int *>(m_textFormatComboBox->GetClientData());
+    parameters[keys.showDate] = m_showDate->GetValue();
+    parameters[keys.showTime] = m_showTime->GetValue();
+    parameters[keys.showMs] = m_showMs->GetValue();
+    parameters[keys.showRx] = m_showRx->GetValue();
+    parameters[keys.showTx] = m_showTx->GetValue();
+    parameters[keys.showFlag] = m_showFlag->GetValue();
+
+    return parameters;
 }
 
 TextFormat PageSettingsOutput::GetTextFormat() const
@@ -97,9 +133,4 @@ bool PageSettingsOutput::GetShowTx() const
 bool PageSettingsOutput::GetShowFlag() const
 {
     return m_showFlag->GetValue();
-}
-
-wxToolsSignal<> &PageSettingsOutput::GetClearSignal()
-{
-    return m_clearSignal;
 }

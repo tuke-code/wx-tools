@@ -49,7 +49,7 @@ void ReadData(SerialPortPrivate *d, SerialPort *serialPort)
         }
     }
 
-    delete d->serialPort;
+    //delete d->serialPort;
 }
 
 bool SerialPort::Open()

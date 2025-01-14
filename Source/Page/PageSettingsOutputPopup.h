@@ -8,12 +8,26 @@
  **************************************************************************************************/
 #pragma once
 
+#include <wx/textctrl.h>
+
+#include "Common/wxTools.h"
 #include "Utilities/BaseSettingsPopup.h"
 
-#include <wx/textctrl.h>
+struct PageSettingsOutputPopupParameterKeys
+{
+    std::string fillter = {"fillter"};
+    std::string highlightLabels = {"highlightLabels"};
+};
 
 class PageSettingsOutputPopup : public BaseSettingsPopup
 {
 public:
     PageSettingsOutputPopup(wxButton *controlButton);
+
+    void Load(const wxToolsJson &parameters);
+    wxToolsJson Save() const;
+
+private:
+    wxTextCtrl *m_filterTextCtrl;
+    wxTextCtrl *m_highlightLabelsTextCtrl;
 };

@@ -20,11 +20,11 @@
 
 PageSettingsLink::PageSettingsLink(LinkType type, wxWindow *parent)
     : wxStaticBoxSizer(wxVERTICAL, parent, wxT("Link Settings"))
-    , m_controller(nullptr)
+    , m_linkUi(nullptr)
     , m_popup(nullptr)
 {
-    m_controller = CreateLinkController(type, GetStaticBox());
-    Add(m_controller, 0, wxEXPAND, 0);
+    m_linkUi = CreateLinkUi(type, GetStaticBox());
+    Add(m_linkUi, 0, wxEXPAND, 0);
 
     AddSpacer(4);
 
@@ -32,7 +32,7 @@ PageSettingsLink::PageSettingsLink(LinkType type, wxWindow *parent)
     m_popup = new PageSettingsLinkPopup(settingsButton);
 
     m_openButton = new wxButton(GetStaticBox(), wxID_ANY, wxT("Open"));
-    m_openButton->Bind(wxEVT_BUTTON, &PageSettingsLink::OnOpen, this);
+    m_openButton->Bind(wxEVT_BUTTON, [=](wxCommandEvent &) { invokeOpenSignal(); });
 
     auto buttonSizer = new wxBoxSizer(wxHORIZONTAL);
     buttonSizer->Add(settingsButton, 1, wxEXPAND | wxALL, 0);
@@ -40,14 +40,17 @@ PageSettingsLink::PageSettingsLink(LinkType type, wxWindow *parent)
     Add(buttonSizer, 0, wxEXPAND, 0);
 }
 
-LinkUi *PageSettingsLink::GetController() const
+void PageSettingsLink::Load(const wxToolsJson &parameters) {}
+
+wxToolsJson PageSettingsLink::Save() const
 {
-    return m_controller;
+    wxToolsJson json;
+    return json;
 }
 
-wxToolsSignal<> &PageSettingsLink::GetInvokeOpenSignal()
+LinkUi *PageSettingsLink::GetLinkUi() const
 {
-    return m_invokeOpenSignal;
+    return m_linkUi;
 }
 
 void PageSettingsLink::SetOpenButtonLabel(const wxString &label)
@@ -55,20 +58,7 @@ void PageSettingsLink::SetOpenButtonLabel(const wxString &label)
     m_openButton->SetLabel(label);
 }
 
-void PageSettingsLink::OnOpen(wxCommandEvent &event)
-{
-#if 0
-    static wxPopupTransientWindow *popup = new wxPopupTransientWindow(m_openButton, wxBORDER_SIMPLE);
-    popup->SetBackgroundColour(*wxWHITE);
-    popup->SetPosition(m_openButton->ClientToScreen(wxPoint(m_openButton->GetSize().GetWidth(), 0)));
-    popup->Show();
-#endif
-
-    wxUnusedVar(event);
-    m_invokeOpenSignal();
-}
-
-LinkUi *PageSettingsLink::CreateLinkController(LinkType type, wxWindow *parent)
+LinkUi *PageSettingsLink::CreateLinkUi(LinkType type, wxWindow *parent)
 {
     if (type == LinkType::SerialPort) {
         return new SerialPortUi(parent);

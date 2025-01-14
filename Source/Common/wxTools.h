@@ -106,3 +106,7 @@ wxString GetAdditionName(AdditionType type);
 enum class EscapeType { R, RN, N, NR, R_N, None = wxToolsNone };
 std::vector<EscapeType> GetSuportedEscapeTypes();
 wxString GetEscapeName(EscapeType type);
+
+//--------------------------------------------------------------------------------------------------
+// wxWidgets
+void wxToolsSetComboBoxSectionByIntClientData(wxComboBox *comboBox, int clientDataValue);

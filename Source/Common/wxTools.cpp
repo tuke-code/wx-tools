@@ -440,3 +440,22 @@ wxString GetEscapeName(EscapeType type)
         return typeMap[type];
     }
 }
+
+void wxToolsSetComboBoxSectionByIntClientData(wxComboBox *comboBox, int clientDataValue)
+{
+    if (!comboBox) {
+        return;
+    }
+
+    for (int i = 0; comboBox->GetCount(); i++) {
+        void *data = comboBox->GetClientData(i);
+        if (data == nullptr) {
+            continue;
+        }
+
+        if ((*reinterpret_cast<int *>(data)) == clientDataValue) {
+            comboBox->SetSelection(i);
+            break;
+        }
+    }
+}

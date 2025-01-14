@@ -45,18 +45,42 @@ PageSettingsInput::PageSettingsInput(wxWindow* parent)
     Add(buttonSizer, 0, wxEXPAND | wxALL, 0);
 }
 
-void PageSettingsInput::SetCycleIntervalComboBoxSelection(int selection)
+void PageSettingsInput::Load(const wxToolsJson& parameters)
 {
-    if (selection < 0 || selection >= m_cycleIntervalComboBox->GetCount()) {
-        return;
-    }
+    PageSettingsInputParameterKeys keys;
+    int cycleInterval = parameters[keys.cycleInterval].get<int>();
+    int textFormat = parameters[keys.textFormat].get<int>();
+    wxToolsJson popup = parameters[keys.popup].get<wxToolsJson>();
 
-    m_cycleIntervalComboBox->SetSelection(selection);
+    wxToolsSetComboBoxSectionByIntClientData(m_cycleIntervalComboBox, cycleInterval);
+    wxToolsSetComboBoxSectionByIntClientData(m_formatComboBox, textFormat);
+    m_popup->Load(popup);
 }
 
-TextFormat PageSettingsInput::GetTextFormat() const
+wxToolsJson PageSettingsInput::Save() const
 {
-    return m_formatComboBox->GetSelectedFormat();
+    PageSettingsInputParameterKeys keys;
+    wxToolsJson parameters;
+
+    int cycleInterval = *reinterpret_cast<int*>(m_cycleIntervalComboBox->GetClientData());
+    int textFormat = *reinterpret_cast<int*>(m_formatComboBox->GetClientData());
+
+    parameters[keys.cycleInterval] = cycleInterval;
+    parameters[keys.textFormat] = textFormat;
+    parameters[keys.popup] = m_popup->Save();
+    return parameters;
+}
+
+PageSettingsInputPopup* PageSettingsInput::GetPopup() const
+{
+    return m_popup;
+}
+
+void PageSettingsInput::SetCycleIntervalComboBoxSelection(int selection)
+{
+    if (selection >= 0 && selection < m_cycleIntervalComboBox->GetCount()) {
+        m_cycleIntervalComboBox->SetSelection(selection);
+    }
 }
 
 void PageSettingsInput::OnSendButtonClicked(wxCommandEvent& event)

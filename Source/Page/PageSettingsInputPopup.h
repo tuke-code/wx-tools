@@ -13,13 +13,13 @@
 
 struct PageSettingsInputPopupParameterKeys
 {
-    std::string prefixIndex = {"prefix"};
-    std::string suffixIndex = {"suffix"};
+    std::string prefix = {"prefix"};
+    std::string suffix = {"suffix"};
     std::string escIndex = {"esc"};
 
     std::string startIndex = {"startIndex"};
     std::string endIndex = {"endIndex"};
-    std::string algorithmIndex = {"algorithm"};
+    std::string algorithm = {"algorithm"};
     std::string addCr = {"addCrc"};
     std::string bigEndian = {"bigEndian"};
 };

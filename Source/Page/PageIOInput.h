@@ -18,6 +18,9 @@ class PageIOInput : public wxStaticBoxSizer
 public:
     PageIOInput(wxWindow *parent);
 
+    void Load(const wxToolsJson &parameters);
+    wxToolsJson Save() const;
+
     wxString GetInputText() const;
     void SetTextFormat(TextFormat format);
     wxToolsConstBuffer GetInputBuffer() const;

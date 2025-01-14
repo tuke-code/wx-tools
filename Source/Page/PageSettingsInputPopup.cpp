@@ -84,21 +84,21 @@ PageSettingsInputPopup::PageSettingsInputPopup(wxButton *controlButton)
 void PageSettingsInputPopup::Load(const wxToolsJson &json)
 {
     PageSettingsInputPopupParameterKeys keys;
-    int prefixIndex = json[keys.prefixIndex].get<int>();
-    int suffixIndex = json[keys.suffixIndex].get<int>();
+    int prefix = json[keys.prefix].get<int>();
+    int suffix = json[keys.suffix].get<int>();
     int escIndex = json[keys.escIndex].get<int>();
     int startIndex = json[keys.startIndex].get<int>();
     int endIndex = json[keys.endIndex].get<int>();
-    int algorithmIndex = json[keys.algorithmIndex].get<int>();
+    int algorithm = json[keys.algorithm].get<int>();
     bool addCrc = json[keys.addCr].get<bool>();
     bool bigEndian = json[keys.bigEndian].get<bool>();
 
-    m_prefixComboBox->SetSelection(prefixIndex < 0 ? 0 : prefixIndex);
-    m_suffixComboBox->SetSelection(suffixIndex < 0 ? 0 : suffixIndex);
-    m_escComboBox->SetSelection(escIndex < 0 ? 0 : escIndex);
+    wxToolsSetComboBoxSectionByIntClientData(m_prefixComboBox, prefix);
+    wxToolsSetComboBoxSectionByIntClientData(m_suffixComboBox, suffix);
+    wxToolsSetComboBoxSectionByIntClientData(m_escComboBox, escIndex);
     m_startIndexSpinCtrl->SetValue(startIndex);
     m_endIndexSpinCtrl->SetValue(endIndex);
-    m_algorithmComboBox->SetSelection(algorithmIndex < 0 ? 0 : algorithmIndex);
+    wxToolsSetComboBoxSectionByIntClientData(m_algorithmComboBox, algorithm);
     m_addCrcCheckBox->SetValue(addCrc);
     m_bigEndianCheckBox->SetValue(bigEndian);
 }
@@ -108,12 +108,12 @@ wxToolsJson PageSettingsInputPopup::Save() const
     PageSettingsInputPopupParameterKeys keys;
     wxToolsJson json;
 
-    json[keys.prefixIndex] = m_prefixComboBox->GetSelection();
-    json[keys.suffixIndex] = m_suffixComboBox->GetSelection();
-    json[keys.escIndex] = m_escComboBox->GetSelection();
+    json[keys.prefix] = *reinterpret_cast<int *>(m_prefixComboBox->GetClientData());
+    json[keys.suffix] = *reinterpret_cast<int *>(m_suffixComboBox->GetClientData());
+    json[keys.escIndex] = *reinterpret_cast<int *>(m_escComboBox->GetClientData());
     json[keys.startIndex] = m_startIndexSpinCtrl->GetValue();
     json[keys.endIndex] = m_endIndexSpinCtrl->GetValue();
-    json[keys.algorithmIndex] = m_algorithmComboBox->GetSelection();
+    json[keys.algorithm] = *reinterpret_cast<int *>(m_algorithmComboBox->GetClientData());
     json[keys.addCr] = m_addCrcCheckBox->GetValue();
     json[keys.bigEndian] = m_bigEndianCheckBox->GetValue();
 

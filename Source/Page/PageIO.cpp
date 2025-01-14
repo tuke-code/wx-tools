@@ -11,25 +11,27 @@
 #include "PageIOInput.h"
 #include "PageIOOutput.h"
 
-PageIO::PageIO(wxWindow* parent)
+PageIO::PageIO(wxWindow *parent)
     : wxPanel(parent, wxID_ANY)
+    , m_input(nullptr)
+    , m_output(nullptr)
 {
     auto* sizer = new wxBoxSizer(wxVERTICAL);
     SetSizerAndFit(sizer);
 
-    m_outputBox = new PageIOOutput(this);
-    sizer->Add(m_outputBox, 1, wxEXPAND | wxALL, 0);
+    m_output = new PageIOOutput(this);
+    sizer->Add(m_output, 1, wxEXPAND | wxALL, 0);
 
-    m_inputBox = new PageIOInput(this);
-    sizer->Add(m_inputBox, 0, wxEXPAND | wxALL, 0);
+    m_input = new PageIOInput(this);
+    sizer->Add(m_input, 0, wxEXPAND | wxALL, 0);
 }
 
-PageIOInput *PageIO::GetInputBox() const
+PageIOInput *PageIO::GetInput() const
 {
-    return m_inputBox;
+    return m_input;
 }
 
-PageIOOutput *PageIO::GetOutputBox() const
+PageIOOutput *PageIO::GetOutput() const
 {
-    return m_outputBox;
+    return m_output;
 }

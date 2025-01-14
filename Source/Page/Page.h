@@ -15,11 +15,14 @@
 
 #include "Common/wxTools.h"
 
+struct PageParameterKeys
+{
+    std::string io = {"io"};
+    std::string settings = {"settings"};
+};
+
 class PageIO;
 class PageSettings;
-class PageSettingsInput;
-class PageSettingsLink;
-class PageSettingsOutput;
 class Page : public wxPanel
 {
 public:
@@ -29,21 +32,11 @@ public:
     wxToolsJson Save() const;
 
 private:
-    PageSettingsInput *m_inputSettings;
     PageSettings *m_pageSettings;
-    PageSettingsLink *m_linkControlBox;
-    PageIO *m_ioSettings;
+    PageIO *m_pageIO;
     wxTimer m_sendTimer;
-    PageSettingsOutput *m_outputControlBox;
 
 private:
-    struct ParameterKeys
-    {
-        const std::string linkControlBox{"LinkControlBox"};
-        const std::string outputControlBox{"OutputController"};
-        const std::string inputControlBox{"InputController"};
-    } m_parameterKeys;
-
 private:
     void OnInvokeOpen();
     void OnInvokeWrite(TextFormat format);

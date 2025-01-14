@@ -17,6 +17,14 @@ PageIOInput::PageIOInput(wxWindow *parent)
     Add(m_lineEdit, 1, wxEXPAND | wxALL, 0);
 }
 
+void PageIOInput::Load(const wxToolsJson &parameters) {}
+
+wxToolsJson PageIOInput::Save() const
+{
+    wxToolsJson parameters{wxToolsJson::object()};
+    return parameters;
+}
+
 wxString PageIOInput::GetInputText() const
 {
     return m_lineEdit->GetValue();

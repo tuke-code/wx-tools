@@ -25,9 +25,7 @@
 Page::Page(LinkType type, wxWindow *parent)
     : wxPanel(parent, wxID_ANY)
     , m_pageSettings(nullptr)
-    , m_ioSettings(nullptr)
-    , m_inputSettings(nullptr)
-    , m_linkControlBox(nullptr)
+    , m_pageIO(nullptr)
 {
     auto sizer = new wxBoxSizer(wxHORIZONTAL);
     SetSizerAndFit(sizer);
@@ -35,79 +33,81 @@ Page::Page(LinkType type, wxWindow *parent)
     m_pageSettings = new PageSettings(type, this);
     sizer->Add(m_pageSettings, 0, wxEXPAND | wxALL, 4);
 
-    m_ioSettings = new PageIO(this);
-    sizer->Add(m_ioSettings, 1, wxEXPAND | wxALL, 4);
+    m_pageIO = new PageIO(this);
+    sizer->Add(m_pageIO, 1, wxEXPAND | wxALL, 4);
     Layout();
 
-    m_inputSettings = m_pageSettings->GetInputControlBox();
-    m_inputSettings->invokeWriteSignal.connect(&Page::OnInvokeWrite, this);
-    m_inputSettings->invokeStartTimerSignal.connect(&Page::OnInvokeStartTimer, this);
-    m_inputSettings->textFormatChangedSignal.connect(&Page::OnTextFormatChanged, this);
+    PageSettingsInput *inputSettings = m_pageSettings->GetInputSettings();
+    inputSettings->invokeWriteSignal.connect(&Page::OnInvokeWrite, this);
+    inputSettings->invokeStartTimerSignal.connect(&Page::OnInvokeStartTimer, this);
+    inputSettings->textFormatChangedSignal.connect(&Page::OnTextFormatChanged, this);
 
-    m_linkControlBox = m_pageSettings->GetCommunicationControlBox();
-    m_linkControlBox->GetInvokeOpenSignal().connect(&Page::OnInvokeOpen, this);
+    PageSettingsLink *linkSettings = m_pageSettings->GetLinkSettings();
+    linkSettings->invokeOpenSignal.connect(&Page::OnInvokeOpen, this);
 
-    m_outputControlBox = m_pageSettings->GetOutputControlBox();
-    m_outputControlBox->GetClearSignal().connect(&Page::OnClear, this);
+    PageSettingsOutput *outputSettings = m_pageSettings->GetOutputSettings();
+    outputSettings->clearSignal.connect(&Page::OnClear, this);
 
     m_sendTimer.Bind(wxEVT_TIMER, [this](wxTimerEvent &event) { OnSendTimerTimeout(); });
 }
 
 void Page::Load(const wxToolsJson &json)
 {
-    wxToolsJson controllerJson = json[m_parameterKeys.linkControlBox].template get<wxToolsJson>();
-    m_linkControlBox->GetController()->Load(controllerJson);
+    PageParameterKeys keys;
+    m_pageSettings->Load(json[keys.settings].get<wxToolsJson>());
 }
 
 wxToolsJson Page::Save() const
 {
-    auto *linkController = m_linkControlBox->GetController();
-
     wxToolsJson json;
-    json[m_parameterKeys.linkControlBox] = linkController->Save();
+    PageParameterKeys keys;
+    json[keys.settings] = m_pageSettings->Save();
     return json;
 }
 
 void Page::OnInvokeOpen()
 {
-    PageSettingsLink *communicationControlBox = m_pageSettings->GetCommunicationControlBox();
-    LinkUi *communicationController = communicationControlBox->GetController();
-    if (communicationController->IsOpen()) {
+    PageSettingsLink *linkSettings = m_pageSettings->GetLinkSettings();
+    LinkUi *linkUi = linkSettings->GetLinkUi();
+    if (linkUi->IsOpen()) {
         m_sendTimer.Stop();
-        m_inputSettings->SetCycleIntervalComboBoxSelection(0);
 
-        Link *communication = communicationController->GetLink();
-        communication->emitBytesWrittenSignal.disconnect_all();
+        PageSettingsInput *inputSettings = m_pageSettings->GetInputSettings();
+        inputSettings->SetCycleIntervalComboBoxSelection(0);
 
-        communicationController->Close();
-        communicationController->Enable();
-        communicationControlBox->SetOpenButtonLabel(wxT("Open"));
-        wxToolsInfo() << "Close communication successfully.";
+        Link *link = linkUi->GetLink();
+        link->emitBytesWrittenSignal.disconnect_all();
+
+        linkUi->Close();
+        linkUi->Enable();
+        linkSettings->SetOpenButtonLabel(wxT("Open"));
+        wxToolsInfo() << "Close link successfully.";
     } else {
-        if (communicationController->Open()) {
-            communicationController->Disable();
-            communicationControlBox->SetOpenButtonLabel(wxT("Close"));
-            wxToolsInfo() << "Open communication successfully.";
+        if (linkUi->Open()) {
+            linkUi->Disable();
+            linkSettings->SetOpenButtonLabel(wxT("Close"));
+            wxToolsInfo() << "Open link successfully.";
 
-            Link *communication = communicationController->GetLink();
-            communication->emitBytesReadSignal.connect(&Page::OnBytesRead, this);
-            communication->emitBytesWrittenSignal.connect(&Page::OnBytesWritten, this);
+            Link *link = linkUi->GetLink();
+            link->emitBytesReadSignal.connect(&Page::OnBytesRead, this);
+            link->emitBytesWrittenSignal.connect(&Page::OnBytesWritten, this);
         } else {
-            wxMessageBox(wxT("Failed to open communication."), wxT("Error"), wxICON_ERROR);
+            wxMessageBox(wxT("Failed to open link."), wxT("Error"), wxICON_ERROR);
         }
     }
 }
 
 void Page::OnInvokeWrite(TextFormat format)
 {
-    LinkUi *communicationController = m_linkControlBox->GetController();
+    PageSettingsLink *linkSettings = m_pageSettings->GetLinkSettings();
+    LinkUi *communicationController = linkSettings->GetLinkUi();
     if (!communicationController->IsOpen()) {
         wxMessageBox(wxT("Communication is not open."), wxT("Error"), wxICON_ERROR);
         return;
     }
 
     Link *communication = communicationController->GetLink();
-    wxString text = m_ioSettings->GetInputBox()->GetInputText();
+    wxString text = m_pageIO->GetInput()->GetInputText();
 
     if (text.IsEmpty()) {
         text = wxString::FromAscii("(null)");
@@ -123,10 +123,11 @@ void Page::OnInvokeStartTimer(int ms)
         return;
     }
 
-    PageSettingsLink *communicationControlBox = m_pageSettings->GetCommunicationControlBox();
-    LinkUi *communicationController = communicationControlBox->GetController();
+    PageSettingsLink *communicationControlBox = m_pageSettings->GetLinkSettings();
+    LinkUi *communicationController = communicationControlBox->GetLinkUi();
     if (!communicationController->IsOpen()) {
-        m_inputSettings->SetCycleIntervalComboBoxSelection(0);
+        PageSettingsInput *inputSettings = m_pageSettings->GetInputSettings();
+        inputSettings->SetCycleIntervalComboBoxSelection(0);
         wxMessageBox(wxT("Communication is not open."), wxT("Error"), wxICON_ERROR);
         return;
     }
@@ -146,22 +147,27 @@ void Page::OnBytesWritten(wxToolsConstBuffer &bytes, const wxString &to)
 
 void Page::OnSendTimerTimeout()
 {
-    if (!m_linkControlBox->GetController()->IsOpen()) {
+    PageSettingsLink *linkSettings = m_pageSettings->GetLinkSettings();
+    PageSettingsInput *inputSettings = m_pageSettings->GetInputSettings();
+    if (!linkSettings->GetLinkUi()->IsOpen()) {
         return;
     }
 
-    TextFormat format = m_inputSettings->GetTextFormat();
+    PageSettingsInputParameterKeys keys;
+    wxToolsJson json = inputSettings->Save();
+    int textFromat = json[keys.textFormat].get<int>();
+    TextFormat format = static_cast<TextFormat>(textFromat);
     OnInvokeWrite(format);
 }
 
 void Page::OnClear()
 {
-    m_ioSettings->GetOutputBox()->Clear();
+    m_pageIO->GetOutput()->Clear();
 }
 
 void Page::OnTextFormatChanged(TextFormat format)
 {
-    m_ioSettings->GetInputBox()->SetTextFormat(format);
+    m_pageIO->GetInput()->SetTextFormat(format);
 }
 
 std::string dateTimeString(bool showDate, bool showTime, bool showMs)
@@ -207,7 +213,7 @@ std::string flagString(bool isRx, const std::string &fromTo, bool showFlag)
 
 void Page::OutputText(wxToolsConstBuffer &bytes, const wxString &fromTo, bool isRx)
 {
-    PageSettingsOutput *outputControlBox = m_pageSettings->GetOutputControlBox();
+    PageSettingsOutput *outputControlBox = m_pageSettings->GetOutputSettings();
     TextFormat outputFormat = outputControlBox->GetTextFormat();
     bool showDate = outputControlBox->GetShowDate();
     bool showTime = outputControlBox->GetShowTime();
@@ -234,5 +240,5 @@ void Page::OutputText(wxToolsConstBuffer &bytes, const wxString &fromTo, bool is
         str = wxString::Format("[%s %s] %s", dateTimeString, flagString, text);
     }
 
-    m_ioSettings->GetOutputBox()->AppendText(str);
+    m_pageIO->GetOutput()->AppendText(str);
 }

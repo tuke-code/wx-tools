@@ -17,10 +17,10 @@ class PageIO : public wxPanel
 public:
     PageIO(wxWindow *parent);
 
-    PageIOInput *GetInputBox() const;
-    PageIOOutput *GetOutputBox() const;
+    PageIOInput *GetInput() const;
+    PageIOOutput *GetOutput() const;
 
 private:
-    PageIOInput *m_inputBox;
-    PageIOOutput *m_outputBox;
+    PageIOInput *m_input;
+    PageIOOutput *m_output;
 };

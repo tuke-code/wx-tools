@@ -19,18 +19,20 @@ class PageSettingsLink : public wxStaticBoxSizer
 {
 public:
     PageSettingsLink(LinkType type, wxWindow *parent);
-    LinkUi *GetController() const;
-    wxToolsSignal<> &GetInvokeOpenSignal();
+
+    wxToolsSignal<> invokeOpenSignal;
+
+    void Load(const wxToolsJson &parameters);
+    wxToolsJson Save() const;
+
+    LinkUi *GetLinkUi() const;
     void SetOpenButtonLabel(const wxString &label);
 
 private:
-    LinkUi *m_controller;
+    LinkUi *m_linkUi;
     wxButton *m_openButton;
     PageSettingsLinkPopup *m_popup;
 
-    wxToolsSignal<> m_invokeOpenSignal;
-
 private:
-    void OnOpen(wxCommandEvent &event);
-    LinkUi *CreateLinkController(LinkType type, wxWindow *parent);
+    LinkUi *CreateLinkUi(LinkType type, wxWindow *parent);
 };

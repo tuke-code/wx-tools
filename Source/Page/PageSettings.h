@@ -13,20 +13,30 @@
 
 #include "Common/wxTools.h"
 
-class PageSettingsInput;
-class PageSettingsOutput;
+struct PageSettingsParameterKeys
+{
+    std::string linkSettings = {"cycleInterval"};
+    std::string outputSettings = {"outputSettings"};
+    std::string inputSettings = {"inputSettings"};
+};
+
 class PageSettingsLink;
+class PageSettingsOutput;
+class PageSettingsInput;
 class PageSettings : public wxBoxSizer
 {
 public:
     PageSettings(LinkType type, wxWindow *parent);
 
-    PageSettingsInput *GetInputControlBox() const;
-    PageSettingsOutput *GetOutputControlBox() const;
-    PageSettingsLink *GetCommunicationControlBox() const;
+    void Load(const wxToolsJson &parameters);
+    wxToolsJson Save() const;
+
+    PageSettingsLink *GetLinkSettings() const;
+    PageSettingsOutput *GetOutputSettings() const;
+    PageSettingsInput *GetInputSettings() const;
 
 private:
-    PageSettingsInput *m_inputControlBox;
-    PageSettingsOutput *m_outputControlBox;
-    PageSettingsLink *m_communicationControlBox;
+    PageSettingsLink *m_linkSettings;
+    PageSettingsOutput *m_outputSettings;
+    PageSettingsInput *m_inputSettings;
 };

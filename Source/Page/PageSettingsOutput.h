@@ -13,12 +13,30 @@
 
 #include "Common/wxTools.h"
 
-class PageSettingsOutputPopup;
+struct PageSettingsOutputParameterKeys
+{
+    std::string textFormat = {"textFormat"};
+    std::string showDate = {"showDate"};
+    std::string showTime = {"showTime"};
+    std::string showMs = {"showMs"};
+    std::string showRx = {"showRx"};
+    std::string showTx = {"showTx"};
+    std::string showFlag = {"showFlag"};
+};
+
 class TextFormatComboBox;
+class PageSettingsOutputPopup;
 class PageSettingsOutput : public wxStaticBoxSizer
 {
 public:
     PageSettingsOutput(wxWindow *parent);
+
+    wxToolsSignal<> parametersChangedSignal;
+    wxToolsSignal<> clearSignal;
+
+    void Load(const wxToolsJson &parameters);
+    wxToolsJson Save() const;
+
     TextFormat GetTextFormat() const;
     bool GetShowDate() const;
     bool GetShowTime() const;
@@ -26,9 +44,6 @@ public:
     bool GetShowRx() const;
     bool GetShowTx() const;
     bool GetShowFlag() const;
-
-    wxToolsSignal<bool> &GetWrapSignal();
-    wxToolsSignal<> &GetClearSignal();
 
 private:
     TextFormatComboBox *m_textFormatComboBox;
@@ -39,6 +54,4 @@ private:
     wxCheckBox *m_showTx;
     wxCheckBox *m_showFlag;
     PageSettingsOutputPopup *m_popup;
-
-    wxToolsSignal<> m_clearSignal;
 };

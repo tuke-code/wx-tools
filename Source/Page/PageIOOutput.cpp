@@ -10,6 +10,7 @@
 
 PageIOOutput::PageIOOutput(wxWindow *parent)
     : wxStaticBoxSizer(wxVERTICAL, parent, _("Output"))
+    , m_textCtrl(nullptr)
 {
     m_textCtrl = new wxTextCtrl(parent,
                                 wxID_ANY,
