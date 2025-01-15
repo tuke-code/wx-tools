@@ -13,4 +13,5 @@
 class SocketServerPrivate : public SocketBasePrivate
 {
 public:
+    wxString targetAddressPort; // Such as "192.168.10.10:8080", or an empty string for all clients
 };

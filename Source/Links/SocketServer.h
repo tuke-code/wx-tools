@@ -10,11 +10,15 @@
 
 #include "SocketBase.h"
 
+class SocketServerPrivate;
 class SocketServer : public SocketBase
 {
 public:
-    SocketServer(SocketBasePrivate *dPtr);
+    SocketServer(SocketServerPrivate *dPtr);
     ~SocketServer();
 
     wxToolsSignal<std::string, uint16_t> newClientSignal;
+
+private:
+    SocketServerPrivate *d;
 };

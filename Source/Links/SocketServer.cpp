@@ -8,8 +8,8 @@
  **************************************************************************************************/
 #include "SocketServer.h"
 
-SocketServer::SocketServer(SocketBasePrivate *dPtr)
-    : SocketBase(dPtr)
+SocketServer::SocketServer(SocketServerPrivate *dPtr)
+    : SocketBase(reinterpret_cast<SocketBasePrivate *>(dPtr))
 {}
 
 SocketServer::~SocketServer() {}
