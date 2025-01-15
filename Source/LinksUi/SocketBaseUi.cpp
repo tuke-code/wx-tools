@@ -198,11 +198,20 @@ void SocketBaseUi::InitServerPortCtrl(int row, wxWindow *parent)
 
 void SocketBaseUi::InitClientsComboBox(int row, wxWindow *parent)
 {
-    m_clientsLabel = new wxStaticText(parent, wxID_ANY, wxT("Clients"));
+    m_clientsLabel = new wxStaticText(parent, wxID_ANY, wxT("Write to Client"));
     Add(m_clientsLabel, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
 
-    m_clientsComboBox = new wxComboBox(parent, wxID_ANY);
+    m_clientsComboBox = new wxComboBox(parent,
+                                       wxID_ANY,
+                                       wxEmptyString,
+                                       wxDefaultPosition,
+                                       wxDefaultSize,
+                                       0,
+                                       nullptr,
+                                       wxCB_READONLY);
     Add(m_clientsComboBox, wxGBPosition(row, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
+    m_clientsComboBox->Append(wxT("All Clients"), new wxString(""));
+    m_clientsComboBox->SetSelection(0);
 }
 
 void SocketBaseUi::InitClearClientButton(int row, wxWindow *parent)
