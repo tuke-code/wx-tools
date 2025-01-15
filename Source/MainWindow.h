@@ -10,6 +10,7 @@
 
 #include <map>
 #include <wx/fileconf.h>
+#include <wx/notebook.h>
 #include <wx/wx.h>
 
 #include "Common/wxTools.h"
@@ -42,4 +43,5 @@ private:
     std::map<LinkType, Page*> m_pageMap;
     wxStatusBar* m_statusBar;
     wxTimer m_updateTimeTimer;
+    wxNotebook* m_notebook;
 };

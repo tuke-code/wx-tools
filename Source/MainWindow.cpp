@@ -11,7 +11,6 @@
 #include <fstream>
 
 #include <wx/filename.h>
-#include <wx/notebook.h>
 #include <wx/stdpaths.h>
 
 #include "Page/Page.h"
@@ -22,12 +21,12 @@ MainWindow::MainWindow()
 {
     Init();
 
-    auto* notebook = new wxNotebook(this, wxID_ANY);
+    m_notebook = new wxNotebook(this, wxID_ANY);
     auto types = GetSuportedCommunicationTypes();
     for (auto type : types) {
-        auto* page = new Page(type, notebook);
+        auto* page = new Page(type, m_notebook);
         if (page != nullptr) {
-            notebook->AddPage(page, GetCommunicationName(type));
+            m_notebook->AddPage(page, GetCommunicationName(type));
             m_pageMap[type] = page;
         } else {
             int cookedType = static_cast<int>(type);
@@ -42,7 +41,7 @@ MainWindow::MainWindow()
     LoadParameters();
 
     auto const sizer = new wxBoxSizer(wxVERTICAL);
-    sizer->Add(notebook, 1, wxEXPAND | wxALL, 0);
+    sizer->Add(m_notebook, 1, wxEXPAND | wxALL, 0);
     SetSizerAndFit(sizer);
 
     SetSize(wxSize(1024, 600));
@@ -179,11 +178,18 @@ void MainWindow::LoadParameters(wxString fileName)
             page->Load(pageJson);
         }
     }
+
+    int tabIndex = json["tabIndex"].get<int>();
+    if (tabIndex >= 0 || tabIndex < m_notebook->GetPageCount()) {
+        m_notebook->SetSelection(tabIndex);
+    }
 }
 
 void MainWindow::SaveParameters(wxString fileName)
 {
-    wxToolsJson wxTools;
+    wxToolsJson wxTools = wxToolsJson::object();
+    wxTools["tabIndex"] = m_notebook->GetSelection();
+
     for (auto it = m_pageMap.begin(); it != m_pageMap.end(); ++it) {
         Page* page = it->second;
         wxToolsJson json = page->Save();
