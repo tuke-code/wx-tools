@@ -17,43 +17,55 @@ UDPServer::UDPServer()
 
 UDPServer::~UDPServer()
 {
-    if (d->socket) {
-        d->socket->close();
-        delete d->socket;
-        d->socket = nullptr;
-    }
-
     delete d;
     d = nullptr;
 }
 
-void ReadData(asio::ip::udp::socket *socket, UDPServer *udpServer)
+void ReadData(UDPServerPrivate *d, UDPServer *udpServer)
 {
-    if (!socket || !udpServer) {
-        return;
-    }
+    using asio::ip::udp;
+    asio::io_context ioContext;
+    udp::socket socket(ioContext, udp::endpoint(udp::v4(), 0));
 
-    char buffer[1024 * 1024] = {0};
-    size_t receivedBytes = 0;
-    while (1) {
+    udp::resolver resolver(ioContext);
+    std::string host = d->serverAddress.ToStdString();
+    std::string port = std::to_string(d->serverPort);
+    auto endpoints = resolver.resolve(udp::v4(), host, port);
+
+    d->invokeCloseSignal.connect([&]() { socket.close(); });
+    d->invokeWriteSignal.connect([&](wxString msg, TextFormat) {
         try {
-            udp::endpoint senderEndpoint;
-            auto asioBuffer = asio::buffer(buffer, sizeof(buffer));
-            receivedBytes = socket->receive_from(asioBuffer, senderEndpoint);
+            asio::const_buffer buffer(msg.data(), msg.size());
+            size_t len = socket.send_to(buffer, *endpoints.begin());
+            if (len > 0) {
+                udpServer->bytesWrittenSignal(buffer, d->serverAddress);
+            } else {
+                wxToolsInfo() << "Write data failed...";
+            }
         } catch (asio::system_error &e) {
-            std::string errorString = e.what();
-            wxString msg = wxString::Format("Read data failed, error message: %s", errorString);
-            wxToolsInfo() << msg;
-            break;
+            wxToolsInfo() << e.what() << e.code();
         }
+    });
 
-        if (receivedBytes > 0) {
-            std::string data(buffer, receivedBytes);
+    while (1) {
+        char buffer[10240] = {0};
+        udp::endpoint sender;
+        try {
+            size_t len = socket.receive_from(asio::buffer(buffer, 10240), sender);
+            if (len <= 0) {
+                continue;
+            }
+
+            std::string data(buffer, len);
             asio::const_buffer buffer(data.data(), data.size());
-            std::string ip = socket->remote_endpoint().address().to_string();
-            std::string port = std::to_string(socket->remote_endpoint().port());
-            udpServer->bytesReadSignal(buffer, ip + ":" + port);
-            udpServer->newClientSignal(ip, socket->remote_endpoint().port());
+            udpServer->bytesReadSignal(buffer, d->serverAddress);
+            udpServer->newClientSignal(sender.address().to_string(), sender.port());
+        } catch (asio::system_error &e) {
+            if (e.code().value() != 10004) {
+                wxToolsInfo() << e.what();
+            }
+
+            break;
         }
     }
 }
@@ -62,14 +74,7 @@ bool UDPServer::Open()
 {
     Close();
 
-    d->socket = new udp::socket(d->ioContext, udp::endpoint(udp::v4(), 0));
-    udp::resolver resolver(d->ioContext);
-    std::string ip = std::string(d->serverAddress.mb_str());
-    std::string port = std::to_string(d->serverPort);
-    auto endpoints = resolver.resolve(udp::v4(), ip, port);
-    d->endpoint = *endpoints.begin();
-
-    std::thread t(ReadData, d->socket, this);
+    std::thread t(ReadData, d, this);
     t.detach();
 
     return true;
@@ -77,19 +82,10 @@ bool UDPServer::Open()
 
 void UDPServer::Close()
 {
-    if (d->socket) {
-        d->socket->close();
-    }
+    d->invokeCloseSignal();
 }
 
 void UDPServer::Write(const wxString &data, TextFormat format)
 {
-    auto msg = data.ToStdString();
-    auto buffer = asio::buffer(msg.data(), msg.size());
-    auto ret = d->socket->send_to(asio::buffer(msg), d->endpoint);
-    if (ret > 0) {
-        std::string ip = d->endpoint.address().to_string();
-        std::string port = std::to_string(d->endpoint.port());
-        bytesWrittenSignal(buffer, ip + ":" + port);
-    }
+    d->invokeWriteSignal(data, format);
 }

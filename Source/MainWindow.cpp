@@ -179,9 +179,12 @@ void MainWindow::LoadParameters(wxString fileName)
         }
     }
 
-    int tabIndex = json["tabIndex"].get<int>();
-    if (tabIndex >= 0 || tabIndex < m_notebook->GetPageCount()) {
-        m_notebook->SetSelection(tabIndex);
+    wxToolsJson tabIndexJson = json["tabIndex"];
+    if (!tabIndexJson.is_null()) {
+        int tabIndex = tabIndexJson.get<int>();
+        if (tabIndex >= 0 || tabIndex < m_notebook->GetPageCount()) {
+            m_notebook->SetSelection(tabIndex);
+        }
     }
 }
 

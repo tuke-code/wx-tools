@@ -10,12 +10,12 @@
 
 #include <asio.hpp>
 
+#include "Common/wxTools.h"
 #include "SocketServer_p.h"
 
 class UDPServerPrivate : public SocketServerPrivate
 {
 public:
-    asio::io_context ioContext;
-    asio::ip::udp::socket *socket{nullptr};
-    asio::ip::udp::endpoint endpoint;
+    wxToolsSignal<wxString, TextFormat> invokeWriteSignal;
+    wxToolsSignal<> invokeCloseSignal;
 };
