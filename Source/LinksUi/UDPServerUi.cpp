@@ -8,6 +8,8 @@
  **************************************************************************************************/
 #include "UDPServerUi.h"
 
+#include "Links/UDPServer.h"
+
 UDPServerUi::UDPServerUi(wxWindow *parent)
     : SocketServerUi(parent)
 {
@@ -21,3 +23,8 @@ UDPServerUi::UDPServerUi(wxWindow *parent)
 }
 
 UDPServerUi::~UDPServerUi() {}
+
+Link *UDPServerUi::CreateLink()
+{
+    return new UDPServer();
+}

@@ -15,4 +15,7 @@ class UDPServerUi : public SocketServerUi
 public:
     UDPServerUi(wxWindow *parent = nullptr);
     ~UDPServerUi();
+
+protected:
+    Link *CreateLink() override;
 };
