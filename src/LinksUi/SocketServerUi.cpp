@@ -29,7 +29,7 @@ void SocketServerUi::DoNewClient(const std::string &ip, uint16_t port)
 
 void SocketServerUi::DoDeleteClient(const std::string &ip, uint16_t port)
 {
-    if (!m_clientComboBox) {
+    if (!m_clientsComboBox) {
         return;
     }
 

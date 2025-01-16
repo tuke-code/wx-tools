@@ -16,7 +16,17 @@ SocketServer::SocketServer(SocketServerPrivate *dPtr)
 
 SocketServer::~SocketServer() {}
 
-void SocketServer::setCurrentClient(const std::string &ip, uint16_t port)
+void SocketServer::SetCurrentClient(const std::string &ip, uint16_t port)
 {
     d->selection = std::make_pair(ip, port);
+}
+
+void SocketServer::DoClearClients()
+{
+    // Clear the clients list
+    for (auto client : d->clients) {
+        deleteClientSignal(client.first, client.second);
+    }
+
+    d->clients.clear();
 }

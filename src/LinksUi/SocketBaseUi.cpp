@@ -199,7 +199,7 @@ void SocketBaseUi::InitServerPortCtrl(int row, wxWindow *parent)
 
 void SocketBaseUi::InitClientsComboBox(int row, wxWindow *parent)
 {
-    m_clientsLabel = new wxStaticText(parent, wxID_ANY, wxT("Write to Client"));
+    m_clientsLabel = new wxStaticText(parent, wxID_ANY, wxT("Write to"));
     Add(m_clientsLabel, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
 
     m_clientsComboBox = new wxComboBox(parent,
@@ -223,7 +223,7 @@ void SocketBaseUi::InitClientsComboBox(int row, wxWindow *parent)
 
         wxString str = m_clientsComboBox->GetValue();
         auto ctx = SocketBase::DoDecodeFlag(str.ToStdString());
-        socketServer->setCurrentClient(ctx.first, ctx.second);
+        socketServer->SetCurrentClient(ctx.first, ctx.second);
     });
 }
 
@@ -231,6 +231,16 @@ void SocketBaseUi::InitClearClientButton(int row, wxWindow *parent)
 {
     m_clearClientButton = new wxButton(parent, wxID_ANY, wxT("Disconnect All Client"));
     Add(m_clearClientButton, wxGBPosition(row, 0), wxGBSpan(1, 2), wxEXPAND | wxALL, 0);
+
+    m_clearClientButton->Bind(wxEVT_BUTTON, [=](wxCommandEvent &) {
+        Link *link = GetLink();
+        SocketServer *socketServer = dynamic_cast<SocketServer *>(link);
+        if (!socketServer) {
+            return;
+        }
+
+        socketServer->DoClearClients();
+    });
 }
 
 void SocketBaseUi::InitIsEnableAuthorizationCheckBox(int row, wxWindow *parent)
