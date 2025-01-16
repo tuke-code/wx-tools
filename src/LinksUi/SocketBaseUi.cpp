@@ -12,6 +12,7 @@
 #include <wx/textctrl.h>
 
 #include "Links/SocketBase.h"
+#include "Links/SocketServer.h"
 #include "Utilities/DataChannelComboBox.h"
 #include "Utilities/IpComboBox.h"
 
@@ -212,6 +213,18 @@ void SocketBaseUi::InitClientsComboBox(int row, wxWindow *parent)
     Add(m_clientsComboBox, wxGBPosition(row, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
     m_clientsComboBox->Append(wxT("All Clients"), new wxString(""));
     m_clientsComboBox->SetSelection(0);
+
+    m_clientsComboBox->Bind(wxEVT_COMBOBOX_CLOSEUP, [=](wxCommandEvent &) {
+        Link *link = GetLink();
+        SocketServer *socketServer = dynamic_cast<SocketServer *>(link);
+        if (!socketServer) {
+            return;
+        }
+
+        wxString str = m_clientsComboBox->GetValue();
+        auto ctx = SocketBase::DoDecodeFlag(str.ToStdString());
+        socketServer->setCurrentClient(ctx.first, ctx.second);
+    });
 }
 
 void SocketBaseUi::InitClearClientButton(int row, wxWindow *parent)

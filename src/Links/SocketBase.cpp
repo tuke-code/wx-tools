@@ -82,3 +82,19 @@ wxString SocketBase::GetPassword() const
 {
     return d->password;
 }
+
+std::string SocketBase::DoEncodeFlag(const std::string &ip, uint16_t port)
+{
+    return ip + ":" + std::to_string(port);
+}
+
+std::pair<std::string, uint16_t> SocketBase::DoDecodeFlag(const std::string &flag)
+{
+    std::pair<std::string, uint16_t> result{"", 0};
+    size_t pos = flag.find(':');
+    if (pos != std::string::npos) {
+        result.first = flag.substr(0, pos);
+        result.second = std::stoi(flag.substr(pos + 1));
+    }
+    return result;
+}

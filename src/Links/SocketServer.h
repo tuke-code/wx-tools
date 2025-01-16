@@ -20,6 +20,8 @@ public:
     wxToolsSignal<std::string, uint16_t> newClientSignal;
     wxToolsSignal<std::string, uint16_t> deleteClientSignal;
 
+    void setCurrentClient(const std::string &ip, uint16_t port);
+
 private:
-    SocketServerPrivate *d;
+    SocketServerPrivate *d{nullptr};
 };

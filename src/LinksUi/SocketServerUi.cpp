@@ -8,14 +8,34 @@
  **************************************************************************************************/
 #include "SocketServerUi.h"
 
+#include "Links/SocketBase.h"
+
 SocketServerUi::SocketServerUi(wxWindow *parent)
     : SocketBaseUi(parent)
 {}
 
 SocketServerUi::~SocketServerUi() {}
 
-wxString SocketServerUi::DoMakeFlag(const wxString &ip, uint16_t port)
+void SocketServerUi::newClient(const std::string &ip, uint16_t port)
 {
-    // Such as: "127.0.0.1:55443"
-    return ip + ":" + std::to_string(port);
+    if (!m_clientsComboBox) {
+        return;
+    }
+
+    if (m_clientsComboBox->FindString(ip) == wxNOT_FOUND) {
+        m_clientsComboBox->Append(SocketBase::DoEncodeFlag(ip, port));
+    }
+}
+
+void SocketServerUi::deleteClient(const std::string &ip, uint16_t port)
+{
+    if (!m_clientComboBox) {
+        return;
+    }
+
+    int index = m_clientsComboBox->FindString(SocketBase::DoEncodeFlag(ip, port));
+    if (index != wxNOT_FOUND) {
+        m_clientsComboBox->Delete(index);
+        m_clientsComboBox->SetSelection(0);
+    }
 }

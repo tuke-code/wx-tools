@@ -43,6 +43,9 @@ public:
     wxString GetUserName() const;
     wxString GetPassword() const;
 
+    static std::string DoEncodeFlag(const std::string &ip, uint16_t port);
+    static std::pair<std::string, uint16_t> DoDecodeFlag(const std::string &flag);
+
 private:
     SocketBasePrivate *d;
 };

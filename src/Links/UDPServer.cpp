@@ -36,10 +36,18 @@ void ReadData(UDPServerPrivate *d, UDPServer *udpServer)
                 continue;
             }
 
+            // If the client is not in the list, add it.
+            auto pair = std::make_pair(sender.address().to_string(), sender.port());
+            if (std::find(d->clients.begin(), d->clients.end(), pair) == d->clients.end()) {
+                d->clients.push_back(pair);
+                udpServer->newClientSignal(sender.address().to_string(), sender.port());
+                wxToolsInfo() << "New client: " << sender.address().to_string() << ":"
+                              << sender.port();
+            }
+
             std::string data(buffer, len);
             asio::const_buffer buffer(data.data(), data.size());
             udpServer->bytesReadSignal(buffer, d->serverAddress);
-            udpServer->newClientSignal(sender.address().to_string(), sender.port());
         } catch (asio::system_error &e) {
             if (e.code().value() != 10004) {
                 wxToolsInfo() << e.what();
@@ -54,15 +62,9 @@ bool UDPServer::Open()
 {
     Close();
 
-    d->socket = new udp::socket(d->context);
+    udp::endpoint endpoint(asio::ip::make_address(d->serverAddress.ToStdString()), d->serverPort);
+    d->socket = new udp::socket(d->context, endpoint);
     if (!d->socket) {
-        return false;
-    }
-
-    try {
-        d->socket->bind(udp::endpoint(asio::ip::make_address(d->serverAddress), d->serverPort));
-    } catch (asio::system_error &e) {
-        wxToolsInfo() << "Bind endpoint failed:" << e.what();
         return false;
     }
 
@@ -90,10 +92,9 @@ void WriteData(UDPServerPrivate *d,
     udp::endpoint endpoint(asio::ip::make_address(address), port);
     size_t len = d->socket->send_to(buffer, endpoint);
     if (len > 0) {
-        udpServer->bytesWrittenSignal(buffer, wxString(d->DoEncodeFlag(address, port)));
+        udpServer->bytesWrittenSignal(buffer, wxString(udpServer->DoEncodeFlag(address, port)));
     } else {
         // If send failed, I think the client is disconnected, so remove it.
-        wxToolsInfo() << "Write data failed, remove client:" << d->DoEncodeFlag(address, port);
         d->removeClient(address, port);
         udpServer->deleteClientSignal(address, port);
     }

@@ -10,12 +10,16 @@
 
 #include "SocketBaseUi.h"
 
+class SocketServer;
 class SocketServerUi : public SocketBaseUi
 {
 public:
     SocketServerUi(wxWindow *parent = nullptr);
     ~SocketServerUi();
 
+    void newClient(const std::string &ip, uint16_t port);
+    void deleteClient(const std::string &ip, uint16_t port);
+
 protected:
-    wxString DoMakeFlag(const wxString &ip, uint16_t port);
+    SocketServer *m_socketServer{nullptr};
 };

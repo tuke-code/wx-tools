@@ -38,7 +38,7 @@ protected:
     void InitPasswordTextCtrl(int row, wxWindow *parent);
     // clang-format on
 
-private:
+protected:
     wxStaticText *m_clientAddressLabel{nullptr};
     IpComboBox *m_clientComboBox{nullptr};
     wxStaticText *m_clientPortLabel{nullptr};

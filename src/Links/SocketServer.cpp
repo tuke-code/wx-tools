@@ -7,9 +7,16 @@
  * code directory.
  **************************************************************************************************/
 #include "SocketServer.h"
+#include "SocketServer_p.h"
 
 SocketServer::SocketServer(SocketServerPrivate *dPtr)
     : SocketBase(reinterpret_cast<SocketBasePrivate *>(dPtr))
+    , d(dPtr)
 {}
 
 SocketServer::~SocketServer() {}
+
+void SocketServer::setCurrentClient(const std::string &ip, uint16_t port)
+{
+    d->selection = std::make_pair(ip, port);
+}
