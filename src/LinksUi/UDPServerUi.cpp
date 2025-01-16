@@ -27,8 +27,8 @@ UDPServerUi::~UDPServerUi() {}
 Link *UDPServerUi::CreateLink()
 {
     auto *udpServer = new UDPServer();
-    udpServer->newClientSignal.connect(&UDPServerUi::newClient, this);
-    udpServer->deleteClientSignal.connect(&UDPServerUi::deleteClient, this);
+    udpServer->newClientSignal.connect(&UDPServerUi::DoNewClient, this);
+    udpServer->deleteClientSignal.connect(&UDPServerUi::DoDeleteClient, this);
 
     return udpServer;
 }

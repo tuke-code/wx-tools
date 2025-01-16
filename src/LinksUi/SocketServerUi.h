@@ -17,8 +17,8 @@ public:
     SocketServerUi(wxWindow *parent = nullptr);
     ~SocketServerUi();
 
-    void newClient(const std::string &ip, uint16_t port);
-    void deleteClient(const std::string &ip, uint16_t port);
+    void DoNewClient(const std::string &ip, uint16_t port);
+    void DoDeleteClient(const std::string &ip, uint16_t port);
 
 protected:
     SocketServer *m_socketServer{nullptr};

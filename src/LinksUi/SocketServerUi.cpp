@@ -16,7 +16,7 @@ SocketServerUi::SocketServerUi(wxWindow *parent)
 
 SocketServerUi::~SocketServerUi() {}
 
-void SocketServerUi::newClient(const std::string &ip, uint16_t port)
+void SocketServerUi::DoNewClient(const std::string &ip, uint16_t port)
 {
     if (!m_clientsComboBox) {
         return;
@@ -27,7 +27,7 @@ void SocketServerUi::newClient(const std::string &ip, uint16_t port)
     }
 }
 
-void SocketServerUi::deleteClient(const std::string &ip, uint16_t port)
+void SocketServerUi::DoDeleteClient(const std::string &ip, uint16_t port)
 {
     if (!m_clientComboBox) {
         return;
