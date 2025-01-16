@@ -1,9 +1,8 @@
 ﻿set(packet_name "glog-0.7.1")
 
-if(NOT EXISTS ${CMAKE_SOURCE_DIR}/ThirdParty/${packet_name})
-  execute_process(
-    COMMAND ${CMAKE_COMMAND} -E tar xzf ${CMAKE_SOURCE_DIR}/ThirdParty/${packet_name}.zip
-    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/ThirdParty)
+if(NOT EXISTS ${CMAKE_SOURCE_DIR}/3rd/${packet_name})
+  execute_process(COMMAND ${CMAKE_COMMAND} -E tar xzf ${CMAKE_SOURCE_DIR}/3rd/${packet_name}.zip
+                  WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/3rd)
 endif()
 
 set(WITH_GTEST
@@ -19,4 +18,4 @@ set(BUILD_SHARED_LIBS
     OFF
     CACHE BOOL "Build shared libraries" FORCE)
 
-add_subdirectory(${CMAKE_SOURCE_DIR}/ThirdParty/${packet_name})
+add_subdirectory(${CMAKE_SOURCE_DIR}/3rd/${packet_name})

@@ -16,22 +16,22 @@ if(WIN32 AND MSVC AND CMAKE_BUILD_TYPE STREQUAL "Release")
 endif()
 # cmake-format: on
 
-include(CMake/asio.cmake)
-include(CMake/glog.cmake)
-include(CMake/json.cmake)
-include(CMake/libcrc.cmake)
-include(CMake/sigslot.cmake)
-include(CMake/wxWidgets.cmake)
-include(CMake/websocketpp.cmake)
-include(CMake/CSerialPort.cmake)
+include(cmake/asio.cmake)
+include(cmake/glog.cmake)
+include(cmake/json.cmake)
+include(cmake/libcrc.cmake)
+include(cmake/sigslot.cmake)
+include(cmake/wxWidgets.cmake)
+include(cmake/websocketpp.cmake)
+include(cmake/CSerialPort.cmake)
 
-include_directories(Source)
+include_directories(src)
 
 # Windows XP
 option(_WIN32_WINNT "Windows Version" 0x0501)
 # Windows 7 option(_WIN32_WINNT "Windows Version" 0x0601)
 
-file(GLOB_RECURSE WX_TOOLS_SOURCE Source/*.*)
+file(GLOB_RECURSE WX_TOOLS_SOURCE src/*.*)
 list(APPEND WX_TOOLS_SOURCE wxTools.rc)
 add_executable(wxTools ${WX_TOOLS_SOURCE})
 
