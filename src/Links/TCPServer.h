@@ -22,5 +22,5 @@ public:
     void Write(const wxString &data, TextFormat format) override;
 
 private:
-    TCPServerPrivate *d;
+    TCPServerPrivate *d{nullptr};
 };
