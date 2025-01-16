@@ -10,9 +10,16 @@
 
 #include "SocketServerUi.h"
 
+class TCPServerPrivate;
 class TCPServerUi : public SocketServerUi
 {
 public:
     TCPServerUi(wxWindow *parent = nullptr);
     ~TCPServerUi();
+
+private:
+    TCPServerPrivate *d{nullptr};
+
+protected:
+    Link *CreateLink() override;
 };

@@ -15,7 +15,6 @@
 class TCPClientPrivate : public SocketClientPrivate
 {
 public:
-    asio::io_context ioContext;
-    asio::ip::udp::socket *socket;
-    asio::ip::udp::endpoint remoteEndpoint;
+    asio::io_context context;
+    asio::ip::tcp::socket *socket{nullptr};
 };

@@ -9,13 +9,15 @@
 #pragma once
 
 #include <asio.hpp>
+#include <sigslot/signal.hpp>
 
 #include "SocketServer_p.h"
 
 class TCPServerPrivate : public SocketServerPrivate
 {
 public:
-    asio::io_context ioContext;
-    asio::ip::udp::socket *socket{nullptr};
-    asio::ip::udp::endpoint endpoint;
+    asio::io_context context;
+    asio::ip::tcp::acceptor *acceptor{nullptr};
+
+    sigslot::signal<std::string, int> invokeWriteSignal;
 };

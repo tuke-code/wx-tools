@@ -16,4 +16,17 @@ public:
     wxString targetAddressPort; // Such as "192.168.10.10:8080", or an empty string for all clients
     std::vector<std::pair<std::string, uint16_t>> clients;
     std::pair<std::string, uint16_t> selection;
+
+    void removeClient(const std::string &address, uint16_t port)
+    {
+        auto it = std::find_if(clients.begin(),
+                               clients.end(),
+                               [&](const std::pair<std::string, uint16_t> &client) {
+                                   return client.first == address && client.second == port;
+                               });
+
+        if (it != clients.end()) {
+            clients.erase(it);
+        }
+    }
 };

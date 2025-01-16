@@ -8,6 +8,8 @@
  **************************************************************************************************/
 #include "TCPServerUi.h"
 
+#include "Links/TCPServer.h"
+
 TCPServerUi::TCPServerUi(wxWindow *parent)
     : SocketServerUi(parent)
 {
@@ -21,3 +23,12 @@ TCPServerUi::TCPServerUi(wxWindow *parent)
 }
 
 TCPServerUi::~TCPServerUi() {}
+
+Link *TCPServerUi::CreateLink()
+{
+    auto *tcpServer = new TCPServer();
+    tcpServer->newClientSignal.connect(&TCPServerUi::DoNewClient, this);
+    tcpServer->deleteClientSignal.connect(&TCPServerUi::DoDeleteClient, this);
+
+    return tcpServer;
+}
