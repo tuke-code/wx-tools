@@ -41,6 +41,8 @@ void Run(TCPClientPrivate *d, TCPClient *tcpClient)
     socket.async_read_some(buffer, [](std::error_code e, std::size_t len) {
 
     });
+
+    context.run();
 }
 
 bool TCPClient::Open()
@@ -51,6 +53,10 @@ bool TCPClient::Open()
     return true;
 }
 
-void TCPClient::Close() {}
+void TCPClient::Close()
+{
+    asio::io_context context;
+    context.stop();
+}
 
 void TCPClient::Write(const wxString &data, TextFormat format) {}
