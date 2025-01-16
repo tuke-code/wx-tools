@@ -15,4 +15,7 @@ class TCPClientUi : public SocketClientUi
 public:
     TCPClientUi(wxWindow *parent = nullptr);
     ~TCPClientUi();
+
+protected:
+    Link *CreateLink() override;
 };

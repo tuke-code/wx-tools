@@ -9,12 +9,13 @@
 #pragma once
 
 #include <asio.hpp>
+#include <mutex>
 
 #include "SocketClient_p.h"
 
 class TCPClientPrivate : public SocketClientPrivate
 {
 public:
-    asio::io_context context;
-    asio::ip::tcp::socket *socket{nullptr};
+    std::vector<std::pair<std::string, int>> msgList;
+    std::mutex msgMutex;
 };

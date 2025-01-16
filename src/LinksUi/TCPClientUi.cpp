@@ -8,6 +8,8 @@
  **************************************************************************************************/
 #include "TCPClientUi.h"
 
+#include "Links/TCPClient.h"
+
 TCPClientUi::TCPClientUi(wxWindow *parent)
     : SocketClientUi(parent)
 {
@@ -21,4 +23,9 @@ TCPClientUi::TCPClientUi(wxWindow *parent)
 TCPClientUi::~TCPClientUi()
 {
     // Destructor
+}
+
+Link *TCPClientUi::CreateLink()
+{
+    return new TCPClient();
 }

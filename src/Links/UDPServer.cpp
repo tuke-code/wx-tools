@@ -95,7 +95,7 @@ void WriteData(UDPServerPrivate *d,
         udpServer->bytesWrittenSignal(buffer, wxString(udpServer->DoEncodeFlag(address, port)));
     } else {
         // If send failed, I think the client is disconnected, so remove it.
-        d->removeClient(address, port);
+        d->DoRemoveClient(address, port);
         udpServer->deleteClientSignal(address, port);
     }
 }

@@ -21,33 +21,67 @@ TCPClient::~TCPClient()
     d = nullptr;
 }
 
-void Run(TCPClientPrivate *d, TCPClient *tcpClient)
+void Loop(TCPClientPrivate *d, TCPClient *tcpClient)
 {
     asio::io_context context;
-    tcp::socket socket(context);
+    tcp::socket s(context);
     tcp::resolver resolver(context);
     std::string ip = d->serverAddress.ToStdString();
     std::string port = std::to_string(d->serverPort);
     try {
-        asio::connect(socket, resolver.resolve(ip, port));
+        asio::connect(s, resolver.resolve(ip, port));
     } catch (const asio::system_error &e) {
         wxToolsWarning() << "Connect to server failed: " << e.what();
         return;
     }
 
-    char rxData[10240] = {0};
-    tcp::endpoint sender;
-    asio::const_buffer buffer(rxData, 1024);
-    socket.async_read_some(buffer, [](std::error_code e, std::size_t len) {
+    char data[1024] = {0};
+    std::atomic_bool stop(false);
 
-    });
+    while (1) {
+        if (stop.load()) {
+            break;
+        }
 
-    context.run();
+        s.async_read_some(asio::buffer(data, 1024), [&](std::error_code e, std::size_t len) {
+            if (e) {
+                stop.store(true);
+                return;
+            } else {
+                if (len <= 0) {
+                    return;
+                }
+
+                wxToolsInfo() << "Read data from server: " << data;
+                std::string flag = SocketBase::DoEncodeFlag(ip, d->serverPort);
+                tcpClient->bytesReadSignal(asio::const_buffer(data, len), flag);
+            }
+        });
+
+        d->msgMutex.lock();
+        for (auto &msg : d->msgList) {
+            try {
+                size_t len = asio::write(s, asio::buffer(msg.first));
+                std::string flag = SocketBase::DoEncodeFlag(ip, d->serverPort);
+                tcpClient->bytesWrittenSignal(asio::const_buffer(msg.first.c_str(), len), flag);
+            } catch (std::system_error e) {
+                wxToolsWarning() << "Write data to server failed: " << e.what();
+                stop.store(true);
+            }
+        }
+        d->msgList.clear();
+        d->msgMutex.unlock();
+
+        // sleep 50ms
+        std::this_thread::sleep_for(std::chrono::milliseconds(50));
+    }
+
+    wxToolsInfo() << "TCP client loop exit";
 }
 
 bool TCPClient::Open()
 {
-    std::thread t(Run, d, this);
+    std::thread t(Loop, d, this);
     t.detach();
 
     return true;
@@ -55,8 +89,12 @@ bool TCPClient::Open()
 
 void TCPClient::Close()
 {
-    asio::io_context context;
-    context.stop();
+    
 }
 
-void TCPClient::Write(const wxString &data, TextFormat format) {}
+void TCPClient::Write(const wxString &data, TextFormat format)
+{
+    d->msgMutex.lock();
+    d->msgList.push_back(std::make_pair(data.ToStdString(), static_cast<int>(format)));
+    d->msgMutex.unlock();
+}

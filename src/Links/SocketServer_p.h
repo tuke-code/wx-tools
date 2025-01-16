@@ -17,7 +17,7 @@ public:
     std::vector<std::pair<std::string, uint16_t>> clients;
     std::pair<std::string, uint16_t> selection;
 
-    void removeClient(const std::string &address, uint16_t port)
+    void DoRemoveClient(const std::string &address, uint16_t port)
     {
         auto it = std::find_if(clients.begin(),
                                clients.end(),

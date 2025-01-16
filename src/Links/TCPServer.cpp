@@ -43,7 +43,7 @@ void SetUpSocket(TCPServerPrivate *d, TCPServer *tcpServer, tcp::socket socket)
         if (errorOccurred) {
             std::string ip = socket.remote_endpoint().address().to_string();
             uint16_t port = socket.remote_endpoint().port();
-            d->removeClient(ip, port);
+            d->DoRemoveClient(ip, port);
             tcpServer->deleteClientSignal(ip, port);
         }
     });
@@ -58,7 +58,7 @@ void SetUpSocket(TCPServerPrivate *d, TCPServer *tcpServer, tcp::socket socket)
             // asio::error::eof : Connection closed cleanly by peer.
             std::string ip = socket.remote_endpoint().address().to_string();
             uint16_t port = socket.remote_endpoint().port();
-            d->removeClient(ip, port);
+            d->DoRemoveClient(ip, port);
             tcpServer->deleteClientSignal(ip, port);
             break;
         }
