@@ -176,7 +176,7 @@ std::string GetString(TextFormat format, uint8_t value)
     return GetHexString(value);
 }
 
-std::string DoDecodeText(asio::const_buffer &buffer, TextFormat format)
+std::string DoDecodeText(const wxToolsConstBuffer &buffer, TextFormat format)
 {
     const auto *dataPtr = static_cast<const char *>(buffer.data());
     size_t size = buffer.size();

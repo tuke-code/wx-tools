@@ -74,7 +74,7 @@ enum class TextFormat { Bin, Oct, Dec, Hex, Ascii, Utf8, Unknown = -1 };
 std::vector<int> GetSuportedFormats();
 std::vector<wxString> GetSuportedTextFormats();
 wxString GetTextFormatName(TextFormat format);
-std::string DoDecodeText(wxToolsConstBuffer &buffer, TextFormat format);
+std::string DoDecodeText(const wxToolsConstBuffer &buffer, TextFormat format);
 wxToolsConstBuffer DoEncodeText(const std::string &text, TextFormat format);
 std::string GetBinString(uint8_t value);
 std::string GetOctString(uint8_t value);

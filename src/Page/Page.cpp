@@ -11,14 +11,14 @@
 #include <wx/gbsizer.h>
 
 #include "Common/wxTools.h"
-#include "PageSettingsLink.h"
 #include "Links/Link.h"
 #include "LinksUi/LinkUi.h"
+#include "PageSettingsLink.h"
 
-#include "PageSettings.h"
 #include "PageIO.h"
 #include "PageIOInput.h"
 #include "PageIOOutput.h"
+#include "PageSettings.h"
 #include "PageSettingsInput.h"
 #include "PageSettingsOutput.h"
 
@@ -135,12 +135,12 @@ void Page::OnInvokeStartTimer(int ms)
     m_sendTimer.Start(ms);
 }
 
-void Page::OnBytesRead(wxToolsConstBuffer &bytes, const wxString &from)
+void Page::OnBytesRead(const wxToolsConstBuffer &bytes, const wxString &from)
 {
     OutputText(bytes, from, true);
 }
 
-void Page::OnBytesWritten(wxToolsConstBuffer &bytes, const wxString &to)
+void Page::OnBytesWritten(const wxToolsConstBuffer &bytes, const wxString &to)
 {
     OutputText(bytes, to, false);
 }
@@ -211,7 +211,7 @@ std::string flagString(bool isRx, const std::string &fromTo, bool showFlag)
     return stringStream.str();
 }
 
-void Page::OutputText(wxToolsConstBuffer &bytes, const wxString &fromTo, bool isRx)
+void Page::OutputText(const wxToolsConstBuffer &bytes, const wxString &fromTo, bool isRx)
 {
     PageSettingsOutput *outputControlBox = m_pageSettings->GetOutputSettings();
     TextFormat outputFormat = outputControlBox->GetTextFormat();

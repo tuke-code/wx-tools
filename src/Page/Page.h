@@ -41,11 +41,11 @@ private:
     void OnInvokeOpen();
     void OnInvokeWrite(TextFormat format);
     void OnInvokeStartTimer(int ms);
-    void OnBytesRead(wxToolsConstBuffer &bytes, const wxString &from);
-    void OnBytesWritten(wxToolsConstBuffer &bytes, const wxString &to);
+    void OnBytesRead(const wxToolsConstBuffer &bytes, const wxString &from);
+    void OnBytesWritten(const wxToolsConstBuffer &bytes, const wxString &to);
     void OnSendTimerTimeout();
     void OnClear();
     void OnTextFormatChanged(TextFormat format);
 
-    void OutputText(wxToolsConstBuffer &bytes, const wxString &fromTo, bool isRx);
+    void OutputText(const wxToolsConstBuffer &bytes, const wxString &fromTo, bool isRx);
 };

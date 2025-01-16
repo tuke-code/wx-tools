@@ -18,6 +18,7 @@ public:
     ~SocketServer();
 
     wxToolsSignal<std::string, uint16_t> newClientSignal;
+    wxToolsSignal<std::string, uint16_t> deleteClientSignal;
 
 private:
     SocketServerPrivate *d;
