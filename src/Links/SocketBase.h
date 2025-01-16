@@ -31,8 +31,8 @@ public:
     SocketBase(SocketBasePrivate *d);
     ~SocketBase();
 
-    void Load(const nlohmann::json &parameters) override;
-    nlohmann::json Save() override;
+    void Load(const wxToolsJson &parameters) override;
+    wxToolsJson Save() override;
 
     wxString GetClientAddress() const;
     uint16_t GetClientPort() const;

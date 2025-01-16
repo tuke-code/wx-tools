@@ -15,7 +15,7 @@ SocketBase::SocketBase(SocketBasePrivate *dPtr)
 
 SocketBase::~SocketBase() {}
 
-void SocketBase::Load(const nlohmann::json &parameters)
+void SocketBase::Load(const wxToolsJson &parameters)
 {
     SocketBaseParameterKeys keys;
     d->clientAddress = parameters[keys.clientAddress].template get<std::string>();
@@ -28,10 +28,10 @@ void SocketBase::Load(const nlohmann::json &parameters)
     d->password = parameters[keys.password].template get<std::string>();
 }
 
-nlohmann::json SocketBase::Save()
+wxToolsJson SocketBase::Save()
 {
     SocketBaseParameterKeys keys;
-    nlohmann::json parameters;
+    wxToolsJson parameters;
     parameters[keys.clientAddress] = d->clientAddress.ToStdString();
     parameters[keys.clientPort] = d->clientPort;
     parameters[keys.serverAddress] = d->serverAddress.ToStdString();
