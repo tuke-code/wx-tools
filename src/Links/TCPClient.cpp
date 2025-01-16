@@ -9,9 +9,10 @@
 #include "TCPClient.h"
 #include "TCPClient_p.h"
 
+using asio::ip::tcp;
+
 TCPClient::TCPClient()
-    : d(new TCPClientPrivate)
-    , SocketClient(d)
+    : SocketClient(d = new TCPClientPrivate)
 {}
 
 TCPClient::~TCPClient()
@@ -20,9 +21,34 @@ TCPClient::~TCPClient()
     d = nullptr;
 }
 
+void Run(TCPClientPrivate *d, TCPClient *tcpClient)
+{
+    asio::io_context context;
+    tcp::socket socket(context);
+    tcp::resolver resolver(context);
+    std::string ip = d->serverAddress.ToStdString();
+    std::string port = std::to_string(d->serverPort);
+    try {
+        asio::connect(socket, resolver.resolve(ip, port));
+    } catch (const asio::system_error &e) {
+        wxToolsWarning() << "Connect to server failed: " << e.what();
+        return;
+    }
+
+    char rxData[10240] = {0};
+    tcp::endpoint sender;
+    asio::const_buffer buffer(rxData, 1024);
+    socket.async_read_some(buffer, [](std::error_code e, std::size_t len) {
+
+    });
+}
+
 bool TCPClient::Open()
 {
-    return false;
+    std::thread t(Run, d, this);
+    t.detach();
+
+    return true;
 }
 
 void TCPClient::Close() {}
