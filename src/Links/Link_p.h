@@ -8,25 +8,5 @@
  **************************************************************************************************/
 #pragma once
 
-#include <asio/buffer.hpp>
-#include <nlohmann/json.hpp>
-#include <sigslot/signal.hpp>
-
-#include <wx/wx.h>
-
-#include "Common/wxTools.h"
-
-class Link : wxObject
-{
-public:
-    wxToolsSignal<const wxToolsConstBuffer & /*bytes*/, const wxString & /*to*/> bytesWrittenSignal;
-    wxToolsSignal<const wxToolsConstBuffer & /*bytes*/, const wxString & /*from*/> bytesReadSignal;
-    sigslot::signal<const std::string & /*error message*/> errorOccuredSignal;
-
-    virtual bool Open() = 0;
-    virtual void Close() = 0;
-    virtual void Write(const wxString &data, TextFormat format) = 0;
-
-    virtual void Load(const wxToolsJson &parameters) = 0;
-    virtual wxToolsJson Save() = 0;
-};
+class LinkPrivate
+{};

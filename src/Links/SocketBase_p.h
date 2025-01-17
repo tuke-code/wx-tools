@@ -10,7 +10,9 @@
 
 #include <wx/wx.h>
 
-class SocketBasePrivate
+#include "Link_p.h"
+
+class SocketBasePrivate : public LinkPrivate
 {
 public:
     wxString clientAddress;

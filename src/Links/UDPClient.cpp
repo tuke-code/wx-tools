@@ -36,7 +36,7 @@ void ReadData(UDPClientPrivate *d, UDPClient *udpClient)
             asio::const_buffer buffer(msg.data(), msg.size());
             size_t len = socket.send_to(buffer, *endpoints.begin());
             if (len > 0) {
-                udpClient->bytesWrittenSignal(buffer, d->serverAddress);
+                udpClient->bytesTxSignal(buffer, d->serverAddress);
             } else {
                 wxToolsInfo() << "Write data failed...";
             }
@@ -56,7 +56,7 @@ void ReadData(UDPClientPrivate *d, UDPClient *udpClient)
 
             std::string data(buffer, len);
             asio::const_buffer buffer(data.data(), data.size());
-            udpClient->bytesReadSignal(buffer, d->serverAddress);
+            udpClient->bytesRxSignal(buffer, d->serverAddress);
         } catch (asio::system_error &e) {
             if (e.code().value() != 10004) {
                 wxToolsInfo() << e.what();

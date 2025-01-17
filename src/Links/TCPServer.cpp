@@ -33,7 +33,7 @@ void SetUpSocket(TCPServerPrivate *d, TCPServer *tcpServer, tcp::socket socket)
             if (ret != bytes.size()) {
                 errorOccurred = true;
             } else {
-                tcpServer->bytesWrittenSignal(bytes, d->serverAddress);
+                tcpServer->bytesTxSignal(bytes, d->serverAddress);
             }
 
         } catch (asio::system_error error) {
@@ -67,7 +67,7 @@ void SetUpSocket(TCPServerPrivate *d, TCPServer *tcpServer, tcp::socket socket)
             continue;
         }
 
-        tcpServer->bytesReadSignal(asio::const_buffer(data, len), d->serverAddress);
+        tcpServer->bytesRxSignal(asio::const_buffer(data, len), d->serverAddress);
     }
 }
 

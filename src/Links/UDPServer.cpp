@@ -47,7 +47,7 @@ void ReadData(UDPServerPrivate *d, UDPServer *udpServer)
 
             std::string data(buffer, len);
             asio::const_buffer buffer(data.data(), data.size());
-            udpServer->bytesReadSignal(buffer, d->serverAddress);
+            udpServer->bytesRxSignal(buffer, d->serverAddress);
         } catch (asio::system_error &e) {
             if (e.code().value() != 10004) {
                 wxToolsInfo() << e.what();
@@ -92,7 +92,7 @@ void WriteData(UDPServerPrivate *d,
     udp::endpoint endpoint(asio::ip::make_address(address), port);
     size_t len = d->socket->send_to(buffer, endpoint);
     if (len > 0) {
-        udpServer->bytesWrittenSignal(buffer, wxString(udpServer->DoEncodeFlag(address, port)));
+        udpServer->bytesTxSignal(buffer, wxString(udpServer->DoEncodeFlag(address, port)));
     } else {
         // If send failed, I think the client is disconnected, so remove it.
         d->DoRemoveClient(address, port);

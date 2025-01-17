@@ -11,7 +11,9 @@
 #include <asio/io_service.hpp>
 #include <asio/serial_port.hpp>
 
-class SerialPortPrivate
+#include "Link_p.h"
+
+class SerialPortPrivate : public LinkPrivate
 {
 public:
     asio::serial_port *serialPort;

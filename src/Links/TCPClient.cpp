@@ -54,7 +54,7 @@ void Loop(TCPClientPrivate *d, TCPClient *tcpClient)
 
                 wxToolsInfo() << "Read data from server: " << data;
                 std::string flag = SocketBase::DoEncodeFlag(ip, d->serverPort);
-                tcpClient->bytesReadSignal(asio::const_buffer(data, len), flag);
+                tcpClient->bytesRxSignal(asio::const_buffer(data, len), flag);
             }
         });
 
@@ -63,7 +63,7 @@ void Loop(TCPClientPrivate *d, TCPClient *tcpClient)
             try {
                 size_t len = asio::write(s, asio::buffer(msg.first));
                 std::string flag = SocketBase::DoEncodeFlag(ip, d->serverPort);
-                tcpClient->bytesWrittenSignal(asio::const_buffer(msg.first.c_str(), len), flag);
+                tcpClient->bytesTxSignal(asio::const_buffer(msg.first.c_str(), len), flag);
             } catch (std::system_error e) {
                 wxToolsWarning() << "Write data to server failed: " << e.what();
                 stop.store(true);

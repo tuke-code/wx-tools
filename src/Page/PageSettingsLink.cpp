@@ -32,7 +32,7 @@ PageSettingsLink::PageSettingsLink(LinkType type, wxWindow *parent)
     m_popup = new PageSettingsLinkPopup(settingsButton);
 
     m_openButton = new wxButton(GetStaticBox(), wxID_ANY, wxT("Open"));
-    m_openButton->Bind(wxEVT_BUTTON, [=](wxCommandEvent &) { invokeOpenSignal(); });
+    m_openButton->Bind(wxEVT_BUTTON, [this](wxCommandEvent &) { this->invokeOpenSignal(); });
 
     auto buttonSizer = new wxBoxSizer(wxHORIZONTAL);
     buttonSizer->Add(settingsButton, 1, wxEXPAND | wxALL, 0);

@@ -76,7 +76,8 @@ void Page::OnInvokeOpen()
         inputSettings->SetCycleIntervalComboBoxSelection(0);
 
         Link *link = linkUi->GetLink();
-        link->bytesWrittenSignal.disconnect_all();
+        link->bytesTxSignal.disconnect_all();
+        link->bytesRxSignal.disconnect_all();
 
         linkUi->Close();
         linkUi->Enable();
@@ -89,8 +90,8 @@ void Page::OnInvokeOpen()
             wxToolsInfo() << "Open link successfully.";
 
             Link *link = linkUi->GetLink();
-            link->bytesReadSignal.connect(&Page::OnBytesRead, this);
-            link->bytesWrittenSignal.connect(&Page::OnBytesWritten, this);
+            link->bytesRxSignal.connect(&Page::OnBytesRx, this);
+            link->bytesTxSignal.connect(&Page::OnBytesTx, this);
         } else {
             wxMessageBox(wxT("Failed to open link."), wxT("Error"), wxICON_ERROR);
         }
@@ -135,12 +136,12 @@ void Page::OnInvokeStartTimer(int ms)
     m_sendTimer.Start(ms);
 }
 
-void Page::OnBytesRead(const wxToolsConstBuffer &bytes, const wxString &from)
+void Page::OnBytesRx(const wxToolsConstBuffer &bytes, const wxString &from)
 {
     OutputText(bytes, from, true);
 }
 
-void Page::OnBytesWritten(const wxToolsConstBuffer &bytes, const wxString &to)
+void Page::OnBytesTx(const wxToolsConstBuffer &bytes, const wxString &to)
 {
     OutputText(bytes, to, false);
 }
