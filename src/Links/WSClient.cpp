@@ -34,7 +34,7 @@ bool WSClient::Open()
         // Wait for server to start
         break;
     }
-
+#if 0
     d->client->bytesRx.connect([](std::shared_ptr<char> bytes, int len, std::string from) {
         wxToolsInfo() << "Received " << len << " bytes from " << from;
     });
@@ -44,6 +44,7 @@ bool WSClient::Open()
     d->client->errorOccurred.connect([](std::string error) {
         wxToolsWarning() << "Error occurred: " << error << ". The server will be interrupted!";
     });
+#endif
 
     return true;
 }

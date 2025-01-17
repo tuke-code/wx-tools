@@ -57,7 +57,7 @@ static void handler(struct mg_connection *c, int ev, void *ev_data)
         std::shared_ptr<char> data(new char[wm->data.len], [](char *p) { delete[] p; });
         memcpy(data.get(), wm->data.buf, wm->data.len);
         //client->bytesRx(std::move(data), wm->data.len, "from");
-        wxToolsInfo() << "GOT ECHO REPLY: [%.*s]\n" << (int) wm->data.len << wm->data.buf;
+        wxToolsInfo() << "GOT ECHO REPLY: " << wm->data.buf;
     }
 
     if (ev == MG_EV_ERROR || ev == MG_EV_CLOSE) {
