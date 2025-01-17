@@ -13,6 +13,7 @@
 #include <mongoose.h>
 #include <sigslot/signal.hpp>
 
+#include "Common/wxTools.h"
 #include "SocketServer_p.h"
 
 class WebSocketClient;
@@ -51,12 +52,14 @@ static void handler(struct mg_connection *c, int ev, void *ev_data)
         // When websocket handshake is successful, send message
         mg_ws_send(c, "hello", 5, WEBSOCKET_OP_TEXT);
     } else if (ev == MG_EV_WS_MSG) {
-        // When we get echo response, print it
+        WebSocketClient *client = (WebSocketClient *) c->mgr->userdata;
         struct mg_ws_message *wm = (struct mg_ws_message *) ev_data;
-        printf("GOT ECHO REPLY: [%.*s]\n", (int) wm->data.len, wm->data.buf);
+        std::shared_ptr<char> data(new char[wm->data.len], [](char *p) { delete[] p; });
+        client->bytesRx(data, wm->data.len, "from");
+        wxToolsInfo() << "GOT ECHO REPLY: [%.*s]\n" << (int) wm->data.len << wm->data.buf;
     }
 
-    if (ev == MG_EV_ERROR || ev == MG_EV_CLOSE || ev == MG_EV_WS_MSG) {
+    if (ev == MG_EV_ERROR || ev == MG_EV_CLOSE) {
         *(bool *) c->fn_data = true; // Signal that we're done
     }
 }
@@ -85,7 +88,8 @@ static void WSClientLoop(WebSocketClient *client, const std::string &ip, uint16_
             mg_ws_send(mgr.conns, tx.first.get(), tx.second, WEBSOCKET_OP_TEXT);
         }
 
-        mg_mgr_poll(&mgr, 1000);
+        client->txBytes.clear();
+        mg_mgr_poll(&mgr, 100);
     }
     mg_mgr_free(&mgr);
     client->running.store(false);
