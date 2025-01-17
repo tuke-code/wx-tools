@@ -8,27 +8,39 @@
  **************************************************************************************************/
 #pragma once
 
+#include <atomic>
+
 #include <mongoose.h>
+#include <sigslot/signal.hpp>
 
 #include "Common/wxTools.h"
 #include "SocketServer_p.h"
-#include "sigslot/signal.hpp"
 
 static const char *s_listen_on = "ws://localhost:8000";
 static const char *s_web_root = ".";
+
+class WSServerPrivate : public SocketServerPrivate
+{
+public:
+};
 
 class WebSocketServer
 {
 public:
     WebSocketServer(const std::string &ip, uint16_t port)
-    {
-
-    }
+        : m_ip(ip)
+        , m_port(port)
+        , m_interrupted(false)
+    {}
 
 public:
-    // clang-format off
-    sigslot::signal<std::shared_ptr<int *> /*data*/, int /*len*/, std::string /*from*/> bytesReceivedSignal;
-    // clang-format on
+    sigslot::signal<std::shared_ptr<int *> /*data*/, int /*len*/, std::string /*from*/> bytesRx;
+    sigslot::signal<std::shared_ptr<int *> /*data*/, int /*len*/, std::string /*to  */> bytesTx;
+    sigslot::signal<std::string> errorOccurred;
+
+    std::string m_ip;
+    uint16_t m_port;
+    std::atomic_bool m_interrupted;
 };
 
 static void msg_event_handler(struct mg_connection *c, int ev, void *ev_data)
@@ -70,13 +82,11 @@ static void WSServerLoop(WebSocketServer *server)
     struct mg_mgr mgr;
     mg_mgr_init(&mgr);
     mg_http_listen(&mgr, s_listen_on, msg_event_handler, server);
-    for (;;) {
+    while (1) {
+        if (server->m_interrupted.load()) {
+            break;
+        }
         mg_mgr_poll(&mgr, 1000);
     }
     mg_mgr_free(&mgr);
 }
-
-class WSServerPrivate : public SocketServerPrivate
-{
-public:
-};
