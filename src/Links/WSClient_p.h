@@ -55,7 +55,8 @@ static void handler(struct mg_connection *c, int ev, void *ev_data)
         WebSocketClient *client = (WebSocketClient *) c->mgr->userdata;
         struct mg_ws_message *wm = (struct mg_ws_message *) ev_data;
         std::shared_ptr<char> data(new char[wm->data.len], [](char *p) { delete[] p; });
-        client->bytesRx(data, wm->data.len, "from");
+        memcpy(data.get(), wm->data.buf, wm->data.len);
+        //client->bytesRx(std::move(data), wm->data.len, "from");
         wxToolsInfo() << "GOT ECHO REPLY: [%.*s]\n" << (int) wm->data.len << wm->data.buf;
     }
 
