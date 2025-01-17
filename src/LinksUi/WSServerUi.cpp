@@ -8,6 +8,8 @@
  **************************************************************************************************/
 #include "WSServerUi.h"
 
+#include <Links/WSServer.h>
+
 WSServerUi::WSServerUi(wxWindow *parent)
     : SocketServerUi(parent)
 {
@@ -21,3 +23,8 @@ WSServerUi::WSServerUi(wxWindow *parent)
 }
 
 WSServerUi::~WSServerUi() {}
+
+Link *WSServerUi::CreateLink()
+{
+    return new WSServer();
+}

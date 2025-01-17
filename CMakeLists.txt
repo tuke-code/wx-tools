@@ -16,11 +16,15 @@ if(WIN32 AND MSVC AND CMAKE_BUILD_TYPE STREQUAL "Release")
 endif()
 # cmake-format: on
 
+set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 include(cmake/asio.cmake)
 include(cmake/glog.cmake)
 include(cmake/json.cmake)
 include(cmake/libcrc.cmake)
 include(cmake/sigslot.cmake)
+include(cmake/mongoose.cmake)
 include(cmake/wxWidgets.cmake)
 include(cmake/websocketpp.cmake)
 include(cmake/CSerialPort.cmake)

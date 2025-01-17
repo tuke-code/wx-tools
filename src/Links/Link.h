@@ -21,6 +21,7 @@ class Link : wxObject
 public:
     wxToolsSignal<const wxToolsConstBuffer & /*bytes*/, const wxString & /*to*/> bytesWrittenSignal;
     wxToolsSignal<const wxToolsConstBuffer & /*bytes*/, const wxString & /*from*/> bytesReadSignal;
+    sigslot::signal<const std::string & /*error message*/> errorOccuredSignal;
 
     virtual bool Open() = 0;
     virtual void Close() = 0;

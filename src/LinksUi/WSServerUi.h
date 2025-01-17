@@ -15,4 +15,7 @@ class WSServerUi : public SocketServerUi
 public:
     WSServerUi(wxWindow *parent = nullptr);
     ~WSServerUi();
+
+protected:
+    Link *CreateLink() override;
 };

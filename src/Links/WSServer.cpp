@@ -10,8 +10,7 @@
 #include "WSServer_p.h"
 
 WSServer::WSServer()
-    : d(new WSServerPrivate)
-    , SocketServer(d)
+    : SocketServer(d = new WSServerPrivate)
 {}
 
 WSServer::~WSServer()
@@ -22,7 +21,11 @@ WSServer::~WSServer()
 
 bool WSServer::Open()
 {
-    return false;
+    std::string ip = d->serverAddress.ToStdString();
+    uint16_t port = d->serverPort;
+    std::thread t(WSServerLoop, new WebSocketServer(ip, port));
+    t.detach();
+    return true;
 }
 
 void WSServer::Close() {}
