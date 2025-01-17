@@ -41,8 +41,8 @@ private:
     void OnInvokeOpen();
     void OnInvokeWrite(TextFormat format);
     void OnInvokeStartTimer(int ms);
-    void OnBytesRead(const wxToolsConstBuffer &bytes, const wxString &from);
-    void OnBytesWritten(const wxToolsConstBuffer &bytes, const wxString &to);
+    void OnBytesRx(const wxToolsConstBuffer &bytes, const wxString &from);
+    void OnBytesTx(const wxToolsConstBuffer &bytes, const wxString &to);
     void OnSendTimerTimeout();
     void OnClear();
     void OnTextFormatChanged(TextFormat format);
