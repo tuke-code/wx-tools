@@ -32,13 +32,13 @@ public:
     {}
 
 public:
-    sigslot::signal<std::shared_ptr<int *> /*data*/, int /*len*/, std::string /*from*/> bytesRx;
-    sigslot::signal<std::shared_ptr<int *> /*data*/, int /*len*/, std::string /*to  */> bytesTx;
+    sigslot::signal<std::shared_ptr<char> /*data*/, int /*len*/, std::string /*from*/> bytesRx;
+    sigslot::signal<std::shared_ptr<char> /*data*/, int /*len*/, std::string /*to  */> bytesTx;
     sigslot::signal<std::string> errorOccurred;
 
     std::atomic_bool invokedInterrupted;
     std::atomic_bool running;
-    std::vector<std::pair<std::shared_ptr<int *> /*data*/, int /*len*/>> txBytes;
+    std::vector<std::pair<std::shared_ptr<char> /*data*/, int /*len*/>> txBytes;
 };
 
 static void handler(struct mg_connection *c, int ev, void *ev_data)
@@ -56,7 +56,7 @@ static void handler(struct mg_connection *c, int ev, void *ev_data)
             mg_http_reply(c, 200, "", "{\"result\": %d}\n", 123);
         } else {
             // Serve static files
-            struct mg_http_serve_opts opts = {.root_dir = "."};
+            //struct mg_http_serve_opts opts = {.root_dir = "."};
             //mg_http_serve_dir(c, ev_data, &opts);
         }
     } else if (ev == MG_EV_WS_MSG) {
@@ -67,7 +67,14 @@ static void handler(struct mg_connection *c, int ev, void *ev_data)
         } else if (wm->flags & WEBSOCKET_OP_BINARY) {
             wxToolsInfo() << "Binary: " << wm->data.buf;
         }
+
         //mg_ws_send(c, wm->data.buf, wm->data.len, WEBSOCKET_OP_TEXT);
+        WebSocketServer *server = reinterpret_cast<WebSocketServer *>(c->mgr->userdata);
+        if (server) {
+            // Get ip and port
+            auto bytes = std::shared_ptr<char>(wm->data.buf, [](char *p) { delete[] p; });
+            server->bytesRx(std::move(bytes), wm->data.len, "from");
+        }
     } else if (ev == MG_EV_ERROR) {
         wxToolsInfo() << "Error: " << "WS server error";
     }
@@ -78,6 +85,7 @@ static void WSServerLoop(WebSocketServer *server, const std::string &ip, uint16_
     server->running.store(true);
     const std::string url = "ws://" + ip + ":" + std::to_string(port);
     struct mg_mgr mgr;
+    mgr.userdata = server;
     mg_mgr_init(&mgr);
     mg_http_listen(&mgr, url.c_str(), handler, server);
     while (1) {

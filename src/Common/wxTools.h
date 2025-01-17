@@ -76,6 +76,7 @@ std::vector<wxString> GetSuportedTextFormats();
 wxString GetTextFormatName(TextFormat format);
 std::string DoDecodeText(const wxToolsConstBuffer &buffer, TextFormat format);
 wxToolsConstBuffer DoEncodeText(const std::string &text, TextFormat format);
+std::shared_ptr<char> DoCookeText(const std::string &text, int format, int &len);
 std::string GetBinString(uint8_t value);
 std::string GetOctString(uint8_t value);
 std::string GetDecString(uint8_t value);

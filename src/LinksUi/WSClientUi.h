@@ -15,4 +15,7 @@ class WSClientUi : public SocketClientUi
 public:
     WSClientUi(wxWindow *parent = nullptr);
     ~WSClientUi();
+
+protected:
+    Link *CreateLink() override;
 };

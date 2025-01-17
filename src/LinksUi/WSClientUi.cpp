@@ -8,6 +8,8 @@
  **************************************************************************************************/
 #include "WSClientUi.h"
 
+#include "Links/WSClient.h"
+
 WSClientUi::WSClientUi(wxWindow *parent)
     : SocketClientUi(parent)
 {
@@ -23,3 +25,8 @@ WSClientUi::WSClientUi(wxWindow *parent)
 }
 
 WSClientUi::~WSClientUi() {}
+
+Link *WSClientUi::CreateLink()
+{
+    return new WSClient();
+}

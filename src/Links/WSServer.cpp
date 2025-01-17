@@ -35,10 +35,10 @@ bool WSServer::Open()
         break;
     }
 
-    d->server->bytesRx.connect([](std::shared_ptr<int *> bytes, int len, std::string from) {
+    d->server->bytesRx.connect([](std::shared_ptr<char> bytes, int len, std::string from) {
         wxToolsInfo() << "Received " << len << " bytes from " << from;
     });
-    d->server->bytesTx.connect([](std::shared_ptr<int *> bytes, int len, std::string to) {
+    d->server->bytesTx.connect([](std::shared_ptr<char> bytes, int len, std::string to) {
         wxToolsInfo() << "Transmitted " << len << " bytes to " << to;
     });
     d->server->errorOccurred.connect([](std::string error) {
@@ -65,4 +65,11 @@ void WSServer::Close()
     }
 }
 
-void WSServer::Write(const wxString &data, TextFormat format) {}
+void WSServer::Write(const wxString &data, TextFormat format)
+{
+    int len = 0;
+    std::shared_ptr<char> bytes = DoCookeText(data.ToStdString(), static_cast<int>(format), len);
+    if (len > 0) {
+        d->server->txBytes.push_back(std::make_pair(std::move(bytes), len));
+    }
+}

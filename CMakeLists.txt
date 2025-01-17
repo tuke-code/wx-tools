@@ -16,7 +16,7 @@ if(WIN32 AND MSVC AND CMAKE_BUILD_TYPE STREQUAL "Release")
 endif()
 # cmake-format: on
 
-set(CMAKE_CXX_STANDARD 20)
+set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 include(cmake/asio.cmake)

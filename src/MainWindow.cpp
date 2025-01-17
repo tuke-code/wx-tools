@@ -34,8 +34,8 @@ MainWindow::MainWindow()
         }
     }
 
-    m_updateTimeTimer.Bind(wxEVT_TIMER, [=](wxTimerEvent&) {
-        m_statusBar->SetStatusText(wxDateTime::Now().FormatTime(), 1);
+    m_updateTimeTimer.Bind(wxEVT_TIMER, [this](wxTimerEvent&) {
+        this->m_statusBar->SetStatusText(wxDateTime::Now().FormatTime(), 1);
     });
 
     LoadParameters();

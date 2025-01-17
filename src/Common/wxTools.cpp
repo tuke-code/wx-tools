@@ -210,6 +210,14 @@ asio::const_buffer DoEncodeText(const std::string &text, TextFormat format)
     return asio::buffer(text.data(), text.size());
 }
 
+std::shared_ptr<char> DoCookeText(const std::string &text, int format, int &len)
+{
+    len = text.size();
+    std::shared_ptr<char> bytes(new char[len], [](char *p) { delete[] p; });
+    memcpy(bytes.get(), text.c_str(), len);
+    return bytes;
+}
+
 std::string GetBinString(uint8_t value)
 {
     static std::vector<std::string> list;
