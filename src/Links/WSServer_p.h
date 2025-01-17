@@ -50,10 +50,10 @@ static void handler(struct mg_connection *c, int ev, void *ev_data)
         if (mg_match(hm->uri, mg_str("/websocket"), NULL)) {
             // Upgrade to websocket. From now on, a connection is a full-duplex
             // Websocket connection, which will receive MG_EV_WS_MSG events.
-            mg_ws_upgrade(c, hm, NULL);
+            //mg_ws_upgrade(c, hm, NULL);
         } else if (mg_match(hm->uri, mg_str("/rest"), NULL)) {
             // Serve REST response
-            mg_http_reply(c, 200, "", "{\"result\": %d}\n", 123);
+            //mg_http_reply(c, 200, "", "{\"result\": %d}\n", 123);
         } else {
             // Serve static files
             //struct mg_http_serve_opts opts = {.root_dir = "."};
