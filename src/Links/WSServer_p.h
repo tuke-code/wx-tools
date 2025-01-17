@@ -16,21 +16,19 @@
 #include "Common/wxTools.h"
 #include "SocketServer_p.h"
 
-static const char *s_listen_on = "ws://localhost:8000";
-static const char *s_web_root = ".";
-
+class WebSocketServer;
 class WSServerPrivate : public SocketServerPrivate
 {
 public:
+    WebSocketServer *server{nullptr};
 };
 
 class WebSocketServer
 {
 public:
-    WebSocketServer(const std::string &ip, uint16_t port)
-        : m_ip(ip)
-        , m_port(port)
-        , m_interrupted(false)
+    WebSocketServer()
+        : invokedInterrupted(false)
+        , running(false)
     {}
 
 public:
@@ -38,15 +36,13 @@ public:
     sigslot::signal<std::shared_ptr<int *> /*data*/, int /*len*/, std::string /*to  */> bytesTx;
     sigslot::signal<std::string> errorOccurred;
 
-    std::string m_ip;
-    uint16_t m_port;
-    std::atomic_bool m_interrupted;
+    std::atomic_bool invokedInterrupted;
+    std::atomic_bool running;
+    std::vector<std::pair<std::shared_ptr<int *> /*data*/, int /*len*/>> txBytes;
 };
 
-static void msg_event_handler(struct mg_connection *c, int ev, void *ev_data)
+static void handler(struct mg_connection *c, int ev, void *ev_data)
 {
-    WebSocketServer *server = reinterpret_cast<WebSocketServer *>(ev_data);
-
     if (ev == MG_EV_OPEN) {
         // c->is_hexdumping = 1;
     } else if (ev == MG_EV_HTTP_MSG) {
@@ -60,7 +56,7 @@ static void msg_event_handler(struct mg_connection *c, int ev, void *ev_data)
             mg_http_reply(c, 200, "", "{\"result\": %d}\n", 123);
         } else {
             // Serve static files
-            struct mg_http_serve_opts opts = {.root_dir = s_web_root};
+            struct mg_http_serve_opts opts = {.root_dir = "."};
             //mg_http_serve_dir(c, ev_data, &opts);
         }
     } else if (ev == MG_EV_WS_MSG) {
@@ -77,16 +73,24 @@ static void msg_event_handler(struct mg_connection *c, int ev, void *ev_data)
     }
 }
 
-static void WSServerLoop(WebSocketServer *server)
+static void WSServerLoop(WebSocketServer *server, const std::string &ip, uint16_t port)
 {
+    server->running.store(true);
+    const std::string url = "ws://" + ip + ":" + std::to_string(port);
     struct mg_mgr mgr;
     mg_mgr_init(&mgr);
-    mg_http_listen(&mgr, s_listen_on, msg_event_handler, server);
+    mg_http_listen(&mgr, url.c_str(), handler, server);
     while (1) {
-        if (server->m_interrupted.load()) {
+        if (server->invokedInterrupted.load()) {
             break;
         }
+
+        for (auto &tx : server->txBytes) {
+            mg_ws_send(mgr.conns, tx.first.get(), tx.second, WEBSOCKET_OP_TEXT);
+        }
+
         mg_mgr_poll(&mgr, 1000);
     }
     mg_mgr_free(&mgr);
+    server->running.store(false);
 }

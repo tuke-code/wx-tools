@@ -15,6 +15,8 @@ WSServer::WSServer()
 
 WSServer::~WSServer()
 {
+    Close();
+
     delete d;
     d = nullptr;
 }
@@ -23,11 +25,44 @@ bool WSServer::Open()
 {
     std::string ip = d->serverAddress.ToStdString();
     uint16_t port = d->serverPort;
-    std::thread t(WSServerLoop, new WebSocketServer(ip, port));
+
+    d->server = new WebSocketServer();
+    std::thread t(WSServerLoop, d->server, ip, port);
     t.detach();
+
+    while (!d->server->running) {
+        // Wait for server to start
+        break;
+    }
+
+    d->server->bytesRx.connect([](std::shared_ptr<int *> bytes, int len, std::string from) {
+        wxToolsInfo() << "Received " << len << " bytes from " << from;
+    });
+    d->server->bytesTx.connect([](std::shared_ptr<int *> bytes, int len, std::string to) {
+        wxToolsInfo() << "Transmitted " << len << " bytes to " << to;
+    });
+    d->server->errorOccurred.connect([](std::string error) {
+        wxToolsWarning() << "Error occurred: " << error << ". The server will be interrupted!";
+    });
+
     return true;
 }
 
-void WSServer::Close() {}
+void WSServer::Close()
+{
+    if (d->server) {
+        d->server->invokedInterrupted.store(true);
+        while (!d->server->running) {
+            // Wait for server to stop
+            break;
+        }
+
+        d->server->errorOccurred.disconnect_all();
+        d->server->bytesRx.disconnect_all();
+        d->server->bytesTx.disconnect_all();
+        delete d->server;
+        d->server = nullptr;
+    }
+}
 
 void WSServer::Write(const wxString &data, TextFormat format) {}
