@@ -71,6 +71,7 @@ static void WSClientLoop(WebSocketClient *client, const std::string &ip, uint16_
     mgr.userdata = client;
     mg_mgr_init(&mgr);
     c = mg_ws_connect(&mgr, url.c_str(), handler, &done, NULL);
+    mg_log_set(MG_LL_NONE);
     while (c && done == false) {
         if (client->invokedInterrupted.load()) {
             break;

@@ -59,6 +59,11 @@ static void handler(struct mg_connection *c, int ev, void *ev_data)
             //struct mg_http_serve_opts opts = {.root_dir = "."};
             //mg_http_serve_dir(c, ev_data, &opts);
         }
+    } else if (ev == MG_EV_ACCEPT) {
+        wxToolsInfo() << "Accept:"
+                      << std::string(reinterpret_cast<char *>(c->rem.ip), sizeof(c->rem.ip))
+                      << " port:" << c->rem.port;
+
     } else if (ev == MG_EV_WS_MSG) {
         // Got websocket frame. Received data is wm->data. Echo it back!
         struct mg_ws_message *wm = (struct mg_ws_message *) ev_data;
@@ -88,6 +93,7 @@ static void WSServerLoop(WebSocketServer *server, const std::string &ip, uint16_
     mgr.userdata = server;
     mg_mgr_init(&mgr);
     mg_http_listen(&mgr, url.c_str(), handler, server);
+    mg_log_set(MG_LL_NONE);
     while (1) {
         if (server->invokedInterrupted.load()) {
             break;
