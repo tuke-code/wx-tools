@@ -8,6 +8,8 @@
  **************************************************************************************************/
 #include "IpComboBox.h"
 
+#include <asio.hpp>
+
 IpComboBox::IpComboBox(wxWindow* parent)
     : wxComboBox(parent,
                  wxID_ANY,
@@ -18,7 +20,6 @@ IpComboBox::IpComboBox(wxWindow* parent)
                  nullptr,
                  wxCB_READONLY)
 {
-#if 0
     asio::io_service ioService;
     asio::ip::tcp::resolver resolver(ioService);
     asio::ip::tcp::resolver::query query(asio::ip::host_name(), "");
@@ -36,5 +37,4 @@ IpComboBox::IpComboBox(wxWindow* parent)
     }
 
     SetSelection(0);
-#endif
 }
