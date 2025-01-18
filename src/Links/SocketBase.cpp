@@ -10,7 +10,8 @@
 #include "SocketBase_p.h"
 
 SocketBase::SocketBase(SocketBasePrivate *dPtr)
-    : d(dPtr)
+    : Link(dPtr)
+    , d(dPtr)
 {}
 
 SocketBase::~SocketBase() {}
@@ -41,60 +42,4 @@ wxToolsJson SocketBase::Save()
     parameters[keys.userName] = d->userName.ToStdString();
     parameters[keys.password] = d->password.ToStdString();
     return parameters;
-}
-
-wxString SocketBase::GetClientAddress() const
-{
-    return d->clientAddress;
-}
-
-uint16_t SocketBase::GetClientPort() const
-{
-    return d->clientPort;
-}
-
-wxString SocketBase::GetServerAddress() const
-{
-    return d->serverAddress;
-}
-
-uint16_t SocketBase::GetServerPort() const
-{
-    return d->serverPort;
-}
-
-bool SocketBase::GetIsEnableAuthorization() const
-{
-    return d->isEnableAuthorization;
-}
-
-int SocketBase::GetDataChannel() const
-{
-    return d->dataChannel;
-}
-
-wxString SocketBase::GetUserName() const
-{
-    return d->userName;
-}
-
-wxString SocketBase::GetPassword() const
-{
-    return d->password;
-}
-
-std::string SocketBase::DoEncodeFlag(const std::string &ip, uint16_t port)
-{
-    return ip + ":" + std::to_string(port);
-}
-
-std::pair<std::string, uint16_t> SocketBase::DoDecodeFlag(const std::string &flag)
-{
-    std::pair<std::string, uint16_t> result{"", 0};
-    size_t pos = flag.find(':');
-    if (pos != std::string::npos) {
-        result.first = flag.substr(0, pos);
-        result.second = std::stoi(flag.substr(pos + 1));
-    }
-    return result;
 }

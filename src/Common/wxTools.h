@@ -108,3 +108,5 @@ wxString GetEscapeName(EscapeType type);
 void wxToolsSetComboBoxSectionByIntClientData(wxComboBox *comboBox, int clientDataValue);
 wxString wxToolsGetSettingsPath();
 wxString wxToolsGetSettingsFileName();
+std::string DoEncodeFlag(const std::string &ip, uint16_t port);
+std::pair<std::string, uint16_t> DoDecodeFlag(const std::string &flag);

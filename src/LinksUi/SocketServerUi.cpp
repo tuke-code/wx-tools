@@ -8,8 +8,6 @@
  **************************************************************************************************/
 #include "SocketServerUi.h"
 
-#include "Links/SocketBase.h"
-
 SocketServerUi::SocketServerUi(wxWindow *parent)
     : SocketBaseUi(parent)
 {}
@@ -23,7 +21,7 @@ void SocketServerUi::DoNewClient(const std::string &ip, uint16_t port)
     }
 
     if (m_clientsComboBox->FindString(ip) == wxNOT_FOUND) {
-        m_clientsComboBox->Append(SocketBase::DoEncodeFlag(ip, port));
+        m_clientsComboBox->Append(DoEncodeFlag(ip, port));
     }
 }
 
@@ -33,7 +31,7 @@ void SocketServerUi::DoDeleteClient(const std::string &ip, uint16_t port)
         return;
     }
 
-    int index = m_clientsComboBox->FindString(SocketBase::DoEncodeFlag(ip, port));
+    int index = m_clientsComboBox->FindString(DoEncodeFlag(ip, port));
     if (index != wxNOT_FOUND) {
         m_clientsComboBox->Delete(index);
         m_clientsComboBox->SetSelection(0);

@@ -15,19 +15,29 @@
 
 #include "Common/wxTools.h"
 
+class LinkPrivate;
 class Link : wxObject
 {
 public:
+    Link(LinkPrivate *d);
+    ~Link();
+
     // clang-format off
     wxToolsSignal<std::shared_ptr<char> /*bytes*/, int /*length of bytes*/, std::string /*to  */> bytesTxSignal;
     wxToolsSignal<std::shared_ptr<char> /*bytes*/, int /*length of bytes*/, std::string /*from*/> bytesRxSignal;
-    sigslot::signal<std::string /*error message*/> errorOccuredSignal;
+    sigslot::signal<std::string /*error message*/> errorOccurredSignal;
     // clang-format on
 
-    virtual bool Open() = 0;
-    virtual void Close() = 0;
-    virtual void Write(const wxString &data, TextFormat format) = 0;
+    bool Open();
+    void Close();
+    void Write(const wxString &data, TextFormat format);
 
     virtual void Load(const wxToolsJson &parameters) = 0;
     virtual wxToolsJson Save() = 0;
+
+private:
+    virtual void Loop(LinkPrivate *d);
+
+private:
+    LinkPrivate *d;
 };

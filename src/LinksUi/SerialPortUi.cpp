@@ -74,7 +74,7 @@ wxToolsJson SerialPortUi::Save() const
     SerialPortParameterKeys keys;
     json[keys.portName] = m_portNameComboBox->GetPortName().ToStdString();
     json[keys.baudRate] = static_cast<int>(m_baudRateComboBox->GetBaudRate());
-    json[keys.characterSize] = static_cast<int>(m_dataBitsComboBox->GetDataBits());
+    json[keys.dataBits] = static_cast<int>(m_dataBitsComboBox->GetDataBits());
     json[keys.stopBits] = static_cast<int>(m_stopBitsComboBox->GetStopBits());
     json[keys.flowControl] = static_cast<int>(m_flowBitsComboBox->GetFlowBits());
     json[keys.parity] = static_cast<int>(m_parityComboBox->GetParity());
@@ -86,7 +86,7 @@ void SerialPortUi::Load(const wxToolsJson &json)
     SerialPortParameterKeys keys;
     wxString portName = json[keys.portName].template get<std::string>();
     int baudRate = json[keys.baudRate].template get<int>();
-    int dataBits = json[keys.characterSize].template get<int>();
+    int dataBits = json[keys.dataBits].template get<int>();
     int stopBits = json[keys.stopBits].template get<int>();
     int flowBits = json[keys.flowControl].template get<int>();
     int parity = json[keys.parity].template get<int>();

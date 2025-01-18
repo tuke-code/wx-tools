@@ -17,10 +17,6 @@ public:
     TCPClient();
     ~TCPClient();
 
-    bool Open() override;
-    void Close() override;
-    void Write(const wxString &data, TextFormat format) override;
-
 private:
     TCPClientPrivate *d;
 };

@@ -17,7 +17,7 @@ struct SerialPortParameterKeys
     const std::string flowControl{"flowControl"};
     const std::string parity{"parity"};
     const std::string stopBits{"stopBits"};
-    const std::string characterSize{"characterSize"};
+    const std::string dataBits{"dataBits"};
 };
 
 class SerialPortPrivate;
@@ -27,9 +27,7 @@ public:
     SerialPort();
     ~SerialPort();
 
-    bool Open() override;
-    void Close() override;
-    void Write(const wxString &data, TextFormat format) override;
+    void Loop(LinkPrivate *d) override;
     void Load(const wxToolsJson &parameters) override;
     wxToolsJson Save() override;
 

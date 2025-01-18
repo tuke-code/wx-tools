@@ -18,21 +18,3 @@ TCPClient::~TCPClient()
     delete d;
     d = nullptr;
 }
-
-bool TCPClient::Open()
-{
-
-    return true;
-}
-
-void TCPClient::Close()
-{
-    
-}
-
-void TCPClient::Write(const wxString &data, TextFormat format)
-{
-    d->msgMutex.lock();
-    d->msgList.push_back(std::make_pair(data.ToStdString(), static_cast<int>(format)));
-    d->msgMutex.unlock();
-}

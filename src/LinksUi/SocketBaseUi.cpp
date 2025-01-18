@@ -223,7 +223,7 @@ void SocketBaseUi::InitClientsComboBox(int row, wxWindow *parent)
         }
 
         wxString str = m_clientsComboBox->GetValue();
-        auto ctx = SocketBase::DoDecodeFlag(str.ToStdString());
+        auto ctx = DoDecodeFlag(str.ToStdString());
         socketServer->SetCurrentClient(ctx.first, ctx.second);
     });
 }

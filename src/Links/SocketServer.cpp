@@ -14,7 +14,11 @@ SocketServer::SocketServer(SocketServerPrivate *dPtr)
     , d(dPtr)
 {}
 
-SocketServer::~SocketServer() {}
+SocketServer::~SocketServer()
+{
+    delete d;
+    d = nullptr;
+}
 
 void SocketServer::SetCurrentClient(const std::string &ip, uint16_t port)
 {

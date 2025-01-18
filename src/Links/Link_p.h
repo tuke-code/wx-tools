@@ -8,5 +8,19 @@
  **************************************************************************************************/
 #pragma once
 
+#include <atomic>
+#include <memory>
+#include <vector>
+
 class LinkPrivate
-{};
+{
+public:
+    LinkPrivate()
+        : invokedInterrupted(false)
+        , isRunning(false)
+    {}
+
+    std::atomic_bool invokedInterrupted;
+    std::atomic_bool isRunning;
+    std::vector<std::pair<std::shared_ptr<char> /*data*/, int /*len*/>> txBytes;
+};

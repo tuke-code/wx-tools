@@ -18,20 +18,3 @@ UDPClient::~UDPClient()
     delete d;
     d = nullptr;
 }
-
-bool UDPClient::Open()
-{
-    Close();
-
-    return true;
-}
-
-void UDPClient::Close()
-{
-    d->invokeCloseSignal();
-}
-
-void UDPClient::Write(const wxString &data, TextFormat format)
-{
-    d->invokeWriteSignal(data, format);
-}

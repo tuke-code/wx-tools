@@ -15,25 +15,6 @@ TCPServer::TCPServer()
 
 TCPServer::~TCPServer()
 {
-    Close();
-
     delete d;
     d = nullptr;
-}
-
-bool TCPServer::Open()
-{
-    Close();
-
-    return true;
-}
-
-void TCPServer::Close()
-{
-
-}
-
-void TCPServer::Write(const wxString &data, TextFormat format)
-{
-
 }

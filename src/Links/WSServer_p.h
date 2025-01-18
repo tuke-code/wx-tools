@@ -21,18 +21,12 @@ class WSServerPrivate : public SocketServerPrivate
 {
 public:
     WSServerPrivate()
-        : invokedInterrupted(false)
-        , running(false)
     {}
 
 public:
     sigslot::signal<std::shared_ptr<char> /*data*/, int /*len*/, std::string /*from*/> bytesRx;
     sigslot::signal<std::shared_ptr<char> /*data*/, int /*len*/, std::string /*to  */> bytesTx;
     sigslot::signal<std::string> errorOccurred;
-
-    std::atomic_bool invokedInterrupted;
-    std::atomic_bool running;
-    std::vector<std::pair<std::shared_ptr<char> /*data*/, int /*len*/>> txBytes;
 };
 
 static void handler(struct mg_connection *c, int ev, void *ev_data)
@@ -81,7 +75,7 @@ static void handler(struct mg_connection *c, int ev, void *ev_data)
 
 static void WSServerLoop(WSServerPrivate *d, WSServer *server)
 {
-    d->running.store(true);
+    d->isRunning.store(true);
     const std::string url = std::string("ws://") + d->serverAddress.ToStdString() + std::string(":")
                             + std::to_string(d->serverPort);
     struct mg_mgr mgr;
@@ -101,5 +95,5 @@ static void WSServerLoop(WSServerPrivate *d, WSServer *server)
         mg_mgr_poll(&mgr, 1000);
     }
     mg_mgr_free(&mgr);
-    d->running.store(false);
+    d->isRunning.store(false);
 }

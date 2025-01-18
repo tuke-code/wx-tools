@@ -18,21 +18,3 @@ UDPServer::~UDPServer()
     delete d;
     d = nullptr;
 }
-
-bool UDPServer::Open()
-{
-    Close();
-
-    return true;
-}
-
-void UDPServer::Close()
-{
-
-}
-
-
-void UDPServer::Write(const wxString &data, TextFormat format)
-{
-
-}
