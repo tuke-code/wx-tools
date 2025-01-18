@@ -85,6 +85,11 @@ void MainWindow::OnSaveAs(wxCommandEvent&)
     SaveParameters(fileName);
 }
 
+void MainWindow::OnNew(wxCommandEvent&)
+{
+    wxExecute(wxStandardPaths::Get().GetExecutablePath());
+}
+
 void MainWindow::OnExit(wxCommandEvent&)
 {
     wxLogMessage("The application will be closed!");
@@ -118,12 +123,14 @@ void MainWindow::InitMenuFile(wxMenuBar* menuBar)
     wxMenu* menuFile = new wxMenu;
     menuBar->Append(menuFile, wxT("&File"));
 
+    menuFile->Append(wxID_NEW);
     menuFile->Append(wxID_OPEN);
     menuFile->Append(wxID_SAVE);
     menuFile->Append(wxID_SAVEAS);
     menuFile->AppendSeparator();
     menuFile->Append(wxID_EXIT);
 
+    Bind(wxEVT_MENU, &MainWindow::OnNew, this, wxID_NEW);
     Bind(wxEVT_MENU, &MainWindow::OnOpen, this, wxID_OPEN);
     Bind(wxEVT_MENU, &MainWindow::OnSave, this, wxID_SAVE);
     Bind(wxEVT_MENU, &MainWindow::OnSaveAs, this, wxID_SAVEAS);

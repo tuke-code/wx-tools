@@ -39,7 +39,7 @@ public:
 
 private:
     // The function is called in a separate thread...
-    virtual void Loop(LinkPrivate *d);
+    virtual void Loop();
 
 protected:
     LinkPrivate *d;

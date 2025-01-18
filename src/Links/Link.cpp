@@ -22,7 +22,7 @@ bool Link::Open()
 {
     Close();
 
-    std::thread t(&Link::Loop, this, d);
+    std::thread t(&Link::Loop, this);
     t.detach();
 
     while (!d->isRunning) {
@@ -54,7 +54,7 @@ void Link::Write(const wxString &data, TextFormat format)
     }
 }
 
-void Link::Loop(LinkPrivate *d)
+void Link::Loop()
 {
     d->invokedInterrupted.store(false);
     d->isRunning.store(true);

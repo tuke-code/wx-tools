@@ -43,7 +43,7 @@ Page::Page(LinkType type, wxWindow *parent)
     inputSettings->textFormatChangedSignal.connect(&Page::OnTextFormatChanged, this);
 
     PageSettingsLink *linkSettings = m_pageSettings->GetLinkSettings();
-    linkSettings->invokeOpenSignal.connect(&Page::OnInvokeOpen, this);
+    linkSettings->invokeOpenSignal.connect(&Page::OnInvokeOpenOrClose, this);
 
     PageSettingsOutput *outputSettings = m_pageSettings->GetOutputSettings();
     outputSettings->clearSignal.connect(&Page::OnClear, this);
@@ -65,7 +65,7 @@ wxToolsJson Page::Save() const
     return json;
 }
 
-void Page::OnInvokeOpen()
+void Page::OnInvokeOpenOrClose()
 {
     PageSettingsLink *linkSettings = m_pageSettings->GetLinkSettings();
     LinkUi *linkUi = linkSettings->GetLinkUi();
@@ -78,6 +78,7 @@ void Page::OnInvokeOpen()
         Link *link = linkUi->GetLink();
         link->bytesTxSignal.disconnect_all();
         link->bytesRxSignal.disconnect_all();
+        link->errorOccurredSignal.disconnect_all();
 
         linkUi->Close();
         linkUi->Enable();
@@ -92,6 +93,7 @@ void Page::OnInvokeOpen()
             Link *link = linkUi->GetLink();
             link->bytesRxSignal.connect(&Page::OnBytesRx, this);
             link->bytesTxSignal.connect(&Page::OnBytesTx, this);
+            link->errorOccurredSignal.connect(&Page::OnErrorOccurred, this);
         } else {
             wxMessageBox(wxT("Failed to open link."), wxT("Error"), wxICON_ERROR);
         }
@@ -138,12 +140,18 @@ void Page::OnInvokeStartTimer(int ms)
 
 void Page::OnBytesRx(std::shared_ptr<char> bytes, int len, std::string from)
 {
-    //OutputText(bytes, from, true);
+    OutputText(bytes, len, from, true);
 }
 
 void Page::OnBytesTx(std::shared_ptr<char> bytes, int len, std::string to)
 {
-    //OutputText(bytes, to, false);
+    OutputText(bytes, len, to, false);
+}
+
+void Page::OnErrorOccurred(std::string message)
+{
+    OnInvokeOpenOrClose();
+    wxLogWarning(wxT("Error: ") + wxString::FromAscii(message.c_str()));
 }
 
 void Page::OnSendTimerTimeout()

@@ -27,7 +27,7 @@ public:
     SerialPort();
     ~SerialPort();
 
-    void Loop(LinkPrivate *d) override;
+    void Loop() override;
     void Load(const wxToolsJson &parameters) override;
     wxToolsJson Save() override;
 };

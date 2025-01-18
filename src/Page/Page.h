@@ -37,11 +37,12 @@ private:
 
 private:
 private:
-    void OnInvokeOpen();
+    void OnInvokeOpenOrClose();
     void OnInvokeWrite(TextFormat format);
     void OnInvokeStartTimer(int ms);
     void OnBytesRx(std::shared_ptr<char> bytes, int len, std::string from);
     void OnBytesTx(std::shared_ptr<char> bytes, int len, std::string to);
+    void OnErrorOccurred(std::string message);
     void OnSendTimerTimeout();
     void OnClear();
     void OnTextFormatChanged(TextFormat format);

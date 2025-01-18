@@ -18,18 +18,17 @@ SerialPort::~SerialPort()
     delete WXT_D(SerialPortPrivate);
 }
 
-void SerialPort::Loop(LinkPrivate *d)
+void SerialPort::Loop()
 {
-    SerialPortPrivate *dPtr = reinterpret_cast<SerialPortPrivate *>(d);
-
+    auto d = WXT_D(SerialPortPrivate);
     d->invokedInterrupted.store(false);
     auto *serialPortIml = new itas109::CSerialPort();
-    serialPortIml->init(dPtr->portName.c_str(),
-                        dPtr->baudRate,
-                        dPtr->parity,
-                        dPtr->dataBits,
-                        dPtr->stopBits,
-                        dPtr->flowControl);
+    serialPortIml->init(d->portName.c_str(),
+                        d->baudRate,
+                        d->parity,
+                        d->dataBits,
+                        d->stopBits,
+                        d->flowControl);
 
     if (serialPortIml->open()) {
         d->isRunning.store(true);
@@ -47,7 +46,7 @@ void SerialPort::Loop(LinkPrivate *d)
             } else if (len > 0) {
                 std::shared_ptr<char> bytes(new char[len], std::default_delete<char[]>());
                 memcpy(bytes.get(), data, len);
-                bytesRxSignal(std::move(bytes), len, dPtr->portName);
+                bytesRxSignal(std::move(bytes), len, d->portName);
             }
 
             // Write data...
@@ -58,7 +57,7 @@ void SerialPort::Loop(LinkPrivate *d)
                     errorOccurredSignal(std::string("Write data failed."));
                     break;
                 } else {
-                    bytesTxSignal(std::move(bytes.first), len, dPtr->portName);
+                    bytesTxSignal(std::move(bytes.first), len, d->portName);
                 }
             }
             d->txBytes.clear();
@@ -73,30 +72,31 @@ void SerialPort::Loop(LinkPrivate *d)
     serialPortIml->close();
     delete serialPortIml;
     d->isRunning.store(false);
+    wxToolsInfo() << "Serial port loop exit.";
 }
 
 void SerialPort::Load(const wxToolsJson &parameters)
 {
-    SerialPortPrivate *dPtr = WXT_D(SerialPortPrivate);
+    auto d = WXT_D(SerialPortPrivate);
     SerialPortParameterKeys keys;
-    dPtr->portName = parameters[keys.portName].get<std::string>();
-    dPtr->baudRate = parameters[keys.baudRate].get<int>();
-    dPtr->flowControl = static_cast<itas109::FlowControl>(parameters[keys.flowControl].get<int>());
-    dPtr->parity = static_cast<itas109::Parity>(parameters[keys.parity].get<int>());
-    dPtr->stopBits = static_cast<itas109::StopBits>(parameters[keys.stopBits].get<int>());
-    dPtr->dataBits = static_cast<itas109::DataBits>(parameters[keys.dataBits].get<int>());
+    d->portName = parameters[keys.portName].get<std::string>();
+    d->baudRate = parameters[keys.baudRate].get<int>();
+    d->flowControl = static_cast<itas109::FlowControl>(parameters[keys.flowControl].get<int>());
+    d->parity = static_cast<itas109::Parity>(parameters[keys.parity].get<int>());
+    d->stopBits = static_cast<itas109::StopBits>(parameters[keys.stopBits].get<int>());
+    d->dataBits = static_cast<itas109::DataBits>(parameters[keys.dataBits].get<int>());
 }
 
 wxToolsJson SerialPort::Save()
 {
-    SerialPortPrivate *dPtr = WXT_D(SerialPortPrivate);
+    auto d = WXT_D(SerialPortPrivate);
     wxToolsJson parameters;
     SerialPortParameterKeys keys;
-    parameters[keys.portName] = dPtr->portName;
-    parameters[keys.baudRate] = dPtr->baudRate;
-    parameters[keys.flowControl] = static_cast<int>(dPtr->flowControl);
-    parameters[keys.parity] = static_cast<int>(dPtr->parity);
-    parameters[keys.stopBits] = static_cast<int>(dPtr->stopBits);
-    parameters[keys.dataBits] = static_cast<int>(dPtr->dataBits);
+    parameters[keys.portName] = d->portName;
+    parameters[keys.baudRate] = d->baudRate;
+    parameters[keys.flowControl] = static_cast<int>(d->flowControl);
+    parameters[keys.parity] = static_cast<int>(d->parity);
+    parameters[keys.stopBits] = static_cast<int>(d->stopBits);
+    parameters[keys.dataBits] = static_cast<int>(d->dataBits);
     return parameters;
 }

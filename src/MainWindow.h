@@ -32,6 +32,7 @@ private:
     void OnOpen(wxCommandEvent&);
     void OnSave(wxCommandEvent&);
     void OnSaveAs(wxCommandEvent&);
+    void OnNew(wxCommandEvent&);
     void OnExit(wxCommandEvent&);
 
     void OnAbout(wxCommandEvent&);
