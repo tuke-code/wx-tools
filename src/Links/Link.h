@@ -36,6 +36,7 @@ public:
     virtual wxToolsJson Save() = 0;
 
 private:
+    // The function is called in a separate thread...
     virtual void Loop(LinkPrivate *d);
 
 private:

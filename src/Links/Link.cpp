@@ -64,7 +64,14 @@ void Link::Loop(LinkPrivate *d)
         }
 
 #if 0
-        // do something...
+        // Read data from the link
+        bytesRxSignal(std::shared_ptr<char>(new char[10], [](char *p) { delete[] p; }), 10, "from");
+        
+        // Write data to the link
+        for (auto &tx : d->txBytes) {
+            bytesTxSignal(tx.first, tx.second, "to");
+        }
+        d->txBytes.clear();
 #endif
 
         // sleep for a while
