@@ -11,6 +11,7 @@
 #include <mongoose.h>
 
 #include "Common/wxTools.h"
+#include "Links/WSClient.h"
 #include "SocketServer_p.h"
 
 class WSClientPrivate : public SocketServerPrivate
@@ -20,6 +21,9 @@ public:
 
 static void WSClientHandler(struct mg_connection *c, int ev, void *ev_data)
 {
+    auto q = reinterpret_cast<WSClient *>(c->fn_data);
+    auto d = q->GetPrivate<WSClientPrivate>();
+
     if (ev == MG_EV_OPEN) {
         //c->is_hexdumping = 1;
     } else if (ev == MG_EV_ERROR) {
@@ -33,11 +37,14 @@ static void WSClientHandler(struct mg_connection *c, int ev, void *ev_data)
         struct mg_ws_message *wm = (struct mg_ws_message *) ev_data;
         std::shared_ptr<char> data(new char[wm->data.len], [](char *p) { delete[] p; });
         memcpy(data.get(), wm->data.buf, wm->data.len);
-        //client->bytesRx(std::move(data), wm->data.len, "from");
-        wxToolsInfo() << "GOT ECHO REPLY: " << wm->data.buf;
+
+        const std::string ip = d->mg_addr_to_ipv4(&c->rem);
+        const uint16_t port = c->rem.port;
+        const std::string from = DoEncodeFlag(ip, port);
+        q->bytesRxSignal(std::move(data), wm->data.len, from);
     }
 
     if (ev == MG_EV_ERROR || ev == MG_EV_CLOSE) {
-        *(bool *) c->fn_data = true; // Signal that we're done
+        q->errorOccurredSignal(std::string("WebSocket client disconnected!"));
     }
 }

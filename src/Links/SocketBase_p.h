@@ -16,6 +16,12 @@
 class SocketBasePrivate : public LinkPrivate
 {
 public:
+    SocketBasePrivate()
+        : LinkPrivate()
+        , isEnableAuthorization(false)
+        , dataChannel(0)
+    {}
+
     wxString clientAddress;
     uint16_t clientPort;
     wxString serverAddress;

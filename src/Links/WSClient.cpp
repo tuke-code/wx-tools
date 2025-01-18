@@ -30,6 +30,7 @@ void WSClient::Loop()
     struct mg_connection *c;
     mgr.userdata = this;
     mg_mgr_init(&mgr);
+    mgr.userdata = this;
     c = mg_ws_connect(&mgr, url.c_str(), WSClientHandler, &done, NULL);
     if (c == nullptr || done == true) {
         errorOccurredSignal(std::string("Failed to create a WebSocket client!"));
@@ -42,10 +43,6 @@ void WSClient::Loop()
     d->isRunning.store(true);
     while (1) {
         if (d->invokedInterrupted.load()) {
-            break;
-        }
-
-        if (*reinterpret_cast<bool *>(c->fn_data)) {
             break;
         }
 

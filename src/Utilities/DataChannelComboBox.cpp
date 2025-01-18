@@ -20,8 +20,10 @@ DataChannelComboBox::DataChannelComboBox(wxWindow* parent)
                  nullptr,
                  wxCB_READONLY)
 {
-    Append(wxT("Text"), new int(static_cast<int>(WEBSOCKET_OP_TEXT)));
-    Append(wxT("Binary"), new int(static_cast<int>(WEBSOCKET_OP_BINARY)));
+    Append(wxT("Text"), new int(WEBSOCKET_OP_TEXT));
+    Append(wxT("Binary"), new int(WEBSOCKET_OP_BINARY));
+
+    SetSelection(0);
 }
 
 int DataChannelComboBox::GetDataChannel() const

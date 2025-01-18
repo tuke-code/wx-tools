@@ -29,7 +29,7 @@ void WSServer::Loop()
     mg_mgr_init(&mgr);
     mg_log_set(MG_LL_NONE);
     mgr.userdata = this;
-    mg_connection *c = mg_http_listen(&mgr, url.c_str(), WSServerLoop, nullptr);
+    mg_connection *c = mg_http_listen(&mgr, url.c_str(), WSServerHandler, nullptr);
     if (c == nullptr) {
         errorOccurredSignal(std::string("Failed to create a WebSocket server!"));
         return;
@@ -42,15 +42,7 @@ void WSServer::Loop()
             break;
         }
 
-        for (auto &tx : d->txBytes) {
-            if (d->dataChannel == WEBSOCKET_OP_TEXT) {
-                mg_ws_send(mgr.conns, tx.first.get(), tx.second, WEBSOCKET_OP_TEXT);
-            } else {
-                mg_ws_send(mgr.conns, tx.first.get(), tx.second, WEBSOCKET_OP_BINARY);
-            }
-        }
-        d->txBytes.clear();
-
+        SendBytesToClient(c, this);
         mg_mgr_poll(&mgr, 100);
     }
     mg_mgr_free(&mgr);

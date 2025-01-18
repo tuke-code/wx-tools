@@ -28,5 +28,10 @@ public:
         if (it != clients.end()) {
             clients.erase(it);
         }
+
+        // If the client is the current selection, clear the selection
+        if (address == selection.first && port == selection.second) {
+            selection = std::make_pair("", 0);
+        }
     }
 };

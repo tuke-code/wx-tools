@@ -17,18 +17,67 @@ class WSServerPrivate : public SocketServerPrivate
 public:
 };
 
-void OnAccept(struct mg_connection *c, WSServer *server)
+static void OnAccept(struct mg_connection *c, WSServer *server)
 {
     std::string ip = server->GetPrivate<WSServerPrivate>()->mg_addr_to_ipv4(&c->rem);
     std::string from = ip + std::string(":") + std::to_string(c->rem.port);
     server->newClientSignal(ip, c->rem.port);
-
+    wxToolsInfo() << "New client from " << from;
     if (c->next && c->next->rem.port) {
         OnAccept(c->next, server);
     }
 }
 
-static void WSServerLoop(struct mg_connection *c, int ev, void *ev_data)
+static void SendBytesToClient(struct mg_connection *c, WSServer *q)
+{
+    auto *d = q->GetPrivate<WSServerPrivate>();
+    std::string op;
+    size_t len = 0;
+    std::string ip = d->mg_addr_to_ipv4(&c->rem);
+    uint16_t port = c->rem.port;
+    std::string to = DoEncodeFlag(ip, port);
+
+    for (auto &ctx : d->txBytes) {
+        if (d->dataChannel == WEBSOCKET_OP_TEXT) {
+            op = std::string("(T)");
+            len = mg_ws_send(c, ctx.first.get(), ctx.second, WEBSOCKET_OP_TEXT);
+        } else {
+            op = std::string("(B)");
+            len = mg_ws_send(c, ctx.first.get(), ctx.second, WEBSOCKET_OP_BINARY);
+        }
+
+        if (len > 0) {
+            q->bytesTxSignal(ctx.first, ctx.second, to + op);
+        } else {
+            d->DoRemoveClient(ip, port);
+            q->deleteClientSignal(ip, port);
+            q->errorOccurredSignal(std::string("WS server send error"));
+            break;
+        }
+    }
+}
+
+static void SendBytesToAllClients(mg_connection *c, WSServer *q)
+{
+    auto *d = q->GetPrivate<WSServerPrivate>();
+    if (d->selection.first.empty() && d->selection.second == 0) { // Send to all clients
+        for (struct mg_connection *c = c->mgr->conns; c != nullptr; c = c->next) {
+            SendBytesToClient(c, q);
+        }
+    } else {
+        for (struct mg_connection *c = c->mgr->conns; c != 0; c = c->next) {
+            const std::string ip = d->mg_addr_to_ipv4(&c->rem);
+            const uint8_t port = c->rem.port;
+            if (ip == d->selection.first && port == d->selection.second) {
+                SendBytesToClient(c, q);
+            }
+        }
+    }
+
+    d->txBytes.clear();
+}
+
+static void WSServerHandler(struct mg_connection *c, int ev, void *ev_data)
 {
     WSServer *q = reinterpret_cast<WSServer *>(c->mgr->userdata);
     WSServerPrivate *d = q->GetPrivate<WSServerPrivate>();
@@ -60,7 +109,7 @@ static void WSServerLoop(struct mg_connection *c, int ev, void *ev_data)
         std::string from = DoEncodeFlag(ip, port) + op;
         std::shared_ptr<char> bytes(new char[wm->data.len], [](char *p) { delete[] p; });
         memcpy(bytes.get(), wm->data.buf, wm->data.len);
-        q->bytesRxSignal(std::move(bytes), from);
+        q->bytesRxSignal(std::move(bytes), wm->data.len, from);
     } else if (ev == MG_EV_ERROR) {
         q->errorOccurredSignal(std::string("WS server error"));
     }
