@@ -10,11 +10,10 @@
 #include "WSServer_p.h"
 
 WSServer::WSServer()
-    : SocketServer(d = new WSServerPrivate)
+    : SocketServer(new WSServerPrivate)
 {}
 
 WSServer::~WSServer()
 {
-    delete d;
-    d = nullptr;
+    delete WXT_D(WSServerPrivate);
 }

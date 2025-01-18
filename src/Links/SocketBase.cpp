@@ -9,15 +9,15 @@
 #include "SocketBase.h"
 #include "SocketBase_p.h"
 
-SocketBase::SocketBase(SocketBasePrivate *dPtr)
-    : Link(dPtr)
-    , d(dPtr)
+SocketBase::SocketBase(SocketBasePrivate *d)
+    : Link(d)
 {}
 
 SocketBase::~SocketBase() {}
 
 void SocketBase::Load(const wxToolsJson &parameters)
 {
+    SocketBasePrivate *d = WXT_D(SocketBasePrivate);
     SocketBaseParameterKeys keys;
     d->clientAddress = parameters[keys.clientAddress].template get<std::string>();
     d->clientPort = parameters[keys.clientPort].template get<int>();
@@ -31,6 +31,7 @@ void SocketBase::Load(const wxToolsJson &parameters)
 
 wxToolsJson SocketBase::Save()
 {
+    SocketBasePrivate *d = WXT_D(SocketBasePrivate);
     SocketBaseParameterKeys keys;
     wxToolsJson parameters;
     parameters[keys.clientAddress] = d->clientAddress.ToStdString();

@@ -15,6 +15,8 @@
 
 #include "Common/wxTools.h"
 
+#define WXT_D(T) reinterpret_cast<T *>(this->d)
+
 class LinkPrivate;
 class Link : wxObject
 {
@@ -39,6 +41,6 @@ private:
     // The function is called in a separate thread...
     virtual void Loop(LinkPrivate *d);
 
-private:
+protected:
     LinkPrivate *d;
 };

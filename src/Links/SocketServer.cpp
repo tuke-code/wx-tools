@@ -9,25 +9,25 @@
 #include "SocketServer.h"
 #include "SocketServer_p.h"
 
-SocketServer::SocketServer(SocketServerPrivate *dPtr)
-    : SocketBase(reinterpret_cast<SocketBasePrivate *>(dPtr))
-    , d(dPtr)
+SocketServer::SocketServer(SocketServerPrivate *d)
+    : SocketBase(reinterpret_cast<SocketBasePrivate *>(d))
 {}
 
 SocketServer::~SocketServer()
 {
-    delete d;
-    d = nullptr;
+
 }
 
 void SocketServer::SetCurrentClient(const std::string &ip, uint16_t port)
 {
+    SocketServerPrivate *d = WXT_D(SocketServerPrivate);
     d->selection = std::make_pair(ip, port);
 }
 
 void SocketServer::DoClearClients()
 {
     // Clear the clients list
+    SocketServerPrivate *d = WXT_D(SocketServerPrivate);
     for (auto client : d->clients) {
         deleteClientSignal(client.first, client.second);
     }

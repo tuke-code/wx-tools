@@ -10,12 +10,12 @@
 #include "SerialPort_p.h"
 
 SerialPort::SerialPort()
-    : Link(d = new SerialPortPrivate())
+    : Link(new SerialPortPrivate())
 {}
 
 SerialPort::~SerialPort()
 {
-    delete d;
+    delete WXT_D(SerialPortPrivate);
 }
 
 void SerialPort::Loop(LinkPrivate *d)
@@ -77,24 +77,26 @@ void SerialPort::Loop(LinkPrivate *d)
 
 void SerialPort::Load(const wxToolsJson &parameters)
 {
+    SerialPortPrivate *dPtr = WXT_D(SerialPortPrivate);
     SerialPortParameterKeys keys;
-    d->portName = parameters[keys.portName].get<std::string>();
-    d->baudRate = parameters[keys.baudRate].get<int>();
-    d->flowControl = static_cast<itas109::FlowControl>(parameters[keys.flowControl].get<int>());
-    d->parity = static_cast<itas109::Parity>(parameters[keys.parity].get<int>());
-    d->stopBits = static_cast<itas109::StopBits>(parameters[keys.stopBits].get<int>());
-    d->dataBits = static_cast<itas109::DataBits>(parameters[keys.dataBits].get<int>());
+    dPtr->portName = parameters[keys.portName].get<std::string>();
+    dPtr->baudRate = parameters[keys.baudRate].get<int>();
+    dPtr->flowControl = static_cast<itas109::FlowControl>(parameters[keys.flowControl].get<int>());
+    dPtr->parity = static_cast<itas109::Parity>(parameters[keys.parity].get<int>());
+    dPtr->stopBits = static_cast<itas109::StopBits>(parameters[keys.stopBits].get<int>());
+    dPtr->dataBits = static_cast<itas109::DataBits>(parameters[keys.dataBits].get<int>());
 }
 
 wxToolsJson SerialPort::Save()
 {
+    SerialPortPrivate *dPtr = WXT_D(SerialPortPrivate);
     wxToolsJson parameters;
     SerialPortParameterKeys keys;
-    parameters[keys.portName] = d->portName;
-    parameters[keys.baudRate] = d->baudRate;
-    parameters[keys.flowControl] = static_cast<int>(d->flowControl);
-    parameters[keys.parity] = static_cast<int>(d->parity);
-    parameters[keys.stopBits] = static_cast<int>(d->stopBits);
-    parameters[keys.dataBits] = static_cast<int>(d->dataBits);
+    parameters[keys.portName] = dPtr->portName;
+    parameters[keys.baudRate] = dPtr->baudRate;
+    parameters[keys.flowControl] = static_cast<int>(dPtr->flowControl);
+    parameters[keys.parity] = static_cast<int>(dPtr->parity);
+    parameters[keys.stopBits] = static_cast<int>(dPtr->stopBits);
+    parameters[keys.dataBits] = static_cast<int>(dPtr->dataBits);
     return parameters;
 }

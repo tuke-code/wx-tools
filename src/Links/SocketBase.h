@@ -31,7 +31,4 @@ public:
 
     void Load(const wxToolsJson &parameters) override;
     wxToolsJson Save() override;
-
-private:
-    SocketBasePrivate *d;
 };

@@ -22,7 +22,4 @@ public:
 
     void SetCurrentClient(const std::string &ip, uint16_t port);
     virtual void DoClearClients();
-
-private:
-    SocketServerPrivate *d{nullptr};
 };

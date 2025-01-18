@@ -10,11 +10,10 @@
 #include "WSClient_p.h"
 
 WSClient::WSClient()
-    : SocketClient(d = new WSClientPrivate)
+    : SocketClient(new WSClientPrivate)
 {}
 
 WSClient::~WSClient()
 {
-    delete d;
-    d = nullptr;
+    delete WXT_D(WSClientPrivate);
 }
