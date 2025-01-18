@@ -16,4 +16,7 @@ class WSClient : public SocketClient
 public:
     WSClient();
     ~WSClient();
+
+private:
+    void Loop() override;
 };

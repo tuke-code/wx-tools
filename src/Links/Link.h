@@ -15,6 +15,7 @@
 
 #include "Common/wxTools.h"
 
+// The macro must be used in the class member function.
 #define WXT_D(T) reinterpret_cast<T *>(this->d)
 
 class LinkPrivate;
@@ -36,6 +37,13 @@ public:
 
     virtual void Load(const wxToolsJson &parameters) = 0;
     virtual wxToolsJson Save() = 0;
+
+public:
+    template<typename T>
+    T *GetPrivate() const
+    {
+        return reinterpret_cast<T *>(this->d);
+    }
 
 private:
     // The function is called in a separate thread...

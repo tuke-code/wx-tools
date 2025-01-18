@@ -8,13 +8,9 @@
  **************************************************************************************************/
 #pragma once
 
-#include <mutex>
-
 #include "SocketClient_p.h"
 
 class TCPClientPrivate : public SocketClientPrivate
 {
 public:
-    std::vector<std::pair<std::string, int>> msgList;
-    std::mutex msgMutex;
 };

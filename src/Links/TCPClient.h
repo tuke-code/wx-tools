@@ -18,5 +18,5 @@ public:
     ~TCPClient();
 
 private:
-    TCPClientPrivate *d;
+    void Loop() override;
 };

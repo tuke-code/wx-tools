@@ -26,5 +26,8 @@ WSServerUi::~WSServerUi() {}
 
 Link *WSServerUi::CreateLink()
 {
-    return new WSServer();
+    auto wsServer = new WSServer();
+    wsServer->newClientSignal.connect(&WSServerUi::DoNewClient, this);
+    wsServer->deleteClientSignal.connect(&WSServerUi::DoDeleteClient, this);
+    return wsServer;
 }

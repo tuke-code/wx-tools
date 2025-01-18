@@ -8,11 +8,6 @@
  **************************************************************************************************/
 #pragma once
 
-#include <atomic>
-
-#include <mongoose.h>
-#include <sigslot/signal.hpp>
-
 #include "Common/wxTools.h"
 #include "SocketServer_p.h"
 #include "WSServer.h"
@@ -20,17 +15,24 @@
 class WSServerPrivate : public SocketServerPrivate
 {
 public:
-    WSServerPrivate()
-    {}
-
-public:
-    sigslot::signal<std::shared_ptr<char> /*data*/, int /*len*/, std::string /*from*/> bytesRx;
-    sigslot::signal<std::shared_ptr<char> /*data*/, int /*len*/, std::string /*to  */> bytesTx;
-    sigslot::signal<std::string> errorOccurred;
 };
 
-static void handler(struct mg_connection *c, int ev, void *ev_data)
+void OnAccept(struct mg_connection *c, WSServer *server)
 {
+    std::string ip = server->GetPrivate<WSServerPrivate>()->mg_addr_to_ipv4(&c->rem);
+    std::string from = ip + std::string(":") + std::to_string(c->rem.port);
+    server->newClientSignal(ip, c->rem.port);
+
+    if (c->next && c->next->rem.port) {
+        OnAccept(c->next, server);
+    }
+}
+
+static void WSServerLoop(struct mg_connection *c, int ev, void *ev_data)
+{
+    WSServer *q = reinterpret_cast<WSServer *>(c->mgr->userdata);
+    WSServerPrivate *d = q->GetPrivate<WSServerPrivate>();
+
     if (ev == MG_EV_OPEN) {
         // c->is_hexdumping = 1;
     } else if (ev == MG_EV_HTTP_MSG) {
@@ -38,62 +40,28 @@ static void handler(struct mg_connection *c, int ev, void *ev_data)
         if (mg_match(hm->uri, mg_str("/websocket"), NULL)) {
             // Upgrade to websocket. From now on, a connection is a full-duplex
             // Websocket connection, which will receive MG_EV_WS_MSG events.
-            //mg_ws_upgrade(c, hm, NULL);
-        } else if (mg_match(hm->uri, mg_str("/rest"), NULL)) {
-            // Serve REST response
-            //mg_http_reply(c, 200, "", "{\"result\": %d}\n", 123);
-        } else {
-            // Serve static files
-            //struct mg_http_serve_opts opts = {.root_dir = "."};
-            //mg_http_serve_dir(c, ev_data, &opts);
+            mg_ws_upgrade(c, hm, NULL);
         }
     } else if (ev == MG_EV_ACCEPT) {
-        wxToolsInfo() << "Accept:"
-                      << std::string(reinterpret_cast<char *>(c->rem.ip), sizeof(c->rem.ip))
-                      << " port:" << c->rem.port;
-
+        if (q && c && c->fd) {
+            OnAccept(c, q);
+        }
     } else if (ev == MG_EV_WS_MSG) {
-        // Got websocket frame. Received data is wm->data. Echo it back!
         struct mg_ws_message *wm = (struct mg_ws_message *) ev_data;
+        std::string op;
         if (wm->flags & WEBSOCKET_OP_TEXT) {
-            wxToolsInfo() << "Text: " << wm->data.buf;
+            op = std::string("(T)");
         } else if (wm->flags & WEBSOCKET_OP_BINARY) {
-            wxToolsInfo() << "Binary: " << wm->data.buf;
+            op = std::string("(B)");
         }
 
-        //mg_ws_send(c, wm->data.buf, wm->data.len, WEBSOCKET_OP_TEXT);
-        WSServerPrivate *d = reinterpret_cast<WSServerPrivate *>(c->mgr->userdata);
-        if (d) {
-            // Get ip and port
-            auto bytes = std::shared_ptr<char>(wm->data.buf, [](char *p) { delete[] p; });
-            d->bytesRx(std::move(bytes), wm->data.len, "from");
-        }
+        std::string ip = d->mg_addr_to_ipv4(&c->rem);
+        uint16_t port = c->rem.port;
+        std::string from = DoEncodeFlag(ip, port) + op;
+        std::shared_ptr<char> bytes(new char[wm->data.len], [](char *p) { delete[] p; });
+        memcpy(bytes.get(), wm->data.buf, wm->data.len);
+        q->bytesRxSignal(std::move(bytes), from);
     } else if (ev == MG_EV_ERROR) {
-        wxToolsInfo() << "Error: " << "WS server error";
+        q->errorOccurredSignal(std::string("WS server error"));
     }
-}
-
-static void WSServerLoop(WSServerPrivate *d, WSServer *server)
-{
-    d->isRunning.store(true);
-    const std::string url = std::string("ws://") + d->serverAddress.ToStdString() + std::string(":")
-                            + std::to_string(d->serverPort);
-    struct mg_mgr mgr;
-    mgr.userdata = server;
-    mg_mgr_init(&mgr);
-    mg_http_listen(&mgr, url.c_str(), handler, server);
-    mg_log_set(MG_LL_NONE);
-    while (1) {
-        if (d->invokedInterrupted.load()) {
-            break;
-        }
-
-        for (auto &tx : d->txBytes) {
-            mg_ws_send(mgr.conns, tx.first.get(), tx.second, WEBSOCKET_OP_TEXT);
-        }
-
-        mg_mgr_poll(&mgr, 1000);
-    }
-    mg_mgr_free(&mgr);
-    d->isRunning.store(false);
 }

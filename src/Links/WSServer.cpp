@@ -17,3 +17,42 @@ WSServer::~WSServer()
 {
     delete WXT_D(WSServerPrivate);
 }
+
+void WSServer::Loop()
+{
+    auto *d = WXT_D(WSServerPrivate);
+    std::string url = std::string("ws://") + d->serverAddress.ToStdString();
+    url += std::string(":");
+    url += std::to_string(d->serverPort);
+    struct mg_mgr mgr;
+
+    mg_mgr_init(&mgr);
+    mg_log_set(MG_LL_NONE);
+    mgr.userdata = this;
+    mg_connection *c = mg_http_listen(&mgr, url.c_str(), WSServerLoop, nullptr);
+    if (c == nullptr) {
+        errorOccurredSignal(std::string("Failed to create a WebSocket server!"));
+        return;
+    }
+
+    d->invokedInterrupted.store(false);
+    d->isRunning.store(true);
+    while (1) {
+        if (d->invokedInterrupted.load()) {
+            break;
+        }
+
+        for (auto &tx : d->txBytes) {
+            if (d->dataChannel == WEBSOCKET_OP_TEXT) {
+                mg_ws_send(mgr.conns, tx.first.get(), tx.second, WEBSOCKET_OP_TEXT);
+            } else {
+                mg_ws_send(mgr.conns, tx.first.get(), tx.second, WEBSOCKET_OP_BINARY);
+            }
+        }
+        d->txBytes.clear();
+
+        mg_mgr_poll(&mgr, 100);
+    }
+    mg_mgr_free(&mgr);
+    d->isRunning.store(false);
+}

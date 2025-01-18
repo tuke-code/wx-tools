@@ -9,12 +9,21 @@
 #include "TCPClient.h"
 #include "TCPClient_p.h"
 
+#include <mongoose.h>
+
 TCPClient::TCPClient()
-    : SocketClient(d = new TCPClientPrivate)
+    : SocketClient(new TCPClientPrivate)
 {}
 
 TCPClient::~TCPClient()
 {
-    delete d;
-    d = nullptr;
+    delete WXT_D(TCPClientPrivate);
+}
+
+void TCPClient::Loop()
+{
+    struct mg_mgr mgr;
+    struct mg_connection *c;
+    mg_log_set(MG_LL_NONE);
+    mg_mgr_init(&mgr);
 }

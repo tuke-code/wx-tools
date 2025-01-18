@@ -24,12 +24,11 @@ static void UDPClientHandler(struct mg_connection *c, int ev, void *ev_data)
 {
     MG_DEBUG(("%p got event: %d %p", c, ev, ev_data));
     if (ev == MG_EV_OPEN) {
-        //    c->is_hexdumping = 1;
+        // Nothing to do yet...
     } else if (ev == MG_EV_RESOLVE) {
         // c->rem gets populated with multicast address. Store it in c->data
         memcpy(c->data, &c->rem, sizeof(c->rem));
     } else if (ev == MG_EV_READ) {
-        MG_INFO(("Got a response"));
         struct mg_http_message hm;
         if (mg_http_parse((const char *) c->recv.buf, c->recv.len, &hm) > 0) {
             size_t i, max = sizeof(hm.headers) / sizeof(hm.headers[0]);
@@ -57,8 +56,8 @@ static void UDPClientHandler(struct mg_connection *c, int ev, void *ev_data)
 void UDPClient::Loop()
 {
     auto d = WXT_D(UDPClientPrivate);
-    const std::string url = std::string("udp://") + d->serverAddress.ToStdString() + ":"
-                            + std::to_string(d->serverPort);
+    std::string url = std::string("udp://") + d->serverAddress.ToStdString();
+    url += ":" + std::to_string(d->serverPort);
 
     struct mg_mgr mgr;
     struct mg_connection *c;

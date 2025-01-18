@@ -16,4 +16,7 @@ class WSServer : public SocketServer
 public:
     WSServer();
     ~WSServer();
+
+private:
+    void Loop() override;
 };

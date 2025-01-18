@@ -8,40 +8,17 @@
  **************************************************************************************************/
 #pragma once
 
-#include <atomic>
-
 #include <mongoose.h>
-#include <sigslot/signal.hpp>
 
 #include "Common/wxTools.h"
 #include "SocketServer_p.h"
 
-class WebSocketClient;
 class WSClientPrivate : public SocketServerPrivate
 {
 public:
-    WebSocketClient *client{nullptr};
 };
 
-class WebSocketClient
-{
-public:
-    WebSocketClient()
-        : invokedInterrupted(false)
-        , running(false)
-    {}
-
-public:
-    sigslot::signal<std::shared_ptr<char> /*data*/, int /*len*/, std::string /*from*/> bytesRx;
-    sigslot::signal<std::shared_ptr<char> /*data*/, int /*len*/, std::string /*to  */> bytesTx;
-    sigslot::signal<std::string> errorOccurred;
-
-    std::atomic_bool invokedInterrupted;
-    std::atomic_bool running;
-    std::vector<std::pair<std::shared_ptr<char> /*data*/, int /*len*/>> txBytes;
-};
-
-static void handler(struct mg_connection *c, int ev, void *ev_data)
+static void WSClientHandler(struct mg_connection *c, int ev, void *ev_data)
 {
     if (ev == MG_EV_OPEN) {
         //c->is_hexdumping = 1;
@@ -52,7 +29,7 @@ static void handler(struct mg_connection *c, int ev, void *ev_data)
         // When websocket handshake is successful, send message
         mg_ws_send(c, "hello", 5, WEBSOCKET_OP_TEXT);
     } else if (ev == MG_EV_WS_MSG) {
-        WebSocketClient *client = (WebSocketClient *) c->mgr->userdata;
+        //WebSocketClient *client = (WebSocketClient *) c->mgr->userdata;
         struct mg_ws_message *wm = (struct mg_ws_message *) ev_data;
         std::shared_ptr<char> data(new char[wm->data.len], [](char *p) { delete[] p; });
         memcpy(data.get(), wm->data.buf, wm->data.len);
@@ -63,35 +40,4 @@ static void handler(struct mg_connection *c, int ev, void *ev_data)
     if (ev == MG_EV_ERROR || ev == MG_EV_CLOSE) {
         *(bool *) c->fn_data = true; // Signal that we're done
     }
-}
-
-static void WSClientLoop(WebSocketClient *client, const std::string &ip, uint16_t port)
-{
-    client->running.store(true);
-    const std::string url = "ws://" + ip + ":" + std::to_string(port);
-    struct mg_mgr mgr;
-    bool done = false;
-    struct mg_connection *c;
-    mgr.userdata = client;
-    mg_mgr_init(&mgr);
-    c = mg_ws_connect(&mgr, url.c_str(), handler, &done, NULL);
-    mg_log_set(MG_LL_NONE);
-    while (c && done == false) {
-        if (client->invokedInterrupted.load()) {
-            break;
-        }
-
-        if (*reinterpret_cast<bool *>(c->fn_data)) {
-            break;
-        }
-
-        for (auto &tx : client->txBytes) {
-            mg_ws_send(mgr.conns, tx.first.get(), tx.second, WEBSOCKET_OP_TEXT);
-        }
-
-        client->txBytes.clear();
-        mg_mgr_poll(&mgr, 100);
-    }
-    mg_mgr_free(&mgr);
-    client->running.store(false);
 }
