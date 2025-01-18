@@ -10,7 +10,6 @@
 
 #include "SocketClient.h"
 
-class UDPClientPrivate;
 class UDPClient : public SocketClient
 {
 public:
@@ -18,5 +17,5 @@ public:
     ~UDPClient();
 
 private:
-    UDPClientPrivate *d;
+    void Loop() override;
 };

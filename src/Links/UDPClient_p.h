@@ -8,12 +8,9 @@
  **************************************************************************************************/
 #pragma once
 
-#include "Common/wxTools.h"
 #include "SocketClient_p.h"
 
 class UDPClientPrivate : public SocketClientPrivate
 {
 public:
-    wxToolsSignal<wxString, TextFormat> invokeWriteSignal;
-    wxToolsSignal<> invokeCloseSignal;
 };
