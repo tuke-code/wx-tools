@@ -8,7 +8,6 @@
  **************************************************************************************************/
 #pragma once
 
-#include <asio/serial_port.hpp>
 #include <wx/wx.h>
 
 class IpComboBox : public wxComboBox

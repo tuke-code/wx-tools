@@ -19,7 +19,6 @@ endif()
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-include(cmake/asio.cmake)
 include(cmake/glog.cmake)
 include(cmake/json.cmake)
 include(cmake/libcrc.cmake)

@@ -8,19 +8,10 @@
  **************************************************************************************************/
 #pragma once
 
-#include <asio.hpp>
-
 #include "Common/wxTools.h"
 #include "SocketServer_p.h"
-
-using asio::ip::udp;
 
 class UDPServerPrivate : public SocketServerPrivate
 {
 public:
-    wxToolsSignal<wxString, TextFormat> invokeWriteSignal;
-    wxToolsSignal<> invokeCloseSignal;
-
-    asio::io_context context;
-    udp::socket *socket{nullptr};
 };

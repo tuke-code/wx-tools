@@ -69,7 +69,7 @@ void WSClient::Close()
 void WSClient::Write(const wxString &data, TextFormat format)
 {
     int len = 0;
-    std::shared_ptr<char> bytes = DoCookeText(data.ToStdString(), static_cast<int>(format), len);
+    std::shared_ptr<char> bytes = DoEncodeBytes(data.ToStdString(), len, static_cast<int>(format));
     if (len > 0) {
         d->client->txBytes.push_back(std::make_pair(std::move(bytes), len));
     }

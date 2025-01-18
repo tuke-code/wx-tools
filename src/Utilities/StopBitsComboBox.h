@@ -8,14 +8,15 @@
  **************************************************************************************************/
 #pragma once
 
-#include <asio/serial_port.hpp>
+#include <CSerialPort/SerialPort.h>
 #include <wx/wx.h>
 
 class StopBitsComboBox : public wxComboBox
 {
 public:
     StopBitsComboBox(wxWindow* parent = nullptr);
+    ~StopBitsComboBox();
 
-    asio::serial_port::stop_bits::type GetStopBits() const;
-    void SetStopBits(int stopBits);
+    itas109::StopBits GetStopBits() const;
+    void SetStopBits(itas109::StopBits stopBits);
 };

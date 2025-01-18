@@ -176,15 +176,12 @@ std::string GetString(TextFormat format, uint8_t value)
     return GetHexString(value);
 }
 
-std::string DoDecodeText(const wxToolsConstBuffer &buffer, TextFormat format)
+std::string DoDecodeBytes(const std::shared_ptr<char> &bytes, int &len, int format)
 {
-    const auto *dataPtr = static_cast<const char *>(buffer.data());
-    size_t size = buffer.size();
-
-    auto getString = [](const char *data, size_t size, TextFormat format) -> std::string {
+    auto getString = [](const char *data, size_t size, int format) -> std::string {
         std::ostringstream stringStream;
         for (std::size_t i = 0; i < size; ++i) {
-            stringStream << GetString(format, data[i]);
+            stringStream << GetString(static_cast<TextFormat>(format), data[i]);
             if (i < size - 1) {
                 stringStream << " ";
             }
@@ -193,24 +190,19 @@ std::string DoDecodeText(const wxToolsConstBuffer &buffer, TextFormat format)
     };
 
     switch (format) {
-    case TextFormat::Bin:
-    case TextFormat::Oct:
-    case TextFormat::Dec:
-    case TextFormat::Hex:
-        return getString(dataPtr, size, format);
-    case TextFormat::Ascii:
-        return wxString::FromAscii(dataPtr, size).ToStdString();
+    case static_cast<int>(TextFormat::Bin):
+    case static_cast<int>(TextFormat::Oct):
+    case static_cast<int>(TextFormat::Dec):
+    case static_cast<int>(TextFormat::Hex):
+        return getString(bytes.get(), len, format);
+    case static_cast<int>(TextFormat::Ascii):
+        return wxString::FromAscii(bytes.get(), len).ToStdString();
     default:
-        return wxString::FromUTF8(dataPtr, size).ToStdString();
+        return wxString::FromUTF8(bytes.get(), len).ToStdString();
     }
 }
 
-asio::const_buffer DoEncodeText(const std::string &text, TextFormat format)
-{
-    return asio::buffer(text.data(), text.size());
-}
-
-std::shared_ptr<char> DoCookeText(const std::string &text, int format, int &len)
+std::shared_ptr<char> DoEncodeBytes(const std::string &text, int &len, int format)
 {
     len = text.size();
     std::shared_ptr<char> bytes(new char[len], [](char *p) { delete[] p; });

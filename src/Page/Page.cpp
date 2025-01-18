@@ -136,14 +136,14 @@ void Page::OnInvokeStartTimer(int ms)
     m_sendTimer.Start(ms);
 }
 
-void Page::OnBytesRx(const wxToolsConstBuffer &bytes, const wxString &from)
+void Page::OnBytesRx(std::shared_ptr<char> bytes, int len, std::string from)
 {
-    OutputText(bytes, from, true);
+    //OutputText(bytes, from, true);
 }
 
-void Page::OnBytesTx(const wxToolsConstBuffer &bytes, const wxString &to)
+void Page::OnBytesTx(std::shared_ptr<char> bytes, int len, std::string to)
 {
-    OutputText(bytes, to, false);
+    //OutputText(bytes, to, false);
 }
 
 void Page::OnSendTimerTimeout()
@@ -212,7 +212,7 @@ std::string flagString(bool isRx, const std::string &fromTo, bool showFlag)
     return stringStream.str();
 }
 
-void Page::OutputText(const wxToolsConstBuffer &bytes, const wxString &fromTo, bool isRx)
+void Page::OutputText(std::shared_ptr<char> bytes, int len, std::string &fromTo, bool isRx)
 {
     PageSettingsOutput *outputControlBox = m_pageSettings->GetOutputSettings();
     TextFormat outputFormat = outputControlBox->GetTextFormat();
@@ -222,9 +222,9 @@ void Page::OutputText(const wxToolsConstBuffer &bytes, const wxString &fromTo, b
     bool showRx = outputControlBox->GetShowRx();
     bool showTx = outputControlBox->GetShowTx();
     bool showFlag = outputControlBox->GetShowFlag();
-    std::string text = DoDecodeText(bytes, outputFormat);
+    std::string text = DoDecodeBytes(bytes, len, static_cast<int>(outputFormat));
     std::string dateTimeString = ::dateTimeString(showDate, showTime, showMs);
-    std::string flagString = ::flagString(isRx, fromTo.ToStdString(), showFlag);
+    std::string flagString = ::flagString(isRx, fromTo, showFlag);
 
     if (isRx && !showRx) {
         return;

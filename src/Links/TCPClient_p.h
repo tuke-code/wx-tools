@@ -8,7 +8,6 @@
  **************************************************************************************************/
 #pragma once
 
-#include <asio.hpp>
 #include <mutex>
 
 #include "SocketClient_p.h"

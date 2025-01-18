@@ -18,20 +18,27 @@ DataBitsComboBox::DataBitsComboBox(wxWindow* parent)
                  nullptr,
                  wxCB_READONLY)
 {
-    Append("8");
-    Append("7");
-    Append("6");
-    Append("5");
+    Append("8", new int(static_cast<int>(itas109::DataBits8)));
+    Append("7", new int(static_cast<int>(itas109::DataBits7)));
+    Append("6", new int(static_cast<int>(itas109::DataBits6)));
+    Append("5", new int(static_cast<int>(itas109::DataBits5)));
 
     SetSelection(0);
 }
 
-asio::serial_port::character_size DataBitsComboBox::GetDataBits() const
+DataBitsComboBox::~DataBitsComboBox()
 {
-    return static_cast<asio::serial_port::character_size>(wxAtoi(GetStringSelection()));
+    for (size_t i = 0; i < GetCount(); i++) {
+        delete static_cast<int*>(GetClientData(i));
+    }
 }
 
-void DataBitsComboBox::SetDataBits(int dataBits)
+itas109::DataBits DataBitsComboBox::GetDataBits() const
+{
+    return static_cast<itas109::DataBits>(wxAtoi(GetStringSelection()));
+}
+
+void DataBitsComboBox::SetDataBits(itas109::DataBits dataBits)
 {
     SetStringSelection(wxString::Format("%d", dataBits));
 }

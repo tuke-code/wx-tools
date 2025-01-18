@@ -26,22 +26,21 @@ bool WSServer::Open()
     std::string ip = d->serverAddress.ToStdString();
     uint16_t port = d->serverPort;
 
-    d->server = new WebSocketServer();
-    std::thread t(WSServerLoop, d->server, ip, port);
+    std::thread t(WSServerLoop, d, this);
     t.detach();
 
-    while (!d->server->running) {
+    while (!d->running) {
         // Wait for server to start
         break;
     }
 
-    d->server->bytesRx.connect([](std::shared_ptr<char> bytes, int len, std::string from) {
+    d->bytesRx.connect([](std::shared_ptr<char> bytes, int len, std::string from) {
         wxToolsInfo() << "Received " << len << " bytes from " << from;
     });
-    d->server->bytesTx.connect([](std::shared_ptr<char> bytes, int len, std::string to) {
+    d->bytesTx.connect([](std::shared_ptr<char> bytes, int len, std::string to) {
         wxToolsInfo() << "Transmitted " << len << " bytes to " << to;
     });
-    d->server->errorOccurred.connect([](std::string error) {
+    d->errorOccurred.connect([](std::string error) {
         wxToolsWarning() << "Error occurred: " << error << ". The server will be interrupted!";
     });
 
@@ -50,26 +49,24 @@ bool WSServer::Open()
 
 void WSServer::Close()
 {
-    if (d->server) {
-        d->server->invokedInterrupted.store(true);
-        while (!d->server->running) {
+    if (d) {
+        d->invokedInterrupted.store(true);
+        while (!d->running) {
             // Wait for server to stop
             break;
         }
 
-        d->server->errorOccurred.disconnect_all();
-        d->server->bytesRx.disconnect_all();
-        d->server->bytesTx.disconnect_all();
-        delete d->server;
-        d->server = nullptr;
+        d->errorOccurred.disconnect_all();
+        d->bytesRx.disconnect_all();
+        d->bytesTx.disconnect_all();
     }
 }
 
 void WSServer::Write(const wxString &data, TextFormat format)
 {
     int len = 0;
-    std::shared_ptr<char> bytes = DoCookeText(data.ToStdString(), static_cast<int>(format), len);
+    std::shared_ptr<char> bytes = DoEncodeBytes(data.ToStdString(), len, static_cast<int>(format));
     if (len > 0) {
-        d->server->txBytes.push_back(std::make_pair(std::move(bytes), len));
+        d->txBytes.push_back(std::make_pair(std::move(bytes), len));
     }
 }

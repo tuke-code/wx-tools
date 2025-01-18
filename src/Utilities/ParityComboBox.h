@@ -8,7 +8,7 @@
  **************************************************************************************************/
 #pragma once
 
-#include <asio/serial_port.hpp>
+#include <CSerialPort/SerialPort.h>
 #include <wx/wx.h>
 
 class ParityComboBox : public wxComboBox
@@ -16,6 +16,6 @@ class ParityComboBox : public wxComboBox
 public:
     ParityComboBox(wxWindow* parent = nullptr);
 
-    asio::serial_port_base::parity::type GetParity() const;
-    void SetParity(int parity);
+    itas109::Parity GetParity() const;
+    void SetParity(itas109::Parity parity);
 };

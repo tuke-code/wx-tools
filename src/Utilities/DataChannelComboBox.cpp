@@ -20,27 +20,33 @@ DataChannelComboBox::DataChannelComboBox(wxWindow* parent)
                  nullptr,
                  wxCB_READONLY)
 {
-    m_dataChannels[0] = (wxString("Text channel"));
-    m_dataChannels[1] = (wxString("Binary channel"));
+    Append(wxT("Text"), new int(static_cast<int>(WEBSOCKET_OP_TEXT)));
+    Append(wxT("Binary"), new int(static_cast<int>(WEBSOCKET_OP_BINARY)));
 }
 
 int DataChannelComboBox::GetDataChannel() const
 {
-    wxString txt = GetValue();
-    for (auto& pair : m_dataChannels) {
-        if (pair.second == txt) {
-            return pair.first;
-        }
+    void* ptr = GetClientData(GetSelection());
+    if (ptr == nullptr) {
+        return WEBSOCKET_OP_TEXT;
     }
 
-    return 0;
+    return static_cast<int>(*static_cast<int*>(ptr));
 }
 
 void DataChannelComboBox::SetDataChannel(int dataChannel)
 {
-    wxString txt = m_dataChannels[dataChannel];
-    int selection = FindString(txt);
-    if (selection != wxNOT_FOUND) {
-        SetSelection(selection);
+    for (size_t i = 0; i < GetCount(); i++) {
+        void* clientData = GetClientData(i);
+        if (clientData == nullptr) {
+            continue;
+        }
+
+        if (dataChannel == static_cast<int>(*static_cast<int*>(clientData))) {
+            SetSelection(i);
+            return;
+        }
     }
+
+    SetSelection(0);
 }

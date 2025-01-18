@@ -15,18 +15,12 @@
 
 #include "Common/wxTools.h"
 #include "SocketServer_p.h"
+#include "WSServer.h"
 
-class WebSocketServer;
 class WSServerPrivate : public SocketServerPrivate
 {
 public:
-    WebSocketServer *server{nullptr};
-};
-
-class WebSocketServer
-{
-public:
-    WebSocketServer()
+    WSServerPrivate()
         : invokedInterrupted(false)
         , running(false)
     {}
@@ -74,37 +68,38 @@ static void handler(struct mg_connection *c, int ev, void *ev_data)
         }
 
         //mg_ws_send(c, wm->data.buf, wm->data.len, WEBSOCKET_OP_TEXT);
-        WebSocketServer *server = reinterpret_cast<WebSocketServer *>(c->mgr->userdata);
-        if (server) {
+        WSServerPrivate *d = reinterpret_cast<WSServerPrivate *>(c->mgr->userdata);
+        if (d) {
             // Get ip and port
             auto bytes = std::shared_ptr<char>(wm->data.buf, [](char *p) { delete[] p; });
-            server->bytesRx(std::move(bytes), wm->data.len, "from");
+            d->bytesRx(std::move(bytes), wm->data.len, "from");
         }
     } else if (ev == MG_EV_ERROR) {
         wxToolsInfo() << "Error: " << "WS server error";
     }
 }
 
-static void WSServerLoop(WebSocketServer *server, const std::string &ip, uint16_t port)
+static void WSServerLoop(WSServerPrivate *d, WSServer *server)
 {
-    server->running.store(true);
-    const std::string url = "ws://" + ip + ":" + std::to_string(port);
+    d->running.store(true);
+    const std::string url = std::string("ws://") + d->serverAddress.ToStdString() + std::string(":")
+                            + std::to_string(d->serverPort);
     struct mg_mgr mgr;
     mgr.userdata = server;
     mg_mgr_init(&mgr);
     mg_http_listen(&mgr, url.c_str(), handler, server);
     mg_log_set(MG_LL_NONE);
     while (1) {
-        if (server->invokedInterrupted.load()) {
+        if (d->invokedInterrupted.load()) {
             break;
         }
 
-        for (auto &tx : server->txBytes) {
+        for (auto &tx : d->txBytes) {
             mg_ws_send(mgr.conns, tx.first.get(), tx.second, WEBSOCKET_OP_TEXT);
         }
 
         mg_mgr_poll(&mgr, 1000);
     }
     mg_mgr_free(&mgr);
-    server->running.store(false);
+    d->running.store(false);
 }

@@ -19,7 +19,6 @@ public:
     LineEdit(wxWindow *parent);
 
     void SetTextFormat(TextFormat format);
-    wxToolsConstBuffer GetBuffer() const;
 
 private:
     TextFormat m_textFormat;

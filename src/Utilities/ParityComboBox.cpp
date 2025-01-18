@@ -18,40 +18,37 @@ ParityComboBox::ParityComboBox(wxWindow* parent)
                  nullptr,
                  wxCB_READONLY)
 {
-    Append(wxT("None"));
-    Append(wxT("Odd"));
-    Append(wxT("Even"));
+    Append(wxT("None"), new int(static_cast<int>(itas109::ParityNone)));
+    Append(wxT("Odd"), new int(static_cast<int>(itas109::ParityOdd)));
+    Append(wxT("Even"), new int(static_cast<int>(itas109::ParityEven)));
+    Append(wxT("Mark"), new int(static_cast<int>(itas109::ParityMark)));
+    Append(wxT("Space"), new int(static_cast<int>(itas109::ParitySpace)));
     SetSelection(0);
 }
 
-asio::serial_port_base::parity::type ParityComboBox::GetParity() const
+itas109::Parity ParityComboBox::GetParity() const
 {
-    switch (GetSelection()) {
-    case 0:
-        return asio::serial_port_base::parity::type::none;
-    case 1:
-        return asio::serial_port_base::parity::type::odd;
-    case 2:
-        return asio::serial_port_base::parity::type::even;
-    default:
-        return asio::serial_port_base::parity::type::none;
+    void* ptr = GetClientData(GetSelection());
+    if (ptr == nullptr) {
+        return itas109::ParityNone;
     }
+
+    return static_cast<itas109::Parity>(*static_cast<int*>(ptr));
 }
 
-void ParityComboBox::SetParity(int parity)
+void ParityComboBox::SetParity(itas109::Parity parity)
 {
-    switch (parity) {
-    case asio::serial_port_base::parity::type::none:
-        SetSelection(0);
-        break;
-    case asio::serial_port_base::parity::type::odd:
-        SetSelection(1);
-        break;
-    case asio::serial_port_base::parity::type::even:
-        SetSelection(2);
-        break;
-    default:
-        SetSelection(0);
-        break;
+    for (size_t i = 0; i < GetCount(); i++) {
+        void* clientData = GetClientData(i);
+        if (clientData == nullptr) {
+            continue;
+        }
+
+        if (parity == static_cast<itas109::Parity>(*static_cast<int*>(clientData))) {
+            SetSelection(i);
+            return;
+        }
     }
+
+    SetSelection(0);
 }

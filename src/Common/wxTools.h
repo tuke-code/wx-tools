@@ -8,7 +8,6 @@
  **************************************************************************************************/
 #pragma once
 
-#include <asio/buffer.hpp>
 #include <glog/logging.h>
 #include <nlohmann/json.hpp>
 #include <sigslot/signal.hpp>
@@ -42,10 +41,6 @@ typedef nlohmann::json wxToolsJson;
 #define wxToolsSignal sigslot::signal
 
 //--------------------------------------------------------------------------------------------------
-// asio
-typedef asio::const_buffer wxToolsConstBuffer;
-
-//--------------------------------------------------------------------------------------------------
 // libcrc
 enum class CRCType {
     CRC_8,
@@ -74,9 +69,8 @@ enum class TextFormat { Bin, Oct, Dec, Hex, Ascii, Utf8, Unknown = -1 };
 std::vector<int> GetSuportedFormats();
 std::vector<wxString> GetSuportedTextFormats();
 wxString GetTextFormatName(TextFormat format);
-std::string DoDecodeText(const wxToolsConstBuffer &buffer, TextFormat format);
-wxToolsConstBuffer DoEncodeText(const std::string &text, TextFormat format);
-std::shared_ptr<char> DoCookeText(const std::string &text, int format, int &len);
+std::string DoDecodeBytes(const std::shared_ptr<char> &bytes, int &len, int format);
+std::shared_ptr<char> DoEncodeBytes(const std::string &text, int &len, int format);
 std::string GetBinString(uint8_t value);
 std::string GetOctString(uint8_t value);
 std::string GetDecString(uint8_t value);

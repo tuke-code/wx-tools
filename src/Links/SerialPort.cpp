@@ -16,95 +16,32 @@ SerialPort::SerialPort()
 
 SerialPort::~SerialPort()
 {
-    if (d->serialPort) {
-        d->serialPort->close();
-        delete d->serialPort;
-        d->serialPort = nullptr;
-    }
 
-    delete d;
 }
 
 void ReadData(SerialPortPrivate *d, SerialPort *serialPort)
 {
-    if (!d->serialPort || !serialPort) {
-        return;
-    }
-
-    char buffer[1024] = {0};
-    size_t receivedBytes = 0;
-    while (1) {
-        if (!d->serialPort->is_open()) {
-            break;
-        }
-
-        try {
-            receivedBytes = d->serialPort->read_some(asio::buffer(buffer, sizeof(buffer)));
-        } catch (asio::system_error &e) {
-            if (e.code().value() != 995) {
-                // 995: The I/O operation has been aborted because of either a thread exit or an application request.
-                wxToolsInfo() << wxString::Format("Read data failed, error message: %s", e.what());
-            }
-
-            break;
-        }
-
-        if (receivedBytes > 0) {
-            std::string data(buffer, receivedBytes);
-            asio::const_buffer buffer(data.data(), data.size());
-            std::string portName = d->portName;
-            serialPort->bytesRxSignal(buffer, d->portName);
-        }
-    }
+    
 }
 
 bool SerialPort::Open()
 {
-    if (d->serialPort) {
-        d->serialPort->close();
-    }
-
-    d->serialPort = new asio::serial_port(d->ioService);
-    try {
-        d->serialPort->open(d->portName);
-    } catch (asio::system_error &e) {
-        d->ioService.stop();
-
-        std::string errorString = e.what();
-        errorString = "Open serial port failed, error message: " + errorString;
-        wxToolsInfo() << errorString;
-        return false;
-    }
-
-    std::thread t(ReadData, d, this);
-    t.detach();
-
-    return true;
+    return false;
 }
 
 void SerialPort::Close()
 {
-    if (d->serialPort) {
-        d->serialPort->close();
-    }
+
 }
 
 void SerialPort::Write(const wxString &data, TextFormat format)
 {
-    const std::string msg = data.ToStdString();
-    if (d->serialPort && d->serialPort->is_open() && !msg.empty()) {
-        auto buffer = asio::buffer(msg.data(), msg.size());
-        size_t ret = d->serialPort->write_some(buffer);
-        if (ret > 0) {
-            bytesTxSignal(buffer, d->portName);
-        } else {
-            wxToolsWarning() << "Write data failed.";
-        }
-    }
+
 }
 
 void SerialPort::Load(const wxToolsJson &parameters)
 {
+#if 0
     // clang-format off
     SerialPortParameterKeys keys;
     d->portName = parameters[keys.portName].template get<std::string>();
@@ -114,10 +51,12 @@ void SerialPort::Load(const wxToolsJson &parameters)
     d->stopBits = static_cast<asio::serial_port::stop_bits::type>(parameters[keys.stopBits].template get<int>());
     d->dataBits = static_cast<asio::serial_port::character_size>(parameters[keys.characterSize].template get<int>());
     // clang-format on
+#endif
 }
 
 wxToolsJson SerialPort::Save()
 {
+#if 0
     wxToolsJson parameters;
     SerialPortParameterKeys keys;
     parameters[keys.portName] = d->portName;
@@ -127,4 +66,6 @@ wxToolsJson SerialPort::Save()
     parameters[keys.stopBits] = static_cast<int>(d->stopBits);
     parameters[keys.characterSize] = static_cast<int>(d->dataBits.value());
     return parameters;
+#endif
+    return wxToolsJson();
 }

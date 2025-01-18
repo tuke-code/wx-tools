@@ -8,8 +8,6 @@
  **************************************************************************************************/
 #pragma once
 
-#include <asio.hpp>
-
 #include "SocketClient.h"
 
 class UDPClientPrivate;

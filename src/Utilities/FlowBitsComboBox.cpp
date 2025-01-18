@@ -18,40 +18,42 @@ FlowBitsComboBox::FlowBitsComboBox(wxWindow* parent)
                  nullptr,
                  wxCB_READONLY)
 {
-    Append(wxT("None"));
-    Append(wxT("Hardware"));
-    Append(wxT("Software"));
+    Append(wxT("None"), new int(static_cast<int>(itas109::FlowNone)));
+    Append(wxT("Hardware"), new int(static_cast<int>(itas109::FlowHardware)));
+    Append(wxT("Software"), new int(static_cast<int>(itas109::FlowSoftware)));
     SetSelection(0);
 }
 
-asio::serial_port::flow_control::type FlowBitsComboBox::GetFlowBits() const
+FlowBitsComboBox::~FlowBitsComboBox()
 {
-    switch (GetSelection()) {
-    case 0:
-        return asio::serial_port::flow_control::none;
-    case 1:
-        return asio::serial_port::flow_control::hardware;
-    case 2:
-        return asio::serial_port::flow_control::software;
-    default:
-        return asio::serial_port::flow_control::none;
+    for (size_t i = 0; i < GetCount(); i++) {
+        delete static_cast<int*>(GetClientData(i));
     }
 }
 
-void FlowBitsComboBox::SetFlowBits(int flowBits)
+itas109::FlowControl FlowBitsComboBox::GetFlowBits() const
 {
-    switch (flowBits) {
-    case asio::serial_port::flow_control::none:
-        SetSelection(0);
-        break;
-    case asio::serial_port::flow_control::hardware:
-        SetSelection(1);
-        break;
-    case asio::serial_port::flow_control::software:
-        SetSelection(2);
-        break;
-    default:
-        SetSelection(0);
-        break;
+    void* ptr = GetClientData(GetSelection());
+    if (ptr == nullptr) {
+        return itas109::FlowNone;
     }
+
+    return static_cast<itas109::FlowControl>(*static_cast<int*>(ptr));
+}
+
+void FlowBitsComboBox::SetFlowBits(itas109::FlowControl flowBits)
+{
+    for (size_t i = 0; i < GetCount(); i++) {
+        void* clientData = GetClientData(i);
+        if (clientData == nullptr) {
+            continue;
+        }
+
+        if (flowBits == static_cast<itas109::FlowControl>(*static_cast<int*>(clientData))) {
+            SetSelection(i);
+            return;
+        }
+    }
+
+    SetSelection(0);
 }

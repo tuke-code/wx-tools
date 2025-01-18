@@ -8,9 +8,6 @@
  **************************************************************************************************/
 #pragma once
 
-#include <asio/io_service.hpp>
-#include <asio/serial_port.hpp>
-
 #include "Link.h"
 
 struct SerialPortParameterKeys

@@ -8,8 +8,7 @@
  **************************************************************************************************/
 #pragma once
 
-#include <asio/serial_port.hpp>
-#include <map>
+#include <mongoose.h>
 #include <wx/wx.h>
 
 class DataChannelComboBox : public wxComboBox
@@ -18,7 +17,4 @@ public:
     DataChannelComboBox(wxWindow* parent = nullptr);
     int GetDataChannel() const;
     void SetDataChannel(int dataChannel);
-
-private:
-    std::map<int, wxString> m_dataChannels;
 };

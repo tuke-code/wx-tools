@@ -74,7 +74,7 @@ wxToolsJson SerialPortUi::Save() const
     SerialPortParameterKeys keys;
     json[keys.portName] = m_portNameComboBox->GetPortName().ToStdString();
     json[keys.baudRate] = static_cast<int>(m_baudRateComboBox->GetBaudRate());
-    json[keys.characterSize] = static_cast<int>(m_dataBitsComboBox->GetDataBits().value());
+    json[keys.characterSize] = static_cast<int>(m_dataBitsComboBox->GetDataBits());
     json[keys.stopBits] = static_cast<int>(m_stopBitsComboBox->GetStopBits());
     json[keys.flowControl] = static_cast<int>(m_flowBitsComboBox->GetFlowBits());
     json[keys.parity] = static_cast<int>(m_parityComboBox->GetParity());
@@ -93,10 +93,10 @@ void SerialPortUi::Load(const wxToolsJson &json)
 
     m_portNameComboBox->SetPortName(portName);
     m_baudRateComboBox->SetBaudRate(baudRate);
-    m_dataBitsComboBox->SetDataBits(dataBits);
-    m_stopBitsComboBox->SetStopBits(stopBits);
-    m_flowBitsComboBox->SetFlowBits(flowBits);
-    m_parityComboBox->SetParity(parity);
+    m_dataBitsComboBox->SetDataBits(static_cast<itas109::DataBits>(dataBits));
+    m_stopBitsComboBox->SetStopBits(static_cast<itas109::StopBits>(stopBits));
+    m_flowBitsComboBox->SetFlowBits(static_cast<itas109::FlowControl>(flowBits));
+    m_parityComboBox->SetParity(static_cast<itas109::Parity>(parity));
 }
 
 Link *SerialPortUi::CreateLink()

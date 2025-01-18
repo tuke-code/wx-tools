@@ -23,7 +23,6 @@ public:
 
     wxString GetInputText() const;
     void SetTextFormat(TextFormat format);
-    wxToolsConstBuffer GetInputBuffer() const;
 
 private:
     LineEdit *m_lineEdit;

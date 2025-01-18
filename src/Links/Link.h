@@ -8,7 +8,6 @@
  **************************************************************************************************/
 #pragma once
 
-#include <asio/buffer.hpp>
 #include <nlohmann/json.hpp>
 #include <sigslot/signal.hpp>
 
@@ -19,9 +18,11 @@
 class Link : wxObject
 {
 public:
-    wxToolsSignal<const wxToolsConstBuffer & /*bytes*/, const wxString & /*to*/> bytesTxSignal;
-    wxToolsSignal<const wxToolsConstBuffer & /*bytes*/, const wxString & /*from*/> bytesRxSignal;
-    sigslot::signal<const std::string & /*error message*/> errorOccuredSignal;
+    // clang-format off
+    wxToolsSignal<std::shared_ptr<char> /*bytes*/, int /*length of bytes*/, std::string /*to  */> bytesTxSignal;
+    wxToolsSignal<std::shared_ptr<char> /*bytes*/, int /*length of bytes*/, std::string /*from*/> bytesRxSignal;
+    sigslot::signal<std::string /*error message*/> errorOccuredSignal;
+    // clang-format on
 
     virtual bool Open() = 0;
     virtual void Close() = 0;

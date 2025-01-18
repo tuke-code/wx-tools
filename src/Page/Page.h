@@ -8,7 +8,6 @@
  **************************************************************************************************/
 #pragma once
 
-#include <asio/buffer.hpp>
 #include <nlohmann/json.hpp>
 #include <sigslot/signal.hpp>
 #include <wx/wx.h>
@@ -41,11 +40,11 @@ private:
     void OnInvokeOpen();
     void OnInvokeWrite(TextFormat format);
     void OnInvokeStartTimer(int ms);
-    void OnBytesRx(const wxToolsConstBuffer &bytes, const wxString &from);
-    void OnBytesTx(const wxToolsConstBuffer &bytes, const wxString &to);
+    void OnBytesRx(std::shared_ptr<char> bytes, int len, std::string from);
+    void OnBytesTx(std::shared_ptr<char> bytes, int len, std::string to);
     void OnSendTimerTimeout();
     void OnClear();
     void OnTextFormatChanged(TextFormat format);
 
-    void OutputText(const wxToolsConstBuffer &bytes, const wxString &fromTo, bool isRx);
+    void OutputText(std::shared_ptr<char> bytes, int len, std::string &fromTo, bool isRx);
 };

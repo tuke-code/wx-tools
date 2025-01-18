@@ -8,14 +8,15 @@
  **************************************************************************************************/
 #pragma once
 
-#include <asio/serial_port.hpp>
+#include <CSerialPort/SerialPort.h>
 #include <wx/wx.h>
 
 class FlowBitsComboBox : public wxComboBox
 {
 public:
     FlowBitsComboBox(wxWindow* parent = nullptr);
+    ~FlowBitsComboBox();
 
-    asio::serial_port::flow_control::type GetFlowBits() const;
-    void SetFlowBits(int flowBits);
+    itas109::FlowControl GetFlowBits() const;
+    void SetFlowBits(itas109::FlowControl flowBits);
 };

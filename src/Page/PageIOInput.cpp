@@ -35,8 +35,3 @@ void PageIOInput::SetTextFormat(TextFormat format)
     m_lineEdit->Clear();
     m_lineEdit->SetTextFormat(format);
 }
-
-wxToolsConstBuffer PageIOInput::GetInputBuffer() const
-{
-    return m_lineEdit->GetBuffer();
-}

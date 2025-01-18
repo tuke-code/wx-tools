@@ -18,40 +18,44 @@ StopBitsComboBox::StopBitsComboBox(wxWindow* parent)
                  nullptr,
                  wxCB_READONLY)
 {
-    Append("1");
-    Append("1.5");
-    Append("2");
+    Append("1", new int(static_cast<int>(itas109::StopOne)));
+#ifdef _WIN32
+    Append("1.5", new int(static_cast<int>(itas109::StopOneAndHalf)));
+#endif
+    Append("2", new int(static_cast<int>(itas109::StopTwo)));
     SetSelection(0);
 }
 
-asio::serial_port::stop_bits::type StopBitsComboBox::GetStopBits() const
+StopBitsComboBox::~StopBitsComboBox()
 {
-    switch (GetSelection()) {
-    case 0:
-        return asio::serial_port::stop_bits::one;
-    case 1:
-        return asio::serial_port::stop_bits::onepointfive;
-    case 2:
-        return asio::serial_port::stop_bits::two;
-    default:
-        return asio::serial_port::stop_bits::one;
+    for (size_t i = 0; i < GetCount(); i++) {
+        delete static_cast<int *>(GetClientData(i));
     }
 }
 
-void StopBitsComboBox::SetStopBits(int stopBits)
+itas109::StopBits StopBitsComboBox::GetStopBits() const
 {
-    switch (stopBits) {
-    case asio::serial_port::stop_bits::one:
-        SetStringSelection("1");
-        break;
-    case asio::serial_port::stop_bits::onepointfive:
-        SetStringSelection("1.5");
-        break;
-    case asio::serial_port::stop_bits::two:
-        SetStringSelection("2");
-        break;
-    default:
-        SetStringSelection("1");
-        break;
+    void *ptr = GetClientData(GetSelection());
+    if (ptr == nullptr) {
+        return itas109::StopOne;
     }
+
+    return static_cast<itas109::StopBits>(*static_cast<int *>(ptr));
+}
+
+void StopBitsComboBox::SetStopBits(itas109::StopBits stopBits)
+{
+    for (size_t i = 0; i < GetCount(); i++) {
+        void *clientData = GetClientData(i);
+        if (clientData == nullptr) {
+            continue;
+        }
+
+        if (stopBits == static_cast<itas109::StopBits>(*static_cast<int *>(clientData))) {
+            SetSelection(i);
+            return;
+        }
+    }
+
+    SetSelection(0);
 }
