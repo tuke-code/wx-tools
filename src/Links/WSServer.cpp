@@ -39,6 +39,7 @@ void WSServer::Loop()
     d->isRunning.store(true);
     while (1) {
         if (d->invokedInterrupted.load()) {
+            mg_close_conn(c);
             break;
         }
 
@@ -46,5 +47,13 @@ void WSServer::Loop()
         mg_mgr_poll(&mgr, 100);
     }
     mg_mgr_free(&mgr);
+
+    // Remove all clients
+    auto tmp = d->clients;
+    for (auto &client : tmp) {
+        d->DoRemoveClient(client.first, client.second);
+        deleteClientSignal(client.first, client.second);
+    }
+
     d->isRunning.store(false);
 }

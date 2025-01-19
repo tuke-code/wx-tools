@@ -48,4 +48,6 @@ private:
     void OnTextFormatChanged(TextFormat format);
 
     void OutputText(std::shared_ptr<char> bytes, int len, std::string &fromTo, bool isRx);
+    void Open();
+    void Close();
 };

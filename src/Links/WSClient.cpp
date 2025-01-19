@@ -54,5 +54,9 @@ void WSClient::Loop()
         mg_mgr_poll(&mgr, 100);
     }
     mg_mgr_free(&mgr);
+
+    for (auto &client : d->clients) {
+    }
+
     d->isRunning.store(false);
 }

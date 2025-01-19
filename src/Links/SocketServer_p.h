@@ -19,6 +19,10 @@ public:
 
     void DoRemoveClient(const std::string &address, uint16_t port)
     {
+        if (clients.empty()) {
+            return;
+        }
+
         auto it = std::find_if(clients.begin(),
                                clients.end(),
                                [&](const std::pair<std::string, uint16_t> &client) {

@@ -70,33 +70,9 @@ void Page::OnInvokeOpenOrClose()
     PageSettingsLink *linkSettings = m_pageSettings->GetLinkSettings();
     LinkUi *linkUi = linkSettings->GetLinkUi();
     if (linkUi->IsOpen()) {
-        m_sendTimer.Stop();
-
-        PageSettingsInput *inputSettings = m_pageSettings->GetInputSettings();
-        inputSettings->SetCycleIntervalComboBoxSelection(0);
-
-        Link *link = linkUi->GetLink();
-        link->bytesTxSignal.disconnect_all();
-        link->bytesRxSignal.disconnect_all();
-        link->errorOccurredSignal.disconnect_all();
-
-        linkUi->Close();
-        linkUi->Enable();
-        linkSettings->SetOpenButtonLabel(wxT("Open"));
-        wxToolsInfo() << "Close link successfully.";
+        Close();
     } else {
-        if (linkUi->Open()) {
-            linkUi->Disable();
-            linkSettings->SetOpenButtonLabel(wxT("Close"));
-            wxToolsInfo() << "Open link successfully.";
-
-            Link *link = linkUi->GetLink();
-            link->bytesRxSignal.connect(&Page::OnBytesRx, this);
-            link->bytesTxSignal.connect(&Page::OnBytesTx, this);
-            link->errorOccurredSignal.connect(&Page::OnErrorOccurred, this);
-        } else {
-            wxMessageBox(wxT("Failed to open link."), wxT("Error"), wxICON_ERROR);
-        }
+        Open();
     }
 }
 
@@ -250,4 +226,42 @@ void Page::OutputText(std::shared_ptr<char> bytes, int len, std::string &fromTo,
     }
 
     m_pageIO->GetOutput()->AppendText(str);
+}
+
+void Page::Open()
+{
+    PageSettingsLink *linkSettings = m_pageSettings->GetLinkSettings();
+    LinkUi *linkUi = linkSettings->GetLinkUi();
+    if (linkUi->Open()) {
+        linkUi->Disable();
+        linkSettings->SetOpenButtonLabel(wxT("Close"));
+        wxToolsInfo() << "Open link successfully.";
+
+        Link *link = linkUi->GetLink();
+        link->bytesRxSignal.connect(&Page::OnBytesRx, this);
+        link->bytesTxSignal.connect(&Page::OnBytesTx, this);
+        link->errorOccurredSignal.connect(&Page::OnErrorOccurred, this);
+    } else {
+        wxMessageBox(wxT("Failed to open link."), wxT("Error"), wxICON_ERROR);
+    }
+}
+
+void Page::Close()
+{
+    PageSettingsLink *linkSettings = m_pageSettings->GetLinkSettings();
+    LinkUi *linkUi = linkSettings->GetLinkUi();
+    m_sendTimer.Stop();
+
+    PageSettingsInput *inputSettings = m_pageSettings->GetInputSettings();
+    inputSettings->SetCycleIntervalComboBoxSelection(0);
+
+    Link *link = linkUi->GetLink();
+    link->bytesTxSignal.disconnect_all();
+    link->bytesRxSignal.disconnect_all();
+    link->errorOccurredSignal.disconnect_all();
+
+    linkUi->Close();
+    linkUi->Enable();
+    linkSettings->SetOpenButtonLabel(wxT("Open"));
+    wxToolsInfo() << "Close link successfully.";
 }
