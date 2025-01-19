@@ -43,7 +43,7 @@ void WSServer::Loop()
             break;
         }
 
-        SendBytesToClient(c, this);
+        SendBytesToAllClients(c, this);
         mg_mgr_poll(&mgr, 100);
     }
     mg_mgr_free(&mgr);

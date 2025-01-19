@@ -61,15 +61,15 @@ static void SendBytesToAllClients(mg_connection *c, WSServer *q)
 {
     auto *d = q->GetPrivate<WSServerPrivate>();
     if (d->selection.first.empty() && d->selection.second == 0) { // Send to all clients
-        for (struct mg_connection *c = c->mgr->conns; c != nullptr; c = c->next) {
-            SendBytesToClient(c, q);
+        for (struct mg_connection *connection = c; connection != nullptr; connection = c->next) {
+            SendBytesToClient(connection, q);
         }
     } else {
-        for (struct mg_connection *c = c->mgr->conns; c != 0; c = c->next) {
-            const std::string ip = d->mg_addr_to_ipv4(&c->rem);
-            const uint8_t port = c->rem.port;
+        for (struct mg_connection *connection = c; connection != 0; connection = c->next) {
+            const std::string ip = d->mg_addr_to_ipv4(&connection->rem);
+            const uint8_t port = connection->rem.port;
             if (ip == d->selection.first && port == d->selection.second) {
-                SendBytesToClient(c, q);
+                SendBytesToClient(connection, q);
             }
         }
     }
