@@ -15,12 +15,12 @@ WSServer::WSServer()
 
 WSServer::~WSServer()
 {
-    delete WXT_D(WSServerPrivate);
+    delete GetD<WSServerPrivate>();
 }
 
 void WSServer::DoClearClients()
 {
-    auto d = WXT_D(WSServerPrivate);
+    auto d = GetD<WSServerPrivate>();
     d->invokeClearClients.store(true);
     while (!d->invokeClearClients.load()) {
         break;
@@ -29,7 +29,7 @@ void WSServer::DoClearClients()
 
 void WSServer::Loop()
 {
-    auto *d = WXT_D(WSServerPrivate);
+    auto *d = GetD<WSServerPrivate>();
     std::string url = std::string("ws://") + d->serverAddress.ToStdString();
     url += std::string(":");
     url += std::to_string(d->serverPort);

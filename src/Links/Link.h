@@ -15,9 +15,6 @@
 
 #include "Common/wxTools.h"
 
-// The macro must be used in the class member function.
-#define WXT_D(T) reinterpret_cast<T *>(this->d)
-
 class LinkPrivate;
 class Link : wxObject
 {

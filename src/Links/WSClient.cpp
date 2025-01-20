@@ -15,12 +15,12 @@ WSClient::WSClient()
 
 WSClient::~WSClient()
 {
-    delete WXT_D(WSClientPrivate);
+    delete GetD<WSClientPrivate>();
 }
 
 void WSClient::Loop()
 {
-    auto *d = WXT_D(WSClientPrivate);
+    auto *d = GetD<WSClientPrivate>();
     std::string ip = d->serverAddress.ToStdString();
     uint16_t port = d->serverPort;
     const std::string url = "ws://" + ip + ":" + std::to_string(port);

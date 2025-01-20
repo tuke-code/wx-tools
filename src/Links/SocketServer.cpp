@@ -20,14 +20,14 @@ SocketServer::~SocketServer()
 
 void SocketServer::SetCurrentClient(const std::string &ip, uint16_t port)
 {
-    SocketServerPrivate *d = WXT_D(SocketServerPrivate);
+    SocketServerPrivate *d = GetD<SocketServerPrivate>();
     d->selection = std::make_pair(ip, port);
 }
 
 void SocketServer::DoClearClients()
 {
     // Clear the clients list
-    SocketServerPrivate *d = WXT_D(SocketServerPrivate);
+    SocketServerPrivate *d = GetD<SocketServerPrivate>();
     for (auto client : d->clients) {
         deleteClientSignal(client.first, client.second);
     }

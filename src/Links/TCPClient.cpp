@@ -17,7 +17,7 @@ TCPClient::TCPClient()
 
 TCPClient::~TCPClient()
 {
-    delete WXT_D(TCPClientPrivate);
+    delete GetD<TCPClientPrivate>();
 }
 
 void TCPClient::Loop()

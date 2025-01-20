@@ -10,11 +10,10 @@
 #include "UDPServer_p.h"
 
 UDPServer::UDPServer()
-    : SocketServer(d = new UDPServerPrivate)
+    : SocketServer(new UDPServerPrivate)
 {}
 
 UDPServer::~UDPServer()
 {
-    delete d;
-    d = nullptr;
+    delete GetD<UDPServerPrivate>();
 }

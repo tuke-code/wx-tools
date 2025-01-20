@@ -15,12 +15,12 @@ SerialPort::SerialPort()
 
 SerialPort::~SerialPort()
 {
-    delete WXT_D(SerialPortPrivate);
+    delete GetD<SerialPortPrivate>();
 }
 
 void SerialPort::Loop()
 {
-    auto d = WXT_D(SerialPortPrivate);
+    auto d = GetD<SerialPortPrivate>();
     d->invokedInterrupted.store(false);
     auto *serialPortIml = new itas109::CSerialPort();
     serialPortIml->init(d->portName.c_str(),
@@ -77,7 +77,7 @@ void SerialPort::Loop()
 
 void SerialPort::Load(const wxtJson &parameters)
 {
-    auto d = WXT_D(SerialPortPrivate);
+    auto d = GetD<SerialPortPrivate>();
     SerialPortParameterKeys keys;
     d->portName = parameters[keys.portName].get<std::string>();
     d->baudRate = parameters[keys.baudRate].get<int>();
@@ -89,7 +89,7 @@ void SerialPort::Load(const wxtJson &parameters)
 
 wxtJson SerialPort::Save()
 {
-    auto d = WXT_D(SerialPortPrivate);
+    auto d = GetD<SerialPortPrivate>();
     wxtJson parameters;
     SerialPortParameterKeys keys;
     parameters[keys.portName] = d->portName;
