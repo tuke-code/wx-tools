@@ -30,33 +30,27 @@ void WSClient::Loop()
     struct mg_connection *c;
     mgr.userdata = this;
     mg_mgr_init(&mgr);
+    mg_log_set(MG_LL_NONE);
     mgr.userdata = this;
     c = mg_ws_connect(&mgr, url.c_str(), WSClientHandler, &done, NULL);
+    wxtInfo() << "Starting WS client on websocket:" << url.c_str();
     if (c == nullptr || done == true) {
         errorOccurredSignal(std::string("Failed to create a WebSocket client!"));
         return;
     }
 
-    mg_log_set(MG_LL_NONE);
-
     d->invokedInterrupted.store(false);
     d->isRunning.store(true);
     while (1) {
         if (d->invokedInterrupted.load()) {
+            mg_close_conn(c);
             break;
         }
 
-        for (auto &tx : d->txBytes) {
-            mg_ws_send(mgr.conns, tx.first.get(), tx.second, WEBSOCKET_OP_TEXT);
-        }
-
-        d->txBytes.clear();
+        DoSendBytesToClient(c, this);
         mg_mgr_poll(&mgr, 100);
     }
     mg_mgr_free(&mgr);
-
-    for (auto &client : d->clients) {
-    }
 
     d->isRunning.store(false);
 }

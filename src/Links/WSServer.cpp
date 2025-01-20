@@ -38,7 +38,7 @@ void WSServer::Loop()
     mg_log_set(MG_LL_NONE);
     mgr.userdata = this;
 
-    wxtInfo() << "Starting WS listener on websocket:" << url.c_str();
+    wxtInfo() << "Starting WS listener on websocket: " << url.c_str();
     mg_connection *c = mg_http_listen(&mgr, url.c_str(), WSServerHandler, nullptr);
     if (c == nullptr) {
         errorOccurredSignal(std::string("Failed to create a WebSocket server!"));
@@ -53,9 +53,9 @@ void WSServer::Loop()
             break;
         }
 
-        DoClearAllClients(&mgr, this);
+        DoTryToClearAllClients(&mgr, this);
         DoSendBytesToAllClients(&mgr, this);
-        mg_mgr_poll(&mgr, 100);
+        mg_mgr_poll(&mgr, 1000);
     }
     mg_mgr_free(&mgr);
 

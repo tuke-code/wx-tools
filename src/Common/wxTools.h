@@ -110,3 +110,14 @@ wxString wxToolsGetSettingsPath();
 wxString wxToolsGetSettingsFileName();
 std::string DoEncodeFlag(const std::string &ip, uint16_t port);
 std::pair<std::string, uint16_t> DoDecodeFlag(const std::string &flag);
+
+template<typename T>
+T DoReverseByteOrder(T value)
+{
+    T result = 0;
+    for (size_t i = 0; i < sizeof(value); i++) {
+        result = (result << 8) | (value & 0xff);
+        value >>= 8;
+    }
+    return result;
+}
