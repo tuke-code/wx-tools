@@ -32,17 +32,17 @@ PageSettings::PageSettings(LinkType type, wxWindow *parent)
     Add(m_inputSettings, 0, wxEXPAND | wxALL);
 }
 
-void PageSettings::Load(const wxToolsJson &parameters)
+void PageSettings::Load(const wxtJson &parameters)
 {
     PageSettingsParameterKeys keys;
-    m_linkSettings->Load(parameters[keys.linkSettings].get<wxToolsJson>());
-    m_outputSettings->Load(parameters[keys.outputSettings].get<wxToolsJson>());
-    m_inputSettings->Load(parameters[keys.inputSettings].get<wxToolsJson>());
+    m_linkSettings->Load(parameters[keys.linkSettings].get<wxtJson>());
+    m_outputSettings->Load(parameters[keys.outputSettings].get<wxtJson>());
+    m_inputSettings->Load(parameters[keys.inputSettings].get<wxtJson>());
 }
 
-wxToolsJson PageSettings::Save() const
+wxtJson PageSettings::Save() const
 {
-    wxToolsJson parameters;
+    wxtJson parameters;
     PageSettingsParameterKeys keys;
     parameters[keys.linkSettings] = m_linkSettings->Save();
     parameters[keys.outputSettings] = m_outputSettings->Save();

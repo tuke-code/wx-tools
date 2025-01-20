@@ -27,8 +27,8 @@ public:
 
     virtual void Disable();
     virtual void Enable();
-    virtual wxToolsJson Save() const;
-    virtual void Load(const wxToolsJson &json);
+    virtual wxtJson Save() const;
+    virtual void Load(const wxtJson &json);
     virtual void Refresh();
 
 protected:

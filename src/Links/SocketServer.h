@@ -17,8 +17,8 @@ public:
     SocketServer(SocketServerPrivate *dPtr);
     ~SocketServer();
 
-    wxToolsSignal<std::string, uint16_t> newClientSignal;
-    wxToolsSignal<std::string, uint16_t> deleteClientSignal;
+    wxtSignal<std::string, uint16_t> newClientSignal;
+    wxtSignal<std::string, uint16_t> deleteClientSignal;
 
     void SetCurrentClient(const std::string &ip, uint16_t port);
     virtual void DoClearClients();

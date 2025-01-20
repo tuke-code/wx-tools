@@ -17,11 +17,11 @@ PageIOInput::PageIOInput(wxWindow *parent)
     Add(m_lineEdit, 1, wxEXPAND | wxALL, 0);
 }
 
-void PageIOInput::Load(const wxToolsJson &parameters) {}
+void PageIOInput::Load(const wxtJson &parameters) {}
 
-wxToolsJson PageIOInput::Save() const
+wxtJson PageIOInput::Save() const
 {
-    wxToolsJson parameters{wxToolsJson::object()};
+    wxtJson parameters{wxtJson::object()};
     return parameters;
 }
 

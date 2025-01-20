@@ -27,12 +27,12 @@ class PageSettingsInput : public wxStaticBoxSizer
 public:
     PageSettingsInput(wxWindow *parent);
 
-    wxToolsSignal<TextFormat> invokeWriteSignal;
-    wxToolsSignal<int> invokeStartTimerSignal;
-    wxToolsSignal<TextFormat> textFormatChangedSignal;
+    wxtSignal<TextFormat> invokeWriteSignal;
+    wxtSignal<int> invokeStartTimerSignal;
+    wxtSignal<TextFormat> textFormatChangedSignal;
 
-    void Load(const wxToolsJson &parameters);
-    wxToolsJson Save() const;
+    void Load(const wxtJson &parameters);
+    wxtJson Save() const;
 
     PageSettingsInputPopup *GetPopup() const;
     void SetCycleIntervalComboBoxSelection(int selection);

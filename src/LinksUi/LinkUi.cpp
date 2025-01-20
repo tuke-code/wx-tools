@@ -55,13 +55,13 @@ void LinkUi::Disable() {}
 
 void LinkUi::Enable() {}
 
-wxToolsJson LinkUi::Save() const
+wxtJson LinkUi::Save() const
 {
-    wxToolsJson json;
+    wxtJson json;
     return json;
 }
 
-void LinkUi::Load(const wxToolsJson &json)
+void LinkUi::Load(const wxtJson &json)
 {
     wxUnusedVar(json);
 }
@@ -81,7 +81,7 @@ void LinkUi::AboutToOpen(Link *link)
     link->Load(Save());
 
     if (link) {
-        wxToolsInfo() << link->Save().dump();
+        wxtInfo() << link->Save().dump();
     }
 }
 

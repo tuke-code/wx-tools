@@ -15,7 +15,7 @@ SocketBase::SocketBase(SocketBasePrivate *d)
 
 SocketBase::~SocketBase() {}
 
-void SocketBase::Load(const wxToolsJson &parameters)
+void SocketBase::Load(const wxtJson &parameters)
 {
     SocketBasePrivate *d = WXT_D(SocketBasePrivate);
     SocketBaseParameterKeys keys;
@@ -29,11 +29,11 @@ void SocketBase::Load(const wxToolsJson &parameters)
     d->password = parameters[keys.password].get<std::string>();
 }
 
-wxToolsJson SocketBase::Save()
+wxtJson SocketBase::Save()
 {
     SocketBasePrivate *d = WXT_D(SocketBasePrivate);
     SocketBaseParameterKeys keys;
-    wxToolsJson parameters;
+    wxtJson parameters;
     parameters[keys.clientAddress] = d->clientAddress.ToStdString();
     parameters[keys.clientPort] = d->clientPort;
     parameters[keys.serverAddress] = d->serverAddress.ToStdString();

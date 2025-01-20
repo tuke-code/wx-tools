@@ -64,7 +64,7 @@ PageSettingsOutput::PageSettingsOutput(wxWindow *parent)
     clearButton->Bind(wxEVT_BUTTON, [=](wxCommandEvent &event) { clearSignal(); });
 }
 
-void PageSettingsOutput::Load(const wxToolsJson &parameters)
+void PageSettingsOutput::Load(const wxtJson &parameters)
 {
     PageSettingsOutputParameterKeys keys;
     int format = parameters[keys.textFormat].get<int>();
@@ -84,9 +84,9 @@ void PageSettingsOutput::Load(const wxToolsJson &parameters)
     m_showFlag->SetValue(showFlag);
 }
 
-wxToolsJson PageSettingsOutput::Save() const
+wxtJson PageSettingsOutput::Save() const
 {
-    wxToolsJson parameters;
+    wxtJson parameters;
     PageSettingsOutputParameterKeys keys;
 
     int selection = m_textFormatComboBox->GetSelection();

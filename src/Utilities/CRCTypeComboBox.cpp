@@ -11,7 +11,7 @@
 CRCTypeComboBox::CRCTypeComboBox(wxWindow *parent)
     : wxComboBox(parent,
                  wxID_ANY,
-                 wxToolsNoneStr,
+                 wxtNoneStr,
                  wxDefaultPosition,
                  wxDefaultSize,
                  0,

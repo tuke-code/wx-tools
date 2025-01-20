@@ -40,11 +40,11 @@ PageSettingsLink::PageSettingsLink(LinkType type, wxWindow *parent)
     Add(buttonSizer, 0, wxEXPAND, 0);
 }
 
-void PageSettingsLink::Load(const wxToolsJson &parameters) {}
+void PageSettingsLink::Load(const wxtJson &parameters) {}
 
-wxToolsJson PageSettingsLink::Save() const
+wxtJson PageSettingsLink::Save() const
 {
-    wxToolsJson json;
+    wxtJson json;
     return json;
 }
 

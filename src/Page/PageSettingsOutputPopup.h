@@ -24,8 +24,8 @@ class PageSettingsOutputPopup : public BaseSettingsPopup
 public:
     PageSettingsOutputPopup(wxButton *controlButton);
 
-    void Load(const wxToolsJson &parameters);
-    wxToolsJson Save() const;
+    void Load(const wxtJson &parameters);
+    wxtJson Save() const;
 
 private:
     wxTextCtrl *m_filterTextCtrl;

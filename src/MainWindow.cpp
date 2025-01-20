@@ -30,7 +30,7 @@ MainWindow::MainWindow()
             m_pageMap[type] = page;
         } else {
             int cookedType = static_cast<int>(type);
-            wxToolsLog(ERROR) << wxString::Format("Create page failed, type: %d", cookedType);
+            wxtLog(ERROR) << wxString::Format("Create page failed, type: %d", cookedType);
         }
     }
 
@@ -81,7 +81,7 @@ void MainWindow::OnSaveAs(wxCommandEvent&)
                                 wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
     saveFileDialog.ShowModal();
     wxString fileName = saveFileDialog.GetPath();
-    wxToolsInfo() << fileName;
+    wxtInfo() << fileName;
     SaveParameters(fileName);
 }
 
@@ -174,19 +174,19 @@ void MainWindow::LoadParameters(wxString fileName)
     }
 
     std::ifstream ifs(fileName.ToStdString());
-    wxToolsJson json;
+    wxtJson json;
     ifs >> json;
 
     for (auto it = m_pageMap.begin(); it != m_pageMap.end(); ++it) {
         Page* page = it->second;
         wxString name = GetPageParameterFileName(it->first);
-        wxToolsJson pageJson = json[name.ToStdString()];
+        wxtJson pageJson = json[name.ToStdString()];
         if (!pageJson.is_null()) {
             page->Load(pageJson);
         }
     }
 
-    wxToolsJson tabIndexJson = json["tabIndex"];
+    wxtJson tabIndexJson = json["tabIndex"];
     if (!tabIndexJson.is_null()) {
         int tabIndex = tabIndexJson.get<int>();
         if (tabIndex >= 0 || tabIndex < m_notebook->GetPageCount()) {
@@ -197,12 +197,12 @@ void MainWindow::LoadParameters(wxString fileName)
 
 void MainWindow::SaveParameters(wxString fileName)
 {
-    wxToolsJson wxTools = wxToolsJson::object();
+    wxtJson wxTools = wxtJson::object();
     wxTools["tabIndex"] = m_notebook->GetSelection();
 
     for (auto it = m_pageMap.begin(); it != m_pageMap.end(); ++it) {
         Page* page = it->second;
-        wxToolsJson json = page->Save();
+        wxtJson json = page->Save();
         wxString name = GetPageParameterFileName(it->first);
         wxTools[name.ToStdString()] = json;
     }

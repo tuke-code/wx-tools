@@ -19,7 +19,7 @@ bool Application::OnInit()
 #if 0
     InitGoogleLog("wxTools");
 #endif
-    wxToolsInfo() << "Application::OnInit()";
+    wxtInfo() << "Application::OnInit()";
 
     auto* mainWindow = new MainWindow();
 #if 1

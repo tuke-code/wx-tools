@@ -51,15 +51,15 @@ Page::Page(LinkType type, wxWindow *parent)
     m_sendTimer.Bind(wxEVT_TIMER, [this](wxTimerEvent &event) { OnSendTimerTimeout(); });
 }
 
-void Page::Load(const wxToolsJson &json)
+void Page::Load(const wxtJson &json)
 {
     PageParameterKeys keys;
-    m_pageSettings->Load(json[keys.settings].get<wxToolsJson>());
+    m_pageSettings->Load(json[keys.settings].get<wxtJson>());
 }
 
-wxToolsJson Page::Save() const
+wxtJson Page::Save() const
 {
-    wxToolsJson json;
+    wxtJson json;
     PageParameterKeys keys;
     json[keys.settings] = m_pageSettings->Save();
     return json;
@@ -139,7 +139,7 @@ void Page::OnSendTimerTimeout()
     }
 
     PageSettingsInputParameterKeys keys;
-    wxToolsJson json = inputSettings->Save();
+    wxtJson json = inputSettings->Save();
     int textFromat = json[keys.textFormat].get<int>();
     TextFormat format = static_cast<TextFormat>(textFromat);
     OnInvokeWrite(format);
@@ -235,7 +235,7 @@ void Page::Open()
     if (linkUi->Open()) {
         linkUi->Disable();
         linkSettings->SetOpenButtonLabel(wxT("Close"));
-        wxToolsInfo() << "Open link successfully.";
+        wxtInfo() << "Open link successfully.";
 
         Link *link = linkUi->GetLink();
         link->bytesRxSignal.connect(&Page::OnBytesRx, this);
@@ -263,5 +263,5 @@ void Page::Close()
     linkUi->Close();
     linkUi->Enable();
     linkSettings->SetOpenButtonLabel(wxT("Open"));
-    wxToolsInfo() << "Close link successfully.";
+    wxtInfo() << "Close link successfully.";
 }

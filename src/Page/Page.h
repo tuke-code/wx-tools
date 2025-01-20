@@ -27,8 +27,8 @@ class Page : public wxPanel
 public:
     Page(LinkType type, wxWindow *parent);
 
-    void Load(const wxToolsJson &json);
-    wxToolsJson Save() const;
+    void Load(const wxtJson &json);
+    wxtJson Save() const;
 
 private:
     PageSettings *m_pageSettings;

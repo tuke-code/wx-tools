@@ -28,8 +28,8 @@ class PageSettings : public wxBoxSizer
 public:
     PageSettings(LinkType type, wxWindow *parent);
 
-    void Load(const wxToolsJson &parameters);
-    wxToolsJson Save() const;
+    void Load(const wxtJson &parameters);
+    wxtJson Save() const;
 
     PageSettingsLink *GetLinkSettings() const;
     PageSettingsOutput *GetOutputSettings() const;

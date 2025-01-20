@@ -31,11 +31,11 @@ class PageSettingsOutput : public wxStaticBoxSizer
 public:
     PageSettingsOutput(wxWindow *parent);
 
-    wxToolsSignal<> parametersChangedSignal;
-    wxToolsSignal<> clearSignal;
+    wxtSignal<> parametersChangedSignal;
+    wxtSignal<> clearSignal;
 
-    void Load(const wxToolsJson &parameters);
-    wxToolsJson Save() const;
+    void Load(const wxtJson &parameters);
+    wxtJson Save() const;
 
     TextFormat GetTextFormat() const;
     bool GetShowDate() const;

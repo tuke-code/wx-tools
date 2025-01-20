@@ -15,30 +15,30 @@
 
 //--------------------------------------------------------------------------------------------------
 // Common
-#define wxToolsNone -1
-#define wxToolsOk 0
-#define wxToolsUnknown -2
+#define wxtNone -1
+#define wxtOK 0
+#define wxtUnknown -2
 
-#define wxToolsNoneStr wxT("None")
-#define wxToolsOkStr wxT("Ok")
-#define wxToolsUnknownStr wxT("Unknown")
+#define wxtNoneStr wxT("None")
+#define wxtOkStr wxT("Ok")
+#define wxtUnknownStr wxT("Unknown")
 
 //--------------------------------------------------------------------------------------------------
 // Google Log
-#define wxToolsLog(severity) LOG(severity)
-#define wxToolsInfo() LOG(INFO)
-#define wxToolsWarning() LOG(WARNING)
-#define wxToolError() LOG(ERROR)
+#define wxtLog(severity) LOG(severity)
+#define wxtInfo() LOG(INFO)
+#define wxtWarning() LOG(WARNING)
+#define wxtError() LOG(ERROR)
 void DoInitLogging(const char *argv0);
 void DoShutdownLogging();
 
 //--------------------------------------------------------------------------------------------------
 // json
-typedef nlohmann::json wxToolsJson;
+typedef nlohmann::json wxtJson;
 
 //--------------------------------------------------------------------------------------------------
 // sigslot
-#define wxToolsSignal sigslot::signal
+#define wxtSignal sigslot::signal
 
 //--------------------------------------------------------------------------------------------------
 // libcrc
@@ -93,13 +93,13 @@ wxString GetCommunicationName(LinkType type);
 
 //--------------------------------------------------------------------------------------------------
 // Addition
-enum class AdditionType { R, RN, N, NR, None = wxToolsNone };
+enum class AdditionType { R, RN, N, NR, None = wxtNone };
 std::vector<AdditionType> GetSuportedAdditionTypes();
 wxString GetAdditionName(AdditionType type);
 
 //--------------------------------------------------------------------------------------------------
 // Escape character
-enum class EscapeType { R, RN, N, NR, R_N, None = wxToolsNone };
+enum class EscapeType { R, RN, N, NR, R_N, None = wxtNone };
 std::vector<EscapeType> GetSuportedEscapeTypes();
 wxString GetEscapeName(EscapeType type);
 

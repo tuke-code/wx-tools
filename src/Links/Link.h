@@ -26,8 +26,8 @@ public:
     ~Link();
 
     // clang-format off
-    wxToolsSignal<std::shared_ptr<char> /*bytes*/, int /*length of bytes*/, std::string /*to  */> bytesTxSignal;
-    wxToolsSignal<std::shared_ptr<char> /*bytes*/, int /*length of bytes*/, std::string /*from*/> bytesRxSignal;
+    wxtSignal<std::shared_ptr<char> /*bytes*/, int /*length of bytes*/, std::string /*to  */> bytesTxSignal;
+    wxtSignal<std::shared_ptr<char> /*bytes*/, int /*length of bytes*/, std::string /*from*/> bytesRxSignal;
     sigslot::signal<std::string /*error message*/> errorOccurredSignal;
     // clang-format on
 
@@ -35,8 +35,8 @@ public:
     void Close();
     void Write(const wxString &data, TextFormat format);
 
-    virtual void Load(const wxToolsJson &parameters) = 0;
-    virtual wxToolsJson Save() = 0;
+    virtual void Load(const wxtJson &parameters) = 0;
+    virtual wxtJson Save() = 0;
 
 public:
     template<typename T>

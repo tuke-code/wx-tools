@@ -28,6 +28,6 @@ public:
     ~SerialPort();
 
     void Loop() override;
-    void Load(const wxToolsJson &parameters) override;
-    wxToolsJson Save() override;
+    void Load(const wxtJson &parameters) override;
+    wxtJson Save() override;
 };

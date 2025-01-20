@@ -38,16 +38,16 @@ PageSettingsLinkPopup::PageSettingsLinkPopup(wxButton *controlButton)
     SetSizerAndFit(panelSizer);
 }
 
-void PageSettingsLinkPopup::Load(const wxToolsJson &parameters)
+void PageSettingsLinkPopup::Load(const wxtJson &parameters)
 {
     PageSettingsLinkPopupParameterKeys keys;
     bool autoReconnect = parameters[keys.autoReconnect].template get<bool>();
     m_autoReconnect->SetValue(autoReconnect);
 }
 
-wxToolsJson PageSettingsLinkPopup::Save() const
+wxtJson PageSettingsLinkPopup::Save() const
 {
-    wxToolsJson json = wxToolsJson::object();
+    wxtJson json = wxtJson::object();
     PageSettingsLinkPopupParameterKeys keys;
 
     json[keys.autoReconnect] = m_autoReconnect->GetValue();

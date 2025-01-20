@@ -29,9 +29,9 @@ class PageSettingsInputPopup : public BaseSettingsPopup
 public:
     PageSettingsInputPopup(wxButton *controlButton);
 
-    wxToolsSignal<> parametersChangedSignal;
-    void Load(const wxToolsJson &json);
-    wxToolsJson Save() const;
+    wxtSignal<> parametersChangedSignal;
+    void Load(const wxtJson &json);
+    wxtJson Save() const;
 
 private:
     wxComboBox *m_prefixComboBox{nullptr};

@@ -68,7 +68,7 @@ void SerialPortUi::Enable()
     m_parityComboBox->Enable();
 }
 
-wxToolsJson SerialPortUi::Save() const
+wxtJson SerialPortUi::Save() const
 {
     nlohmann::json json = nlohmann::json(nlohmann::json::object());
     SerialPortParameterKeys keys;
@@ -81,7 +81,7 @@ wxToolsJson SerialPortUi::Save() const
     return json;
 }
 
-void SerialPortUi::Load(const wxToolsJson &json)
+void SerialPortUi::Load(const wxtJson &json)
 {
     SerialPortParameterKeys keys;
     wxString portName = json[keys.portName].template get<std::string>();

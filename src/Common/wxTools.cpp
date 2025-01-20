@@ -90,7 +90,7 @@ wxString GetCrcName(CRCType type)
     }
 
     if (typeMap.find(type) == typeMap.end()) {
-        return wxToolsUnknownStr;
+        return wxtUnknownStr;
     } else {
         return typeMap[type];
     }
@@ -412,7 +412,7 @@ wxString GetAdditionName(AdditionType type)
         typeMap[AdditionType::RN] = "\\r\\n";
         typeMap[AdditionType::N] = "\\n";
         typeMap[AdditionType::NR] = "\\n\\r";
-        typeMap[AdditionType::None] = wxToolsNoneStr;
+        typeMap[AdditionType::None] = wxtNoneStr;
     }
 
     if (typeMap.find(type) == typeMap.end()) {
@@ -446,7 +446,7 @@ wxString GetEscapeName(EscapeType type)
         typeMap[EscapeType::N] = "\\n";
         typeMap[EscapeType::NR] = "\\n\\r";
         typeMap[EscapeType::R_N] = "\\r + \\n";
-        typeMap[EscapeType::None] = wxToolsNoneStr;
+        typeMap[EscapeType::None] = wxtNoneStr;
     }
 
     if (typeMap.find(type) == typeMap.end()) {

@@ -45,22 +45,22 @@ PageSettingsInput::PageSettingsInput(wxWindow* parent)
     Add(buttonSizer, 0, wxEXPAND | wxALL, 0);
 }
 
-void PageSettingsInput::Load(const wxToolsJson& parameters)
+void PageSettingsInput::Load(const wxtJson& parameters)
 {
     PageSettingsInputParameterKeys keys;
     int cycleInterval = parameters[keys.cycleInterval].get<int>();
     int textFormat = parameters[keys.textFormat].get<int>();
-    wxToolsJson popup = parameters[keys.popup].get<wxToolsJson>();
+    wxtJson popup = parameters[keys.popup].get<wxtJson>();
 
     wxToolsSetComboBoxSectionByIntClientData(m_cycleIntervalComboBox, cycleInterval);
     wxToolsSetComboBoxSectionByIntClientData(m_formatComboBox, textFormat);
     m_popup->Load(popup);
 }
 
-wxToolsJson PageSettingsInput::Save() const
+wxtJson PageSettingsInput::Save() const
 {
     PageSettingsInputParameterKeys keys;
-    wxToolsJson parameters;
+    wxtJson parameters;
 
     int selection = m_cycleIntervalComboBox->GetSelection();
     void* clientData = m_cycleIntervalComboBox->GetClientData(selection);

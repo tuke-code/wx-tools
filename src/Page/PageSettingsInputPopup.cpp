@@ -81,7 +81,7 @@ PageSettingsInputPopup::PageSettingsInputPopup(wxButton *controlButton)
     m_bigEndianCheckBox->Bind(wxEVT_CHECKBOX, &PageSettingsInputPopup::OnParametersChanged, this);
 }
 
-void PageSettingsInputPopup::Load(const wxToolsJson &json)
+void PageSettingsInputPopup::Load(const wxtJson &json)
 {
     PageSettingsInputPopupParameterKeys keys;
     int prefix = json[keys.prefix].get<int>();
@@ -103,10 +103,10 @@ void PageSettingsInputPopup::Load(const wxToolsJson &json)
     m_bigEndianCheckBox->SetValue(bigEndian);
 }
 
-wxToolsJson PageSettingsInputPopup::Save() const
+wxtJson PageSettingsInputPopup::Save() const
 {
     PageSettingsInputPopupParameterKeys keys;
-    wxToolsJson json;
+    wxtJson json;
 
     int prefixSelection = m_prefixComboBox->GetSelection();
     int suffixSelection = m_suffixComboBox->GetSelection();

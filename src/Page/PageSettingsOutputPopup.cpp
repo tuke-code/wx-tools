@@ -44,16 +44,16 @@ PageSettingsOutputPopup::PageSettingsOutputPopup(wxButton *controlButton)
     SetSizerAndFit(sizer);
 }
 
-void PageSettingsOutputPopup::Load(const wxToolsJson &parameters)
+void PageSettingsOutputPopup::Load(const wxtJson &parameters)
 {
     PageSettingsOutputPopupParameterKeys keys;
     m_filterTextCtrl->SetValue(parameters[keys.fillter].get<std::string>());
     m_highlightLabelsTextCtrl->SetValue(parameters[keys.highlightLabels].get<std::string>());
 }
 
-wxToolsJson PageSettingsOutputPopup::Save() const
+wxtJson PageSettingsOutputPopup::Save() const
 {
-    wxToolsJson parameters{wxToolsJson::object()};
+    wxtJson parameters{wxtJson::object()};
     PageSettingsOutputPopupParameterKeys keys;
     parameters[keys.fillter] = m_filterTextCtrl->GetValue().ToStdString();
     parameters[keys.highlightLabels] = m_highlightLabelsTextCtrl->GetValue().ToStdString();

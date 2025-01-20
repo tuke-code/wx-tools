@@ -72,10 +72,10 @@ void SerialPort::Loop()
     serialPortIml->close();
     delete serialPortIml;
     d->isRunning.store(false);
-    wxToolsInfo() << "Serial port loop exit.";
+    wxtInfo() << "Serial port loop exit.";
 }
 
-void SerialPort::Load(const wxToolsJson &parameters)
+void SerialPort::Load(const wxtJson &parameters)
 {
     auto d = WXT_D(SerialPortPrivate);
     SerialPortParameterKeys keys;
@@ -87,10 +87,10 @@ void SerialPort::Load(const wxToolsJson &parameters)
     d->dataBits = static_cast<itas109::DataBits>(parameters[keys.dataBits].get<int>());
 }
 
-wxToolsJson SerialPort::Save()
+wxtJson SerialPort::Save()
 {
     auto d = WXT_D(SerialPortPrivate);
-    wxToolsJson parameters;
+    wxtJson parameters;
     SerialPortParameterKeys keys;
     parameters[keys.portName] = d->portName;
     parameters[keys.baudRate] = d->baudRate;

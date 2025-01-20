@@ -80,9 +80,9 @@ void SocketBaseUi::Enable()
     }
 }
 
-wxToolsJson SocketBaseUi::Save() const
+wxtJson SocketBaseUi::Save() const
 {
-    wxToolsJson json;
+    wxtJson json;
     SocketBaseParameterKeys keys;
     const wxString localhost = "127.0.0.1";
     // clang-format off
@@ -99,7 +99,7 @@ wxToolsJson SocketBaseUi::Save() const
     return json;
 }
 
-void SocketBaseUi::Load(const wxToolsJson &json)
+void SocketBaseUi::Load(const wxtJson &json)
 {
     SocketBaseParameterKeys keys;
     if (m_clientComboBox) {

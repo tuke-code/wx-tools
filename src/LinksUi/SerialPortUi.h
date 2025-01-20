@@ -24,8 +24,8 @@ public:
 
     void Disable() override;
     void Enable() override;
-    wxToolsJson Save() const override;
-    void Load(const wxToolsJson &json) override;
+    wxtJson Save() const override;
+    void Load(const wxtJson &json) override;
 
 protected:
     Link *CreateLink() override;
