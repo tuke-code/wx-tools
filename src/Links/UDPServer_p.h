@@ -75,6 +75,7 @@ static void OnMgEvRead(struct mg_connection *c, void *ev_data, UDPServer *q)
     }
 
     q->bytesRxSignal(std::move(bytes), c->recv.len, from);
+    c->recv.len = 0;
 }
 
 static void UDPServerHandler(struct mg_connection *c, int ev, void *ev_data)
