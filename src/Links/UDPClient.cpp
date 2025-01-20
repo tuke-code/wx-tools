@@ -22,7 +22,6 @@ UDPClient::~UDPClient()
 
 static void UDPClientHandler(struct mg_connection *c, int ev, void *ev_data)
 {
-    MG_DEBUG(("%p got event: %d %p", c, ev, ev_data));
     if (ev == MG_EV_OPEN) {
         // Nothing to do yet...
     } else if (ev == MG_EV_RESOLVE) {
