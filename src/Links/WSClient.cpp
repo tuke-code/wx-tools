@@ -39,15 +39,6 @@ void WSClient::Loop()
         errorOccurredSignal(std::string("Failed to create a WebSocket client!"));
         return;
     }
-#if 0
-    const std::string locIp = d->mg_addr_to_ipv4(&c->loc);
-    const uint16_t locPort = DoReverseByteOrder<uint16_t>(c->loc.port);
-    const std::string remIp = d->mg_addr_to_ipv4(&c->rem);
-    const uint16_t remPort = DoReverseByteOrder<uint16_t>(c->rem.port);
-    std::string loc = fmt::format("{0}:{1}", locIp, locPort);
-    std::string rem = fmt::format("{0}:{1}", remIp, remPort);
-    wxtInfo() << fmt::format("WebSocket client({0}) has been connected to {1}", loc, rem);
-#endif
 
     d->invokedInterrupted.store(false);
     d->isRunning.store(true);

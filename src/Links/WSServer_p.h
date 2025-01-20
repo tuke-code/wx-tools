@@ -8,6 +8,8 @@
  **************************************************************************************************/
 #pragma once
 
+#include <fmt/format.h>
+
 #include "Common/wxTools.h"
 #include "SocketServer_p.h"
 #include "WSServer.h"
@@ -204,10 +206,7 @@ static void OnMgEvClose(struct mg_connection *c, void *ev_data, WSServer *q)
 static void OnMgEvError(struct mg_connection *c, void *ev_data, WSServer *q)
 {
     WXUNUSED(c);
-    WXUNUSED(ev_data);
-    char *str = reinterpret_cast<char *>(ev_data);
-    wxtInfo() << str;
-    q->errorOccurredSignal(std::string("WS server error"));
+    q->errorOccurredSignal(fmt::format("WS server error:{}", reinterpret_cast<char *>(ev_data)));
 }
 
 static void WSServerHandler(struct mg_connection *c, int ev, void *ev_data)
