@@ -37,11 +37,12 @@ void Link::Close()
 {
     if (d) {
         d->invokedInterrupted.store(true);
-        d->txBytes.clear();
         while (d->isRunning) {
             // wait for the thread to stop
             break;
         }
+
+        d->txBytes.clear();
     }
 }
 
@@ -58,24 +59,8 @@ void Link::Loop()
 {
     d->invokedInterrupted.store(false);
     d->isRunning.store(true);
-    while (1) {
-        if (d->invokedInterrupted.load()) {
-            break;
-        }
-
-#if 0
-        // Read data from the link
-        bytesRxSignal(std::shared_ptr<char>(new char[10], [](char *p) { delete[] p; }), 10, "from");
-        
-        // Write data to the link
-        for (auto &tx : d->txBytes) {
-            bytesTxSignal(tx.first, tx.second, "to");
-        }
-        d->txBytes.clear();
-#endif
-
-        // sleep for a while
-        std::this_thread::sleep_for(std::chrono::milliseconds(100));
+    while (!d->invokedInterrupted.load()) {
+        // do something
     }
 
     d->isRunning.store(false);
