@@ -22,7 +22,7 @@ bool Application::OnInit()
     wxtInfo() << "Application::OnInit()";
 
     auto* mainWindow = new MainWindow();
-#if 1
+#if 0
     mainWindow->SetTransparent(50);
 #endif
     mainWindow->Show(true);
