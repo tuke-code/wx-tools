@@ -21,7 +21,11 @@ public:
 
 static void OnMgEvPoll(struct mg_connection *c, void *ev_data, UDPServer *q)
 {
-    auto *d = q->GetD<SocketServerPrivate>();
+    auto *d = q->GetD<UDPServerPrivate>();
+    if (d == nullptr || reinterpret_cast<uintptr_t>(d) == 0xdddddddddddddddd) {
+        return;
+    }
+
     size_t len = 0;
     std::string ip = d->mg_addr_to_ipv4(&c->rem);
     uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
