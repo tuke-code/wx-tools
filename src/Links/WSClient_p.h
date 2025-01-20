@@ -42,6 +42,10 @@ static void WSClientHandler(struct mg_connection *c, int ev, void *ev_data)
         const uint16_t port = c->rem.port;
         const std::string from = DoEncodeFlag(ip, port);
         q->bytesRxSignal(std::move(data), wm->data.len, from);
+    } else if (ev == MG_EV_WRITE) {
+    } else if (ev == MG_EV_CLOSE) {
+        // When connection is closed, log message
+        //MG_INFO(("%p closed", c->fd));
     }
 
     if (ev == MG_EV_ERROR || ev == MG_EV_CLOSE) {

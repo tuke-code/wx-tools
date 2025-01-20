@@ -35,6 +35,7 @@ include_directories(src)
 option(_WIN32_WINNT "Windows Version" 0x0501)
 # Windows 7 option(_WIN32_WINNT "Windows Version" 0x0601)
 
+add_compile_definitions(MG_DATA_SIZE=1024)
 file(GLOB_RECURSE WX_TOOLS_SOURCE src/*.*)
 list(APPEND WX_TOOLS_SOURCE wxTools.rc)
 add_executable(wxTools ${WX_TOOLS_SOURCE})

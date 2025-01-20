@@ -18,5 +18,6 @@ public:
     ~WSServer();
 
 private:
+    void DoClearClients() override;
     void Loop() override;
 };

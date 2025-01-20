@@ -15,6 +15,11 @@
 class WSServerPrivate : public SocketServerPrivate
 {
 public:
+    WSServerPrivate()
+        : invokeClearClients(false)
+    {}
+
+    std::atomic_bool invokeClearClients;
 };
 
 static void OnAccept(struct mg_connection *c, WSServer *server)
@@ -75,6 +80,20 @@ static void SendBytesToAllClients(mg_connection *c, WSServer *q)
     }
 
     d->txBytes.clear();
+}
+
+static void DoClearAllClients(struct mg_connection *c, WSServer *q)
+{
+    auto *d = q->GetPrivate<WSServerPrivate>();
+    for (struct mg_connection *connection = c; connection != nullptr; connection = c->next) {
+        std::string ip = d->mg_addr_to_ipv4(&connection->rem);
+        uint16_t port = connection->rem.port;
+        d->DoRemoveClient(ip, port);
+        q->deleteClientSignal(ip, port);
+        if (connection->is_client) {
+            mg_close_conn(connection);
+        }
+    }
 }
 
 static void WSServerHandler(struct mg_connection *c, int ev, void *ev_data)

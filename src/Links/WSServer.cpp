@@ -18,6 +18,14 @@ WSServer::~WSServer()
     delete WXT_D(WSServerPrivate);
 }
 
+void WSServer::DoClearClients()
+{
+    d->invokedInterrupted.store(true);
+    while (!d->invokedInterrupted.load()) {
+        break;
+    }
+}
+
 void WSServer::Loop()
 {
     auto *d = WXT_D(WSServerPrivate);
@@ -43,6 +51,7 @@ void WSServer::Loop()
             break;
         }
 
+        DoClearClients();
         SendBytesToAllClients(c, this);
         mg_mgr_poll(&mgr, 100);
     }
