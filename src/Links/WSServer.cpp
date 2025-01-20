@@ -52,7 +52,7 @@ void WSServer::Loop()
         }
 
         DoClearClients();
-        SendBytesToAllClients(c, this);
+        SendBytesToAllClients(&mgr, this);
         mg_mgr_poll(&mgr, 100);
     }
     mg_mgr_free(&mgr);

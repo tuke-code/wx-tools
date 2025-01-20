@@ -16,8 +16,8 @@ WSClientUi::WSClientUi(wxWindow *parent)
     std::vector<void (SocketBaseUi::*)(int, wxWindow *)> funcs;
     funcs.push_back(&WSClientUi::InitServerComboBox);
     funcs.push_back(&WSClientUi::InitServerPortCtrl);
-    funcs.push_back(&WSClientUi::InitIsEnableAuthorizationCheckBox);
     funcs.push_back(&WSClientUi::InitDataChannelComboBox);
+    funcs.push_back(&WSClientUi::InitIsEnableAuthorizationCheckBox);
     funcs.push_back(&WSClientUi::InitUserNameTextCtrl);
     funcs.push_back(&WSClientUi::InitPasswordTextCtrl);
 

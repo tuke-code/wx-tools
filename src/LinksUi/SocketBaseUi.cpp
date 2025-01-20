@@ -253,7 +253,7 @@ void SocketBaseUi::InitIsEnableAuthorizationCheckBox(int row, wxWindow *parent)
 
 void SocketBaseUi::InitDataChannelComboBox(int row, wxWindow *parent)
 {
-    m_dataChannelLabel = new wxStaticText(parent, wxID_ANY, wxT("Channel"));
+    m_dataChannelLabel = new wxStaticText(parent, wxID_ANY, wxT("Tx Channel"));
     Add(m_dataChannelLabel, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
 
     m_dataChannelComboBox = new DataChannelComboBox(parent);

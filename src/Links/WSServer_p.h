@@ -28,10 +28,11 @@ static void OnAccept(struct mg_connection *c, WSServer *server)
     std::string from = ip + std::string(":") + std::to_string(c->rem.port);
     server->newClientSignal(ip, c->rem.port);
     wxToolsInfo() << "New client from " << from;
-
+#if 0
     if (c->next && c->next->rem.port) {
         OnAccept(c->next, server);
     }
+#endif
 }
 
 static void SendBytesToClient(struct mg_connection *c, WSServer *q)
@@ -63,14 +64,16 @@ static void SendBytesToClient(struct mg_connection *c, WSServer *q)
     }
 }
 
-static void SendBytesToAllClients(mg_connection *c, WSServer *q)
+static void SendBytesToAllClients(mg_mgr *mgr, WSServer *q)
 {
     auto *d = q->GetD<WSServerPrivate>();
     if (d->selection.first.empty() && d->selection.second == 0) { // Send to all clients
+        auto *c = mgr->conns;
         for (struct mg_connection *connection = c; connection != nullptr; connection = c->next) {
             SendBytesToClient(connection, q);
         }
     } else {
+        auto *c = mgr->conns;
         for (struct mg_connection *connection = c; connection != 0; connection = c->next) {
             const std::string ip = d->mg_addr_to_ipv4(&connection->rem);
             const uint8_t port = connection->rem.port;
