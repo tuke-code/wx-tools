@@ -54,8 +54,8 @@ void WSServer::Loop()
         }
 
         DoTryToClearAllClients(&mgr, this);
-        DoSendBytesToAllClients(&mgr, this);
-        mg_mgr_poll(&mgr, 1000);
+        DoTryToSendBytesToAllClients(&mgr, this);
+        mg_mgr_poll(&mgr, 100);
     }
     mg_mgr_free(&mgr);
 
@@ -67,8 +67,5 @@ void WSServer::Loop()
     }
 
     d->isRunning.store(false);
-
-#if 1
     wxtInfo() << "WS server thread is exited!";
-#endif
 }

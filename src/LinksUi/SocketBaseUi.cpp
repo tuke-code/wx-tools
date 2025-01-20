@@ -91,7 +91,11 @@ wxtJson SocketBaseUi::Save() const
     json[keys.serverAddress] = m_serverComboBox ? m_serverComboBox->GetValue() : localhost;
     json[keys.serverPort] = m_serverPortCtrl ? m_serverPortCtrl->GetValue() : 54321;
     json[keys.isAuthorization] = m_isAuthorizationCheckBox ? m_isAuthorizationCheckBox->GetValue() : false;
-    json[keys.dataChannel] = m_dataChannelComboBox ? m_dataChannelComboBox->GetSelection() : 0;
+    if (m_dataChannelComboBox) {
+        int selection = m_dataChannelComboBox->GetSelection();
+        int dataChannel = *reinterpret_cast<int*>(m_dataChannelComboBox->GetClientData(selection));
+        json[keys.dataChannel] = dataChannel;
+    }
     json[keys.userName] = m_userNameTextCtrl ? m_userNameTextCtrl->GetValue() : wxString("");
     json[keys.password] = m_passwordTextCtrl ? m_passwordTextCtrl->GetValue() : wxString("");
     // clang-format on

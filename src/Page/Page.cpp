@@ -126,7 +126,7 @@ void Page::OnBytesTx(std::shared_ptr<char> bytes, int len, std::string to)
 
 void Page::OnErrorOccurred(std::string message)
 {
-    OnInvokeOpenOrClose();
+    Close();
     wxLogWarning(wxT("Error: ") + wxString::FromAscii(message.c_str()));
 }
 

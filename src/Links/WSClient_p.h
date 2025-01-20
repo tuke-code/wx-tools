@@ -8,6 +8,7 @@
  **************************************************************************************************/
 #pragma once
 
+#include <fmt/format.h>
 #include <mongoose.h>
 
 #include "Common/wxTools.h"
@@ -19,7 +20,7 @@ class WSClientPrivate : public SocketClientPrivate
 public:
 };
 
-static void DoSendBytesToClient(struct mg_connection *c, WSClient *q)
+static void DoTryToSendBytesToClient(struct mg_connection *c, WSClient *q)
 {
     auto *d = q->GetD<WSClientPrivate>();
     std::string op;
@@ -54,21 +55,20 @@ static void DoSendBytesToClient(struct mg_connection *c, WSClient *q)
 
 static void OnMgEvWsOpen(struct mg_connection *c, void *ev_data, WSClient *q)
 {
-    auto *d = q->GetD<WSClientPrivate>();
+    c->is_hexdumping = 1;
 
+    auto *d = q->GetD<WSClientPrivate>();
     const std::string locIp = d->mg_addr_to_ipv4(&c->loc);
     const uint16_t locPort = DoReverseByteOrder<uint16_t>(c->loc.port);
     const std::string remIp = d->mg_addr_to_ipv4(&c->rem);
     const uint16_t remPort = DoReverseByteOrder<uint16_t>(c->rem.port);
 
-    wxtInfo() << "WebSocket client connected from " << locIp << ":" << locPort << " to " << remIp
-              << ":" << remPort;
-#if 0
-    c->is_hexdumping = 1;
-#endif
+    std::string loc = fmt::format("{0}:{1}", locIp, locPort);
+    std::string rem = fmt::format("{0}:{1}", remIp, remPort);
+    wxtInfo() << fmt::format("WebSocket client({0}) has been connected to {1}", loc, rem);
 }
 
-static void OnMessageRxTx(struct mg_connection *c, void *ev_data, WSClient *q, bool isRx)
+static void OnMgEvWsMsg(struct mg_connection *c, void *ev_data, WSClient *q)
 {
     struct mg_ws_message *wm = (struct mg_ws_message *) ev_data;
     std::string op;
@@ -77,6 +77,7 @@ static void OnMessageRxTx(struct mg_connection *c, void *ev_data, WSClient *q, b
     } else if (wm->flags & WEBSOCKET_OP_BINARY) {
         op = std::string("(B)");
     } else {
+        wxtWarning() << "Unknown data channel: " << wm->flags;
         return;
     }
 
@@ -86,21 +87,21 @@ static void OnMessageRxTx(struct mg_connection *c, void *ev_data, WSClient *q, b
     std::shared_ptr<char> bytes(new char[wm->data.len], [](char *p) { delete[] p; });
     memcpy(bytes.get(), wm->data.buf, wm->data.len);
 
-    if (isRx) {
-        q->bytesRxSignal(std::move(bytes), wm->data.len, from);
-        wxtInfo() << "Received " << wm->data.len << " bytes from " << from;
-    } else {
-        q->bytesTxSignal(std::move(bytes), wm->data.len, from);
-        wxtInfo() << "Sent " << wm->data.len << " bytes to " << from;
-    }
+    q->bytesRxSignal(std::move(bytes), wm->data.len, from);
+    wxtInfo() << "Received " << wm->data.len << " bytes from " << from;
 }
 
 static void OnMgEvClose(struct mg_connection *c, void *ev_data, WSClient *q)
 {
     auto *d = q->GetD<WSClientPrivate>();
-    const std::string ip = d->mg_addr_to_ipv4(&c->loc);
-    const uint16_t port = DoReverseByteOrder<uint16_t>(c->loc.port);
-    wxtInfo() << "WebSocket client closed from " << ip << ":" << port;
+    const std::string locIp = d->mg_addr_to_ipv4(&c->loc);
+    const uint16_t locPort = DoReverseByteOrder<uint16_t>(c->loc.port);
+    const std::string remIp = d->mg_addr_to_ipv4(&c->rem);
+    const uint16_t remPort = DoReverseByteOrder<uint16_t>(c->rem.port);
+
+    std::string loc = fmt::format("{0}:{1}", locIp, locPort);
+    std::string rem = fmt::format("{0}:{1}", remIp, remPort);
+    wxtInfo() << fmt::format("WebSocket client({0}) has been disconnected from {1}", loc, rem);
 }
 
 static void OnMgEvError(struct mg_connection *c, void *ev_data, WSClient *q)
@@ -108,7 +109,7 @@ static void OnMgEvError(struct mg_connection *c, void *ev_data, WSClient *q)
     auto *d = q->GetD<WSClientPrivate>();
     const std::string ip = d->mg_addr_to_ipv4(&c->loc);
     const uint16_t port = DoReverseByteOrder<uint16_t>(c->loc.port);
-    wxtError() << "Server error: " << ip << ":" << port;
+    wxtError() << "Client error: " << ip << ":" << port << " " << reinterpret_cast<char *>(ev_data);
 }
 
 static void WSClientHandler(struct mg_connection *c, int ev, void *ev_data)
@@ -117,12 +118,12 @@ static void WSClientHandler(struct mg_connection *c, int ev, void *ev_data)
     if (ev == MG_EV_WS_OPEN) {
         OnMgEvWsOpen(c, ev_data, q);
     } else if (ev == MG_EV_WS_MSG) {
-        OnMessageRxTx(c, ev_data, q, true);
-    } else if (ev == MG_EV_WRITE) {
-        OnMessageRxTx(c, ev_data, q, false);
+        OnMgEvWsMsg(c, ev_data, q);
     } else if (ev == MG_EV_CLOSE) {
         OnMgEvClose(c, ev_data, q);
     } else if (ev == MG_EV_ERROR) {
+#if 0
         OnMgEvError(c, ev_data, q);
+#endif
     }
 }

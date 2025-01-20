@@ -32,12 +32,22 @@ void WSClient::Loop()
     mg_mgr_init(&mgr);
     mg_log_set(MG_LL_NONE);
     mgr.userdata = this;
-    c = mg_ws_connect(&mgr, url.c_str(), WSClientHandler, &done, NULL);
+
     wxtInfo() << "Starting WS client on websocket:" << url.c_str();
+    c = mg_ws_connect(&mgr, url.c_str(), WSClientHandler, &done, NULL);
     if (c == nullptr || done == true) {
         errorOccurredSignal(std::string("Failed to create a WebSocket client!"));
         return;
     }
+#if 0
+    const std::string locIp = d->mg_addr_to_ipv4(&c->loc);
+    const uint16_t locPort = DoReverseByteOrder<uint16_t>(c->loc.port);
+    const std::string remIp = d->mg_addr_to_ipv4(&c->rem);
+    const uint16_t remPort = DoReverseByteOrder<uint16_t>(c->rem.port);
+    std::string loc = fmt::format("{0}:{1}", locIp, locPort);
+    std::string rem = fmt::format("{0}:{1}", remIp, remPort);
+    wxtInfo() << fmt::format("WebSocket client({0}) has been connected to {1}", loc, rem);
+#endif
 
     d->invokedInterrupted.store(false);
     d->isRunning.store(true);
@@ -47,7 +57,7 @@ void WSClient::Loop()
             break;
         }
 
-        DoSendBytesToClient(c, this);
+        DoTryToSendBytesToClient(c, this);
         mg_mgr_poll(&mgr, 100);
     }
     mg_mgr_free(&mgr);

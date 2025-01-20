@@ -19,6 +19,7 @@ endif()
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+include(cmake/fmt.cmake)
 include(cmake/asio.cmake)
 include(cmake/glog.cmake)
 include(cmake/json.cmake)
@@ -42,7 +43,7 @@ add_executable(wxTools ${WX_TOOLS_SOURCE})
 
 set(PROJECT_LIBS libcserialport)
 list(APPEND PROJECT_LIBS libcrc mongoose)
-list(APPEND PROJECT_LIBS glog::glog)
+list(APPEND PROJECT_LIBS glog::glog fmt::fmt)
 list(APPEND PROJECT_LIBS wx::core wx::aui)
 target_link_libraries(wxTools PRIVATE ${PROJECT_LIBS})
 set_target_properties(
