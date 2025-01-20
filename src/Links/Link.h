@@ -40,7 +40,7 @@ public:
 
 public:
     template<typename T>
-    T *GetPrivate() const
+    T *GetD() const
     {
         return reinterpret_cast<T *>(this->d);
     }

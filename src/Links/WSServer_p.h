@@ -24,10 +24,11 @@ public:
 
 static void OnAccept(struct mg_connection *c, WSServer *server)
 {
-    std::string ip = server->GetPrivate<WSServerPrivate>()->mg_addr_to_ipv4(&c->rem);
+    std::string ip = server->GetD<WSServerPrivate>()->mg_addr_to_ipv4(&c->rem);
     std::string from = ip + std::string(":") + std::to_string(c->rem.port);
     server->newClientSignal(ip, c->rem.port);
     wxToolsInfo() << "New client from " << from;
+
     if (c->next && c->next->rem.port) {
         OnAccept(c->next, server);
     }
@@ -35,7 +36,7 @@ static void OnAccept(struct mg_connection *c, WSServer *server)
 
 static void SendBytesToClient(struct mg_connection *c, WSServer *q)
 {
-    auto *d = q->GetPrivate<WSServerPrivate>();
+    auto *d = q->GetD<WSServerPrivate>();
     std::string op;
     size_t len = 0;
     std::string ip = d->mg_addr_to_ipv4(&c->rem);
@@ -64,7 +65,7 @@ static void SendBytesToClient(struct mg_connection *c, WSServer *q)
 
 static void SendBytesToAllClients(mg_connection *c, WSServer *q)
 {
-    auto *d = q->GetPrivate<WSServerPrivate>();
+    auto *d = q->GetD<WSServerPrivate>();
     if (d->selection.first.empty() && d->selection.second == 0) { // Send to all clients
         for (struct mg_connection *connection = c; connection != nullptr; connection = c->next) {
             SendBytesToClient(connection, q);
@@ -84,7 +85,7 @@ static void SendBytesToAllClients(mg_connection *c, WSServer *q)
 
 static void DoClearAllClients(struct mg_connection *c, WSServer *q)
 {
-    auto *d = q->GetPrivate<WSServerPrivate>();
+    auto *d = q->GetD<WSServerPrivate>();
     for (struct mg_connection *connection = c; connection != nullptr; connection = c->next) {
         std::string ip = d->mg_addr_to_ipv4(&connection->rem);
         uint16_t port = connection->rem.port;
@@ -99,7 +100,7 @@ static void DoClearAllClients(struct mg_connection *c, WSServer *q)
 static void WSServerHandler(struct mg_connection *c, int ev, void *ev_data)
 {
     WSServer *q = reinterpret_cast<WSServer *>(c->mgr->userdata);
-    WSServerPrivate *d = q->GetPrivate<WSServerPrivate>();
+    WSServerPrivate *d = q->GetD<WSServerPrivate>();
 
     if (ev == MG_EV_OPEN) {
         // c->is_hexdumping = 1;

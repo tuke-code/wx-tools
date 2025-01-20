@@ -19,14 +19,14 @@ void SocketBase::Load(const wxToolsJson &parameters)
 {
     SocketBasePrivate *d = WXT_D(SocketBasePrivate);
     SocketBaseParameterKeys keys;
-    d->clientAddress = parameters[keys.clientAddress].template get<std::string>();
-    d->clientPort = parameters[keys.clientPort].template get<int>();
-    d->serverAddress = parameters[keys.serverAddress].template get<std::string>();
-    d->serverPort = parameters[keys.serverPort].template get<int>();
-    d->isEnableAuthorization = parameters[keys.isAuthorization].template get<bool>();
-    d->dataChannel = parameters[keys.dataChannel].template get<int>();
-    d->userName = parameters[keys.userName].template get<std::string>();
-    d->password = parameters[keys.password].template get<std::string>();
+    d->clientAddress = parameters[keys.clientAddress].get<std::string>();
+    d->clientPort = parameters[keys.clientPort].get<int>();
+    d->serverAddress = parameters[keys.serverAddress].get<std::string>();
+    d->serverPort = parameters[keys.serverPort].get<int>();
+    d->isEnableAuthorization = parameters[keys.isAuthorization].get<bool>();
+    d->dataChannel = parameters[keys.dataChannel].get<int>();
+    d->userName = parameters[keys.userName].get<std::string>();
+    d->password = parameters[keys.password].get<std::string>();
 }
 
 wxToolsJson SocketBase::Save()

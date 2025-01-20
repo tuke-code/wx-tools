@@ -22,7 +22,7 @@ public:
 static void WSClientHandler(struct mg_connection *c, int ev, void *ev_data)
 {
     auto q = reinterpret_cast<WSClient *>(c->fn_data);
-    auto d = q->GetPrivate<WSClientPrivate>();
+    auto d = q->GetD<WSClientPrivate>();
 
     if (ev == MG_EV_OPEN) {
         //c->is_hexdumping = 1;
