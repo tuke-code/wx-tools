@@ -21,7 +21,6 @@ MainWindow::MainWindow()
 {
     Init();
 
-    // set the icon
 #if defined(WIN32)
     wxIcon icon;
     icon.LoadFile("IDI_ICON1", wxBITMAP_TYPE_ICO_RESOURCE);
