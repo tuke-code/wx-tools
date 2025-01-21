@@ -24,14 +24,13 @@ public:
     std::atomic_bool invokeClearClients;
 };
 
-static void DoTryToClearAllClients(struct mg_mgr *mgr, WSServer *q)
+static void DoTryToClearAllClients(struct mg_connection *c, void *ev_data, WSServer *q)
 {
     auto *d = q->GetD<WSServerPrivate>();
     if (!d->invokeClearClients.load()) {
         return;
     }
 
-    auto *c = mgr->conns;
     for (struct mg_connection *conns = c; conns != nullptr; conns = c->next) {
         std::string ip = d->mg_addr_to_ipv4(&conns->rem);
         uint16_t port = DoReverseByteOrder<uint16_t>(conns->rem.port);
@@ -41,7 +40,7 @@ static void DoTryToClearAllClients(struct mg_mgr *mgr, WSServer *q)
     }
 }
 
-static void DoSendBytesToClient(struct mg_connection *c, WSServer *q)
+static void DoSendBytesToClient(struct mg_connection *c, void *ev_data, WSServer *q)
 {
     auto *d = q->GetD<WSServerPrivate>();
     std::string op;
@@ -77,25 +76,24 @@ static void DoSendBytesToClient(struct mg_connection *c, WSServer *q)
     }
 }
 
-static void DoTryToSendBytesToAllClients(mg_mgr *mgr, WSServer *q)
+static void DoTryToSendBytesToAllClients(struct mg_connection *c, void *ev_data, WSServer *q)
 {
     auto *d = q->GetD<WSServerPrivate>();
     if (d->txBytes.empty()) {
         return;
     }
 
-    auto *c = mgr->conns;
     if (d->selection.first.empty() && d->selection.second == 0) {
         // Send to all clients
         for (struct mg_connection *conns = c; conns != nullptr; conns = conns->next) {
-            DoSendBytesToClient(conns, q);
+            DoSendBytesToClient(c, ev_data, q);
         }
     } else {
         for (struct mg_connection *conns = c; conns != nullptr; conns = conns->next) {
             const std::string ip = d->mg_addr_to_ipv4(&conns->rem);
             const uint8_t port = DoReverseByteOrder<uint16_t>(conns->rem.port);
             if (ip == d->selection.first && port == d->selection.second) {
-                DoSendBytesToClient(conns, q);
+                DoSendBytesToClient(c, ev_data, q);
                 break;
             }
         }
@@ -126,20 +124,6 @@ static void OnMgEvHttpMsg(struct mg_connection *c, void *ev_data, WSServer *q)
         // Upgrade to websocket. From now on, a connection is a full-duplex
         // Websocket connection, which will receive MG_EV_WS_MSG events.
         mg_ws_upgrade(c, hm, NULL);
-    } else if (mg_match(hm->uri, mg_str("/rest"), NULL)) {
-        // Serve REST response
-        mg_http_reply(c, 200, "", "{\"result\": %d}\n", 123);
-    } else {
-        // Serve static files
-        static const char *root_dir = ".";
-        struct mg_http_serve_opts opts;
-        opts.root_dir = root_dir;
-        opts.ssi_pattern = nullptr;
-        opts.extra_headers = nullptr;
-        opts.mime_types = nullptr;
-        opts.page404 = nullptr;
-        opts.fs = nullptr;
-        mg_http_serve_dir(c, hm, &opts);
     }
 }
 
@@ -209,6 +193,12 @@ static void OnMgEvError(struct mg_connection *c, void *ev_data, WSServer *q)
     q->errorOccurredSignal(fmt::format("WS server error:{}", reinterpret_cast<char *>(ev_data)));
 }
 
+static void OnMgEvPoll(struct mg_connection *c, void *ev_data, WSServer *q)
+{
+    DoTryToClearAllClients(c, ev_data, q);
+    DoTryToSendBytesToAllClients(c, ev_data, q);
+}
+
 static void WSServerHandler(struct mg_connection *c, int ev, void *ev_data)
 {
     WSServer *q = reinterpret_cast<WSServer *>(c->mgr->userdata);
@@ -229,5 +219,7 @@ static void WSServerHandler(struct mg_connection *c, int ev, void *ev_data)
         OnMgEvClose(c, ev_data, q);
     } else if (ev == MG_EV_ERROR) {
         OnMgEvError(c, ev_data, q);
+    } else if (ev == MG_EV_POLL) {
+        OnMgEvPoll(c, ev_data, q);
     }
 }

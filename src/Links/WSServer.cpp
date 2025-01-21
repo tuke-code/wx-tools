@@ -41,22 +41,18 @@ void WSServer::Loop()
     wxtInfo() << "Starting WS listener on websocket: " << url.c_str();
     mg_connection *c = mg_http_listen(&mgr, url.c_str(), WSServerHandler, nullptr);
     if (c == nullptr) {
+        mg_mgr_free(&mgr);
         errorOccurredSignal(std::string("Failed to create a WebSocket server!"));
         return;
     }
 
     d->invokedInterrupted.store(false);
     d->isRunning.store(true);
-    while (1) {
-        if (d->invokedInterrupted.load()) {
-            mg_close_conn(c);
-            break;
-        }
-
-        DoTryToClearAllClients(&mgr, this);
-        DoTryToSendBytesToAllClients(&mgr, this);
+    while (!d->invokedInterrupted.load()) {
         mg_mgr_poll(&mgr, 100);
     }
+
+    mg_close_conn(c);
     mg_mgr_free(&mgr);
 
     // Remove all clients
