@@ -19,6 +19,7 @@ endif()
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+include(cmake/git.cmake)
 include(cmake/fmt.cmake)
 include(cmake/asio.cmake)
 include(cmake/glog.cmake)
@@ -35,6 +36,10 @@ include_directories(src)
 # Windows XP
 option(_WIN32_WINNT "Windows Version" 0x0501)
 # Windows 7 option(_WIN32_WINNT "Windows Version" 0x0601)
+
+wxt_git_get_latest_tag(${CMAKE_SOURCE_DIR} WXT)
+wxt_git_get_latest_commit(${CMAKE_SOURCE_DIR} WXT)
+wxt_git_get_latest_commit_time(${CMAKE_SOURCE_DIR} WXT)
 
 add_compile_definitions(MG_DATA_SIZE=1024)
 file(GLOB_RECURSE WX_TOOLS_SOURCE src/*.*)

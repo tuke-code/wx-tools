@@ -8,8 +8,8 @@
  **************************************************************************************************/
 #include "MainWindow.h"
 
+#include <fmt/format.h>
 #include <fstream>
-
 #include <wx/filename.h>
 #include <wx/stdpaths.h>
 
@@ -98,9 +98,16 @@ void MainWindow::OnExit(wxCommandEvent&)
 
 void MainWindow::OnAbout(wxCommandEvent&)
 {
-    wxMessageBox("This is a wxWidgets Hello World example",
-                 "About Hello World",
-                 wxOK | wxICON_INFORMATION);
+    wxString info = wxT("wxTools - A set of tools developed with wxWidgets\n");
+    info += wxT("Version: ") + std::string(WXT_GIT_TAG) + std::string("\n");
+    info += wxT("Author: x-tools-author\n");
+    info += wxT("Email: x-tools@outlook.com\n");
+    info += wxT("Commit: ") + std::string(WXT_GIT_COMMIT) + std::string("\n");
+    info += wxT("Date: ") + std::string(WXT_GIT_COMMIT_TIME) + std::string("\n");
+    info += wxT("Build: ") + fmt::format("{0} {1}", __DATE__, __TIME__) + std::string("\n");
+    info += std::string("\n");
+    info += wxT("Copyright © 2024-2025 x-tools-author. All rights reserved.\n");
+    wxMessageBox(info, wxT("About wxTools"), wxOK | wxICON_INFORMATION);
 }
 
 void MainWindow::Init()
