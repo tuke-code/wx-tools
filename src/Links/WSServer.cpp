@@ -39,6 +39,8 @@ void WSServer::Loop()
     mgr.userdata = this;
 
     wxtInfo() << "Starting WS listener on websocket: " << url.c_str();
+    d->invokedInterrupted.store(false);
+    d->isRunning.store(true);
     mg_connection *c = mg_http_listen(&mgr, url.c_str(), WSServerHandler, nullptr);
     if (c == nullptr) {
         mg_mgr_free(&mgr);
@@ -46,8 +48,6 @@ void WSServer::Loop()
         return;
     }
 
-    d->invokedInterrupted.store(false);
-    d->isRunning.store(true);
     while (!d->invokedInterrupted.load()) {
         mg_mgr_poll(&mgr, 100);
     }

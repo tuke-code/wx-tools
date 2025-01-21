@@ -82,7 +82,7 @@ void Page::OnInvokeWrite(TextFormat format)
     PageSettingsLink *linkSettings = m_pageSettings->GetLinkSettings();
     LinkUi *communicationController = linkSettings->GetLinkUi();
     if (!communicationController->IsOpen()) {
-        wxMessageBox(wxT("Communication is not open."), wxT("Error"), wxICON_ERROR);
+        wxMessageBox(wxT("Communication is not opened."), wxT("Error"), wxICON_ERROR);
         return;
     }
 
