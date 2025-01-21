@@ -39,8 +39,9 @@ void LinkUi::Close()
 {
     if (m_link) {
         AboutToClose(m_link);
-
+        wxtInfo() << __LINE__ << "LinkUi::Close()";
         m_link->Close();
+        wxtInfo() << __LINE__ << "LinkUi::Close()";
         delete m_link;
         m_link = nullptr;
     }

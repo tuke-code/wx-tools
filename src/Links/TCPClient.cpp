@@ -46,5 +46,5 @@ void TCPClient::Loop()
 
     mg_mgr_free(&mgr);
     d->isRunning.store(false);
-    wxtInfo() << "UDP client thread exited...";
+    wxtInfo() << "TCP client thread exited...";
 }

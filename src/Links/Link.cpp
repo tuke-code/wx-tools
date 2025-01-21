@@ -25,7 +25,7 @@ bool Link::Open()
     std::thread t(&Link::Loop, this);
     t.detach();
 
-    while (!d->isRunning) {
+    while (!d->isRunning.load()) {
         // wait for the thread to start
         break;
     }
@@ -37,7 +37,7 @@ void Link::Close()
 {
     if (d) {
         d->invokedInterrupted.store(true);
-        while (d->isRunning) {
+        while (!d->isRunning.load()) {
             // wait for the thread to stop
             break;
         }
