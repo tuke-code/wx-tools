@@ -85,6 +85,15 @@ static void OnMgEvPoll(struct mg_connection *c, void *ev_data, TCPServer *q)
     d->txBytes.clear();
 }
 
+static void OnMgEvClose(struct mg_connection *c, void *ev_data, TCPServer *q)
+{
+    auto *d = q->GetD<TCPServerPrivate>();
+    std::string ip = d->mg_addr_to_ipv4(&c->rem);
+    uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
+    std::string client = DoEncodeFlag(ip, port);
+    q->deleteClientSignal(ip, port);
+}
+
 static void TCPServerHandler(struct mg_connection *c, int ev, void *ev_data)
 {
     auto *q = reinterpret_cast<TCPServer *>(c->mgr->userdata);
@@ -96,5 +105,7 @@ static void TCPServerHandler(struct mg_connection *c, int ev, void *ev_data)
         OnMgEvAccept(c, ev_data, q);
     } else if (ev == MG_EV_POLL) {
         OnMgEvPoll(c, ev_data, q);
+    } else if (ev == MG_EV_CLOSE) {
+        OnMgEvClose(c, ev_data, q);
     }
 }

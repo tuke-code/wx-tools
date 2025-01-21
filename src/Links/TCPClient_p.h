@@ -18,6 +18,23 @@ class TCPClientPrivate : public SocketClientPrivate
 public:
 };
 
+static void OnMgEvRead(struct mg_connection *c, void *ev_data, TCPClient *q)
+{
+    if (c->recv.len <= 0) {
+        return;
+    }
+
+    std::shared_ptr<char> bytes(new char[c->recv.len], [](char *p) { delete[] p; });
+    memcpy(bytes.get(), c->recv.buf, c->recv.len);
+
+    auto *d = q->GetD<TCPClientPrivate>();
+    const std::string ip = d->mg_addr_to_ipv4(&c->rem);
+    const uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
+    const std::string from = DoEncodeFlag(ip, port);
+    q->bytesRxSignal(std::move(bytes), c->recv.len, from);
+    c->recv.len = 0;
+}
+
 static void OnMgEvPoll(struct mg_connection *c, void *ev_data, TCPClient *q)
 {
     auto *d = q->GetD<SocketClientPrivate>();
@@ -39,44 +56,22 @@ static void OnMgEvPoll(struct mg_connection *c, void *ev_data, TCPClient *q)
     d->txBytes.clear();
 }
 
-static void OnMgEvOpen(struct mg_connection *c, void *ev_data, TCPClient *q)
+static void OnMgEvClose(struct mg_connection *c, void *ev_data, TCPClient *q)
 {
-    auto *d = q->GetD<SocketClientPrivate>();
-    const std::string remIp = d->mg_addr_to_ipv4(&c->rem);
-    const uint16_t remPort = DoReverseByteOrder<uint16_t>(c->rem.port);
-    const std::string locIp = d->mg_addr_to_ipv4(&c->loc);
-    const uint16_t locPort = DoReverseByteOrder<uint16_t>(c->loc.port);
-    const std::string from = DoEncodeFlag(remIp, remPort);
-    const std::string to = DoEncodeFlag(locIp, locPort);
+    wxUnusedVar(c);
+    wxUnusedVar(ev_data);
 
-    wxtInfo() << fmt::format("TCP client connected from {0} to {1}", from, to);
-}
-
-static void OnMgEvRead(struct mg_connection *c, void *ev_data, TCPClient *q)
-{
-    if (c->recv.len <= 0) {
-        return;
-    }
-
-    std::shared_ptr<char> bytes(new char[c->recv.len], [](char *p) { delete[] p; });
-    memcpy(bytes.get(), c->recv.buf, c->recv.len);
-
-    auto *d = q->GetD<TCPClientPrivate>();
-    const std::string ip = d->mg_addr_to_ipv4(&c->rem);
-    const uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
-    const std::string from = DoEncodeFlag(ip, port);
-    q->bytesRxSignal(std::move(bytes), c->recv.len, from);
-    c->recv.len = 0;
+    q->errorOccurredSignal("TCP client disconnected");
 }
 
 static void TCPClientHandler(struct mg_connection *c, int ev, void *ev_data)
 {
     auto *q = reinterpret_cast<TCPClient *>(c->mgr->userdata);
-    if (ev == MG_EV_OPEN) {
-        OnMgEvOpen(c, ev_data, q);
-    } else if (ev == MG_EV_READ) {
+    if (ev == MG_EV_READ) {
         OnMgEvRead(c, ev_data, q);
     } else if (ev == MG_EV_POLL) {
         OnMgEvPoll(c, ev_data, q);
+    } else if (ev == MG_EV_CLOSE) {
+        OnMgEvClose(c, ev_data, q);
     }
 }

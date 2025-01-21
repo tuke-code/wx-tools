@@ -17,7 +17,9 @@ WSServerUi::WSServerUi(wxWindow *parent)
     funcs.push_back(&WSServerUi::InitServerComboBox);
     funcs.push_back(&WSServerUi::InitServerPortCtrl);
     funcs.push_back(&WSServerUi::InitClientsComboBox);
+#if 0
     funcs.push_back(&WSServerUi::InitClearClientButton);
+#endif
     funcs.push_back(&WSServerUi::InitDataChannelComboBox);
 
     InitUiComponents(funcs, parent);
