@@ -24,7 +24,7 @@ TCPClient::~TCPClient()
 void TCPClient::Loop()
 {
     auto d = GetD<TCPClientPrivate>();
-    std::string url = fmt::format("udp://{0}:{1}", d->serverAddress.ToStdString(), d->serverPort);
+    std::string url = fmt::format("tcp://{0}:{1}", d->serverAddress.ToStdString(), d->serverPort);
     struct mg_mgr mgr;
     mg_mgr_init(&mgr);
     mg_log_set(MG_LL_NONE);
@@ -32,7 +32,7 @@ void TCPClient::Loop()
     mgr.userdata = this;
     struct mg_connection *c = mg_connect(&mgr, url.c_str(), TCPClientHandler, nullptr);
     if (c == nullptr) {
-        std::string log(fmt::format("Failed to connect to the server: {0}", url));
+        std::string log(fmt::format("Failed to connect to tcp server: {0}", url));
         wxtInfo() << log;
         errorOccurredSignal(log);
         return;
