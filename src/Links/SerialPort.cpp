@@ -30,8 +30,8 @@ void SerialPort::Loop()
                         d->stopBits,
                         d->flowControl);
 
+    d->isRunning.store(true);
     if (serialPortIml->open()) {
-        d->isRunning.store(true);
         while (!d->invokedInterrupted.load()) {
             // Read data....
             char data[10240] = {0};
