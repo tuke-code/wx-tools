@@ -8,7 +8,6 @@
  **************************************************************************************************/
 #pragma once
 
-#include <mongoose.h>
 #include <wx/wx.h>
 
 class DataChannelComboBox : public wxComboBox
