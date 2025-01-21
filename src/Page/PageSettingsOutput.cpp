@@ -139,3 +139,8 @@ bool PageSettingsOutput::GetShowFlag() const
 {
     return m_showFlag->GetValue();
 }
+
+PageSettingsOutputPopup *PageSettingsOutput::GetPopup()
+{
+    return m_popup;
+}

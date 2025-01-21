@@ -13,7 +13,6 @@
 PageSettingsOutputPopup::PageSettingsOutputPopup(wxButton *controlButton)
     : BaseSettingsPopup(controlButton)
     , m_filterTextCtrl(nullptr)
-    , m_highlightLabelsTextCtrl(nullptr)
 {
     auto panel = new wxPanel(this);
 
@@ -23,18 +22,11 @@ PageSettingsOutputPopup::PageSettingsOutputPopup(wxButton *controlButton)
                                       wxEmptyString,
                                       wxDefaultPosition,
                                       wxDefaultSize);
-    auto highlightLabel = new wxStaticText(panel, wxID_ANY, wxT("Highlight"));
-    m_highlightLabelsTextCtrl = new wxTextCtrl(panel,
-                                               wxID_ANY,
-                                               wxEmptyString,
-                                               wxDefaultPosition,
-                                               wxDefaultSize);
+    m_filterTextCtrl->SetHint(wxT("Hello;World"));
 
     auto panelSizer = new wxGridBagSizer(4, 4);
     panelSizer->Add(filterLabel, wxGBPosition(0, 0), wxDefaultSpan, wxALIGN_CENTER_VERTICAL);
     panelSizer->Add(m_filterTextCtrl, wxGBPosition(0, 1), wxDefaultSpan, wxEXPAND);
-    panelSizer->Add(highlightLabel, wxGBPosition(1, 0), wxDefaultSpan, wxALIGN_CENTER_VERTICAL);
-    panelSizer->Add(m_highlightLabelsTextCtrl, wxGBPosition(1, 1), wxDefaultSpan, wxEXPAND);
     panelSizer->AddGrowableCol(1);
     panel->SetSizerAndFit(panelSizer);
 
@@ -48,7 +40,6 @@ void PageSettingsOutputPopup::Load(const wxtJson &parameters)
 {
     PageSettingsOutputPopupParameterKeys keys;
     m_filterTextCtrl->SetValue(parameters[keys.fillter].get<std::string>());
-    m_highlightLabelsTextCtrl->SetValue(parameters[keys.highlightLabels].get<std::string>());
 }
 
 wxtJson PageSettingsOutputPopup::Save() const
@@ -56,6 +47,12 @@ wxtJson PageSettingsOutputPopup::Save() const
     wxtJson parameters{wxtJson::object()};
     PageSettingsOutputPopupParameterKeys keys;
     parameters[keys.fillter] = m_filterTextCtrl->GetValue().ToStdString();
-    parameters[keys.highlightLabels] = m_highlightLabelsTextCtrl->GetValue().ToStdString();
     return parameters;
+}
+
+wxArrayString PageSettingsOutputPopup::GetFilter() const
+{
+    wxString filter = m_filterTextCtrl->GetValue();
+    wxArrayString ret = wxSplit(filter, wxChar(';'));
+    return ret;
 }

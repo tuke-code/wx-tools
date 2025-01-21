@@ -44,6 +44,7 @@ public:
     bool GetShowRx() const;
     bool GetShowTx() const;
     bool GetShowFlag() const;
+    PageSettingsOutputPopup *GetPopup();
 
 private:
     TextFormatComboBox *m_textFormatComboBox;

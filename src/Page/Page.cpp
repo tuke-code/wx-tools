@@ -21,6 +21,7 @@
 #include "PageSettings.h"
 #include "PageSettingsInput.h"
 #include "PageSettingsOutput.h"
+#include "PageSettingsOutputPopup.h"
 
 Page::Page(LinkType type, wxWindow *parent)
     : wxPanel(parent, wxID_ANY)
@@ -225,7 +226,19 @@ void Page::OutputText(std::shared_ptr<char> bytes, int len, std::string &fromTo,
         str = wxString::Format("[%s %s] %s", dateTimeString, flagString, text);
     }
 
-    m_pageIO->GetOutput()->AppendText(str);
+    // Filter
+    PageSettingsOutputPopup *outputPopup = outputControlBox->GetPopup();
+    wxArrayString filter = outputPopup->GetFilter();
+    if (filter.IsEmpty()) {
+        m_pageIO->GetOutput()->AppendText(str);
+    } else {
+        for (size_t i = 0; i < filter.GetCount(); i++) {
+            if (str.Contains(filter[i])) {
+                m_pageIO->GetOutput()->AppendText(str);
+                break;
+            }
+        }
+    }
 }
 
 void Page::Open()

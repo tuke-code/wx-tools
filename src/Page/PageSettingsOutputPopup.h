@@ -16,7 +16,6 @@
 struct PageSettingsOutputPopupParameterKeys
 {
     std::string fillter = {"fillter"};
-    std::string highlightLabels = {"highlightLabels"};
 };
 
 class PageSettingsOutputPopup : public BaseSettingsPopup
@@ -27,7 +26,8 @@ public:
     void Load(const wxtJson &parameters);
     wxtJson Save() const;
 
+    wxArrayString GetFilter() const;
+
 private:
     wxTextCtrl *m_filterTextCtrl;
-    wxTextCtrl *m_highlightLabelsTextCtrl;
 };
