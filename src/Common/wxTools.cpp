@@ -103,7 +103,7 @@ std::string GetDateTimeString(const std::string &format, bool showMs)
     auto now = std::chrono::system_clock::now();
     auto nowTime = std::chrono::system_clock::to_time_t(now);
     auto nowMs = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count() % 1000;
-    std::tm tm{};
+    std::tm tm{0};
     errno_t e = localtime_s(&tm, &nowTime);
     if (e != 0) {
         return "";
