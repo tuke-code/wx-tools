@@ -199,14 +199,14 @@ std::string flagString(bool isRx, const std::string &fromTo, bool showFlag)
 
 void Page::OutputText(std::shared_ptr<char> bytes, int len, std::string &fromTo, bool isRx)
 {
-    PageSettingsOutput *outputControlBox = m_pageSettings->GetOutputSettings();
-    TextFormat outputFormat = outputControlBox->GetTextFormat();
-    bool showDate = outputControlBox->GetShowDate();
-    bool showTime = outputControlBox->GetShowTime();
-    bool showMs = outputControlBox->GetShowMs();
-    bool showRx = outputControlBox->GetShowRx();
-    bool showTx = outputControlBox->GetShowTx();
-    bool showFlag = outputControlBox->GetShowFlag();
+    PageSettingsOutput *outputSettings = m_pageSettings->GetOutputSettings();
+    TextFormat outputFormat = outputSettings->GetTextFormat();
+    bool showDate = outputSettings->GetShowDate();
+    bool showTime = outputSettings->GetShowTime();
+    bool showMs = outputSettings->GetShowMs();
+    bool showRx = outputSettings->GetShowRx();
+    bool showTx = outputSettings->GetShowTx();
+    bool showFlag = outputSettings->GetShowFlag();
     std::string text = DoDecodeBytes(bytes, len, static_cast<int>(outputFormat));
     std::string dateTimeString = ::dateTimeString(showDate, showTime, showMs);
     std::string flagString = ::flagString(isRx, fromTo, showFlag);
@@ -227,7 +227,7 @@ void Page::OutputText(std::shared_ptr<char> bytes, int len, std::string &fromTo,
     }
 
     // Filter
-    PageSettingsOutputPopup *outputPopup = outputControlBox->GetPopup();
+    PageSettingsOutputPopup *outputPopup = outputSettings->GetPopup();
     wxArrayString filter = outputPopup->GetFilter();
     if (filter.IsEmpty()) {
         m_pageIO->GetOutput()->AppendText(str);
