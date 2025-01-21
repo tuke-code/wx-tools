@@ -92,6 +92,17 @@ void PageSettingsInput::SetCycleIntervalComboBoxSelection(int selection)
     }
 }
 
+int PageSettingsInput::GetTextFormat()
+{
+    int selection = m_formatComboBox->GetSelection();
+    void* clientData = m_formatComboBox->GetClientData(selection);
+    if (clientData) {
+        return *static_cast<int*>(clientData);
+    }
+
+    return static_cast<int>(TextFormat::Hex);
+}
+
 void PageSettingsInput::OnSendButtonClicked(wxCommandEvent& event)
 {
     wxUnusedVar(event);
@@ -132,10 +143,11 @@ wxComboBox* PageSettingsInput::InitCycleIntervalComboBox()
 
     cb->SetSelection(0);
 
-    cb->Bind(wxEVT_COMBOBOX, [=](wxCommandEvent& event) {
+    cb->Bind(wxEVT_COMBOBOX_CLOSEUP, [=](wxCommandEvent& event) {
         int selection = cb->GetSelection();
         int value = *static_cast<int*>(cb->GetClientData(selection));
         this->invokeStartTimerSignal(value);
+        wxtInfo() << "Start timer with interval: " << value << " ms";
     });
 
     return cb;

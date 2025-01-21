@@ -80,20 +80,19 @@ void Page::OnInvokeOpenOrClose()
 void Page::OnInvokeWrite(TextFormat format)
 {
     PageSettingsLink *linkSettings = m_pageSettings->GetLinkSettings();
-    LinkUi *communicationController = linkSettings->GetLinkUi();
-    if (!communicationController->IsOpen()) {
-        wxMessageBox(wxT("Communication is not opened."), wxT("Error"), wxICON_ERROR);
+    LinkUi *linkUi = linkSettings->GetLinkUi();
+    if (!linkUi->IsOpen()) {
+        wxMessageBox(wxT("Link is not opened."), wxT("Error"), wxICON_ERROR);
         return;
     }
 
-    Link *communication = communicationController->GetLink();
+    Link *link = linkUi->GetLink();
     wxString text = m_pageIO->GetInput()->GetInputText();
-
     if (text.IsEmpty()) {
         text = wxString::FromAscii("(null)");
     }
 
-    communication->Write(text, format);
+    link->Write(text, format);
 }
 
 void Page::OnInvokeStartTimer(int ms)
@@ -103,9 +102,9 @@ void Page::OnInvokeStartTimer(int ms)
         return;
     }
 
-    PageSettingsLink *communicationControlBox = m_pageSettings->GetLinkSettings();
-    LinkUi *communicationController = communicationControlBox->GetLinkUi();
-    if (!communicationController->IsOpen()) {
+    PageSettingsLink *linkSettings = m_pageSettings->GetLinkSettings();
+    LinkUi *linkUi = linkSettings->GetLinkUi();
+    if (!linkUi->IsOpen()) {
         PageSettingsInput *inputSettings = m_pageSettings->GetInputSettings();
         inputSettings->SetCycleIntervalComboBoxSelection(0);
         wxMessageBox(wxT("Communication is not open."), wxT("Error"), wxICON_ERROR);
@@ -128,7 +127,7 @@ void Page::OnBytesTx(std::shared_ptr<char> bytes, int len, std::string to)
 void Page::OnErrorOccurred(std::string message)
 {
     Close();
-    wxLogWarning(wxT("Error: ") + wxString::FromAscii(message.c_str()));
+    wxLogWarning(wxT("Error: ") + wxString::FromUTF8(message.c_str()));
 }
 
 void Page::OnSendTimerTimeout()
@@ -139,11 +138,7 @@ void Page::OnSendTimerTimeout()
         return;
     }
 
-    PageSettingsInputParameterKeys keys;
-    wxtJson json = inputSettings->Save();
-    int textFromat = json[keys.textFormat].get<int>();
-    TextFormat format = static_cast<TextFormat>(textFromat);
-    OnInvokeWrite(format);
+    OnInvokeWrite(static_cast<TextFormat>(inputSettings->GetTextFormat()));
 }
 
 void Page::OnClear()

@@ -36,6 +36,7 @@ public:
 
     PageSettingsInputPopup *GetPopup() const;
     void SetCycleIntervalComboBoxSelection(int selection);
+    int GetTextFormat();
 
 private:
     wxButton *m_settingsButton{nullptr};
