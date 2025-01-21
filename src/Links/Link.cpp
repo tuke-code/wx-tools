@@ -43,10 +43,8 @@ void Link::Close()
     }
 }
 
-void Link::Write(const wxString &data, TextFormat format)
+void Link::Write(std::shared_ptr<char> bytes, int len)
 {
-    int len = 0;
-    auto bytes = DoEncodeBytes(data.ToStdString(), len, static_cast<int>(format));
     if (len > 0) {
         d->txBytes.push_back(std::make_pair(std::move(bytes), len));
     }

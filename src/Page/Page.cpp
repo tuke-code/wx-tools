@@ -92,7 +92,11 @@ void Page::OnInvokeWrite(TextFormat format)
         text = wxString::FromAscii("(null)");
     }
 
-    link->Write(text, format);
+    int len = 0;
+    auto bytes = DoEncodeBytes(text.ToStdString(), len, static_cast<int>(format));
+    if (len > 0) {
+        link->Write(std::move(bytes), len);
+    }
 }
 
 void Page::OnInvokeStartTimer(int ms)

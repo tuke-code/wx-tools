@@ -30,7 +30,7 @@ public:
 
     bool Open();
     void Close();
-    void Write(const wxString &data, TextFormat format);
+    void Write(std::shared_ptr<char> bytes, int len);
 
     virtual void Load(const wxtJson &parameters) = 0;
     virtual wxtJson Save() = 0;

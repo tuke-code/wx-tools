@@ -32,11 +32,7 @@ void SerialPort::Loop()
 
     if (serialPortIml->open()) {
         d->isRunning.store(true);
-        while (1) {
-            if (d->invokedInterrupted.load()) {
-                break;
-            }
-
+        while (!d->invokedInterrupted.load()) {
             // Read data....
             char data[10240] = {0};
             int len = serialPortIml->readAllData(&data);
@@ -50,18 +46,17 @@ void SerialPort::Loop()
             }
 
             // Write data...
-            for (auto ctx : d->txBytes) {
-                auto &bytes = d->txBytes.front();
-                int len = serialPortIml->writeData(bytes.first.get(), bytes.second);
+            for (std::pair<std::shared_ptr<char>, int> &ctx : d->txBytes) {
+                int len = serialPortIml->writeData(ctx.first.get(), ctx.second);
                 if (len == -1) {
                     errorOccurredSignal(std::string("Write data failed."));
                     break;
                 } else {
-                    bytesTxSignal(std::move(bytes.first), len, d->portName);
+                    bytesTxSignal(std::move(ctx.first), len, d->portName);
                 }
             }
-            d->txBytes.clear();
 
+            d->txBytes.clear();
             std::this_thread::sleep_for(std::chrono::milliseconds(50));
         }
     } else {
