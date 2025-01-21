@@ -24,11 +24,22 @@ TCPServerUi::TCPServerUi(wxWindow *parent)
 
 TCPServerUi::~TCPServerUi() {}
 
-Link *TCPServerUi::CreateLink()
+Link *TCPServerUi::NewLink()
 {
     auto *tcpServer = new TCPServer();
     tcpServer->newClientSignal.connect(&TCPServerUi::DoNewClient, this);
     tcpServer->deleteClientSignal.connect(&TCPServerUi::DoDeleteClient, this);
 
     return tcpServer;
+}
+
+void TCPServerUi::DeleteLink(Link *link)
+{
+    auto *tcpServer = dynamic_cast<TCPServer *>(link);
+    if (tcpServer) {
+        tcpServer->newClientSignal.disconnect(&TCPServerUi::DoNewClient, this);
+        tcpServer->deleteClientSignal.disconnect(&TCPServerUi::DoDeleteClient, this);
+    }
+
+    delete tcpServer;
 }

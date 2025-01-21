@@ -10,9 +10,10 @@
 
 #include "SocketBase.h"
 
+class SocketClientPrivate;
 class SocketClient : public SocketBase
 {
 public:
-    SocketClient(SocketBasePrivate *dPtr);
+    SocketClient(SocketClientPrivate *d);
     ~SocketClient();
 };

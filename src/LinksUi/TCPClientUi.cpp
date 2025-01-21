@@ -25,7 +25,12 @@ TCPClientUi::~TCPClientUi()
     // Destructor
 }
 
-Link *TCPClientUi::CreateLink()
+Link *TCPClientUi::NewLink()
 {
     return new TCPClient();
+}
+
+void TCPClientUi::DeleteLink(Link *link)
+{
+    delete dynamic_cast<TCPClient *>(link);
 }

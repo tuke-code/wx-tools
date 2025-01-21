@@ -17,5 +17,6 @@ public:
     ~UDPServerUi();
 
 protected:
-    Link *CreateLink() override;
+    Link *NewLink() override;
+    void DeleteLink(Link *link) override;
 };

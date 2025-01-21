@@ -10,7 +10,7 @@
 #include "SocketServer_p.h"
 
 SocketServer::SocketServer(SocketServerPrivate *d)
-    : SocketBase(reinterpret_cast<SocketBasePrivate *>(d))
+    : SocketBase(d)
 {}
 
 SocketServer::~SocketServer()

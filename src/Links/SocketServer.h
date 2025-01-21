@@ -14,7 +14,7 @@ class SocketServerPrivate;
 class SocketServer : public SocketBase
 {
 public:
-    SocketServer(SocketServerPrivate *dPtr);
+    SocketServer(SocketServerPrivate *d);
     ~SocketServer();
 
     wxtSignal<std::string, uint16_t> newClientSignal;

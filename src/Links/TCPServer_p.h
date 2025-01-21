@@ -96,7 +96,5 @@ static void TCPServerHandler(struct mg_connection *c, int ev, void *ev_data)
         OnMgEvAccept(c, ev_data, q);
     } else if (ev == MG_EV_POLL) {
         OnMgEvPoll(c, ev_data, q);
-    } else if (ev == MG_EV_CLOSE) {
-        wxtInfo() << "TCP server closed";
     }
 }

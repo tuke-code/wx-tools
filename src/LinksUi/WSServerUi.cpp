@@ -25,10 +25,21 @@ WSServerUi::WSServerUi(wxWindow *parent)
 
 WSServerUi::~WSServerUi() {}
 
-Link *WSServerUi::CreateLink()
+Link *WSServerUi::NewLink()
 {
     auto wsServer = new WSServer();
     wsServer->newClientSignal.connect(&WSServerUi::DoNewClient, this);
     wsServer->deleteClientSignal.connect(&WSServerUi::DoDeleteClient, this);
     return wsServer;
+}
+
+void WSServerUi::DeleteLink(Link *link)
+{
+    auto wsServer = dynamic_cast<WSServer *>(link);
+    if (wsServer) {
+        wsServer->newClientSignal.disconnect(&WSServerUi::DoNewClient, this);
+        wsServer->deleteClientSignal.disconnect(&WSServerUi::DoDeleteClient, this);
+    }
+
+    delete wsServer;
 }

@@ -30,7 +30,7 @@ void TCPClient::Loop()
     mg_log_set(MG_LL_NONE);
 
     mgr.userdata = this;
-    struct mg_connection *c = mg_connect(&mgr, url.c_str(), TCPClientHandler, nullptr);
+    auto *c = mg_connect(&mgr, url.c_str(), TCPClientHandler, nullptr);
     if (c == nullptr) {
         std::string log(fmt::format("Failed to connect to tcp server: {0}", url));
         wxtInfo() << log;
@@ -45,6 +45,6 @@ void TCPClient::Loop()
     }
 
     mg_mgr_free(&mgr);
-    d->isRunning.store(false);
     wxtInfo() << "TCP client thread exited...";
+    d->isRunning.store(false);
 }

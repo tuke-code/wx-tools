@@ -28,7 +28,7 @@ public:
     void Load(const wxtJson &json) override;
 
 protected:
-    Link *CreateLink() override;
+    Link *NewLink() override;
 
 private:
     void SetupComboBox(wxComboBox *cb, const wxString &label, int row, wxWindow *parent);

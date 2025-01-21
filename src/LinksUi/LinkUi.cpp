@@ -16,7 +16,12 @@ LinkUi::LinkUi(wxWindow *parent)
     , m_link(nullptr)
 {}
 
-LinkUi::~LinkUi() {}
+LinkUi::~LinkUi()
+{
+    if (m_link) {
+        m_link->Close();
+    }
+}
 
 Link *LinkUi::GetLink() const
 {
@@ -25,12 +30,15 @@ Link *LinkUi::GetLink() const
 
 bool LinkUi::Open()
 {
-    m_link = CreateLink();
+    m_link = NewLink();
     if (!m_link) {
         return false;
     }
 
-    AboutToOpen(m_link);
+    m_link->Load(Save());
+    if (m_link) {
+        wxtInfo() << "Link parameters: " << m_link->Save().dump();
+    }
 
     return m_link->Open();
 }
@@ -38,11 +46,8 @@ bool LinkUi::Open()
 void LinkUi::Close()
 {
     if (m_link) {
-        AboutToClose(m_link);
-        wxtInfo() << __LINE__ << "LinkUi::Close()";
         m_link->Close();
-        wxtInfo() << __LINE__ << "LinkUi::Close()";
-        delete m_link;
+        DeleteLink(m_link);
         m_link = nullptr;
     }
 }
@@ -72,22 +77,12 @@ void LinkUi::Refresh()
     // Nothing to do yet...
 }
 
-Link *LinkUi::CreateLink()
+Link *LinkUi::NewLink()
 {
     return nullptr;
 }
 
-void LinkUi::AboutToOpen(Link *link)
-{
-    link->Load(Save());
-
-    if (link) {
-        wxtInfo() << link->Save().dump();
-    }
-}
-
-void LinkUi::AboutToClose(Link *link)
+void LinkUi::DeleteLink(Link *link)
 {
     wxUnusedVar(link);
-    // Nothing to do
 }

@@ -24,11 +24,22 @@ UDPServerUi::UDPServerUi(wxWindow *parent)
 
 UDPServerUi::~UDPServerUi() {}
 
-Link *UDPServerUi::CreateLink()
+Link *UDPServerUi::NewLink()
 {
     auto *udpServer = new UDPServer();
     udpServer->newClientSignal.connect(&UDPServerUi::DoNewClient, this);
     udpServer->deleteClientSignal.connect(&UDPServerUi::DoDeleteClient, this);
 
     return udpServer;
+}
+
+void UDPServerUi::DeleteLink(Link *link)
+{
+    auto *udpServer = dynamic_cast<UDPServer *>(link);
+    if (udpServer) {
+        udpServer->newClientSignal.disconnect(&UDPServerUi::DoNewClient, this);
+        udpServer->deleteClientSignal.disconnect(&UDPServerUi::DoDeleteClient, this);
+    }
+
+    delete udpServer;
 }

@@ -15,7 +15,7 @@ Link::Link(LinkPrivate *dPtr)
 
 Link::~Link()
 {
-    Close();
+
 }
 
 bool Link::Open()
@@ -27,7 +27,6 @@ bool Link::Open()
 
     while (!d->isRunning.load()) {
         // wait for the thread to start
-        break;
     }
 
     return true;
@@ -37,11 +36,9 @@ void Link::Close()
 {
     if (d) {
         d->invokedInterrupted.store(true);
-        while (!d->isRunning.load()) {
+        while (d->isRunning.load()) {
             // wait for the thread to stop
-            break;
-        }
-
+        };
         d->txBytes.clear();
     }
 }

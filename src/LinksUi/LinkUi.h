@@ -32,9 +32,8 @@ public:
     virtual void Refresh();
 
 protected:
-    virtual Link *CreateLink();
-    virtual void AboutToOpen(Link *link);
-    virtual void AboutToClose(Link *link);
+    virtual Link *NewLink();
+    virtual void DeleteLink(Link *link);
 
 private:
     Link *m_link;

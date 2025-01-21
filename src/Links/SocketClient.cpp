@@ -7,9 +7,10 @@
  * code directory.
  **************************************************************************************************/
 #include "SocketClient.h"
+#include "SocketClient_p.h"
 
-SocketClient::SocketClient(SocketBasePrivate *dPtr)
-    : SocketBase(dPtr)
+SocketClient::SocketClient(SocketClientPrivate *d)
+    : SocketBase(d)
 {}
 
 SocketClient::~SocketClient() {}
