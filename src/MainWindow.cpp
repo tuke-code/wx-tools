@@ -16,10 +16,17 @@
 #include "Page/Page.h"
 
 MainWindow::MainWindow()
-    : wxFrame(nullptr, wxID_ANY, "wxTools")
+    : wxFrame(nullptr, wxID_ANY, fmt::format("wxTools v{}", std::string(WXT_GIT_TAG)))
     , m_statusBar(nullptr)
 {
     Init();
+
+    // set the icon
+#if defined(WIN32)
+    wxIcon icon;
+    icon.LoadFile("IDI_ICON1", wxBITMAP_TYPE_ICO_RESOURCE);
+    SetIcon(icon);
+#endif
 
     m_notebook = new wxNotebook(this, wxID_ANY);
     auto types = GetSuportedCommunicationTypes();
@@ -106,7 +113,9 @@ void MainWindow::OnAbout(wxCommandEvent&)
     info += wxT("Date: ") + std::string(WXT_GIT_COMMIT_TIME) + std::string("\n");
     info += wxT("Build: ") + fmt::format("{0} {1}", __DATE__, __TIME__) + std::string("\n");
     info += std::string("\n");
-    info += wxT("Copyright © 2024-2025 x-tools-author. All rights reserved.\n");
+    info += wxT("Copyright ©");
+    info += fmt::format(" 2024-{} x-tools-author. ", std::string(__DATE__).substr(7, 4));
+    info += wxT("All rights reserved.\n");
     wxMessageBox(info, wxT("About wxTools"), wxOK | wxICON_INFORMATION);
 }
 

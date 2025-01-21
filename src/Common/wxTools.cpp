@@ -13,6 +13,7 @@
 #include <sstream>
 #include <string>
 
+#include <fmt/format.h>
 #include <wx/filename.h>
 #include <wx/stdpaths.h>
 
