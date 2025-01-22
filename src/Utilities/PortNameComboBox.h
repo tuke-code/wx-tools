@@ -17,4 +17,5 @@ public:
 
     wxString GetPortName() const;
     void SetPortName(const wxString &portName);
+    void DoRefresh();
 };

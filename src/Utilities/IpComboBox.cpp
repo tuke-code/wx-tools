@@ -20,6 +20,14 @@ IpComboBox::IpComboBox(wxWindow* parent)
                  nullptr,
                  wxCB_READONLY)
 {
+    DoRefresh();
+}
+
+void IpComboBox::DoRefresh()
+{
+    Clear();
+    Append(wxString("127.0.0.1"));
+
     asio::io_service ioService;
     asio::ip::tcp::resolver resolver(ioService);
     asio::ip::tcp::resolver::query query(asio::ip::host_name(), "");

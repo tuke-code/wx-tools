@@ -13,7 +13,6 @@
 #include <sstream>
 #include <string>
 
-#include <checksum.h>
 #include <fmt/format.h>
 #include <wx/dynarray.h>
 #include <wx/filename.h>

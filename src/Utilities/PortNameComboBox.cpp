@@ -22,6 +22,26 @@ PortNameComboBox::PortNameComboBox(wxWindow* parent)
                  nullptr,
                  wxCB_READONLY)
 {
+    DoRefresh();
+}
+
+wxString PortNameComboBox::GetPortName() const
+{
+    return GetValue();
+}
+
+void PortNameComboBox::SetPortName(const wxString& portName)
+{
+    int selection = FindString(portName);
+    if (selection != wxNOT_FOUND) {
+        SetSelection(selection);
+    }
+}
+
+void PortNameComboBox::DoRefresh()
+{
+    Clear();
+
     std::vector<itas109::SerialPortInfo> infos = itas109::CSerialPortInfo::availablePortInfos();
     std::sort(infos.begin(),
               infos.end(),
@@ -41,18 +61,5 @@ PortNameComboBox::PortNameComboBox(wxWindow* parent)
 
     if (!infos.empty()) {
         SetSelection(0);
-    }
-}
-
-wxString PortNameComboBox::GetPortName() const
-{
-    return GetValue();
-}
-
-void PortNameComboBox::SetPortName(const wxString& portName)
-{
-    int selection = FindString(portName);
-    if (selection != wxNOT_FOUND) {
-        SetSelection(selection);
     }
 }

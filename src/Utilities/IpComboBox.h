@@ -14,4 +14,5 @@ class IpComboBox : public wxComboBox
 {
 public:
     IpComboBox(wxWindow* parent = nullptr);
+    void DoRefresh();
 };

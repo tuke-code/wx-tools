@@ -21,6 +21,7 @@
 #include "PageSettings.h"
 #include "PageSettingsInput.h"
 #include "PageSettingsInputPopup.h"
+#include "PageSettingsLinkPopup.h"
 #include "PageSettingsOutput.h"
 #include "PageSettingsOutputPopup.h"
 
@@ -46,6 +47,9 @@ Page::Page(LinkType type, wxWindow *parent)
 
     PageSettingsLink *linkSettings = m_pageSettings->GetLinkSettings();
     linkSettings->invokeOpenSignal.connect(&Page::OnInvokeOpenOrClose, this);
+
+    PageSettingsLinkPopup *linkSettingsPopup = linkSettings->GetPopup();
+    linkSettingsPopup->refreshSignal.connect(&LinkUi::Refresh, linkSettings->GetLinkUi());
 
     PageSettingsOutput *outputSettings = m_pageSettings->GetOutputSettings();
     outputSettings->clearSignal.connect(&Page::OnClear, this);

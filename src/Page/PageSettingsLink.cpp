@@ -58,6 +58,11 @@ void PageSettingsLink::SetOpenButtonLabel(const wxString &label)
     m_openButton->SetLabel(label);
 }
 
+PageSettingsLinkPopup *PageSettingsLink::GetPopup() const
+{
+    return m_popup;
+}
+
 LinkUi *PageSettingsLink::CreateLinkUi(LinkType type, wxWindow *parent)
 {
     if (type == LinkType::SerialPort) {

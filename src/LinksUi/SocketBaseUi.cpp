@@ -146,6 +146,17 @@ void SocketBaseUi::Load(const wxtJson &json)
     }
 }
 
+void SocketBaseUi::Refresh()
+{
+    if (m_serverComboBox) {
+        m_serverComboBox->DoRefresh();
+    }
+
+    if (m_clientComboBox) {
+        m_clientComboBox->DoRefresh();
+    }
+}
+
 void SocketBaseUi::InitUiComponents(
     const std::vector<void (SocketBaseUi::*)(int, wxWindow *)> &funcs, wxWindow *parent)
 {

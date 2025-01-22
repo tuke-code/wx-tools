@@ -16,7 +16,7 @@
 
 struct PageSettingsLinkPopupParameterKeys
 {
-    std::string autoReconnect = "autoReconnect";
+
 };
 
 class PageSettingsLinkPopup : public BaseSettingsPopup
@@ -24,12 +24,11 @@ class PageSettingsLinkPopup : public BaseSettingsPopup
 public:
     PageSettingsLinkPopup(wxButton *controlButton);
 
-    wxtSignal<> emitRefreshSignal;
+    wxtSignal<> refreshSignal;
 
     void Load(const wxtJson &parameters);
     wxtJson Save() const;
 
 private:
     wxButton *m_refresh;
-    wxCheckBox *m_autoReconnect;
 };
