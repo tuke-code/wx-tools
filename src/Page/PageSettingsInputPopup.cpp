@@ -90,7 +90,7 @@ void PageSettingsInputPopup::Load(const wxtJson &json)
     int startIndex = json[keys.startIndex].get<int>();
     int endIndex = json[keys.endIndex].get<int>();
     int algorithm = json[keys.algorithm].get<int>();
-    bool addCrc = json[keys.addCr].get<bool>();
+    bool addCrc = json[keys.addCrc].get<bool>();
     bool bigEndian = json[keys.bigEndian].get<bool>();
 
     wxToolsSetComboBoxSectionByIntClientData(m_prefixComboBox, prefix);
@@ -120,7 +120,7 @@ wxtJson PageSettingsInputPopup::Save() const
     json[keys.startIndex] = m_startIndexSpinCtrl->GetValue();
     json[keys.endIndex] = m_endIndexSpinCtrl->GetValue();
     json[keys.algorithm] = *static_cast<int *>(m_algorithmComboBox->GetClientData(algorithmSelection));
-    json[keys.addCr] = m_addCrcCheckBox->GetValue();
+    json[keys.addCrc] = m_addCrcCheckBox->GetValue();
     json[keys.bigEndian] = m_bigEndianCheckBox->GetValue();
     // clang-format on
 

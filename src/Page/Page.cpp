@@ -20,6 +20,7 @@
 #include "PageIOOutput.h"
 #include "PageSettings.h"
 #include "PageSettingsInput.h"
+#include "PageSettingsInputPopup.h"
 #include "PageSettingsOutput.h"
 #include "PageSettingsOutputPopup.h"
 
@@ -86,17 +87,50 @@ void Page::OnInvokeWrite(TextFormat format)
         return;
     }
 
+    PageSettingsInput *inputSettings = m_pageSettings->GetInputSettings();
+    PageSettingsInputPopup *inputSettingsPopup = inputSettings->GetPopup();
+    wxtJson inputParameters = inputSettingsPopup->Save();
+
+    PageSettingsInputPopupParameterKeys keys;
+    int prefix = inputParameters[keys.prefix].get<int>();
+    int suffix = inputParameters[keys.suffix].get<int>();
+    int escIndex = inputParameters[keys.escIndex].get<int>();
+    int startIndex = inputParameters[keys.startIndex].get<int>();
+    int endIndex = inputParameters[keys.endIndex].get<int>();
+    int algorithm = inputParameters[keys.algorithm].get<int>();
+    bool addCrc = inputParameters[keys.addCrc].get<bool>();
+    bool bigEndian = inputParameters[keys.bigEndian].get<bool>();
+
     Link *link = linkUi->GetLink();
     wxString text = m_pageIO->GetInput()->GetInputText();
     if (text.IsEmpty()) {
         text = wxString::FromAscii("(null)");
     }
 
+    text = GetEscapeString(text.ToStdString(), escIndex);
     int len = 0;
     auto bytes = DoEncodeBytes(text.ToStdString(), len, static_cast<int>(format));
-    if (len > 0) {
-        link->Write(std::move(bytes), len);
+    if (len <= 0) {
+        return;
     }
+
+    std::vector<char> prefixChars = GetAdditionChars(prefix);
+    std::vector<char> crcChars;
+    if (addCrc) {
+        crcChars = DoCalculateCRC(bytes, len, algorithm, startIndex, endIndex, bigEndian);
+    }
+    std::vector<char> suffixChars = GetAdditionChars(suffix);
+
+    std::vector<char> tmp = prefixChars;
+    for (int i = 0; i < len; i++) {
+        tmp.push_back(bytes.get()[i]);
+    }
+    tmp.insert(tmp.end(), crcChars.begin(), crcChars.end());
+    tmp.insert(tmp.end(), suffixChars.begin(), suffixChars.end());
+
+    std::shared_ptr<char> allBytes(new char[tmp.size()], [](char *p) { delete[] p; });
+    memcpy(allBytes.get(), tmp.data(), tmp.size());
+    link->Write(std::move(allBytes), tmp.size());
 }
 
 void Page::OnInvokeStartTimer(int ms)

@@ -20,7 +20,7 @@ struct PageSettingsInputPopupParameterKeys
     std::string startIndex = {"startIndex"};
     std::string endIndex = {"endIndex"};
     std::string algorithm = {"algorithm"};
-    std::string addCr = {"addCrc"};
+    std::string addCrc = {"addCrc"};
     std::string bigEndian = {"bigEndian"};
 };
 

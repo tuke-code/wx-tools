@@ -44,20 +44,29 @@ typedef nlohmann::json wxtJson;
 // libcrc
 enum class CRCType {
     CRC_8,
-    CRC_16,
-    CRC_MODBUS,
-    CRC_XMODEM,
-    CRC_CCITT_1D0F,
-    CRC_CCITT_FFFF,
-    CRC_KERMIT,
-    CRC_SICK,
-    CRC_DNP,
+    CRC_8_ITU,
+    CRC_8_ROHC,
+    CRC_8_MAXIM,
+    CRC_16_IBM,
+    CRC_16_MAXIM,
+    CRC_16_USB,
+    CRC_16_MODBUS,
+    CRC_16_CCITT,
+    CRC_16_CCITT_FALSE,
+    CRC_16_x25,
+    CRC_16_XMODEM,
+    CRC_16_DNP,
     CRC_32,
-    CRC_64_ECMA,
-    CRC_64_WE,
+    CRC_32_MPEG2
 };
 std::vector<CRCType> GetSuportedCrcTypes();
 wxString GetCrcName(CRCType type);
+std::vector<char> DoCalculateCRC(std::shared_ptr<char> bytes,
+                                 int len,
+                                 int algorithm,
+                                 int startIndex,
+                                 int endIndex,
+                                 bool bigEndian);
 
 //--------------------------------------------------------------------------------------------------
 // Common interface
@@ -96,12 +105,14 @@ wxString GetCommunicationName(LinkType type);
 enum class AdditionType { R, RN, N, NR, None = wxtNone };
 std::vector<AdditionType> GetSuportedAdditionTypes();
 wxString GetAdditionName(AdditionType type);
+std::vector<char> GetAdditionChars(int type);
 
 //--------------------------------------------------------------------------------------------------
 // Escape character
 enum class EscapeType { R, RN, N, NR, R_N, None = wxtNone };
 std::vector<EscapeType> GetSuportedEscapeTypes();
 wxString GetEscapeName(EscapeType type);
+wxString GetEscapeString(const std::string &txt, int type);
 
 //--------------------------------------------------------------------------------------------------
 // wxWidgets

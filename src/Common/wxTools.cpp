@@ -13,7 +13,9 @@
 #include <sstream>
 #include <string>
 
+#include <checksum.h>
 #include <fmt/format.h>
+#include <wx/dynarray.h>
 #include <wx/filename.h>
 #include <wx/stdpaths.h>
 
@@ -56,17 +58,20 @@ std::vector<CRCType> GetSuportedCrcTypes()
     static std::vector<CRCType> types;
     if (types.empty()) {
         types.push_back(CRCType::CRC_8);
-        types.push_back(CRCType::CRC_16);
-        types.push_back(CRCType::CRC_MODBUS);
-        types.push_back(CRCType::CRC_XMODEM);
-        types.push_back(CRCType::CRC_CCITT_1D0F);
-        types.push_back(CRCType::CRC_CCITT_FFFF);
-        types.push_back(CRCType::CRC_KERMIT);
-        types.push_back(CRCType::CRC_SICK);
-        types.push_back(CRCType::CRC_DNP);
+        types.push_back(CRCType::CRC_8_ITU);
+        types.push_back(CRCType::CRC_8_ROHC);
+        types.push_back(CRCType::CRC_8_MAXIM);
+        types.push_back(CRCType::CRC_16_IBM);
+        types.push_back(CRCType::CRC_16_MAXIM);
+        types.push_back(CRCType::CRC_16_USB);
+        types.push_back(CRCType::CRC_16_MODBUS);
+        types.push_back(CRCType::CRC_16_CCITT);
+        types.push_back(CRCType::CRC_16_CCITT_FALSE);
+        types.push_back(CRCType::CRC_16_x25);
+        types.push_back(CRCType::CRC_16_XMODEM);
+        types.push_back(CRCType::CRC_16_DNP);
         types.push_back(CRCType::CRC_32);
-        types.push_back(CRCType::CRC_64_ECMA);
-        types.push_back(CRCType::CRC_64_WE);
+        types.push_back(CRCType::CRC_32_MPEG2);
     }
 
     return types;
@@ -77,17 +82,20 @@ wxString GetCrcName(CRCType type)
     static std::map<CRCType, wxString> typeMap;
     if (typeMap.empty()) {
         typeMap[CRCType::CRC_8] = "CRC-8";
-        typeMap[CRCType::CRC_16] = "CRC-16";
-        typeMap[CRCType::CRC_MODBUS] = "CRC-MODBUS";
-        typeMap[CRCType::CRC_XMODEM] = "CRC-XMODEM";
-        typeMap[CRCType::CRC_CCITT_1D0F] = "CRC-CCITT-1D0F";
-        typeMap[CRCType::CRC_CCITT_FFFF] = "CRC-CCITT-FFFF";
-        typeMap[CRCType::CRC_KERMIT] = "CRC-KERMIT";
-        typeMap[CRCType::CRC_SICK] = "CRC-SICK";
-        typeMap[CRCType::CRC_DNP] = "CRC-DNP";
+        typeMap[CRCType::CRC_8_ITU] = "CRC-8/ITU";
+        typeMap[CRCType::CRC_8_ROHC] = "CRC-8/ROHC";
+        typeMap[CRCType::CRC_8_MAXIM] = "CRC-8/MAXIM";
+        typeMap[CRCType::CRC_16_IBM] = "CRC-16/IBM";
+        typeMap[CRCType::CRC_16_MAXIM] = "CRC-16/MAXIM";
+        typeMap[CRCType::CRC_16_USB] = "CRC-16-USB";
+        typeMap[CRCType::CRC_16_MODBUS] = "CRC-16/MODBUS";
+        typeMap[CRCType::CRC_16_CCITT] = "CRC-16/CCITT";
+        typeMap[CRCType::CRC_16_CCITT_FALSE] = "CRC-16/CCITT_FALSE";
+        typeMap[CRCType::CRC_16_x25] = "CRC-16/x25";
+        typeMap[CRCType::CRC_16_XMODEM] = "CRC-16/XMODEM";
+        typeMap[CRCType::CRC_16_DNP] = "CRC-16/DNP";
         typeMap[CRCType::CRC_32] = "CRC-32";
-        typeMap[CRCType::CRC_64_ECMA] = "CRC-64-ECMA";
-        typeMap[CRCType::CRC_64_WE] = "CRC-64-WE";
+        typeMap[CRCType::CRC_32_MPEG2] = "CRC-32/MPEG2";
     }
 
     if (typeMap.find(type) == typeMap.end()) {
@@ -95,6 +103,339 @@ wxString GetCrcName(CRCType type)
     } else {
         return typeMap[type];
     }
+}
+
+uint32_t GetCRCPoly(CRCType CRCType)
+{
+    uint32_t poly = 0;
+
+    switch (CRCType) {
+    case CRCType::CRC_8:
+    case CRCType::CRC_8_ITU:
+    case CRCType::CRC_8_ROHC:
+        poly = 0x07;
+        break;
+    case CRCType::CRC_8_MAXIM:
+        poly = 0x31;
+        break;
+    case CRCType::CRC_16_IBM:
+    case CRCType::CRC_16_MAXIM:
+    case CRCType::CRC_16_USB:
+    case CRCType::CRC_16_MODBUS:
+        poly = 0x8005;
+        break;
+    case CRCType::CRC_16_CCITT:
+    case CRCType::CRC_16_XMODEM:
+    case CRCType::CRC_16_CCITT_FALSE:
+    case CRCType::CRC_16_x25:
+        poly = 0x1021;
+        break;
+    case CRCType::CRC_16_DNP:
+        poly = 0x3d65;
+        break;
+    case CRCType::CRC_32:
+    case CRCType::CRC_32_MPEG2:
+        poly = 0x04c11db7;
+        break;
+    }
+
+    return poly;
+}
+
+uint32_t GetXorValue(CRCType CRCType)
+{
+    uint32_t value = 0;
+
+    switch (CRCType) {
+    case CRCType::CRC_8:
+    case CRCType::CRC_8_ROHC:
+    case CRCType::CRC_8_MAXIM:
+        value = 0x00;
+        break;
+    case CRCType::CRC_8_ITU:
+        value = 0x55;
+        break;
+    case CRCType::CRC_16_IBM:
+    case CRCType::CRC_16_MODBUS:
+    case CRCType::CRC_16_CCITT:
+    case CRCType::CRC_16_CCITT_FALSE:
+    case CRCType::CRC_16_XMODEM:
+        value = 0x0000;
+        break;
+    case CRCType::CRC_16_MAXIM:
+    case CRCType::CRC_16_USB:
+    case CRCType::CRC_16_x25:
+    case CRCType::CRC_16_DNP:
+        value = 0xffff;
+        break;
+    case CRCType::CRC_32:
+        value = 0xffffffff;
+        break;
+    case CRCType::CRC_32_MPEG2:
+        value = 0x00000000;
+        break;
+    }
+
+    return value;
+}
+
+uint32_t GetCRCInitialValue(CRCType CRCType)
+{
+    uint32_t init = 0;
+
+    switch (CRCType) {
+    case CRCType::CRC_8:
+    case CRCType::CRC_8_ITU:
+    case CRCType::CRC_8_MAXIM:
+        init = 0x00;
+        break;
+    case CRCType::CRC_8_ROHC:
+        init = 0xff;
+        break;
+    case CRCType::CRC_16_IBM:
+    case CRCType::CRC_16_MAXIM:
+    case CRCType::CRC_16_CCITT:
+    case CRCType::CRC_16_XMODEM:
+    case CRCType::CRC_16_DNP:
+        init = 0x0000;
+        break;
+    case CRCType::CRC_16_USB:
+    case CRCType::CRC_16_MODBUS:
+    case CRCType::CRC_16_CCITT_FALSE:
+    case CRCType::CRC_16_x25:
+        init = 0xffff;
+        break;
+    case CRCType::CRC_32:
+    case CRCType::CRC_32_MPEG2:
+        init = 0xffffffff;
+        break;
+    }
+
+    return init;
+}
+
+bool GetCRCIsInputReversal(CRCType CRCType)
+{
+    bool reversal = true;
+
+    switch (CRCType) {
+    case CRCType::CRC_8:
+    case CRCType::CRC_8_ITU:
+    case CRCType::CRC_16_CCITT_FALSE:
+    case CRCType::CRC_16_XMODEM:
+    case CRCType::CRC_32_MPEG2:
+        reversal = false;
+        break;
+    case CRCType::CRC_8_ROHC:
+    case CRCType::CRC_8_MAXIM:
+    case CRCType::CRC_16_IBM:
+    case CRCType::CRC_16_MAXIM:
+    case CRCType::CRC_16_USB:
+    case CRCType::CRC_16_MODBUS:
+    case CRCType::CRC_16_CCITT:
+    case CRCType::CRC_16_x25:
+    case CRCType::CRC_16_DNP:
+    case CRCType::CRC_32:
+        reversal = true;
+        break;
+    }
+
+    return reversal;
+}
+
+bool GetCRCIsOutputReversal(CRCType CRCType)
+{
+    bool reversal = true;
+
+    switch (CRCType) {
+    case CRCType::CRC_8:
+    case CRCType::CRC_8_ITU:
+    case CRCType::CRC_16_CCITT_FALSE:
+    case CRCType::CRC_16_XMODEM:
+    case CRCType::CRC_32_MPEG2:
+        reversal = false;
+        break;
+    case CRCType::CRC_8_ROHC:
+    case CRCType::CRC_8_MAXIM:
+    case CRCType::CRC_16_IBM:
+    case CRCType::CRC_16_MAXIM:
+    case CRCType::CRC_16_USB:
+    case CRCType::CRC_16_MODBUS:
+    case CRCType::CRC_16_CCITT:
+    case CRCType::CRC_16_x25:
+    case CRCType::CRC_16_DNP:
+    case CRCType::CRC_32:
+        reversal = true;
+        break;
+    }
+
+    return reversal;
+}
+
+int GetCRCBitsWidth(CRCType CRCType)
+{
+    int ret = -1;
+    switch (CRCType) {
+    case CRCType::CRC_8:
+    case CRCType::CRC_8_ITU:
+    case CRCType::CRC_8_ROHC:
+    case CRCType::CRC_8_MAXIM:
+        ret = 8;
+        break;
+    case CRCType::CRC_16_IBM:
+    case CRCType::CRC_16_MAXIM:
+    case CRCType::CRC_16_USB:
+    case CRCType::CRC_16_MODBUS:
+    case CRCType::CRC_16_CCITT:
+    case CRCType::CRC_16_CCITT_FALSE:
+    case CRCType::CRC_16_x25:
+    case CRCType::CRC_16_XMODEM:
+    case CRCType::CRC_16_DNP:
+        ret = 16;
+        break;
+    case CRCType::CRC_32:
+    case CRCType::CRC_32_MPEG2:
+        ret = 32;
+        break;
+    }
+    return ret;
+}
+
+std::string GetCRCFriendlyPoly(CRCType CRCType)
+{
+    std::string fp = std::string("Error: Formula not found");
+
+    switch (CRCType) {
+    case CRCType::CRC_8:
+    case CRCType::CRC_8_ITU:
+    case CRCType::CRC_8_ROHC:
+        fp = std::string("x8 + x2 + x + 1");
+        break;
+    case CRCType::CRC_8_MAXIM:
+        fp = std::string("x8 + x5 + x4 + 1");
+        break;
+    case CRCType::CRC_16_IBM:
+    case CRCType::CRC_16_MAXIM:
+    case CRCType::CRC_16_USB:
+    case CRCType::CRC_16_MODBUS:
+    case CRCType::CRC_16_CCITT:
+    case CRCType::CRC_16_CCITT_FALSE:
+    case CRCType::CRC_16_x25:
+    case CRCType::CRC_16_XMODEM:
+        fp = std::string("x6 + x2 + x5 + 1");
+        break;
+    case CRCType::CRC_16_DNP:
+        fp = std::string("x6+x3+x2+x1+x0+x8+x6+x5+x2+1");
+        break;
+    case CRCType::CRC_32:
+    case CRCType::CRC_32_MPEG2:
+        fp = std::string("x32+x6+x3+x2+x6+x2+x1+x0+x8+x7+x5+x4+x2+x+1");
+        break;
+    }
+
+    return fp;
+}
+
+template<typename T>
+T DoReverse(const T &input)
+{
+    // reverse the bit order of input
+    T output = 0;
+    for (int i = 0; i < sizeof(T) * 8; i++) {
+        if (input & (1 << i)) {
+            output |= 1 << (sizeof(T) * 8 - 1 - i);
+        }
+    }
+
+    return output;
+}
+
+template<typename T>
+T crcCalculate(const uint8_t *input, uint64_t length, CRCType algorithm)
+{
+    T crcReg = static_cast<T>(GetCRCInitialValue(algorithm));
+    T rawPoly = static_cast<T>(GetCRCPoly(algorithm));
+    uint8_t byte = 0;
+
+    T temp = 1;
+    while (length--) {
+        byte = *(input++);
+        if (GetCRCIsInputReversal(algorithm)) {
+            byte = DoReverse<uint8_t>(byte);
+        }
+
+        crcReg ^= static_cast<T>((byte << 8 * (sizeof(T) - 1)));
+        for (int i = 0; i < 8; i++) {
+            if (crcReg & (temp << (sizeof(T) * 8 - 1))) {
+                crcReg = static_cast<T>((crcReg << 1) ^ rawPoly);
+            } else {
+                crcReg = static_cast<T>(crcReg << 1);
+            }
+        }
+    }
+
+    if (GetCRCIsOutputReversal(algorithm)) {
+        crcReg = DoReverse(crcReg);
+    }
+
+    T crc = (crcReg ^ static_cast<T>(GetXorValue(algorithm)));
+    return crc;
+}
+
+std::vector<char> DoCalculateCRC(std::shared_ptr<char> bytes,
+                                 int len,
+                                 int algorithm,
+                                 int startIndex, // from left to right
+                                 int endIndex,   // from right to left
+                                 bool bigEndian)
+{
+    if (len <= 0) {
+        return std::vector<char>();
+    }
+
+    if (startIndex > len) {
+        return std::vector<char>();
+    }
+
+    if (endIndex > len) {
+        return std::vector<char>();
+    }
+
+    int dataBytes = startIndex + 1 + endIndex + 1;
+    if (dataBytes > len) {
+        return std::vector<char>();
+    }
+
+    std::vector<char> retBytes;
+    auto cookedAlgorithm = static_cast<CRCType>(algorithm);
+    auto const bw = GetCRCBitsWidth(cookedAlgorithm);
+    auto *ptr = reinterpret_cast<const uint8_t *>(bytes.get());
+    if (bw == 8) {
+        uint8_t ret = crcCalculate<uint8_t>(ptr, len, cookedAlgorithm);
+        retBytes.push_back(char(ret));
+    } else if (bw == 16) {
+        uint16_t ret = crcCalculate<uint16_t>(ptr, len, cookedAlgorithm);
+        if (!bigEndian) {
+            ret = DoReverseByteOrder<uint16_t>(ret);
+        }
+
+        char *ch = reinterpret_cast<char *>(&ret);
+        retBytes.push_back(ch[0]);
+        retBytes.push_back(ch[1]);
+    } else if (bw == 32) {
+        uint32_t ret = crcCalculate<uint32_t>(ptr, len, cookedAlgorithm);
+        if (!bigEndian) {
+            ret = DoReverseByteOrder<uint32_t>(ret);
+        }
+
+        char *ch = reinterpret_cast<char *>(&ret);
+        retBytes.push_back(ch[0]);
+        retBytes.push_back(ch[1]);
+        retBytes.push_back(ch[2]);
+        retBytes.push_back(ch[3]);
+    }
+
+    return retBytes;
 }
 
 std::string GetDateTimeString(const std::string &format, bool showMs)
@@ -428,6 +769,24 @@ wxString GetAdditionName(AdditionType type)
     }
 }
 
+std::vector<char> GetAdditionChars(int type)
+{
+    std::vector<char> chars;
+    if (type == static_cast<int>(AdditionType::R)) {
+        chars.push_back('\r');
+    } else if (type == static_cast<int>(AdditionType::RN)) {
+        chars.push_back('\r');
+        chars.push_back('\n');
+    } else if (type == static_cast<int>(AdditionType::N)) {
+        chars.push_back('\n');
+    } else if (type == static_cast<int>(AdditionType::NR)) {
+        chars.push_back('\n');
+        chars.push_back('\r');
+    }
+
+    return chars;
+}
+
 std::vector<EscapeType> GetSuportedEscapeTypes()
 {
     static std::vector<EscapeType> types;
@@ -460,6 +819,26 @@ wxString GetEscapeName(EscapeType type)
     } else {
         return typeMap[type];
     }
+}
+
+wxString GetEscapeString(const std::string &txt, int type)
+{
+    wxString tmp = wxString(txt);
+
+    if (type == static_cast<int>(EscapeType::R)) {
+        tmp.Replace("\\r", "\r");
+    } else if (type == static_cast<int>(EscapeType::RN)) {
+        tmp.Replace("\\r\\n", "\r\n");
+    } else if (type == static_cast<int>(EscapeType::N)) {
+        tmp.Replace("\\n", "\n");
+    } else if (type == static_cast<int>(EscapeType::NR)) {
+        tmp.Replace("\\n\\r", "\n\r");
+    } else if (type == static_cast<int>(EscapeType::R_N)) {
+        tmp.Replace("\\r", "\r");
+        tmp.Replace("\\n", "\n");
+    }
+
+    return tmp;
 }
 
 void wxToolsSetComboBoxSectionByIntClientData(wxComboBox *comboBox, int clientDataValue)
