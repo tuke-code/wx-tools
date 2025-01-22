@@ -34,29 +34,11 @@ void SerialPort::Loop()
     if (serialPortIml->open()) {
         while (!d->invokedInterrupted.load()) {
             // Read data....
-            char data[10240] = {0};
-            int len = serialPortIml->readAllData(&data);
-            if (len == -1) {
-                errorOccurredSignal(std::string("Read data failed."));
-                break;
-            } else if (len > 0) {
-                std::shared_ptr<char> bytes(new char[len], std::default_delete<char[]>());
-                memcpy(bytes.get(), data, len);
-                bytesRxSignal(std::move(bytes), len, d->portName);
-            }
+            ReadBytes(serialPortIml, this);
 
             // Write data...
-            for (std::pair<std::shared_ptr<char>, int> &ctx : d->txBytes) {
-                int len = serialPortIml->writeData(ctx.first.get(), ctx.second);
-                if (len == -1) {
-                    errorOccurredSignal(std::string("Write data failed."));
-                    break;
-                } else {
-                    bytesTxSignal(std::move(ctx.first), len, d->portName);
-                }
-            }
+            WriteBytes(serialPortIml, this);
 
-            d->txBytes.clear();
             std::this_thread::sleep_for(std::chrono::milliseconds(50));
         }
     } else {
