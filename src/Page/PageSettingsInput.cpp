@@ -15,17 +15,17 @@
 #include "Utilities/TextFormatComboBox.h"
 
 PageSettingsInput::PageSettingsInput(wxWindow* parent)
-    : wxStaticBoxSizer(wxVERTICAL, parent, wxT("Input Settings"))
+    : wxStaticBoxSizer(wxVERTICAL, parent, _("Input Settings"))
     , m_settingsButton(nullptr)
     , m_sendButton(nullptr)
 {
-    auto cycleText = new wxStaticText(GetStaticBox(), wxID_ANY, wxT("Cycle"));
+    auto cycleText = new wxStaticText(GetStaticBox(), wxID_ANY, _("Cycle"));
     m_cycleIntervalComboBox = InitCycleIntervalComboBox();
-    auto formatText = new wxStaticText(GetStaticBox(), wxID_ANY, wxT("Format"));
+    auto formatText = new wxStaticText(GetStaticBox(), wxID_ANY, _("Format"));
     m_formatComboBox = new TextFormatComboBox(GetStaticBox());
     m_formatComboBox->Bind(wxEVT_COMBOBOX, &PageSettingsInput::OnTextFormat, this);
-    m_settingsButton = new wxButton(GetStaticBox(), wxID_ANY, wxT("Settings"));
-    m_sendButton = new wxButton(GetStaticBox(), wxID_ANY, wxT("Send"));
+    m_settingsButton = new wxButton(GetStaticBox(), wxID_ANY, _("Settings"));
+    m_sendButton = new wxButton(GetStaticBox(), wxID_ANY, _("Send"));
     m_popup = new PageSettingsInputPopup(m_settingsButton);
     m_sendButton->Bind(wxEVT_BUTTON, &PageSettingsInput::OnSendButtonClicked, this);
 
@@ -126,7 +126,7 @@ wxComboBox* PageSettingsInput::InitCycleIntervalComboBox()
                              nullptr,
                              wxCB_READONLY);
 
-    cb->Append(wxT("Disabled"), new int(-1));
+    cb->Append(_("Disabled"), new int(-1));
     std::vector<int> items;
     for (int i = 10; i <= 100; i += 10) {
         items.push_back(i);

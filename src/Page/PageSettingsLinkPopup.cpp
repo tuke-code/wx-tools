@@ -17,7 +17,7 @@ PageSettingsLinkPopup::PageSettingsLinkPopup(wxButton *controlButton)
     , m_refresh(nullptr)
 {
     wxPanel *panel = new wxPanel(this);
-    m_refresh = new wxButton(panel, wxID_ANY, wxT("Refresh"));
+    m_refresh = new wxButton(panel, wxID_ANY, _("Refresh"));
 
     wxGridBagSizer *sizer = new wxGridBagSizer(4, 4);
     sizer->Add(m_refresh, wxGBPosition(0, 0), wxGBSpan(1, 2), wxEXPAND | wxALL, 0);

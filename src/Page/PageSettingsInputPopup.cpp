@@ -21,21 +21,21 @@ PageSettingsInputPopup::PageSettingsInputPopup(wxButton *controlButton)
     : BaseSettingsPopup(controlButton, false)
 {
     auto panel = new wxPanel(this);
-    auto prefixLabel = new wxStaticText(panel, wxID_ANY, wxT("Prefix"));
+    auto prefixLabel = new wxStaticText(panel, wxID_ANY, _("Prefix"));
     m_prefixComboBox = new AdditionComboBox(panel);
-    auto suffixLabel = new wxStaticText(panel, wxID_ANY, wxT("Suffix"));
+    auto suffixLabel = new wxStaticText(panel, wxID_ANY, _("Suffix"));
     m_suffixComboBox = new AdditionComboBox(panel);
-    auto escLabel = new wxStaticText(panel, wxID_ANY, wxT("ESC"));
+    auto escLabel = new wxStaticText(panel, wxID_ANY, _("ESC"));
     m_escComboBox = new ESCComboBox(panel);
 
-    auto startIndexLabel = new wxStaticText(panel, wxID_ANY, wxT("Start Index"));
+    auto startIndexLabel = new wxStaticText(panel, wxID_ANY, _("Start Index"));
     m_startIndexSpinCtrl = new wxSpinCtrl(panel, wxID_ANY);
-    auto endIndexLabel = new wxStaticText(panel, wxID_ANY, wxT("End Index"));
+    auto endIndexLabel = new wxStaticText(panel, wxID_ANY, _("End Index"));
     m_endIndexSpinCtrl = new wxSpinCtrl(panel, wxID_ANY);
-    auto algorithmLabel = new wxStaticText(panel, wxID_ANY, wxT("Algorithm"));
+    auto algorithmLabel = new wxStaticText(panel, wxID_ANY, _("Algorithm"));
     m_algorithmComboBox = new CRCTypeComboBox(panel);
-    m_addCrcCheckBox = new wxCheckBox(panel, wxID_ANY, wxT("Add CRC"));
-    m_bigEndianCheckBox = new wxCheckBox(panel, wxID_ANY, wxT("Big Endian"));
+    m_addCrcCheckBox = new wxCheckBox(panel, wxID_ANY, _("Add CRC"));
+    m_bigEndianCheckBox = new wxCheckBox(panel, wxID_ANY, _("Big Endian"));
 
     // clang-format off
     auto sizer = new wxGridBagSizer(4, 4);

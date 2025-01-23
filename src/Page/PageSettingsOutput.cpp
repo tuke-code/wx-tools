@@ -14,7 +14,7 @@
 #include "Utilities/TextFormatComboBox.h"
 
 PageSettingsOutput::PageSettingsOutput(wxWindow *parent)
-    : wxStaticBoxSizer(wxHORIZONTAL, parent, wxT("Output Settings"))
+    : wxStaticBoxSizer(wxHORIZONTAL, parent, _("Output Settings"))
     , m_showDate(nullptr)
     , m_showTime(nullptr)
     , m_showMs(nullptr)
@@ -22,7 +22,7 @@ PageSettingsOutput::PageSettingsOutput(wxWindow *parent)
     , m_showTx(nullptr)
     , m_showFlag(nullptr)
 {
-    auto formatText = new wxStaticText(GetStaticBox(), wxID_ANY, wxT("Format"));
+    auto formatText = new wxStaticText(GetStaticBox(), wxID_ANY, _("Format"));
     m_textFormatComboBox = new TextFormatComboBox(GetStaticBox());
     auto optionsSizer = new wxGridBagSizer(4, 4);
     auto AddCheckBox = [=](const wxString &label, int row, int col) -> wxCheckBox * {
@@ -31,12 +31,12 @@ PageSettingsOutput::PageSettingsOutput(wxWindow *parent)
         return cb;
     };
 
-    m_showRx = AddCheckBox(wxT("Rx"), 0, 0);
-    m_showTx = AddCheckBox(wxT("Tx"), 0, 1);
-    m_showFlag = AddCheckBox(wxT("Flags"), 0, 2);
-    m_showDate = AddCheckBox(wxT("Date"), 1, 0);
-    m_showTime = AddCheckBox(wxT("Time"), 1, 1);
-    m_showMs = AddCheckBox(wxT("MS"), 1, 2);
+    m_showRx = AddCheckBox(_("Rx"), 0, 0);
+    m_showTx = AddCheckBox(_("Tx"), 0, 1);
+    m_showFlag = AddCheckBox(_("Flags"), 0, 2);
+    m_showDate = AddCheckBox(_("Date"), 1, 0);
+    m_showTime = AddCheckBox(_("Time"), 1, 1);
+    m_showMs = AddCheckBox(_("MS"), 1, 2);
 
     m_showRx->SetValue(true);
     m_showTx->SetValue(true);
@@ -45,8 +45,8 @@ PageSettingsOutput::PageSettingsOutput(wxWindow *parent)
     m_showMs->SetValue(false);
     m_showFlag->SetValue(true);
 
-    auto settingsButton = new wxButton(GetStaticBox(), wxID_ANY, wxT("Settings"));
-    auto clearButton = new wxButton(GetStaticBox(), wxID_ANY, wxT("Clear"));
+    auto settingsButton = new wxButton(GetStaticBox(), wxID_ANY, _("Settings"));
+    auto clearButton = new wxButton(GetStaticBox(), wxID_ANY, _("Clear"));
     auto buttonsSizer = new wxBoxSizer(wxHORIZONTAL);
     buttonsSizer->Add(settingsButton, 1, wxEXPAND | wxALL, 0);
     buttonsSizer->Add(clearButton, 1, wxEXPAND | wxALL, 0);

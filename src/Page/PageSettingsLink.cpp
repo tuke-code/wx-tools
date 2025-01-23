@@ -19,7 +19,7 @@
 #include "PageSettingsLinkPopup.h"
 
 PageSettingsLink::PageSettingsLink(LinkType type, wxWindow *parent)
-    : wxStaticBoxSizer(wxVERTICAL, parent, wxT("Link Settings"))
+    : wxStaticBoxSizer(wxVERTICAL, parent, _("Link Settings"))
     , m_linkUi(nullptr)
     , m_popup(nullptr)
 {
@@ -28,10 +28,10 @@ PageSettingsLink::PageSettingsLink(LinkType type, wxWindow *parent)
 
     AddSpacer(4);
 
-    auto settingsButton = new wxButton(GetStaticBox(), wxID_ANY, wxT("Settings"));
+    auto settingsButton = new wxButton(GetStaticBox(), wxID_ANY, _("Settings"));
     m_popup = new PageSettingsLinkPopup(settingsButton);
 
-    m_openButton = new wxButton(GetStaticBox(), wxID_ANY, wxT("Open"));
+    m_openButton = new wxButton(GetStaticBox(), wxID_ANY, _("Open"));
     m_openButton->Bind(wxEVT_BUTTON, [this](wxCommandEvent &) { this->invokeOpenSignal(); });
 
     auto buttonSizer = new wxBoxSizer(wxHORIZONTAL);

@@ -18,9 +18,9 @@ FlowBitsComboBox::FlowBitsComboBox(wxWindow* parent)
                  nullptr,
                  wxCB_READONLY)
 {
-    Append(wxT("None"), new int(static_cast<int>(itas109::FlowNone)));
-    Append(wxT("Hardware"), new int(static_cast<int>(itas109::FlowHardware)));
-    Append(wxT("Software"), new int(static_cast<int>(itas109::FlowSoftware)));
+    Append(_("None"), new int(static_cast<int>(itas109::FlowNone)));
+    Append(_("Hardware"), new int(static_cast<int>(itas109::FlowHardware)));
+    Append(_("Software"), new int(static_cast<int>(itas109::FlowSoftware)));
     SetSelection(0);
 }
 

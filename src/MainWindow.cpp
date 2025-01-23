@@ -62,7 +62,7 @@ MainWindow::~MainWindow()
 void MainWindow::OnOpen(wxCommandEvent&)
 {
     wxFileDialog openFileDialog(this,
-                                wxT("Open parameters file"),
+                                _("Open parameters file"),
                                 wxStandardPaths::Get().GetUserDir(wxStandardPaths::Dir_Desktop),
                                 "wxTools.json",
                                 "JSON files (*.json)|*.json",
@@ -80,7 +80,7 @@ void MainWindow::OnSave(wxCommandEvent&)
 void MainWindow::OnSaveAs(wxCommandEvent&)
 {
     wxFileDialog saveFileDialog(this,
-                                wxT("Save parameters file"),
+                                _("Save parameters file"),
                                 wxStandardPaths::Get().GetUserDir(wxStandardPaths::Dir_Desktop),
                                 "wxTools.json",
                                 "JSON files (*.json)|*.json",
@@ -104,18 +104,18 @@ void MainWindow::OnExit(wxCommandEvent&)
 
 void MainWindow::OnAbout(wxCommandEvent&)
 {
-    wxString info = wxT("wxTools - A set of tools developed with wxWidgets\n");
-    info += wxT("Version: ") + std::string(WXT_GIT_TAG) + std::string("\n");
-    info += wxT("Author: x-tools-author\n");
-    info += wxT("Email: x-tools@outlook.com\n");
-    info += wxT("Commit: ") + std::string(WXT_GIT_COMMIT) + std::string("\n");
-    info += wxT("Date: ") + std::string(WXT_GIT_COMMIT_TIME) + std::string("\n");
-    info += wxT("Build: ") + fmt::format("{0} {1}", __DATE__, __TIME__) + std::string("\n");
+    wxString info = _("wxTools - A set of tools developed with wxWidgets\n");
+    info += _("Version: ") + std::string(WXT_GIT_TAG) + std::string("\n");
+    info += _("Author: x-tools-author\n");
+    info += _("Email: x-tools@outlook.com\n");
+    info += _("Commit: ") + std::string(WXT_GIT_COMMIT) + std::string("\n");
+    info += _("Date: ") + std::string(WXT_GIT_COMMIT_TIME) + std::string("\n");
+    info += _("Build: ") + fmt::format("{0} {1}", __DATE__, __TIME__) + std::string("\n");
     info += std::string("\n");
-    info += wxT("Copyright ©");
+    info += _("Copyright ©");
     info += fmt::format(" 2024-{} x-tools-author. ", std::string(__DATE__).substr(7, 4));
-    info += wxT("All rights reserved.\n");
-    wxMessageBox(info, wxT("About wxTools"), wxOK | wxICON_INFORMATION);
+    info += _("All rights reserved.\n");
+    wxMessageBox(info, _("About wxTools"), wxOK | wxICON_INFORMATION);
 }
 
 void MainWindow::Init()
@@ -156,7 +156,7 @@ void MainWindow::InitMenuFile(wxMenuBar* menuBar)
 void MainWindow::InitMenuI18n(wxMenuBar* menuBar)
 {
     wxMenu* menuI18n = new wxMenu;
-    menuBar->Append(menuI18n, wxT("&Language"));
+    menuBar->Append(menuI18n, _("&Language"));
 }
 
 void MainWindow::InitMenuHelp(wxMenuBar* menuBar)
@@ -164,7 +164,7 @@ void MainWindow::InitMenuHelp(wxMenuBar* menuBar)
     wxMenu* menuHelp = new wxMenu;
     menuHelp->Append(wxID_ABOUT);
 
-    menuBar->Append(menuHelp, "&Help");
+    menuBar->Append(menuHelp, _("&Help"));
 
     Bind(wxEVT_MENU, &MainWindow::OnAbout, this, wxID_ABOUT);
 }

@@ -492,12 +492,12 @@ wxString GetTextFormatName(TextFormat format)
 {
     static std::map<TextFormat, wxString> formatMap;
     if (formatMap.empty()) {
-        formatMap[TextFormat::Bin] = wxT("Binary");
-        formatMap[TextFormat::Oct] = wxT("Octal");
-        formatMap[TextFormat::Dec] = wxT("Decimal");
-        formatMap[TextFormat::Hex] = wxT("Hexadecimal");
-        formatMap[TextFormat::Ascii] = wxT("ASCII");
-        formatMap[TextFormat::Utf8] = wxT("UTF-8");
+        formatMap[TextFormat::Bin] = _("Binary");
+        formatMap[TextFormat::Oct] = _("Octal");
+        formatMap[TextFormat::Dec] = _("Decimal");
+        formatMap[TextFormat::Hex] = _("Hexadecimal");
+        formatMap[TextFormat::Ascii] = _("ASCII");
+        formatMap[TextFormat::Utf8] = _("UTF-8");
     }
 
     if (formatMap.find(format) == formatMap.end()) {
@@ -720,13 +720,13 @@ wxString GetCommunicationName(LinkType type)
 {
     static std::map<LinkType, wxString> typeMap;
     if (typeMap.empty()) {
-        typeMap[LinkType::SerialPort] = wxT("Serial Port");
-        typeMap[LinkType::UDPClient] = wxT("UDP Client");
-        typeMap[LinkType::UDPServer] = wxT("UDP Server");
-        typeMap[LinkType::TCPClient] = wxT("TCP Client");
-        typeMap[LinkType::TCPServer] = wxT("TCP Server");
-        typeMap[LinkType::WSClient] = wxT("Web Socket Client");
-        typeMap[LinkType::WSServer] = wxT("Web Socket Server");
+        typeMap[LinkType::SerialPort] = _("Serial Port");
+        typeMap[LinkType::UDPClient] = _("UDP Client");
+        typeMap[LinkType::UDPServer] = _("UDP Server");
+        typeMap[LinkType::TCPClient] = _("TCP Client");
+        typeMap[LinkType::TCPServer] = _("TCP Server");
+        typeMap[LinkType::WSClient] = _("Web Socket Client");
+        typeMap[LinkType::WSServer] = _("Web Socket Server");
     }
 
     if (typeMap.find(type) == typeMap.end()) {
@@ -873,7 +873,7 @@ wxString wxToolsGetSettingsPath()
 
 wxString wxToolsGetSettingsFileName()
 {
-    return wxToolsGetSettingsPath() + wxFileName::GetPathSeparator() + wxT("wxTools.json");
+    return wxToolsGetSettingsPath() + wxFileName::GetPathSeparator() + _("wxTools.json");
 }
 
 std::string DoEncodeFlag(const std::string &ip, uint16_t port)

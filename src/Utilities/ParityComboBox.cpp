@@ -18,11 +18,11 @@ ParityComboBox::ParityComboBox(wxWindow* parent)
                  nullptr,
                  wxCB_READONLY)
 {
-    Append(wxT("None"), new int(static_cast<int>(itas109::ParityNone)));
-    Append(wxT("Odd"), new int(static_cast<int>(itas109::ParityOdd)));
-    Append(wxT("Even"), new int(static_cast<int>(itas109::ParityEven)));
-    Append(wxT("Mark"), new int(static_cast<int>(itas109::ParityMark)));
-    Append(wxT("Space"), new int(static_cast<int>(itas109::ParitySpace)));
+    Append(_("None"), new int(static_cast<int>(itas109::ParityNone)));
+    Append(_("Odd"), new int(static_cast<int>(itas109::ParityOdd)));
+    Append(_("Even"), new int(static_cast<int>(itas109::ParityEven)));
+    Append(_("Mark"), new int(static_cast<int>(itas109::ParityMark)));
+    Append(_("Space"), new int(static_cast<int>(itas109::ParitySpace)));
     SetSelection(0);
 }
 

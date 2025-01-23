@@ -89,7 +89,7 @@ void Page::OnInvokeWrite(TextFormat format)
     PageSettingsLink *linkSettings = m_pageSettings->GetLinkSettings();
     LinkUi *linkUi = linkSettings->GetLinkUi();
     if (!linkUi->IsOpen()) {
-        wxMessageBox(wxT("Link is not opened."), wxT("Error"), wxICON_ERROR);
+        wxMessageBox(_("Link is not opened."), _("Error"), wxICON_ERROR);
         return;
     }
 
@@ -151,7 +151,7 @@ void Page::OnInvokeStartTimer(int ms)
     if (!linkUi->IsOpen()) {
         PageSettingsInput *inputSettings = m_pageSettings->GetInputSettings();
         inputSettings->SetCycleIntervalComboBoxSelection(0);
-        wxMessageBox(wxT("Communication is not open."), wxT("Error"), wxICON_ERROR);
+        wxMessageBox(_("Communication is not open."), _("Error"), wxICON_ERROR);
         return;
     }
 
@@ -171,7 +171,7 @@ void Page::OnBytesTx(std::shared_ptr<char> bytes, int len, std::string to)
 void Page::OnErrorOccurred(std::string message)
 {
     Close();
-    wxLogWarning(wxT("Error: ") + wxString::FromUTF8(message.c_str()));
+    wxLogWarning(_("Error: ") + wxString::FromUTF8(message.c_str()));
 }
 
 void Page::OnSendTimerTimeout()
@@ -286,7 +286,7 @@ void Page::Open()
     LinkUi *linkUi = linkSettings->GetLinkUi();
     if (linkUi->Open()) {
         linkUi->Disable();
-        linkSettings->SetOpenButtonLabel(wxT("Close"));
+        linkSettings->SetOpenButtonLabel(_("Close"));
         wxtInfo() << "Open link successfully.";
 
         Link *link = linkUi->GetLink();
@@ -294,7 +294,7 @@ void Page::Open()
         link->bytesTxSignal.connect(&Page::OnBytesTx, this);
         link->errorOccurredSignal.connect(&Page::OnErrorOccurred, this);
     } else {
-        wxMessageBox(wxT("Failed to open link."), wxT("Error"), wxICON_ERROR);
+        wxMessageBox(_("Failed to open link."), _("Error"), wxICON_ERROR);
     }
 }
 
@@ -314,6 +314,6 @@ void Page::Close()
 
     linkUi->Close();
     linkUi->Enable();
-    linkSettings->SetOpenButtonLabel(wxT("Open"));
+    linkSettings->SetOpenButtonLabel(_("Open"));
     wxtInfo() << "Close link successfully.";
 }

@@ -16,13 +16,13 @@ PageSettingsOutputPopup::PageSettingsOutputPopup(wxButton *controlButton)
 {
     auto panel = new wxPanel(this);
 
-    auto filterLabel = new wxStaticText(panel, wxID_ANY, wxT("Filter"));
+    auto filterLabel = new wxStaticText(panel, wxID_ANY, _("Filter"));
     m_filterTextCtrl = new wxTextCtrl(panel,
                                       wxID_ANY,
                                       wxEmptyString,
                                       wxDefaultPosition,
                                       wxDefaultSize);
-    m_filterTextCtrl->SetHint(wxT("Hello;World"));
+    m_filterTextCtrl->SetHint(_("Hello;World"));
 
     auto panelSizer = new wxGridBagSizer(4, 4);
     panelSizer->Add(filterLabel, wxGBPosition(0, 0), wxDefaultSpan, wxALIGN_CENTER_VERTICAL);
