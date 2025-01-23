@@ -33,10 +33,7 @@ protected:
     void InitServerPortCtrl(int row, wxWindow *parent);
     void InitClientsComboBox(int row, wxWindow *parent);
     void InitClearClientButton(int row, wxWindow *parent);
-    void InitIsEnableAuthorizationCheckBox(int row, wxWindow *parent);
     void InitDataChannelComboBox(int row, wxWindow *parent);
-    void InitUserNameTextCtrl(int row, wxWindow *parent);
-    void InitPasswordTextCtrl(int row, wxWindow *parent);
     // clang-format on
 
 protected:
@@ -53,11 +50,6 @@ protected:
     wxComboBox *m_clientsComboBox{nullptr};
     wxButton *m_clearClientButton{nullptr};
 
-    wxCheckBox *m_isAuthorizationCheckBox{nullptr};
     wxStaticText *m_dataChannelLabel{nullptr};
     DataChannelComboBox *m_dataChannelComboBox{nullptr};
-    wxTextCtrl *m_userNameTextCtrl{nullptr};
-    wxStaticText *m_userNameLabel{nullptr};
-    wxTextCtrl *m_passwordTextCtrl{nullptr};
-    wxStaticText *m_passwordLabel{nullptr};
 };

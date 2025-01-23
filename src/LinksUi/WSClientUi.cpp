@@ -17,11 +17,6 @@ WSClientUi::WSClientUi(wxWindow *parent)
     funcs.push_back(&WSClientUi::InitServerComboBox);
     funcs.push_back(&WSClientUi::InitServerPortCtrl);
     funcs.push_back(&WSClientUi::InitDataChannelComboBox);
-    funcs.push_back(&WSClientUi::InitIsEnableAuthorizationCheckBox);
-#if 0
-    funcs.push_back(&WSClientUi::InitUserNameTextCtrl);
-    funcs.push_back(&WSClientUi::InitPasswordTextCtrl);
-#endif
     InitUiComponents(funcs, parent);
 }
 

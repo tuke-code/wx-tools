@@ -22,10 +22,7 @@ SocketBaseUi::SocketBaseUi(wxWindow *parent)
     , m_clientPortCtrl{nullptr}
     , m_serverComboBox{nullptr}
     , m_serverPortCtrl{nullptr}
-    , m_isAuthorizationCheckBox{nullptr}
     , m_dataChannelComboBox{nullptr}
-    , m_userNameTextCtrl{nullptr}
-    , m_passwordTextCtrl{nullptr}
 {}
 
 SocketBaseUi::~SocketBaseUi() {}
@@ -44,15 +41,6 @@ void SocketBaseUi::Disable()
     if (m_serverPortCtrl) {
         m_serverPortCtrl->Disable();
     }
-    if (m_isAuthorizationCheckBox) {
-        m_isAuthorizationCheckBox->Disable();
-    }
-    if (m_userNameTextCtrl) {
-        m_userNameTextCtrl->Disable();
-    }
-    if (m_passwordTextCtrl) {
-        m_passwordTextCtrl->Disable();
-    }
 }
 
 void SocketBaseUi::Enable()
@@ -69,15 +57,6 @@ void SocketBaseUi::Enable()
     if (m_serverPortCtrl) {
         m_serverPortCtrl->Enable();
     }
-    if (m_isAuthorizationCheckBox) {
-        m_isAuthorizationCheckBox->Enable();
-    }
-    if (m_userNameTextCtrl) {
-        m_userNameTextCtrl->Enable();
-    }
-    if (m_passwordTextCtrl) {
-        m_passwordTextCtrl->Enable();
-    }
 }
 
 wxtJson SocketBaseUi::Save() const
@@ -90,14 +69,11 @@ wxtJson SocketBaseUi::Save() const
     json[keys.clientPort] = m_clientPortCtrl ? m_clientPortCtrl->GetValue() : 54321;
     json[keys.serverAddress] = m_serverComboBox ? m_serverComboBox->GetValue() : localhost;
     json[keys.serverPort] = m_serverPortCtrl ? m_serverPortCtrl->GetValue() : 54321;
-    json[keys.isAuthorization] = m_isAuthorizationCheckBox ? m_isAuthorizationCheckBox->GetValue() : false;
     if (m_dataChannelComboBox) {
         int selection = m_dataChannelComboBox->GetSelection();
         int dataChannel = *reinterpret_cast<int*>(m_dataChannelComboBox->GetClientData(selection));
         json[keys.dataChannel] = dataChannel;
     }
-    json[keys.userName] = m_userNameTextCtrl ? m_userNameTextCtrl->GetValue() : wxString("");
-    json[keys.password] = m_passwordTextCtrl ? m_passwordTextCtrl->GetValue() : wxString("");
     // clang-format on
 
     return json;
@@ -131,18 +107,6 @@ void SocketBaseUi::Load(const wxtJson &json)
     if (m_dataChannelComboBox) {
         int dataChannel = json[keys.dataChannel].template get<int>();
         m_dataChannelComboBox->SetDataChannel(dataChannel);
-    }
-    if (m_isAuthorizationCheckBox) {
-        bool isAuthorization = json[keys.isAuthorization].template get<bool>();
-        m_isAuthorizationCheckBox->SetValue(isAuthorization);
-    }
-    if (m_userNameTextCtrl) {
-        wxString userName = json[keys.userName].template get<std::string>();
-        m_userNameTextCtrl->SetValue(userName);
-    }
-    if (m_passwordTextCtrl) {
-        wxString password = json[keys.password].template get<std::string>();
-        m_passwordTextCtrl->SetValue(password);
     }
 }
 
@@ -259,13 +223,6 @@ void SocketBaseUi::InitClearClientButton(int row, wxWindow *parent)
     });
 }
 
-void SocketBaseUi::InitIsEnableAuthorizationCheckBox(int row, wxWindow *parent)
-{
-    m_isAuthorizationCheckBox = new wxCheckBox(parent, wxID_ANY, wxEmptyString);
-    m_isAuthorizationCheckBox->SetLabel(wxT("Enable authorization"));
-    Add(m_isAuthorizationCheckBox, wxGBPosition(row, 0), wxGBSpan(1, 2), wxEXPAND | wxALL, 0);
-}
-
 void SocketBaseUi::InitDataChannelComboBox(int row, wxWindow *parent)
 {
     m_dataChannelLabel = new wxStaticText(parent, wxID_ANY, wxT("Tx Channel"));
@@ -273,22 +230,4 @@ void SocketBaseUi::InitDataChannelComboBox(int row, wxWindow *parent)
 
     m_dataChannelComboBox = new DataChannelComboBox(parent);
     Add(m_dataChannelComboBox, wxGBPosition(row, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
-}
-
-void SocketBaseUi::InitUserNameTextCtrl(int row, wxWindow *parent)
-{
-    m_userNameLabel = new wxStaticText(parent, wxID_ANY, wxT("User name"));
-    Add(m_userNameLabel, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
-
-    m_userNameTextCtrl = new wxTextCtrl(parent, wxID_ANY, wxEmptyString);
-    Add(m_userNameTextCtrl, wxGBPosition(row, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
-}
-
-void SocketBaseUi::InitPasswordTextCtrl(int row, wxWindow *parent)
-{
-    m_passwordLabel = new wxStaticText(parent, wxID_ANY, wxT("Password"));
-    Add(m_passwordLabel, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
-
-    m_passwordTextCtrl = new wxTextCtrl(parent, wxID_ANY, wxEmptyString);
-    Add(m_passwordTextCtrl, wxGBPosition(row, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
 }
