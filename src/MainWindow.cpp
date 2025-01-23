@@ -83,7 +83,7 @@ void MainWindow::OnSaveAs(wxCommandEvent&)
                                 _("Save parameters file"),
                                 wxStandardPaths::Get().GetUserDir(wxStandardPaths::Dir_Desktop),
                                 "wxTools.json",
-                                "JSON files (*.json)|*.json",
+                                _("JSON files (*.json)|*.json"),
                                 wxFD_SAVE | wxFD_OVERWRITE_PROMPT);
     saveFileDialog.ShowModal();
     wxString fileName = saveFileDialog.GetPath();
