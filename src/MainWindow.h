@@ -26,6 +26,7 @@ private:
     void Init();
     void InitMenu();
     void InitMenuFile(wxMenuBar* menuBar);
+    void InitMenuI18n(wxMenuBar* menuBar);
     void InitMenuHelp(wxMenuBar* menuBar);
     void InitStatusBar();
 
@@ -39,6 +40,8 @@ private:
 
     void LoadParameters(wxString fileName = wxString());
     void SaveParameters(wxString fileName = wxString());
+
+    void OnLanguageChanged(const wxString& flag);
 
 private:
     std::map<LinkType, Page*> m_pageMap;
