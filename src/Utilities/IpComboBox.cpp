@@ -11,14 +11,7 @@
 #include <asio.hpp>
 
 IpComboBox::IpComboBox(wxWindow* parent)
-    : wxComboBox(parent,
-                 wxID_ANY,
-                 wxEmptyString,
-                 wxDefaultPosition,
-                 wxDefaultSize,
-                 0,
-                 nullptr,
-                 wxCB_READONLY)
+    : wxComboBox(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, nullptr)
 {
     DoRefresh();
 }
