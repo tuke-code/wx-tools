@@ -61,6 +61,7 @@ void Page::Load(const wxtJson &json)
 {
     PageParameterKeys keys;
     m_pageSettings->Load(json[keys.settings].get<wxtJson>());
+    m_pageIO->Load(json[keys.io].get<wxtJson>());
 }
 
 wxtJson Page::Save() const
@@ -68,6 +69,7 @@ wxtJson Page::Save() const
     wxtJson json;
     PageParameterKeys keys;
     json[keys.settings] = m_pageSettings->Save();
+    json[keys.io] = m_pageIO->Save();
     return json;
 }
 

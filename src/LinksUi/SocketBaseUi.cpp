@@ -18,8 +18,6 @@
 
 SocketBaseUi::SocketBaseUi(wxWindow *parent)
     : LinkUi(parent)
-    , m_clientComboBox{nullptr}
-    , m_clientPortCtrl{nullptr}
     , m_serverComboBox{nullptr}
     , m_serverPortCtrl{nullptr}
     , m_dataChannelComboBox{nullptr}
@@ -29,12 +27,6 @@ SocketBaseUi::~SocketBaseUi() {}
 
 void SocketBaseUi::Disable()
 {
-    if (m_clientComboBox) {
-        m_clientComboBox->Disable();
-    }
-    if (m_clientPortCtrl) {
-        m_clientPortCtrl->Disable();
-    }
     if (m_serverComboBox) {
         m_serverComboBox->Disable();
     }
@@ -45,12 +37,6 @@ void SocketBaseUi::Disable()
 
 void SocketBaseUi::Enable()
 {
-    if (m_clientComboBox) {
-        m_clientComboBox->Enable();
-    }
-    if (m_clientPortCtrl) {
-        m_clientPortCtrl->Enable();
-    }
     if (m_serverComboBox) {
         m_serverComboBox->Enable();
     }
@@ -65,8 +51,6 @@ wxtJson SocketBaseUi::Save() const
     SocketBaseParameterKeys keys;
     const wxString localhost = "127.0.0.1";
     // clang-format off
-    json[keys.clientAddress] = m_clientComboBox ? m_clientComboBox->GetValue() : localhost;
-    json[keys.clientPort] = m_clientPortCtrl ? m_clientPortCtrl->GetValue() : 54321;
     json[keys.serverAddress] = m_serverComboBox ? m_serverComboBox->GetValue() : localhost;
     json[keys.serverPort] = m_serverPortCtrl ? m_serverPortCtrl->GetValue() : 54321;
     if (m_dataChannelComboBox) {
@@ -82,17 +66,6 @@ wxtJson SocketBaseUi::Save() const
 void SocketBaseUi::Load(const wxtJson &json)
 {
     SocketBaseParameterKeys keys;
-    if (m_clientComboBox) {
-        wxString clientAddress = json[keys.clientAddress].template get<std::string>();
-        int section = m_clientComboBox->FindString(clientAddress);
-        if (section != wxNOT_FOUND) {
-            m_clientComboBox->SetSelection(section);
-        }
-    }
-    if (m_clientPortCtrl) {
-        int clientPort = json[keys.clientPort].template get<int>();
-        m_clientPortCtrl->SetValue(clientPort);
-    }
     if (m_serverComboBox) {
         wxString serverAddress = json[keys.serverAddress].template get<std::string>();
         int section = m_serverComboBox->FindString(serverAddress);
@@ -115,10 +88,6 @@ void SocketBaseUi::Refresh()
     if (m_serverComboBox) {
         m_serverComboBox->DoRefresh();
     }
-
-    if (m_clientComboBox) {
-        m_clientComboBox->DoRefresh();
-    }
 }
 
 void SocketBaseUi::InitUiComponents(
@@ -127,30 +96,6 @@ void SocketBaseUi::InitUiComponents(
     for (int i = 0; i < funcs.size(); i++) {
         (this->*funcs[i])(i, parent);
     }
-}
-
-void SocketBaseUi::InitClientComboBox(int row, wxWindow *parent)
-{
-    m_clientAddressLabel = new wxStaticText(parent, wxID_ANY, wxT("Client IP"));
-    Add(m_clientAddressLabel,
-        wxGBPosition(row, 0),
-        wxGBSpan(1, 1),
-        wxALIGN_CENTER_VERTICAL | wxALL,
-        0);
-
-    m_clientComboBox = new IpComboBox(parent);
-    Add(m_clientComboBox, wxGBPosition(row, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
-}
-
-void SocketBaseUi::InitClientPortCtrl(int row, wxWindow *parent)
-{
-    m_clientPortLabel = new wxStaticText(parent, wxID_ANY, wxT("Client port"));
-    Add(m_clientPortLabel, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
-
-    m_clientPortCtrl = new wxSpinCtrl(parent, wxID_ANY);
-    Add(m_clientPortCtrl, wxGBPosition(row, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
-    m_clientPortCtrl->SetRange(1, 65535);
-    m_clientPortCtrl->SetValue(54321);
 }
 
 void SocketBaseUi::InitServerComboBox(int row, wxWindow *parent)

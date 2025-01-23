@@ -40,12 +40,14 @@ PageSettingsLink::PageSettingsLink(LinkType type, wxWindow *parent)
     Add(buttonSizer, 0, wxEXPAND, 0);
 }
 
-void PageSettingsLink::Load(const wxtJson &parameters) {}
+void PageSettingsLink::Load(const wxtJson &parameters)
+{
+    m_linkUi->Load(parameters);
+}
 
 wxtJson PageSettingsLink::Save() const
 {
-    wxtJson json;
-    return json;
+    return m_linkUi->Save();
 }
 
 LinkUi *PageSettingsLink::GetLinkUi() const

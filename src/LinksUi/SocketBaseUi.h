@@ -27,8 +27,6 @@ public:
 protected:
     // clang-format off
     void InitUiComponents(const std::vector<void (SocketBaseUi::*)(int, wxWindow *)> &funcs, wxWindow *parent);
-    void InitClientComboBox(int row, wxWindow *parent);
-    void InitClientPortCtrl(int row, wxWindow *parent);
     void InitServerComboBox(int row, wxWindow *parent);
     void InitServerPortCtrl(int row, wxWindow *parent);
     void InitClientsComboBox(int row, wxWindow *parent);
@@ -37,10 +35,6 @@ protected:
     // clang-format on
 
 protected:
-    wxStaticText *m_clientAddressLabel{nullptr};
-    IpComboBox *m_clientComboBox{nullptr};
-    wxStaticText *m_clientPortLabel{nullptr};
-    wxSpinCtrl *m_clientPortCtrl{nullptr};
     wxStaticText *m_serverAddressLabel{nullptr};
     IpComboBox *m_serverComboBox{nullptr};
     wxStaticText *m_serverPortLabel{nullptr};

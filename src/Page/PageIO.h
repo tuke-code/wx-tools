@@ -10,6 +10,8 @@
 
 #include <wx/wx.h>
 
+#include "Common/wxTools.h"
+
 class PageIOInput;
 class PageIOOutput;
 class PageIO : public wxPanel
@@ -19,6 +21,9 @@ public:
 
     PageIOInput *GetInput() const;
     PageIOOutput *GetOutput() const;
+
+    wxtJson Save() const;
+    void Load(const wxtJson &parameters);
 
 private:
     PageIOInput *m_input;

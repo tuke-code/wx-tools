@@ -14,6 +14,7 @@ IpComboBox::IpComboBox(wxWindow* parent)
     : wxComboBox(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, nullptr)
 {
     DoRefresh();
+    SetMinSize(wxSize(130, -1));
 }
 
 void IpComboBox::DoRefresh()
@@ -31,7 +32,7 @@ void IpComboBox::DoRefresh()
         if (ep.protocol() == asio::ip::tcp::v4()) {
             Append(ep.address().to_string());
         } else {
-#if 0
+#if defined(WXT_ENABLE_IPV6)
             Append(ep.address().to_string());
 #endif
         }
