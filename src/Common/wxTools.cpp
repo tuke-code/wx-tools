@@ -716,7 +716,7 @@ std::vector<LinkType> GetSuportedCommunicationTypes()
     return types;
 }
 
-wxString GetCommunicationName(LinkType type)
+wxString GetLinkName(LinkType type)
 {
     static std::map<LinkType, wxString> typeMap;
     if (typeMap.empty()) {

@@ -56,3 +56,10 @@ set_target_properties(
              ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR} MACOSX_BUNDLE
              TRUE WIN32_EXECUTABLE
              TRUE)
+
+# Copy res/i18n to build directory
+add_custom_command(
+  TARGET wxTools
+  POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/res/i18n"
+          "$<TARGET_FILE_DIR:wxTools>/i18n")

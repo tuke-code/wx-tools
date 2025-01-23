@@ -8,6 +8,8 @@
  **************************************************************************************************/
 #include "Application.h"
 
+#include <wx/stdpaths.h>
+
 #include "Common/wxTools.h"
 #include "MainWindow.h"
 
@@ -16,15 +18,20 @@ bool Application::OnInit()
     SetAppName("wxTools");
     SetVendorName("xTools");
 
-#if 0
-    InitGoogleLog("wxTools");
+#if defined(_RELEASE)
+    DoInitLogging("wxTools");
 #endif
-    wxtInfo() << "Application::OnInit()";
+    auto stdPath = wxStandardPaths::Get();
+    wxString i18nDir = stdPath.GetDataDir();
+    i18nDir += wxFileName::GetPathSeparator();
+    i18nDir += "i18n";
+
+    m_locale.AddCatalogLookupPathPrefix(i18nDir);
+    m_locale.Init(wxLANGUAGE_DEFAULT, wxLOCALE_LOAD_DEFAULT);
+    m_locale.AddCatalog("wxTools");
+    wxtInfo() << "Applicationn booting...";
 
     auto* mainWindow = new MainWindow();
-#if 0
-    mainWindow->SetTransparent(50);
-#endif
     mainWindow->Show(true);
     return true;
 }
