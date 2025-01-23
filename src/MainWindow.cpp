@@ -178,10 +178,9 @@ void MainWindow::InitMenuI18n(wxMenuBar* menuBar)
             id);
     };
 
-    setupItem("en_US", wxString("English"));
-    setupItem("zh_CN", wxString::FromUTF8("简体中文"));
-    setupItem("zh_TW", wxString::FromUTF8("繁体中文"));
-#if 1
+    setupItem(wxString("en_US"), wxString("English"));
+    setupItem(wxString("zh_CN"), wxString::FromUTF8("简体中文"));
+    setupItem(wxString("zh_TW"), wxString::FromUTF8("繁体中文"));
     setupItem(wxString("ar"), wxString::FromUTF8("العربية"));
     setupItem(wxString("cs"), wxString::FromUTF8("Čeština"));
     setupItem(wxString("da"), wxString::FromUTF8("Dansk"));
@@ -202,7 +201,6 @@ void MainWindow::InitMenuI18n(wxMenuBar* menuBar)
     setupItem(wxString("sk"), wxString::FromUTF8("Slovenčina"));
     setupItem(wxString("sl"), wxString::FromUTF8("Slovenščina"));
     setupItem(wxString("sv"), wxString::FromUTF8("Svenska"));
-#endif
 }
 
 void MainWindow::InitMenuHelp(wxMenuBar* menuBar)
