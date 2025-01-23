@@ -128,6 +128,7 @@ void MainWindow::InitMenu()
 {
     wxMenuBar* menuBar = new wxMenuBar;
     InitMenuFile(menuBar);
+    InitMenuI18n(menuBar);
     InitMenuHelp(menuBar);
 
     SetMenuBar(menuBar);
@@ -136,7 +137,7 @@ void MainWindow::InitMenu()
 void MainWindow::InitMenuFile(wxMenuBar* menuBar)
 {
     wxMenu* menuFile = new wxMenu;
-    menuBar->Append(menuFile, wxT("&File"));
+    menuBar->Append(menuFile, _("&File"));
 
     menuFile->Append(wxID_NEW);
     menuFile->Append(wxID_OPEN);
@@ -150,6 +151,12 @@ void MainWindow::InitMenuFile(wxMenuBar* menuBar)
     Bind(wxEVT_MENU, &MainWindow::OnSave, this, wxID_SAVE);
     Bind(wxEVT_MENU, &MainWindow::OnSaveAs, this, wxID_SAVEAS);
     Bind(wxEVT_MENU, &MainWindow::OnExit, this, wxID_EXIT);
+}
+
+void MainWindow::InitMenuI18n(wxMenuBar* menuBar)
+{
+    wxMenu* menuI18n = new wxMenu;
+    menuBar->Append(menuI18n, wxT("&Language"));
 }
 
 void MainWindow::InitMenuHelp(wxMenuBar* menuBar)
