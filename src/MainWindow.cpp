@@ -157,6 +157,52 @@ void MainWindow::InitMenuI18n(wxMenuBar* menuBar)
 {
     wxMenu* menuI18n = new wxMenu;
     menuBar->Append(menuI18n, _("&Language"));
+
+    auto setupItem = [=](const wxString& flag, const wxString& name) {
+        wxMenuItem* item = menuI18n->Append(wxID_ANY, name);
+        item->SetCheckable(true);
+        int id = item->GetId();
+        Bind(
+            wxEVT_MENU,
+            [=](wxCommandEvent&) {
+                OnLanguageChanged(flag);
+                wxMenu* menu = item->GetMenu();
+                for (size_t i = 0; i < menu->GetMenuItemCount(); ++i) {
+                    wxMenuItem* item = menu->FindItemByPosition(i);
+                    if (item->IsCheckable() && item->GetId() != id) {
+                        item->Check(false);
+                    }
+                }
+                item->Check(true);
+            },
+            id);
+    };
+
+    setupItem("en_US", wxString("English"));
+    setupItem("zh_CN", wxString::FromUTF8("简体中文"));
+    setupItem("zh_TW", wxString::FromUTF8("繁体中文"));
+#if 1
+    setupItem(wxString("ar"), wxString::FromUTF8("العربية"));
+    setupItem(wxString("cs"), wxString::FromUTF8("Čeština"));
+    setupItem(wxString("da"), wxString::FromUTF8("Dansk"));
+    setupItem(wxString("de"), wxString::FromUTF8("Deutsch"));
+    setupItem(wxString("es"), wxString::FromUTF8("Español"));
+    setupItem(wxString("fa"), wxString::FromUTF8("فارسی"));
+    setupItem(wxString("fi"), wxString::FromUTF8("Suomi"));
+    setupItem(wxString("fr"), wxString::FromUTF8("Français"));
+    setupItem(wxString("he"), wxString::FromUTF8("עִבְרִית"));
+    setupItem(wxString("uk"), wxString::FromUTF8("українська мова"));
+    setupItem(wxString("it"), wxString::FromUTF8("Italiano"));
+    setupItem(wxString("ja"), wxString::FromUTF8("日本语"));
+    setupItem(wxString("ko"), wxString::FromUTF8("한글"));
+    setupItem(wxString("lt"), wxString::FromUTF8("Lietuvių kalba"));
+    setupItem(wxString("pl"), wxString::FromUTF8("Polski"));
+    setupItem(wxString("pt"), wxString::FromUTF8("Português"));
+    setupItem(wxString("ru"), wxString::FromUTF8("русский язык"));
+    setupItem(wxString("sk"), wxString::FromUTF8("Slovenčina"));
+    setupItem(wxString("sl"), wxString::FromUTF8("Slovenščina"));
+    setupItem(wxString("sv"), wxString::FromUTF8("Svenska"));
+#endif
 }
 
 void MainWindow::InitMenuHelp(wxMenuBar* menuBar)
@@ -237,4 +283,17 @@ void MainWindow::SaveParameters(wxString fileName)
     std::ofstream ofs(fileName.ToStdString());
     ofs << wxTools.dump(4);
     ofs.close();
+}
+
+void MainWindow::OnLanguageChanged(const wxString& flag)
+{
+    int ret = wxMessageBox(_("Reboot the application to make the language effectived, reboot now?"),
+                           _("Need to Reboot"),
+                           wxYES_NO | wxICON_QUESTION);
+    if (ret == wxNO) {
+        return;
+    }
+
+    wxExecute(wxStandardPaths::Get().GetExecutablePath());
+    this->Close(true);
 }

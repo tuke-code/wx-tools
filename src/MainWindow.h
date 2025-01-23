@@ -41,6 +41,8 @@ private:
     void LoadParameters(wxString fileName = wxString());
     void SaveParameters(wxString fileName = wxString());
 
+    void OnLanguageChanged(const wxString& flag);
+
 private:
     std::map<LinkType, Page*> m_pageMap;
     wxStatusBar* m_statusBar;
