@@ -28,6 +28,7 @@ include(cmake/fmt.cmake)
 include(cmake/asio.cmake)
 include(cmake/glog.cmake)
 include(cmake/json.cmake)
+include(cmake/wxTools.cmake)
 include(cmake/sigslot.cmake)
 include(cmake/mongoose.cmake)
 include(cmake/wxWidgets.cmake)
@@ -46,6 +47,8 @@ wxt_git_get_latest_commit_time(${CMAKE_SOURCE_DIR} WXT)
 add_compile_definitions(MG_DATA_SIZE=1024)
 file(GLOB_RECURSE WX_TOOLS_SOURCE src/*.*)
 list(APPEND WX_TOOLS_SOURCE wxTools.rc)
+set(WXT_OUTPUT_DIR "${WX_TOOLS_BINARY_DIR}/wxTools")
+set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${WXT_OUTPUT_DIR})
 add_executable(wxTools ${WX_TOOLS_SOURCE})
 
 set(PROJECT_LIBS libcserialport mongoose wx::core wx::aui glog::glog fmt::fmt)
@@ -57,6 +60,13 @@ set_target_properties(
              ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR} MACOSX_BUNDLE
              TRUE WIN32_EXECUTABLE
              TRUE)
+
+# --------------------------------------------------------------------------------------------------
+# Make zip file
+option(WXT_MAKE_ZIP "Make zip file" ON)
+if(WXT_MAKE_ZIP)
+  wxt_make_zip(wxTools)
+endif()
 
 # --------------------------------------------------------------------------------------------------
 # Copy res/i18n to build directory
