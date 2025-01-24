@@ -1,0 +1,316 @@
+msgid ""
+msgstr ""
+"Project-Id-Version: \n"
+"POT-Creation-Date: 2025-01-23 22:33+0800\n"
+"PO-Revision-Date: 2025-01-23 22:33+0800\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"Language: en_US\n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: 8bit\n"
+"X-Generator: Poedit 3.5\n"
+"X-Poedit-Basepath: ../../../src\n"
+"X-Poedit-KeywordsList: _\n"
+"X-Poedit-SearchPath-0: .\n"
+
+#: Common/wxTools.cpp:495 Utilities/DataChannelComboBox.cpp:24
+msgid "Binary"
+msgstr ""
+
+#: Common/wxTools.cpp:496
+msgid "Octal"
+msgstr ""
+
+#: Common/wxTools.cpp:497
+msgid "Decimal"
+msgstr ""
+
+#: Common/wxTools.cpp:498
+msgid "Hexadecimal"
+msgstr ""
+
+#: Common/wxTools.cpp:499
+msgid "ASCII"
+msgstr ""
+
+#: Common/wxTools.cpp:500
+msgid "UTF-8"
+msgstr ""
+
+#: Common/wxTools.cpp:723
+msgid "Serial Port"
+msgstr ""
+
+#: Common/wxTools.cpp:724
+msgid "UDP Client"
+msgstr ""
+
+#: Common/wxTools.cpp:725
+msgid "UDP Server"
+msgstr ""
+
+#: Common/wxTools.cpp:726
+msgid "TCP Client"
+msgstr ""
+
+#: Common/wxTools.cpp:727
+msgid "TCP Server"
+msgstr ""
+
+#: Common/wxTools.cpp:728
+msgid "Web Socket Client"
+msgstr ""
+
+#: Common/wxTools.cpp:729
+msgid "Web Socket Server"
+msgstr ""
+
+#: Common/wxTools.cpp:876
+msgid "wxTools.json"
+msgstr ""
+
+#: MainWindow.cpp:65
+msgid "Open parameters file"
+msgstr ""
+
+#: MainWindow.cpp:83
+msgid "Save parameters file"
+msgstr ""
+
+#: MainWindow.cpp:86
+msgid "JSON files (*.json)|*.json"
+msgstr ""
+
+#: MainWindow.cpp:107
+msgid "wxTools - A set of tools developed with wxWidgets\n"
+msgstr ""
+
+#: MainWindow.cpp:108
+msgid "Version: "
+msgstr ""
+
+#: MainWindow.cpp:109
+msgid "Author: x-tools-author\n"
+msgstr ""
+
+#: MainWindow.cpp:110
+msgid "Email: x-tools@outlook.com\n"
+msgstr ""
+
+#: MainWindow.cpp:111
+msgid "Commit: "
+msgstr ""
+
+#: MainWindow.cpp:112
+msgid "Date: "
+msgstr ""
+
+#: MainWindow.cpp:113
+msgid "Build: "
+msgstr ""
+
+#: MainWindow.cpp:115
+msgid "Copyright ©"
+msgstr ""
+
+#: MainWindow.cpp:117
+msgid "All rights reserved.\n"
+msgstr ""
+
+#: MainWindow.cpp:118
+msgid "About wxTools"
+msgstr ""
+
+#: MainWindow.cpp:140
+msgid "&File"
+msgstr ""
+
+#: MainWindow.cpp:159
+msgid "&Language"
+msgstr ""
+
+#: MainWindow.cpp:211
+msgid "&Help"
+msgstr ""
+
+#: MainWindow.cpp:288
+msgid "Reboot the application to make the language effectived, reboot now?"
+msgstr ""
+
+#: MainWindow.cpp:289
+msgid "Need to Reboot"
+msgstr ""
+
+#: Page/Page.cpp:92
+msgid "Link is not opened."
+msgstr ""
+
+#: Page/Page.cpp:92 Page/Page.cpp:154 Page/Page.cpp:297
+msgid "Error"
+msgstr ""
+
+#: Page/Page.cpp:154
+msgid "Communication is not open."
+msgstr ""
+
+#: Page/Page.cpp:174
+msgid "Error: "
+msgstr ""
+
+#: Page/Page.cpp:289
+msgid "Close"
+msgstr ""
+
+#: Page/Page.cpp:297
+msgid "Failed to open link."
+msgstr ""
+
+#: Page/Page.cpp:317 Page/PageSettingsLink.cpp:34
+msgid "Open"
+msgstr ""
+
+#: Page/PageIOInput.cpp:14
+msgid "Input"
+msgstr ""
+
+#: Page/PageIOOutput.cpp:12
+msgid "Output"
+msgstr ""
+
+#: Page/PageSettingsInput.cpp:18
+msgid "Input Settings"
+msgstr ""
+
+#: Page/PageSettingsInput.cpp:22
+msgid "Cycle"
+msgstr ""
+
+#: Page/PageSettingsInput.cpp:24 Page/PageSettingsOutput.cpp:25
+msgid "Format"
+msgstr ""
+
+#: Page/PageSettingsInput.cpp:27 Page/PageSettingsLink.cpp:31
+#: Page/PageSettingsOutput.cpp:48
+msgid "Settings"
+msgstr ""
+
+#: Page/PageSettingsInput.cpp:28
+msgid "Send"
+msgstr ""
+
+#: Page/PageSettingsInput.cpp:129
+msgid "Disabled"
+msgstr ""
+
+#: Page/PageSettingsInputPopup.cpp:24
+msgid "Prefix"
+msgstr ""
+
+#: Page/PageSettingsInputPopup.cpp:26
+msgid "Suffix"
+msgstr ""
+
+#: Page/PageSettingsInputPopup.cpp:28
+msgid "ESC"
+msgstr ""
+
+#: Page/PageSettingsInputPopup.cpp:31
+msgid "Start Index"
+msgstr ""
+
+#: Page/PageSettingsInputPopup.cpp:33
+msgid "End Index"
+msgstr ""
+
+#: Page/PageSettingsInputPopup.cpp:35
+msgid "Algorithm"
+msgstr ""
+
+#: Page/PageSettingsInputPopup.cpp:37
+msgid "Add CRC"
+msgstr ""
+
+#: Page/PageSettingsInputPopup.cpp:38
+msgid "Big Endian"
+msgstr ""
+
+#: Page/PageSettingsLink.cpp:22
+msgid "Link Settings"
+msgstr ""
+
+#: Page/PageSettingsLinkPopup.cpp:20
+msgid "Refresh"
+msgstr ""
+
+#: Page/PageSettingsOutput.cpp:17
+msgid "Output Settings"
+msgstr ""
+
+#: Page/PageSettingsOutput.cpp:34
+msgid "Rx"
+msgstr ""
+
+#: Page/PageSettingsOutput.cpp:35
+msgid "Tx"
+msgstr ""
+
+#: Page/PageSettingsOutput.cpp:36
+msgid "Flags"
+msgstr ""
+
+#: Page/PageSettingsOutput.cpp:37
+msgid "Date"
+msgstr ""
+
+#: Page/PageSettingsOutput.cpp:38
+msgid "Time"
+msgstr ""
+
+#: Page/PageSettingsOutput.cpp:39
+msgid "MS"
+msgstr ""
+
+#: Page/PageSettingsOutput.cpp:49
+msgid "Clear"
+msgstr ""
+
+#: Page/PageSettingsOutputPopup.cpp:19
+msgid "Filter"
+msgstr ""
+
+#: Page/PageSettingsOutputPopup.cpp:25
+msgid "Hello;World"
+msgstr ""
+
+#: Utilities/DataChannelComboBox.cpp:23
+msgid "Text"
+msgstr ""
+
+#: Utilities/FlowBitsComboBox.cpp:21 Utilities/ParityComboBox.cpp:21
+msgid "None"
+msgstr ""
+
+#: Utilities/FlowBitsComboBox.cpp:22
+msgid "Hardware"
+msgstr ""
+
+#: Utilities/FlowBitsComboBox.cpp:23
+msgid "Software"
+msgstr ""
+
+#: Utilities/ParityComboBox.cpp:22
+msgid "Odd"
+msgstr ""
+
+#: Utilities/ParityComboBox.cpp:23
+msgid "Even"
+msgstr ""
+
+#: Utilities/ParityComboBox.cpp:24
+msgid "Mark"
+msgstr ""
+
+#: Utilities/ParityComboBox.cpp:25
+msgid "Space"
+msgstr ""
