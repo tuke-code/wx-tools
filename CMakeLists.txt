@@ -58,9 +58,19 @@ set_target_properties(
              TRUE WIN32_EXECUTABLE
              TRUE)
 
+# --------------------------------------------------------------------------------------------------
 # Copy res/i18n to build directory
 add_custom_command(
   TARGET wxTools
   POST_BUILD
   COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/res/i18n"
           "$<TARGET_FILE_DIR:wxTools>/i18n")
+
+# --------------------------------------------------------------------------------------------------
+# Deploy local files
+file(GLOB_RECURSE WX_TOOLS_LOCAL_FILES res/*.po)
+add_custom_target(
+  wxTools-deploy-locale
+  COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/res/i18n"
+          "$<TARGET_FILE_DIR:wxTools>/i18n"
+  SOURCES ${WX_TOOLS_LOCAL_FILES})

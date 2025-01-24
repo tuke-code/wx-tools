@@ -112,7 +112,7 @@ void MainWindow::OnAbout(wxCommandEvent&)
     info += _("Date: ") + std::string(WXT_GIT_COMMIT_TIME) + std::string("\n");
     info += _("Build: ") + fmt::format("{0} {1}", __DATE__, __TIME__) + std::string("\n");
     info += std::string("\n");
-    info += wxString::FromUTF8(_("Copyright ©"));
+    info += _("Copyright");
     info += fmt::format(" 2024-{} x-tools-author. ", std::string(__DATE__).substr(7, 4));
     info += _("All rights reserved.\n");
     wxMessageBox(info, _("About wxTools"), wxOK | wxICON_INFORMATION);
