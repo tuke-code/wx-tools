@@ -1,0 +1,55 @@
+name: build-daily
+# on:
+#   schedule:
+#     - cron: '0 0 * * *'
+on:
+ push:
+   branches:
+     - master
+
+env:
+  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+jobs:
+  update-tag:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Update continuous tag
+      run: |
+        git config --global user.email "x-tools@outlook.com"
+        git config --global user.name "x-tools-author"
+        git tag -fa continuous -m "chore: update to latest commit"
+        git push origin :refs/tags/continuous
+        git push origin continuous -f
+  update-release:
+    runs-on: ubuntu-latest
+    needs: update-tag
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Delete Release
+      run: |
+        gh release delete continuous -y || true
+    - name: Create Release
+      run: |
+        gh release create continuous --title "Continuous Build" --notes "Daily build of xTools"
+  release-for-windows:
+    runs-on: windows-2022
+    needs: update-release
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v4
+    - name: Build for Windows
+      shell: cmd
+      run: |
+        git fetch --tags
+        mkdir build
+        cd build
+        call "C:\Program Files\Microsoft Visual Studio\${{ matrix.msvc }}\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64
+        cmake -DWXT_MAKE_ZIP:BOOL=ON -DCMAKE_BUILD_TYPE=Release -G "NMake Makefiles" ../
+        cmake --build . --target wxTools
+        dir && dir .\assets && dir .\assets\wxTools
+    - name: Upload Release Asset for Windnows
+      run: |
+        dir && gh release upload continuous 'build\assets\wxtools-windows-amd64.zip'
