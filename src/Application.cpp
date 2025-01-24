@@ -29,6 +29,7 @@ bool Application::OnInit()
     m_locale.AddCatalogLookupPathPrefix(i18nDir);
     m_locale.Init(wxLANGUAGE_DEFAULT, wxLOCALE_LOAD_DEFAULT);
     m_locale.AddCatalog(wxString("wxTools"));
+    m_locale.AddCatalog(wxString("wxWidgets"));
     wxtInfo() << "Applicationn booting...";
 
     auto* mainWindow = new MainWindow();

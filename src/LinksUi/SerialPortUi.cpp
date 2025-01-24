@@ -36,12 +36,12 @@ SerialPortUi::SerialPortUi(wxWindow *parent)
     m_flowBitsComboBox = new FlowBitsComboBox(parent);
     m_parityComboBox = new ParityComboBox(parent);
 
-    SetupComboBox(m_portNameComboBox, wxT("Port name"), 0, parent);
-    SetupComboBox(m_baudRateComboBox, wxT("Baud rate"), 1, parent);
-    SetupComboBox(m_dataBitsComboBox, wxT("Data bits"), 2, parent);
-    SetupComboBox(m_stopBitsComboBox, wxT("Stop bits"), 3, parent);
-    SetupComboBox(m_flowBitsComboBox, wxT("Parity"), 4, parent);
-    SetupComboBox(m_parityComboBox, wxT("Flow bits"), 5, parent);
+    SetupComboBox(m_portNameComboBox, _("Port name"), 0, parent);
+    SetupComboBox(m_baudRateComboBox, _("Baud rate"), 1, parent);
+    SetupComboBox(m_dataBitsComboBox, _("Data bits"), 2, parent);
+    SetupComboBox(m_stopBitsComboBox, _("Stop bits"), 3, parent);
+    SetupComboBox(m_flowBitsComboBox, _("Parity"), 4, parent);
+    SetupComboBox(m_parityComboBox, _("Flow bits"), 5, parent);
 
     AddGrowableCol(1);
 }

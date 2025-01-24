@@ -100,7 +100,7 @@ void SocketBaseUi::InitUiComponents(
 
 void SocketBaseUi::InitServerComboBox(int row, wxWindow *parent)
 {
-    m_serverAddressLabel = new wxStaticText(parent, wxID_ANY, wxT("Server IP"));
+    m_serverAddressLabel = new wxStaticText(parent, wxID_ANY, _("Server IP"));
     Add(m_serverAddressLabel,
         wxGBPosition(row, 0),
         wxGBSpan(1, 1),
@@ -113,7 +113,7 @@ void SocketBaseUi::InitServerComboBox(int row, wxWindow *parent)
 
 void SocketBaseUi::InitServerPortCtrl(int row, wxWindow *parent)
 {
-    m_serverPortLabel = new wxStaticText(parent, wxID_ANY, wxT("Server port"));
+    m_serverPortLabel = new wxStaticText(parent, wxID_ANY, _("Server port"));
     Add(m_serverPortLabel, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
 
     m_serverPortCtrl = new wxSpinCtrl(parent, wxID_ANY);
@@ -124,7 +124,7 @@ void SocketBaseUi::InitServerPortCtrl(int row, wxWindow *parent)
 
 void SocketBaseUi::InitClientsComboBox(int row, wxWindow *parent)
 {
-    m_clientsLabel = new wxStaticText(parent, wxID_ANY, wxT("Write to"));
+    m_clientsLabel = new wxStaticText(parent, wxID_ANY, _("Write to"));
     Add(m_clientsLabel, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
 
     m_clientsComboBox = new wxComboBox(parent,
@@ -136,7 +136,7 @@ void SocketBaseUi::InitClientsComboBox(int row, wxWindow *parent)
                                        nullptr,
                                        wxCB_READONLY);
     Add(m_clientsComboBox, wxGBPosition(row, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
-    m_clientsComboBox->Append(wxT("All Clients"), new wxString(""));
+    m_clientsComboBox->Append(_("All Clients"), new wxString(""));
     m_clientsComboBox->SetSelection(0);
 
     m_clientsComboBox->Bind(wxEVT_COMBOBOX_CLOSEUP, [=](wxCommandEvent &) {
@@ -154,7 +154,7 @@ void SocketBaseUi::InitClientsComboBox(int row, wxWindow *parent)
 
 void SocketBaseUi::InitClearClientButton(int row, wxWindow *parent)
 {
-    m_clearClientButton = new wxButton(parent, wxID_ANY, wxT("Disconnect All Client"));
+    m_clearClientButton = new wxButton(parent, wxID_ANY, _("Disconnect All Client"));
     Add(m_clearClientButton, wxGBPosition(row, 0), wxGBSpan(1, 2), wxEXPAND | wxALL, 0);
 
     m_clearClientButton->Bind(wxEVT_BUTTON, [=](wxCommandEvent &) {
@@ -170,7 +170,7 @@ void SocketBaseUi::InitClearClientButton(int row, wxWindow *parent)
 
 void SocketBaseUi::InitDataChannelComboBox(int row, wxWindow *parent)
 {
-    m_dataChannelLabel = new wxStaticText(parent, wxID_ANY, wxT("Tx Channel"));
+    m_dataChannelLabel = new wxStaticText(parent, wxID_ANY, _("Tx Channel"));
     Add(m_dataChannelLabel, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
 
     m_dataChannelComboBox = new DataChannelComboBox(parent);
