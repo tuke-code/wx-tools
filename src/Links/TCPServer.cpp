@@ -28,6 +28,8 @@ void TCPServer::Loop()
 
     mgr.userdata = this;
     struct mg_connection *c = mg_listen(&mgr, url.c_str(), TCPServerHandler, nullptr);
+    d->invokedInterrupted.store(false);
+    d->isRunning.store(true);
     if (c == nullptr) {
         std::string log(fmt::format("Failed to connect to the server: {0}", url));
         wxtInfo() << log;
@@ -35,8 +37,6 @@ void TCPServer::Loop()
         return;
     }
 
-    d->invokedInterrupted.store(false);
-    d->isRunning.store(true);
     while (!d->invokedInterrupted.load()) {
         mg_mgr_poll(&mgr, 100);
     }
