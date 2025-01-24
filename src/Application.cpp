@@ -18,7 +18,7 @@ bool Application::OnInit()
     SetAppName("wxTools");
     SetVendorName("xTools");
 
-#if defined(WXT_RELEASE)
+#if 0 //defined(WXT_RELEASE)
     DoInitLogging("wxTools");
 #endif
     auto stdPath = wxStandardPaths::Get();
@@ -35,4 +35,11 @@ bool Application::OnInit()
     auto* mainWindow = new MainWindow();
     mainWindow->Show(true);
     return true;
+}
+
+Application::~Application()
+{
+#if defined(WXT_RELEASE)
+    DoShutdownLogging();
+#endif
 }

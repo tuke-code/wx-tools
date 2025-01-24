@@ -12,12 +12,16 @@ if(WIN32)
   set(wxBUILD_USE_STATIC_RUNTIME ON CACHE BOOL "Build static runtime" FORCE)
 endif()
 if(WIN32 AND MSVC AND CMAKE_BUILD_TYPE STREQUAL "Release")
-  set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+  #set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 endif()
 # cmake-format: on
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
+if(${CMAKE_BUILD_TYPE} STREQUAL "Release")
+  add_compile_definitions(WXT_RELEASE)
+endif()
 
 include(cmake/git.cmake)
 include(cmake/fmt.cmake)
@@ -34,10 +38,6 @@ include_directories(src)
 # Windows XP
 option(_WIN32_WINNT "Windows Version" 0x0501)
 # Windows 7 option(_WIN32_WINNT "Windows Version" 0x0601)
-
-if(${CMAKE_BUILD_TYPE} STREQUAL "Release")
-  add_compile_definitions(WXT_RELEASE)
-endif()
 
 wxt_git_get_latest_tag(${CMAKE_SOURCE_DIR} WXT)
 wxt_git_get_latest_commit(${CMAKE_SOURCE_DIR} WXT)

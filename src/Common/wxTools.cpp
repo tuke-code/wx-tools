@@ -12,6 +12,7 @@
 #include <map>
 #include <sstream>
 #include <string>
+#include <wx/stdpaths.h>
 
 #include <fmt/format.h>
 #include <wx/dynarray.h>
@@ -22,7 +23,13 @@ void FailureWriter(const char *data, size_t size) {}
 
 std::string LogPath()
 {
-    return "log";
+    wxString path = wxToolsGetSettingsPath();
+    path += wxFileName::GetPathSeparator();
+    path += wxString("log");
+
+    //wxFileName::Mkdir(path, wxS_DIR_DEFAULT, wxPATH_MKDIR_FULL);
+
+    return path.ToStdString();
 }
 
 void DoInitLogging(const char *argv0)
@@ -32,7 +39,9 @@ void DoInitLogging(const char *argv0)
     google::SetLogFilenameExtension(".log");
     google::EnableLogCleaner(keep);
     google::InstallFailureSignalHandler();
+#if 0
     google::InstallFailureWriter(FailureWriter);
+#endif
 
     fLB::FLAGS_logtostdout = false;
     fLB::FLAGS_logtostderr = false;
