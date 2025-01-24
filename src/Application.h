@@ -14,6 +14,7 @@ class Application : public wxApp
 {
 public:
     bool OnInit() override;
+    bool OnExit() override;
 
 private:
     wxLocale m_locale;

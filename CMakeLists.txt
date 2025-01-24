@@ -35,6 +35,10 @@ include_directories(src)
 option(_WIN32_WINNT "Windows Version" 0x0501)
 # Windows 7 option(_WIN32_WINNT "Windows Version" 0x0601)
 
+if(${CMAKE_BUILD_TYPE} STREQUAL "Release")
+  add_compile_definitions(WXT_RELEASE)
+endif()
+
 wxt_git_get_latest_tag(${CMAKE_SOURCE_DIR} WXT)
 wxt_git_get_latest_commit(${CMAKE_SOURCE_DIR} WXT)
 wxt_git_get_latest_commit_time(${CMAKE_SOURCE_DIR} WXT)
