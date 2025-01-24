@@ -1,0 +1,26 @@
+﻿name: build-windows
+# on:
+#   schedule:
+#     - cron: '0 0 * * *'
+on:
+ push:
+   branches:
+     - master
+jobs:
+  build:
+    name: Build
+    runs-on: windows-2022
+    strategy:
+      matrix:
+        msvc: [2022]
+    steps:
+      - name: Pull code
+        uses: actions/checkout@v4
+      - name: build-msvc
+        shell: cmd
+        run: |
+          mkdir build
+          cd build
+          call "C:\Program Files\Microsoft Visual Studio\${{ matrix.msvc }}\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64
+          cmake -DCMAKE_BUILD_TYPE=Release -G "NMake Makefiles" ../
+          nmake
