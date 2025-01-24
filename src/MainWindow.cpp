@@ -128,9 +128,6 @@ void MainWindow::InitMenu()
 {
     wxMenuBar* menuBar = new wxMenuBar;
     InitMenuFile(menuBar);
-#if 1
-    InitMenuI18n(menuBar);
-#endif
     InitMenuHelp(menuBar);
 
     SetMenuBar(menuBar);
@@ -155,56 +152,6 @@ void MainWindow::InitMenuFile(wxMenuBar* menuBar)
     Bind(wxEVT_MENU, &MainWindow::OnExit, this, wxID_EXIT);
 }
 
-void MainWindow::InitMenuI18n(wxMenuBar* menuBar)
-{
-    wxMenu* menuI18n = new wxMenu;
-    menuBar->Append(menuI18n, _("&Language"));
-
-    auto setupItem = [=](const wxString& flag, const wxString& name) {
-        wxMenuItem* item = menuI18n->Append(wxID_ANY, name);
-        item->SetCheckable(true);
-        int id = item->GetId();
-        Bind(
-            wxEVT_MENU,
-            [=](wxCommandEvent&) {
-                OnLanguageChanged(flag);
-                wxMenu* menu = item->GetMenu();
-                for (size_t i = 0; i < menu->GetMenuItemCount(); ++i) {
-                    wxMenuItem* item = menu->FindItemByPosition(i);
-                    if (item->IsCheckable() && item->GetId() != id) {
-                        item->Check(false);
-                    }
-                }
-                item->Check(true);
-            },
-            id);
-    };
-
-    setupItem(wxString("en_US"), wxString("English"));
-    setupItem(wxString("zh_CN"), wxString::FromUTF8("简体中文"));
-    setupItem(wxString("zh_TW"), wxString::FromUTF8("繁体中文"));
-    setupItem(wxString("ar"), wxString::FromUTF8("العربية"));
-    setupItem(wxString("cs"), wxString::FromUTF8("Čeština"));
-    setupItem(wxString("da"), wxString::FromUTF8("Dansk"));
-    setupItem(wxString("de"), wxString::FromUTF8("Deutsch"));
-    setupItem(wxString("es"), wxString::FromUTF8("Español"));
-    setupItem(wxString("fa"), wxString::FromUTF8("فارسی"));
-    setupItem(wxString("fi"), wxString::FromUTF8("Suomi"));
-    setupItem(wxString("fr"), wxString::FromUTF8("Français"));
-    setupItem(wxString("he"), wxString::FromUTF8("עִבְרִית"));
-    setupItem(wxString("uk"), wxString::FromUTF8("українська мова"));
-    setupItem(wxString("it"), wxString::FromUTF8("Italiano"));
-    setupItem(wxString("ja"), wxString::FromUTF8("日本语"));
-    setupItem(wxString("ko"), wxString::FromUTF8("한글"));
-    setupItem(wxString("lt"), wxString::FromUTF8("Lietuvių kalba"));
-    setupItem(wxString("pl"), wxString::FromUTF8("Polski"));
-    setupItem(wxString("pt"), wxString::FromUTF8("Português"));
-    setupItem(wxString("ru"), wxString::FromUTF8("русский язык"));
-    setupItem(wxString("sk"), wxString::FromUTF8("Slovenčina"));
-    setupItem(wxString("sl"), wxString::FromUTF8("Slovenščina"));
-    setupItem(wxString("sv"), wxString::FromUTF8("Svenska"));
-}
-
 void MainWindow::InitMenuHelp(wxMenuBar* menuBar)
 {
     wxMenu* menuHelp = new wxMenu;
@@ -226,7 +173,7 @@ void MainWindow::InitStatusBar()
 
 std::string GetPageParameterFileName(LinkType type)
 {
-    wxString name = GetLinkName(type);
+    wxString name = GetLinkRawName(type);
     name.Replace(" ", "");
     return name.ToStdString() + ".json";
 }
@@ -245,11 +192,19 @@ void MainWindow::LoadParameters(wxString fileName)
     wxtJson json;
     ifs >> json;
 
+    if (!json.is_object()) {
+        return;
+    }
+
     for (auto it = m_pageMap.begin(); it != m_pageMap.end(); ++it) {
         Page* page = it->second;
         wxString name = GetPageParameterFileName(it->first);
+        if (!json.contains(name.ToStdString())) {
+            continue;
+        }
+
         wxtJson pageJson = json[name.ToStdString()];
-        if (!pageJson.is_null()) {
+        if (pageJson.is_object()) {
             page->Load(pageJson);
         }
     }
@@ -267,7 +222,6 @@ void MainWindow::SaveParameters(wxString fileName)
 {
     wxtJson wxTools = wxtJson::object();
     wxTools["tabIndex"] = m_notebook->GetSelection();
-
     for (auto it = m_pageMap.begin(); it != m_pageMap.end(); ++it) {
         Page* page = it->second;
         wxtJson json = page->Save();
@@ -283,17 +237,4 @@ void MainWindow::SaveParameters(wxString fileName)
     std::ofstream ofs(fileName.ToStdString());
     ofs << wxTools.dump(4);
     ofs.close();
-}
-
-void MainWindow::OnLanguageChanged(const wxString& flag)
-{
-    int ret = wxMessageBox(_("Reboot the application to make the language effectived, reboot now?"),
-                           _("Need to Reboot"),
-                           wxYES_NO | wxICON_QUESTION);
-    if (ret == wxNO) {
-        return;
-    }
-
-    wxExecute(wxStandardPaths::Get().GetExecutablePath());
-    this->Close(true);
 }

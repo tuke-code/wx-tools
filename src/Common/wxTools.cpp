@@ -736,6 +736,26 @@ wxString GetLinkName(LinkType type)
     }
 }
 
+wxString GetLinkRawName(LinkType type)
+{
+    static std::map<LinkType, wxString> typeMap;
+    if (typeMap.empty()) {
+        typeMap[LinkType::SerialPort] = wxString("Serial Port");
+        typeMap[LinkType::UDPClient] = wxString("UDP Client");
+        typeMap[LinkType::UDPServer] = wxString("UDP Server");
+        typeMap[LinkType::TCPClient] = wxString("TCP Client");
+        typeMap[LinkType::TCPServer] = wxString("TCP Server");
+        typeMap[LinkType::WSClient] = wxString("Web Socket Client");
+        typeMap[LinkType::WSServer] = wxString("Web Socket Server");
+    }
+
+    if (typeMap.find(type) == typeMap.end()) {
+        return "Unknown";
+    } else {
+        return typeMap[type];
+    }
+}
+
 std::vector<AdditionType> GetSuportedAdditionTypes()
 {
     static std::vector<AdditionType> types;

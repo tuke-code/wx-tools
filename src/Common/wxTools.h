@@ -99,6 +99,7 @@ enum class LinkType {
 };
 std::vector<LinkType> GetSuportedCommunicationTypes();
 wxString GetLinkName(LinkType type);
+wxString GetLinkRawName(LinkType type);
 
 //--------------------------------------------------------------------------------------------------
 // Addition

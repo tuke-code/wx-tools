@@ -60,8 +60,13 @@ Page::Page(LinkType type, wxWindow *parent)
 void Page::Load(const wxtJson &json)
 {
     PageParameterKeys keys;
-    m_pageSettings->Load(json[keys.settings].get<wxtJson>());
-    m_pageIO->Load(json[keys.io].get<wxtJson>());
+    if (json.contains(keys.settings)) {
+        m_pageSettings->Load(json[keys.settings].get<wxtJson>());
+    }
+
+    if (json.contains(keys.io)) {
+        m_pageIO->Load(json[keys.io].get<wxtJson>());
+    }
 }
 
 wxtJson Page::Save() const

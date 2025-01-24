@@ -44,10 +44,7 @@ file(GLOB_RECURSE WX_TOOLS_SOURCE src/*.*)
 list(APPEND WX_TOOLS_SOURCE wxTools.rc)
 add_executable(wxTools ${WX_TOOLS_SOURCE})
 
-set(PROJECT_LIBS libcserialport)
-list(APPEND PROJECT_LIBS libcrc mongoose)
-list(APPEND PROJECT_LIBS glog::glog fmt::fmt)
-list(APPEND PROJECT_LIBS wx::core wx::aui)
+set(PROJECT_LIBS libcserialport mongoose wx::core wx::aui glog::glog fmt::fmt)
 target_link_libraries(wxTools PRIVATE ${PROJECT_LIBS})
 set_target_properties(
   wxTools
