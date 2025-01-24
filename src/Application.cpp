@@ -15,12 +15,13 @@
 
 bool Application::OnInit()
 {
-    SetAppName("wxTools");
-    SetVendorName("xTools");
-
 #if defined(WXT_RELEASE)
     DoInitLogging("wxTools");
 #endif
+
+    SetAppName("wxTools");
+    SetVendorName("xTools");
+
     auto stdPath = wxStandardPaths::Get();
     wxString i18nDir = stdPath.GetDataDir();
     i18nDir += wxFileName::GetPathSeparator();
