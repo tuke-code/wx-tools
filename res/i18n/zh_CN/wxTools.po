@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2025-01-24 11:09+0800\n"
-"PO-Revision-Date: 2025-01-24 11:10+0800\n"
+"POT-Creation-Date: 2025-01-24 16:27+0800\n"
+"PO-Revision-Date: 2025-01-24 16:27+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: zh_CN\n"
@@ -14,59 +14,59 @@ msgstr ""
 "X-Poedit-KeywordsList: _\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: Common/wxTools.cpp:495 Utilities/DataChannelComboBox.cpp:24
+#: Common/wxTools.cpp:504 Utilities/DataChannelComboBox.cpp:24
 msgid "Binary"
 msgstr "二进制"
 
-#: Common/wxTools.cpp:496
+#: Common/wxTools.cpp:505
 msgid "Octal"
 msgstr "八禁止"
 
-#: Common/wxTools.cpp:497
+#: Common/wxTools.cpp:506
 msgid "Decimal"
 msgstr "十进制"
 
-#: Common/wxTools.cpp:498
+#: Common/wxTools.cpp:507
 msgid "Hexadecimal"
 msgstr "16进制"
 
-#: Common/wxTools.cpp:499
+#: Common/wxTools.cpp:508
 msgid "ASCII"
 msgstr "ASCII"
 
-#: Common/wxTools.cpp:500
+#: Common/wxTools.cpp:509
 msgid "UTF-8"
 msgstr "UTF-8"
 
-#: Common/wxTools.cpp:723
+#: Common/wxTools.cpp:732
 msgid "Serial Port"
 msgstr "串口助手"
 
-#: Common/wxTools.cpp:724
+#: Common/wxTools.cpp:733
 msgid "UDP Client"
 msgstr "UDP客户端"
 
-#: Common/wxTools.cpp:725
+#: Common/wxTools.cpp:734
 msgid "UDP Server"
 msgstr "UDP服务器"
 
-#: Common/wxTools.cpp:726
+#: Common/wxTools.cpp:735
 msgid "TCP Client"
 msgstr "TCP客户端"
 
-#: Common/wxTools.cpp:727
+#: Common/wxTools.cpp:736
 msgid "TCP Server"
 msgstr "TCP服务器"
 
-#: Common/wxTools.cpp:728
+#: Common/wxTools.cpp:737
 msgid "Web Socket Client"
 msgstr "Web Socket客户端"
 
-#: Common/wxTools.cpp:729
+#: Common/wxTools.cpp:738
 msgid "Web Socket Server"
 msgstr "Web Socket服务器"
 
-#: Common/wxTools.cpp:896
+#: Common/wxTools.cpp:905
 msgid "wxTools.json"
 msgstr "wxTools.json"
 
@@ -159,8 +159,8 @@ msgid "Build: "
 msgstr "构建："
 
 #: MainWindow.cpp:115
-msgid "Copyright ©"
-msgstr "版权声明 ©"
+msgid "Copyright"
+msgstr "版权声明"
 
 #: MainWindow.cpp:117
 msgid "All rights reserved.\n"
@@ -171,12 +171,12 @@ msgid "About wxTools"
 msgstr "关于wxTools"
 
 #: MainWindow.cpp:139
-msgid "&File"
-msgstr "文件(&F)"
+msgid "File"
+msgstr "文件"
 
 #: MainWindow.cpp:160
-msgid "&Help"
-msgstr "帮助(&H)"
+msgid "Help"
+msgstr "帮助"
 
 #: Page/Page.cpp:97
 msgid "Link is not opened."

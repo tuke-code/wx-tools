@@ -136,7 +136,7 @@ void MainWindow::InitMenu()
 void MainWindow::InitMenuFile(wxMenuBar* menuBar)
 {
     wxMenu* menuFile = new wxMenu;
-    menuBar->Append(menuFile, _("&File"));
+    menuBar->Append(menuFile, _("File"));
 
     menuFile->Append(wxID_NEW);
     menuFile->Append(wxID_OPEN);
@@ -157,7 +157,7 @@ void MainWindow::InitMenuHelp(wxMenuBar* menuBar)
     wxMenu* menuHelp = new wxMenu;
     menuHelp->Append(wxID_ABOUT);
 
-    menuBar->Append(menuHelp, _("&Help"));
+    menuBar->Append(menuHelp, _("Help"));
 
     Bind(wxEVT_MENU, &MainWindow::OnAbout, this, wxID_ABOUT);
 }
