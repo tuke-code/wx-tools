@@ -5,10 +5,10 @@ wxTools is a user-friendly, open-source, cross-platform debugging tool-set based
 ## About the Project
 
 <!--https://sdpro.top/blog/html/article/1016.html-->
-[![stars](https://img.shields.io/github/stars/x-tools-author/x-tools?style=social)](https://img.shields.io/github/stars/x-tools-author/x-tools?style=social)
-[![forks](https://img.shields.io/github/forks/x-tools-author/x-tools?style=social)](https://img.shields.io/github/forks/x-tools-author/x-tools?style=social)
-[![watchers](https://img.shields.io/github/watchers/x-tools-author/x-tools?style=social)](https://img.shields.io/github/watchers/x-tools-author/x-tools?style=social)
-[![star](https://gitee.com/x-tools-author/wx-tools/badge/star.svg?theme=dark)]([![star](https://gitee.com/x-tools-author/wx-tools/badge/star.svg?theme=dark)](https://gitee.com/x-tools-author/wx-tools/stargazers))
+[![stars](https://img.shields.io/github/stars/x-tools-author/wx-tools?style=social)](https://img.shields.io/github/stars/x-tools-author/wx-tools?style=social)
+[![forks](https://img.shields.io/github/forks/x-tools-author/wx-tools?style=social)](https://img.shields.io/github/forks/x-tools-author/wx-tools?style=social)
+[![watchers](https://img.shields.io/github/watchers/x-tools-author/wx-tools?style=social)](https://img.shields.io/github/watchers/x-tools-author/wx-tools?style=social)
+[![star](https://gitee.com/x-tools-author/wx-tools/badge/star.svg?theme=dark)](https://gitee.com/x-tools-author/wx-tools/stargazers)
 [![fork](https://gitee.com/x-tools-author/wx-tools/badge/fork.svg?theme=dark)](https://gitee.com/x-tools-author/wx-tools/members)
 
 |Option|Description|
