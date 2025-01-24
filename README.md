@@ -6,10 +6,6 @@ wxTools is a user-friendly, open-source, cross-platform debugging tool-set based
 
 > **You can get *wxTools* form [Micorsoft Store(Sponsor)](https://www.microsoft.com/store/apps/9P29H1NDNKBB)** or from [Github Release(Community)](https://github.com/x-tools-author/wx-tools/releases).
 
-![en_US](doc/en_US.png)
-
-![zh_CN](doc/zh_CN.png)
-
 ## About the Project
 
 <!--https://sdpro.top/blog/html/article/1016.html-->
@@ -28,3 +24,9 @@ wxTools is a user-friendly, open-source, cross-platform debugging tool-set based
 |GitHub| <https://github.com/x-tools-author/x-tools>|
 |Sponsor|<https://apps.microsoft.com/search/publisher?name=x-tools-author>|
 |Third party|[glog](https://github.com/google/glog) [asio](https://github.com/boostorg/asio) [fmt](https://github.com/fmtlib/fmt) [json](https://github.com/nlohmann/json) [libcrc](https://github.com/lammertb/libcrc) [sigslot](https://github.com/palacaze/sigslot) [mongoose]( https://github.com/cesanta/mongoose) [CSerialPort](https://github.com/itas109/CSerialPort)|
+
+## Screenshot
+
+![en_US](doc/en_US.png)
+
+![zh_CN](doc/zh_CN.png)
