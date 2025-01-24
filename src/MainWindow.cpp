@@ -105,9 +105,11 @@ void MainWindow::OnExit(wxCommandEvent&)
 void MainWindow::OnAbout(wxCommandEvent&)
 {
     wxString info = _("wxTools - A set of tools developed with wxWidgets\n");
+    info += "\n";
     info += _("Version: ") + std::string(WXT_GIT_TAG) + std::string("\n");
     info += _("Author: x-tools-author\n");
     info += _("Email: x-tools@outlook.com\n");
+    info += "\n";
     info += _("Commit: ") + std::string(WXT_GIT_COMMIT) + std::string("\n");
     info += _("Date: ") + std::string(WXT_GIT_COMMIT_TIME) + std::string("\n");
     info += _("Build: ") + fmt::format("{0} {1}", __DATE__, __TIME__) + std::string("\n");

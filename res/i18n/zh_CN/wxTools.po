@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2025-01-24 16:27+0800\n"
-"PO-Revision-Date: 2025-01-24 16:32+0800\n"
+"POT-Creation-Date: 2025-01-24 17:48+0800\n"
+"PO-Revision-Date: 2025-01-24 17:49+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: zh_CN\n"
@@ -111,10 +111,6 @@ msgid "All Clients"
 msgstr "UDP客户端"
 
 #: LinksUi/SocketBaseUi.cpp:157
-msgid "Disconnect All Client"
-msgstr "清空所有客户端"
-
-#: LinksUi/SocketBaseUi.cpp:173
 msgid "Tx Channel"
 msgstr "发送通道"
 
@@ -132,49 +128,49 @@ msgstr "JSON文件(*.json)|*.json"
 
 #: MainWindow.cpp:107
 msgid "wxTools - A set of tools developed with wxWidgets\n"
-msgstr "wxTools-一款基于wxWidgets开发的开发调试工具集\n"
+msgstr "wxTools-基于wxWidgets开发的工具集\n"
 
-#: MainWindow.cpp:108
+#: MainWindow.cpp:109
 msgid "Version: "
 msgstr "软件版本："
 
-#: MainWindow.cpp:109
+#: MainWindow.cpp:110
 msgid "Author: x-tools-author\n"
 msgstr "软件作者: x-tools-author\n"
 
-#: MainWindow.cpp:110
+#: MainWindow.cpp:111
 msgid "Email: x-tools@outlook.com\n"
 msgstr "联系邮箱：x-tools@outlook.com\n"
 
-#: MainWindow.cpp:111
+#: MainWindow.cpp:113
 msgid "Commit: "
 msgstr "提交："
 
-#: MainWindow.cpp:112
+#: MainWindow.cpp:114
 msgid "Date: "
 msgstr "日期："
 
-#: MainWindow.cpp:113
+#: MainWindow.cpp:115
 msgid "Build: "
 msgstr "构建："
 
-#: MainWindow.cpp:115
+#: MainWindow.cpp:117
 msgid "Copyright"
 msgstr "版权声明"
 
-#: MainWindow.cpp:117
+#: MainWindow.cpp:119
 msgid "All rights reserved.\n"
 msgstr "保留所有版权\n"
 
-#: MainWindow.cpp:118
+#: MainWindow.cpp:120
 msgid "About wxTools"
 msgstr "关于wxTools"
 
-#: MainWindow.cpp:139
+#: MainWindow.cpp:141
 msgid "File"
 msgstr "文件"
 
-#: MainWindow.cpp:160
+#: MainWindow.cpp:162
 msgid "Help"
 msgstr "帮助"
 
@@ -350,6 +346,9 @@ msgstr "1检验"
 #: Utilities/ParityComboBox.cpp:25
 msgid "Space"
 msgstr "0校验"
+
+#~ msgid "Disconnect All Client"
+#~ msgstr "清空所有客户端"
 
 #~ msgid "&Language"
 #~ msgstr "语言(&L)"
