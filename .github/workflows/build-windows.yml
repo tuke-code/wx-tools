@@ -1,14 +1,14 @@
 ﻿name: build-windows
-# on:
-#   schedule:
-#     - cron: '0 0 * * *'
 on:
- push:
-   branches:
-     - master
+  schedule:
+    - cron: '0 0 * * *'
+# on:
+#  push:
+#    branches:
+#      - master
 jobs:
   build:
-    name: Build
+    name: Build MSVC
     runs-on: windows-2022
     strategy:
       matrix:
