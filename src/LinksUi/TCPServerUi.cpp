@@ -17,9 +17,6 @@ TCPServerUi::TCPServerUi(wxWindow *parent)
     funcs.push_back(&TCPServerUi::InitServerComboBox);
     funcs.push_back(&TCPServerUi::InitServerPortCtrl);
     funcs.push_back(&TCPServerUi::InitClientsComboBox);
-#if 0
-    funcs.push_back(&TCPServerUi::InitClearClientButton);
-#endif
 
     InitUiComponents(funcs, parent);
 }

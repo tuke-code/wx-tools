@@ -152,22 +152,6 @@ void SocketBaseUi::InitClientsComboBox(int row, wxWindow *parent)
     });
 }
 
-void SocketBaseUi::InitClearClientButton(int row, wxWindow *parent)
-{
-    m_clearClientButton = new wxButton(parent, wxID_ANY, _("Disconnect All Client"));
-    Add(m_clearClientButton, wxGBPosition(row, 0), wxGBSpan(1, 2), wxEXPAND | wxALL, 0);
-
-    m_clearClientButton->Bind(wxEVT_BUTTON, [=](wxCommandEvent &) {
-        Link *link = GetLink();
-        SocketServer *socketServer = dynamic_cast<SocketServer *>(link);
-        if (!socketServer) {
-            return;
-        }
-
-        socketServer->DoClearClients();
-    });
-}
-
 void SocketBaseUi::InitDataChannelComboBox(int row, wxWindow *parent)
 {
     m_dataChannelLabel = new wxStaticText(parent, wxID_ANY, _("Tx Channel"));

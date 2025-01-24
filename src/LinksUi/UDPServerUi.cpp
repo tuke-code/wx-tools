@@ -17,7 +17,6 @@ UDPServerUi::UDPServerUi(wxWindow *parent)
     funcs.push_back(&UDPServerUi::InitServerComboBox);
     funcs.push_back(&UDPServerUi::InitServerPortCtrl);
     funcs.push_back(&UDPServerUi::InitClientsComboBox);
-    funcs.push_back(&UDPServerUi::InitClearClientButton);
 
     InitUiComponents(funcs, parent);
 }

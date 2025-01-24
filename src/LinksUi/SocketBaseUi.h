@@ -30,7 +30,6 @@ protected:
     void InitServerComboBox(int row, wxWindow *parent);
     void InitServerPortCtrl(int row, wxWindow *parent);
     void InitClientsComboBox(int row, wxWindow *parent);
-    void InitClearClientButton(int row, wxWindow *parent);
     void InitDataChannelComboBox(int row, wxWindow *parent);
     // clang-format on
 
@@ -42,7 +41,6 @@ protected:
 
     wxStaticText *m_clientsLabel{nullptr};
     wxComboBox *m_clientsComboBox{nullptr};
-    wxButton *m_clearClientButton{nullptr};
 
     wxStaticText *m_dataChannelLabel{nullptr};
     DataChannelComboBox *m_dataChannelComboBox{nullptr};
