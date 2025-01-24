@@ -12,7 +12,7 @@ if(WIN32)
   set(wxBUILD_USE_STATIC_RUNTIME ON CACHE BOOL "Build static runtime" FORCE)
 endif()
 if(WIN32 AND MSVC AND CMAKE_BUILD_TYPE STREQUAL "Release")
-  #set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
+  set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
 endif()
 # cmake-format: on
 

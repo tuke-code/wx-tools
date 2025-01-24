@@ -18,7 +18,7 @@ bool Application::OnInit()
     SetAppName("wxTools");
     SetVendorName("xTools");
 
-#if 0 //defined(WXT_RELEASE)
+#if defined(WXT_RELEASE)
     DoInitLogging("wxTools");
 #endif
     auto stdPath = wxStandardPaths::Get();
