@@ -318,6 +318,7 @@ void Page::Close()
     link->errorOccurredSignal.disconnect_all();
 
     linkUi->Close();
+    wxtInfo() << __FUNCTION__ << __LINE__;
     linkUi->Enable();
     linkSettings->SetOpenButtonLabel(_("Open"));
     wxtInfo() << "Close link successfully.";
