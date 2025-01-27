@@ -38,7 +38,6 @@ void TCPServerUi::DeleteLink(Link *link)
     if (tcpServer) {
         tcpServer->newClientSignal.disconnect(&TCPServerUi::DoNewClient, this);
         tcpServer->deleteClientSignal.disconnect(&TCPServerUi::DoDeleteClient, this);
+        delete tcpServer;
     }
-
-    delete tcpServer;
 }

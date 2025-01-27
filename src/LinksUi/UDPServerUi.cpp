@@ -38,7 +38,6 @@ void UDPServerUi::DeleteLink(Link *link)
     if (udpServer) {
         udpServer->newClientSignal.disconnect(&UDPServerUi::DoNewClient, this);
         udpServer->deleteClientSignal.disconnect(&UDPServerUi::DoDeleteClient, this);
+        delete udpServer;
     }
-
-    delete udpServer;
 }

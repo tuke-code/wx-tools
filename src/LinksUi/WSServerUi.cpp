@@ -41,7 +41,6 @@ void WSServerUi::DeleteLink(Link *link)
     if (wsServer) {
         wsServer->newClientSignal.disconnect(&WSServerUi::DoNewClient, this);
         wsServer->deleteClientSignal.disconnect(&WSServerUi::DoDeleteClient, this);
+        delete wsServer;
     }
-
-    delete wsServer;
 }
