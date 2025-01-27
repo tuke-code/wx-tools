@@ -22,7 +22,7 @@ public:
 static void OnMgEvPoll(struct mg_connection *c, void *ev_data, UDPServer *q)
 {
     auto *d = q->GetD<UDPServerPrivate>();
-    if (d == nullptr || reinterpret_cast<uintptr_t>(d) == 0xdddddddddddddddd) {
+    if (d == nullptr) {
         return;
     }
 
@@ -31,11 +31,16 @@ static void OnMgEvPoll(struct mg_connection *c, void *ev_data, UDPServer *q)
     uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
     std::string to = DoEncodeFlag(ip, port);
 
+    if (port == 0) {
+        return;
+    }
+
     for (auto &ctx : d->txBytes) {
         len = mg_send(c, ctx.first.get(), ctx.second);
         if (len > 0) {
             q->bytesTxSignal(ctx.first, ctx.second, to);
         } else {
+            wxtInfo() << fmt::format("Send bytes to {} failed!", to);
             q->deleteClientSignal(ip, port);
         }
     }
