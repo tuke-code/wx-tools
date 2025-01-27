@@ -36,8 +36,7 @@ static void OnMgEvPoll(struct mg_connection *c, void *ev_data, UDPServer *q)
         if (len > 0) {
             q->bytesTxSignal(ctx.first, ctx.second, to);
         } else {
-            q->errorOccurredSignal(std::string("WS server send error"));
-            break;
+            q->deleteClientSignal(ip, port);
         }
     }
 

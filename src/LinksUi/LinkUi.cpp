@@ -45,13 +45,9 @@ bool LinkUi::Open()
 
 void LinkUi::Close()
 {
-    wxtInfo() << __FUNCTION__ << __LINE__;
     if (m_link) {
-        wxtInfo() << __FUNCTION__ << __LINE__;
         m_link->Close();
-        wxtInfo() << __FUNCTION__ << __LINE__;
         DeleteLink(m_link);
-        wxtInfo() << __FUNCTION__ << __LINE__;
         m_link = nullptr;
     }
 }

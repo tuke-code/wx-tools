@@ -14,7 +14,9 @@ IpComboBox::IpComboBox(wxWindow* parent)
     : wxComboBox(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, nullptr)
 {
     DoRefresh();
+#if 0
     SetMinSize(wxSize(130, -1));
+#endif
 }
 
 void IpComboBox::DoRefresh()
