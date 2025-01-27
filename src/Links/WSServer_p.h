@@ -216,7 +216,9 @@ static void WSServerHandler(struct mg_connection *c, int ev, void *ev_data)
     } else if (ev == MG_EV_WS_MSG) {
         OnMgEvMsg(c, ev_data, q);
     } else if (ev == MG_EV_CLOSE) {
+#if 0
         OnMgEvClose(c, ev_data, q);
+#endif
     } else if (ev == MG_EV_ERROR) {
         OnMgEvError(c, ev_data, q);
     } else if (ev == MG_EV_POLL) {
