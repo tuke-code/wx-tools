@@ -9,6 +9,7 @@
 #include "Page.h"
 
 #include <wx/gbsizer.h>
+#include <fmt/format.h>
 
 #include "Common/wxTools.h"
 #include "Links/Link.h"
@@ -165,12 +166,12 @@ void Page::OnInvokeStartTimer(int ms)
 
 void Page::OnBytesRx(std::shared_ptr<char> bytes, int len, std::string from)
 {
-    OutputText(bytes, len, from, true);
+    OutputText(std::move(bytes), len, from, true);
 }
 
 void Page::OnBytesTx(std::shared_ptr<char> bytes, int len, std::string to)
 {
-    OutputText(bytes, len, to, false);
+    OutputText(std::move(bytes), len, to, false);
 }
 
 void Page::OnErrorOccurred(std::string message)
@@ -235,7 +236,7 @@ std::string flagString(bool isRx, const std::string &fromTo, bool showFlag)
         stringStream << "Rx" << ("<-") << fromTo;
 
     } else {
-        stringStream << "Rx" << ("->") << fromTo;
+        stringStream << "Tx" << ("->") << fromTo;
     }
 
     return stringStream.str();
