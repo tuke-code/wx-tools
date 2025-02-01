@@ -97,7 +97,7 @@ enum class LinkType {
     WSServer,
     Unknown = -1
 };
-std::vector<LinkType> GetSuportedCommunicationTypes();
+std::vector<LinkType> GetSuportedLinkTypes();
 wxString GetLinkName(LinkType type);
 wxString GetLinkRawName(LinkType type);
 

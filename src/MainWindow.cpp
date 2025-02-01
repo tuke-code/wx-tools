@@ -28,7 +28,7 @@ MainWindow::MainWindow()
 #endif
 
     m_notebook = new wxNotebook(this, wxID_ANY);
-    auto types = GetSuportedCommunicationTypes();
+    auto types = GetSuportedLinkTypes();
     for (auto type : types) {
         auto* page = new Page(type, m_notebook);
         if (page != nullptr) {

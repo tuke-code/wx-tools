@@ -709,7 +709,7 @@ std::string GetHexString(uint8_t value)
     return list[value];
 }
 
-std::vector<LinkType> GetSuportedCommunicationTypes()
+std::vector<LinkType> GetSuportedLinkTypes()
 {
     static std::vector<LinkType> types;
     if (types.empty()) {
