@@ -23,7 +23,7 @@ void FailureWriter(const char *data, size_t size) {}
 
 std::string LogPath()
 {
-    wxString path = wxToolsGetSettingsPath();
+    wxString path = GetSettingsPath();
     path += wxFileName::GetPathSeparator();
     path += wxString("log");
 
@@ -559,6 +559,10 @@ std::string DoDecodeBytes(const std::shared_ptr<char> &bytes, int &len, int form
 
 std::shared_ptr<char> DoEncodeBytes(const std::string &text, int &len, int format)
 {
+    if (format == static_cast<int>(TextFormat::Bin)) {
+
+    }
+
     len = text.size();
     std::shared_ptr<char> bytes(new char[len], [](char *p) { delete[] p; });
     memcpy(bytes.get(), text.c_str(), len);
@@ -869,7 +873,7 @@ wxString GetEscapeString(const std::string &txt, int type)
     return tmp;
 }
 
-void wxToolsSetComboBoxSectionByIntClientData(wxComboBox *comboBox, int clientDataValue)
+void SetComboBoxSectionByIntClientData(wxComboBox *comboBox, int clientDataValue)
 {
     if (!comboBox) {
         return;
@@ -888,7 +892,7 @@ void wxToolsSetComboBoxSectionByIntClientData(wxComboBox *comboBox, int clientDa
     }
 }
 
-wxString wxToolsGetSettingsPath()
+wxString GetSettingsPath()
 {
     wxStandardPaths &stdPaths = wxStandardPaths::Get();
     wxString path = stdPaths.GetUserDataDir();
@@ -900,9 +904,9 @@ wxString wxToolsGetSettingsPath()
     return path;
 }
 
-wxString wxToolsGetSettingsFileName()
+wxString GetSettingsFileName()
 {
-    return wxToolsGetSettingsPath() + wxFileName::GetPathSeparator() + _("wxTools.json");
+    return GetSettingsPath() + wxFileName::GetPathSeparator() + _("wxTools.json");
 }
 
 std::string DoEncodeFlag(const std::string &ip, uint16_t port)

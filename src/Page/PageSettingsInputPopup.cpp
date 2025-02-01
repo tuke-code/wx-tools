@@ -93,12 +93,12 @@ void PageSettingsInputPopup::Load(const wxtJson &json)
     bool addCrc = json[keys.addCrc].get<bool>();
     bool bigEndian = json[keys.bigEndian].get<bool>();
 
-    wxToolsSetComboBoxSectionByIntClientData(m_prefixComboBox, prefix);
-    wxToolsSetComboBoxSectionByIntClientData(m_suffixComboBox, suffix);
-    wxToolsSetComboBoxSectionByIntClientData(m_escComboBox, escIndex);
+    SetComboBoxSectionByIntClientData(m_prefixComboBox, prefix);
+    SetComboBoxSectionByIntClientData(m_suffixComboBox, suffix);
+    SetComboBoxSectionByIntClientData(m_escComboBox, escIndex);
     m_startIndexSpinCtrl->SetValue(startIndex);
     m_endIndexSpinCtrl->SetValue(endIndex);
-    wxToolsSetComboBoxSectionByIntClientData(m_algorithmComboBox, algorithm);
+    SetComboBoxSectionByIntClientData(m_algorithmComboBox, algorithm);
     m_addCrcCheckBox->SetValue(addCrc);
     m_bigEndianCheckBox->SetValue(bigEndian);
 }

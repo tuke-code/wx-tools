@@ -183,7 +183,7 @@ std::string GetPageParameterFileName(LinkType type)
 void MainWindow::LoadParameters(wxString fileName)
 {
     if (fileName.IsEmpty()) {
-        fileName = wxToolsGetSettingsFileName();
+        fileName = GetSettingsFileName();
     }
 
     if (!wxFileName::Exists(fileName)) {
@@ -233,7 +233,7 @@ void MainWindow::SaveParameters(wxString fileName)
 
     // Write json to file
     if (fileName.IsEmpty()) {
-        fileName = wxToolsGetSettingsFileName();
+        fileName = GetSettingsFileName();
     }
 
     std::ofstream ofs(fileName.ToStdString());

@@ -52,8 +52,8 @@ void PageSettingsInput::Load(const wxtJson& parameters)
     int textFormat = parameters[keys.textFormat].get<int>();
     wxtJson popup = parameters[keys.popup].get<wxtJson>();
 
-    wxToolsSetComboBoxSectionByIntClientData(m_cycleIntervalComboBox, cycleInterval);
-    wxToolsSetComboBoxSectionByIntClientData(m_formatComboBox, textFormat);
+    SetComboBoxSectionByIntClientData(m_cycleIntervalComboBox, cycleInterval);
+    SetComboBoxSectionByIntClientData(m_formatComboBox, textFormat);
     m_popup->Load(popup);
 }
 

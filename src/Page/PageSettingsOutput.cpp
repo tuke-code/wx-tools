@@ -75,7 +75,7 @@ void PageSettingsOutput::Load(const wxtJson &parameters)
     bool showTx = parameters[keys.showTx].get<bool>();
     bool showFlag = parameters[keys.showFlag].get<bool>();
 
-    wxToolsSetComboBoxSectionByIntClientData(m_textFormatComboBox, format);
+    SetComboBoxSectionByIntClientData(m_textFormatComboBox, format);
     m_showDate->SetValue(showDate);
     m_showTime->SetValue(showTime);
     m_showMs->SetValue(showMs);

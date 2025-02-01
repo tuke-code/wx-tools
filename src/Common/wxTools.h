@@ -117,9 +117,9 @@ wxString GetEscapeString(const std::string &txt, int type);
 
 //--------------------------------------------------------------------------------------------------
 // wxWidgets
-void wxToolsSetComboBoxSectionByIntClientData(wxComboBox *comboBox, int clientDataValue);
-wxString wxToolsGetSettingsPath();
-wxString wxToolsGetSettingsFileName();
+void SetComboBoxSectionByIntClientData(wxComboBox *comboBox, int clientDataValue);
+wxString GetSettingsPath();
+wxString GetSettingsFileName();
 std::string DoEncodeFlag(const std::string &ip, uint16_t port);
 std::pair<std::string, uint16_t> DoDecodeFlag(const std::string &flag);
 
