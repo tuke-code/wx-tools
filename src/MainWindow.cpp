@@ -65,7 +65,7 @@ void MainWindow::OnOpen(wxCommandEvent&)
                                 _("Open parameters file"),
                                 wxStandardPaths::Get().GetUserDir(wxStandardPaths::Dir_Desktop),
                                 "wxTools.json",
-                                "JSON files (*.json)|*.json",
+                                _("JSON files (*.json)|*.json"),
                                 wxFD_OPEN | wxFD_FILE_MUST_EXIST);
     openFileDialog.ShowModal();
     wxString fileName = openFileDialog.GetPath();
