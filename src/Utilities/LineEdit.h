@@ -9,6 +9,7 @@
 #pragma once
 
 #include <wx/textctrl.h>
+#include <wx/validate.h>
 #include <wx/wx.h>
 
 #include "Common/wxTools.h"
@@ -19,16 +20,4 @@ public:
     LineEdit(wxWindow *parent);
 
     void SetTextFormat(TextFormat format);
-
-private:
-    TextFormat m_textFormat;
-
-private:
-    void OnText(wxCommandEvent &event);
-
-    wxString FormatTextToBinString(const wxString &text);
-    wxString FormatTextToOctString(const wxString &text);
-    wxString FormatTextToDecString(const wxString &text);
-    wxString FormatTextToHexString(const wxString &text);
-    wxString FormatTextToAsciiString(const wxString &text);
 };
