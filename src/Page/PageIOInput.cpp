@@ -32,6 +32,5 @@ wxString PageIOInput::GetInputText() const
 
 void PageIOInput::SetTextFormat(TextFormat format)
 {
-    m_lineEdit->Clear();
     m_lineEdit->SetTextFormat(format);
 }

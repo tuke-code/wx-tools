@@ -20,4 +20,13 @@ public:
     LineEdit(wxWindow *parent);
 
     void SetTextFormat(TextFormat format);
+
+private:
+    int m_format;
+    wxString m_tmp;
+
+private:
+    void OnText(wxCommandEvent &);
+
+    bool Matches();
 };
