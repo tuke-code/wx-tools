@@ -165,11 +165,33 @@ void MainWindow::InitMenuFile(wxMenuBar* menuBar)
 void MainWindow::InitMenuHelp(wxMenuBar* menuBar)
 {
     wxMenu* menuHelp = new wxMenu;
-    menuHelp->Append(wxID_ABOUT);
-
     menuBar->Append(menuHelp, _("Help"));
 
+    menuHelp->Append(wxID_ABOUT);
     Bind(wxEVT_MENU, &MainWindow::OnAbout, this, wxID_ABOUT);
+
+    const wxString help = _("Visit online documentation page.");
+    menuHelp->Append(wxID_HELP, _("Help"), help);
+    static const wxString helpUrl{"https://x-tools-author.github.io/wx-tools/"};
+    Bind(wxEVT_MENU, [](wxCommandEvent&) { wxLaunchDefaultBrowser(helpUrl); }, wxID_HELP);
+
+    const wxString githubHelp = _("Visit GitHub page to get more information.");
+    wxMenuItem* githubItem = menuHelp->Append(wxID_ANY, _("GitHub"), githubHelp);
+    static const wxString githubUrl{"https://github.com/x-tools-author/wx-tools"};
+    Bind(wxEVT_MENU, [](wxCommandEvent&) { wxLaunchDefaultBrowser(githubUrl); }, githubItem->GetId());
+
+    const wxString giteeHelp = _("Visit Gitee page to get more information.");
+    wxMenuItem* giteeItem = menuHelp->Append(wxID_ANY, _("Gitee"), giteeHelp);
+    static const wxString giteeUrl{"https://gitee.com/x-tools-author/wx-tools"};
+    Bind(wxEVT_MENU, [](wxCommandEvent&) { wxLaunchDefaultBrowser(giteeUrl); }, giteeItem->GetId());
+
+#if defined(WIN32)
+    menuHelp->AppendSeparator();
+    const wxString storeHelp = _("Visit Microsoft Store page to buy wxTools.");
+    wxMenuItem* storeItem = menuHelp->Append(wxID_ANY, _("Supporting Author"), storeHelp);
+    static const wxString msStoreUrl{"https://www.microsoft.com/store/apps/9NX1D0CCV9T7"};
+    Bind(wxEVT_MENU, [](wxCommandEvent&) { wxLaunchDefaultBrowser(msStoreUrl); }, storeItem->GetId());
+#endif
 }
 
 void MainWindow::InitStatusBar()
