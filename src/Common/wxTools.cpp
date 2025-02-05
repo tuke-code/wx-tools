@@ -27,7 +27,7 @@ std::string LogPath()
     path += wxFileName::GetPathSeparator();
     path += wxString("log");
 
-    //wxFileName::Mkdir(path, wxS_DIR_DEFAULT, wxPATH_MKDIR_FULL);
+    wxFileName::Mkdir(path, wxS_DIR_DEFAULT, wxPATH_MKDIR_FULL);
 
     return path.ToStdString();
 }

@@ -13,14 +13,39 @@
 #include "Common/wxTools.h"
 #include "MainWindow.h"
 
-bool Application::OnInit()
-{
 #if defined(WXT_RELEASE)
-    DoInitLogging("wxTools");
+#if defined(WIN32)
+// clang-format off
+#include <windows.h>
+#include <DbgHelp.h>
+// clang-format on
+
+static LONG stUnhandledExceptionFilter(EXCEPTION_POINTERS *ExceptionInfo)
+{
+    wxUnusedVar(ExceptionInfo);
+
+    // Remove the settings file
+    wxString settingsFile = GetSettingsFileName();
+    if (wxFileExists(settingsFile)) {
+        wxRemoveFile(settingsFile);
+    }
+
+    return EXCEPTION_EXECUTE_HANDLER;
+}
+#endif
 #endif
 
+bool Application::OnInit()
+{
     SetAppName("wxTools");
     SetVendorName("xTools");
+
+#if defined(WXT_RELEASE)
+#if defined(WIN32)
+    SetUnhandledExceptionFilter(stUnhandledExceptionFilter);
+#endif
+    DoInitLogging("wxTools");
+#endif
 
     auto stdPath = wxStandardPaths::Get();
     wxString i18nDir = stdPath.GetDataDir();
