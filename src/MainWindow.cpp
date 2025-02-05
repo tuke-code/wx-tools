@@ -104,6 +104,14 @@ void MainWindow::OnExit(wxCommandEvent&)
 
 void MainWindow::OnAbout(wxCommandEvent&)
 {
+    // __DATE__ __TIME__ to wxDateTime
+    wxDateTime dt;
+    dt.ParseDate(__DATE__);
+    wxString d = dt.FormatDate();
+    wxDateTime tm;
+    tm.ParseTime(__TIME__);
+    wxString t = tm.FormatTime();
+
     wxString info = _("wxTools - A set of tools developed with wxWidgets\n");
     info += "\n";
     info += _("Version: ") + std::string(WXT_GIT_TAG) + std::string("\n");
@@ -112,7 +120,7 @@ void MainWindow::OnAbout(wxCommandEvent&)
     info += "\n";
     info += _("Commit: ") + std::string(WXT_GIT_COMMIT) + std::string("\n");
     info += _("Date: ") + std::string(WXT_GIT_COMMIT_TIME) + std::string("\n");
-    info += _("Build: ") + fmt::format("{0} {1}", __DATE__, __TIME__) + std::string("\n");
+    info += _("Build: ") + d + wxString(" ") + t + std::string("\n");
     info += std::string("\n");
     info += _("Copyright");
     info += fmt::format(" 2024-{} x-tools-author. ", std::string(__DATE__).substr(7, 4));
