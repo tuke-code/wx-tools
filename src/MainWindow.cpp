@@ -170,27 +170,27 @@ void MainWindow::InitMenuHelp(wxMenuBar* menuBar)
     menuHelp->Append(wxID_ABOUT);
     Bind(wxEVT_MENU, &MainWindow::OnAbout, this, wxID_ABOUT);
 
-    const wxString help = _("Visit online documentation page.");
-    menuHelp->Append(wxID_HELP, _("Help"), help);
+    wxMenuItem* item = menuHelp->Append(wxID_HELP);
+    item->SetHelp(_("Visit online documentation page."));
     static const wxString helpUrl{"https://x-tools-author.github.io/wx-tools/"};
     Bind(wxEVT_MENU, [](wxCommandEvent&) { wxLaunchDefaultBrowser(helpUrl); }, wxID_HELP);
 
-    const wxString githubHelp = _("Visit GitHub page to get more information.");
-    wxMenuItem* githubItem = menuHelp->Append(wxID_ANY, _("GitHub"), githubHelp);
+    wxString help = _("Visit GitHub page to get more information.");
+    item = menuHelp->Append(wxID_ANY, _("GitHub"), help);
     static const wxString githubUrl{"https://github.com/x-tools-author/wx-tools"};
-    Bind(wxEVT_MENU, [](wxCommandEvent&) { wxLaunchDefaultBrowser(githubUrl); }, githubItem->GetId());
+    Bind(wxEVT_MENU, [](wxCommandEvent&) { wxLaunchDefaultBrowser(githubUrl); }, item->GetId());
 
-    const wxString giteeHelp = _("Visit Gitee page to get more information.");
-    wxMenuItem* giteeItem = menuHelp->Append(wxID_ANY, _("Gitee"), giteeHelp);
+    help = _("Visit Gitee page to get more information.");
+    item = menuHelp->Append(wxID_ANY, _("Gitee"), help);
     static const wxString giteeUrl{"https://gitee.com/x-tools-author/wx-tools"};
-    Bind(wxEVT_MENU, [](wxCommandEvent&) { wxLaunchDefaultBrowser(giteeUrl); }, giteeItem->GetId());
+    Bind(wxEVT_MENU, [](wxCommandEvent&) { wxLaunchDefaultBrowser(giteeUrl); }, item->GetId());
 
 #if defined(WIN32)
     menuHelp->AppendSeparator();
-    const wxString storeHelp = _("Visit Microsoft Store page to buy wxTools.");
-    wxMenuItem* storeItem = menuHelp->Append(wxID_ANY, _("Supporting Author"), storeHelp);
+    help = _("Visit Microsoft Store page to buy wxTools.");
+    item = menuHelp->Append(wxID_ANY, _("Supporting Author"), help);
     static const wxString msStoreUrl{"https://www.microsoft.com/store/apps/9NX1D0CCV9T7"};
-    Bind(wxEVT_MENU, [](wxCommandEvent&) { wxLaunchDefaultBrowser(msStoreUrl); }, storeItem->GetId());
+    Bind(wxEVT_MENU, [](wxCommandEvent&) { wxLaunchDefaultBrowser(msStoreUrl); }, item->GetId());
 #endif
 }
 
