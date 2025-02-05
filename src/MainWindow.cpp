@@ -175,22 +175,40 @@ void MainWindow::InitMenuHelp(wxMenuBar* menuBar)
     static const wxString helpUrl{"https://x-tools-author.github.io/wx-tools/"};
     Bind(wxEVT_MENU, [](wxCommandEvent&) { wxLaunchDefaultBrowser(helpUrl); }, wxID_HELP);
 
+    menuHelp->AppendSeparator();
+
     wxString help = _("Visit GitHub page to get more information.");
-    item = menuHelp->Append(wxID_ANY, _("GitHub"), help);
+    item = menuHelp->Append(wxID_ANY, _("Get Source from GitHub"), help);
     static const wxString githubUrl{"https://github.com/x-tools-author/wx-tools"};
     Bind(wxEVT_MENU, [](wxCommandEvent&) { wxLaunchDefaultBrowser(githubUrl); }, item->GetId());
 
     help = _("Visit Gitee page to get more information.");
-    item = menuHelp->Append(wxID_ANY, _("Gitee"), help);
+    item = menuHelp->Append(wxID_ANY, _("Get Source from Gitee"), help);
     static const wxString giteeUrl{"https://gitee.com/x-tools-author/wx-tools"};
     Bind(wxEVT_MENU, [](wxCommandEvent&) { wxLaunchDefaultBrowser(giteeUrl); }, item->GetId());
 
+    help = _("Visit GitHub home page of author.");
+    item = menuHelp->Append(wxID_ANY, _("GitHub Home Page"), help);
+    static const wxString githubHomeUrl{"https://github.com/x-tools-author"};
+    Bind(wxEVT_MENU, [](wxCommandEvent&) { wxLaunchDefaultBrowser(githubHomeUrl); }, item->GetId());
+
+    help = _("Visit Gitee home page of author.");
+    item = menuHelp->Append(wxID_ANY, _("Gitee Home Page"), help);
+    static const wxString giteeHomeUrl{"https://gitee.com/x-tools-author"};
+    Bind(wxEVT_MENU, [](wxCommandEvent&) { wxLaunchDefaultBrowser(giteeHomeUrl); }, item->GetId());
+
 #if defined(WIN32)
     menuHelp->AppendSeparator();
+
     help = _("Visit Microsoft Store page to buy wxTools.");
     item = menuHelp->Append(wxID_ANY, _("Supporting Author"), help);
-    static const wxString msStoreUrl{"https://www.microsoft.com/store/apps/9NX1D0CCV9T7"};
-    Bind(wxEVT_MENU, [](wxCommandEvent&) { wxLaunchDefaultBrowser(msStoreUrl); }, item->GetId());
+    static const wxString storeUrl{"https://www.microsoft.com/store/apps/9NX1D0CCV9T7"};
+    Bind(wxEVT_MENU, [](wxCommandEvent&) { wxLaunchDefaultBrowser(storeUrl); }, item->GetId());
+
+    help = _("Visit Microsoft Store home page of author.");
+    item = menuHelp->Append(wxID_ANY, _("Other Applications"), help);
+    static wxString storeHomeUrl{"https://apps.microsoft.com/search/publisher?name=x-tools-author"};
+    Bind(wxEVT_MENU, [](wxCommandEvent&) { wxLaunchDefaultBrowser(storeHomeUrl); }, item->GetId());
 #endif
 }
 
