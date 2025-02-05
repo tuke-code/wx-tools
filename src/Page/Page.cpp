@@ -157,7 +157,7 @@ void Page::OnInvokeStartTimer(int ms)
     if (!linkUi->IsOpen()) {
         PageSettingsInput *inputSettings = m_pageSettings->GetInputSettings();
         inputSettings->SetCycleIntervalComboBoxSelection(0);
-        wxMessageBox(_("Communication is not open."), _("Error"), wxICON_ERROR);
+        wxMessageBox(_("Link is not open."), _("Error"), wxICON_ERROR);
         return;
     }
 
