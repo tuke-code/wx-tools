@@ -88,4 +88,6 @@ add_custom_target(
 
 # --------------------------------------------------------------------------------------------------
 # Generate MSI installer for Microsoft Store
-wxt_generate_msix(wxTools "packet_name" "wxTools" "${WXT_VERSION}" OFF)
+if(${CMAKE_BUILD_TYPE} STREQUAL "Release")
+  wxt_generate_msix(wxTools "wxTools" "wxTools" ${WXT_GIT_TAG} OFF)
+endif()

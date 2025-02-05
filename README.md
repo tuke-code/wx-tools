@@ -4,7 +4,7 @@
 
 wxTools is a user-friendly, open-source, cross-platform debugging tool-set based on wxWidgets (wxWidgets 3.2.x is recommended). It offers extensive support for SerialPort, UDP, TCP and Web Socket debugging functionalities.
 
-> **You can get *wxTools* form [Micorsoft Store(Sponsor)](https://www.microsoft.com/store/apps/9P29H1NDNKBB)** or from [Github Release(Community)](https://github.com/x-tools-author/wx-tools/releases).
+> **You can get *wxTools* form [Micorsoft Store(Sponsor)](https://www.microsoft.com/store/apps/9NX1D0CCV9T7)** or from [Github Release(Community)](https://github.com/x-tools-author/wx-tools/releases).
 
 ## About the Project
 
