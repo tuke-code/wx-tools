@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2025-01-24 17:48+0800\n"
-"PO-Revision-Date: 2025-02-05 11:42+0800\n"
+"POT-Creation-Date: 2025-02-05 15:42+0800\n"
+"PO-Revision-Date: 2025-02-05 15:43+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: zh_CN\n"
@@ -38,35 +38,35 @@ msgstr "ASCII"
 msgid "UTF-8"
 msgstr "UTF-8"
 
-#: Common/wxTools.cpp:732
+#: Common/wxTools.cpp:741
 msgid "Serial Port"
 msgstr "串口助手"
 
-#: Common/wxTools.cpp:733
+#: Common/wxTools.cpp:742
 msgid "UDP Client"
 msgstr "UDP客户端"
 
-#: Common/wxTools.cpp:734
+#: Common/wxTools.cpp:743
 msgid "UDP Server"
 msgstr "UDP服务器"
 
-#: Common/wxTools.cpp:735
+#: Common/wxTools.cpp:744
 msgid "TCP Client"
 msgstr "TCP客户端"
 
-#: Common/wxTools.cpp:736
+#: Common/wxTools.cpp:745
 msgid "TCP Server"
 msgstr "TCP服务器"
 
-#: Common/wxTools.cpp:737
+#: Common/wxTools.cpp:746
 msgid "Web Socket Client"
 msgstr "Web Socket客户端"
 
-#: Common/wxTools.cpp:738
+#: Common/wxTools.cpp:747
 msgid "Web Socket Server"
 msgstr "Web Socket服务器"
 
-#: Common/wxTools.cpp:905
+#: Common/wxTools.cpp:914
 msgid "wxTools.json"
 msgstr "wxTools.json"
 
@@ -118,87 +118,87 @@ msgstr "发送通道"
 msgid "Open parameters file"
 msgstr "导入配置文件"
 
+#: MainWindow.cpp:68 MainWindow.cpp:86
+msgid "JSON files (*.json)|*.json"
+msgstr "JSON文件(*.json)|*.json"
+
 #: MainWindow.cpp:83
 msgid "Save parameters file"
 msgstr "导出配置文件"
 
-#: MainWindow.cpp:86
-msgid "JSON files (*.json)|*.json"
-msgstr "JSON文件(*.json)|*.json"
-
-#: MainWindow.cpp:107
+#: MainWindow.cpp:115
 msgid "wxTools - A set of tools developed with wxWidgets\n"
 msgstr "wxTools-基于wxWidgets开发的工具集\n"
 
-#: MainWindow.cpp:109
+#: MainWindow.cpp:117
 msgid "Version: "
 msgstr "软件版本："
 
-#: MainWindow.cpp:110
+#: MainWindow.cpp:118
 msgid "Author: x-tools-author\n"
 msgstr "软件作者：x-tools-author\n"
 
-#: MainWindow.cpp:111
+#: MainWindow.cpp:119
 msgid "Email: x-tools@outlook.com\n"
 msgstr "联系邮箱：x-tools@outlook.com\n"
 
-#: MainWindow.cpp:113
+#: MainWindow.cpp:121
 msgid "Commit: "
 msgstr "提交："
 
-#: MainWindow.cpp:114
+#: MainWindow.cpp:122
 msgid "Date: "
 msgstr "日期："
 
-#: MainWindow.cpp:115
+#: MainWindow.cpp:123
 msgid "Build: "
 msgstr "构建："
 
-#: MainWindow.cpp:117
+#: MainWindow.cpp:125
 msgid "Copyright"
 msgstr "版权声明"
 
-#: MainWindow.cpp:119
+#: MainWindow.cpp:127
 msgid "All rights reserved.\n"
 msgstr "保留所有版权\n"
 
-#: MainWindow.cpp:120
+#: MainWindow.cpp:128
 msgid "About wxTools"
 msgstr "关于wxTools"
 
-#: MainWindow.cpp:141
+#: MainWindow.cpp:149
 msgid "File"
 msgstr "文件"
 
-#: MainWindow.cpp:162
+#: MainWindow.cpp:170
 msgid "Help"
 msgstr "帮助"
 
-#: Page/Page.cpp:97
+#: Page/Page.cpp:98
 msgid "Link is not opened."
 msgstr "链接未打开。"
 
-#: Page/Page.cpp:97 Page/Page.cpp:159 Page/Page.cpp:302
+#: Page/Page.cpp:98 Page/Page.cpp:160 Page/Page.cpp:303
 msgid "Error"
 msgstr "发生错误"
 
-#: Page/Page.cpp:159
-msgid "Communication is not open."
+#: Page/Page.cpp:160
+msgid "Link is not open."
 msgstr "链接未打开。"
 
-#: Page/Page.cpp:179
+#: Page/Page.cpp:180
 msgid "Error: "
 msgstr "发生错误："
 
-#: Page/Page.cpp:294
+#: Page/Page.cpp:295
 msgid "Close"
 msgstr "关闭"
 
-#: Page/Page.cpp:302
+#: Page/Page.cpp:303
 msgid "Failed to open link."
 msgstr "打开链接失败。"
 
-#: Page/Page.cpp:322 Page/PageSettingsLink.cpp:34
+#: Page/Page.cpp:324 Page/PageSettingsLink.cpp:34
 msgid "Open"
 msgstr "打开"
 
@@ -346,6 +346,9 @@ msgstr "1检验"
 #: Utilities/ParityComboBox.cpp:25
 msgid "Space"
 msgstr "0校验"
+
+#~ msgid "Communication is not open."
+#~ msgstr "链接未打开。"
 
 #~ msgid "Disconnect All Client"
 #~ msgstr "清空所有客户端"
