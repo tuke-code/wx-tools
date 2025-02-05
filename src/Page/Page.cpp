@@ -116,7 +116,7 @@ void Page::OnInvokeWrite(TextFormat format)
     Link *link = linkUi->GetLink();
     wxString text = m_pageIO->GetInput()->GetInputText();
     if (text.IsEmpty()) {
-        text = wxString::FromAscii("(null)");
+        return;
     }
 
     text = GetEscapeString(text.ToStdString(), escIndex);

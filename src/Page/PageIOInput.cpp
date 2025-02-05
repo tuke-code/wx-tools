@@ -27,7 +27,12 @@ wxtJson PageIOInput::Save() const
 
 wxString PageIOInput::GetInputText() const
 {
-    return m_lineEdit->GetValue();
+    wxString txt = m_lineEdit->GetValue();
+    if (txt.IsEmpty()) {
+        txt = m_lineEdit->GetHint();
+    }
+
+    return txt;
 }
 
 void PageIOInput::SetTextFormat(TextFormat format)
