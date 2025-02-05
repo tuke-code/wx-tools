@@ -2,7 +2,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "POT-Creation-Date: 2025-01-24 17:48+0800\n"
-"PO-Revision-Date: 2025-01-24 17:49+0800\n"
+"PO-Revision-Date: 2025-02-05 11:42+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: zh_CN\n"
@@ -136,7 +136,7 @@ msgstr "软件版本："
 
 #: MainWindow.cpp:110
 msgid "Author: x-tools-author\n"
-msgstr "软件作者: x-tools-author\n"
+msgstr "软件作者：x-tools-author\n"
 
 #: MainWindow.cpp:111
 msgid "Email: x-tools@outlook.com\n"
