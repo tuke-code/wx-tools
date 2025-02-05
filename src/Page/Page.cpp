@@ -68,6 +68,9 @@ void Page::Load(const wxtJson &json)
     if (json.contains(keys.io)) {
         m_pageIO->Load(json[keys.io].get<wxtJson>());
     }
+
+    int format = m_pageSettings->GetInputSettings()->GetTextFormat();
+    m_pageIO->GetInput()->SetTextFormat(static_cast<TextFormat>(format));
 }
 
 wxtJson Page::Save() const
@@ -263,6 +266,12 @@ void Page::OutputText(std::shared_ptr<char> bytes, int len, std::string &fromTo,
     if (!isRx && !showTx) {
         return;
     }
+
+    // Replace '\n' with '\\n' and replace '\r' with '\\r'
+    wxString textCopy = text;
+    textCopy.Replace("\n", "\\n");
+    textCopy.Replace("\r", "\\r");
+    text = textCopy.ToStdString();
 
     wxString str;
     if (dateTimeString.empty()) {

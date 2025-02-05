@@ -101,6 +101,10 @@ void SerialPortUi::Load(const wxtJson &json)
 
 void SerialPortUi::Refresh()
 {
+    if (GetLink()) {
+        return;
+    }
+
     m_portNameComboBox->DoRefresh();
 }
 

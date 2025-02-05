@@ -85,6 +85,10 @@ void SocketBaseUi::Load(const wxtJson &json)
 
 void SocketBaseUi::Refresh()
 {
+    if (GetLink()) {
+        return;
+    }
+
     if (m_serverComboBox) {
         m_serverComboBox->DoRefresh();
     }
