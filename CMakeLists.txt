@@ -32,6 +32,7 @@ include(cmake/wxTools.cmake)
 include(cmake/sigslot.cmake)
 include(cmake/mongoose.cmake)
 include(cmake/wxWidgets.cmake)
+include(cmake/Msix/Msix.cmake)
 include(cmake/CSerialPort.cmake)
 
 include_directories(src)
@@ -84,3 +85,7 @@ add_custom_target(
   COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/res/i18n"
           "$<TARGET_FILE_DIR:wxTools>/i18n"
   SOURCES ${WX_TOOLS_LOCAL_FILES})
+
+# --------------------------------------------------------------------------------------------------
+# Generate MSI installer for Microsoft Store
+wxt_generate_msix(wxTools "packet_name" "wxTools" "${WXT_VERSION}" OFF)
