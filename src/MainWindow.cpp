@@ -98,7 +98,7 @@ void MainWindow::OnNew(wxCommandEvent&)
 
 void MainWindow::OnExit(wxCommandEvent&)
 {
-    wxLogMessage("The application will be closed!", this);
+    wxLogMessage(_("The application will be closed!"), this);
     Close(true);
 }
 

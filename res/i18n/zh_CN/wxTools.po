@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2025-02-05 15:42+0800\n"
-"PO-Revision-Date: 2025-02-05 15:43+0800\n"
+"POT-Creation-Date: 2025-02-05 22:03+0800\n"
+"PO-Revision-Date: 2025-02-05 22:12+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: zh_CN\n"
@@ -126,6 +126,10 @@ msgstr "JSON文件(*.json)|*.json"
 msgid "Save parameters file"
 msgstr "导出配置文件"
 
+#: MainWindow.cpp:101
+msgid "The application will be closed!"
+msgstr "软件将会被关闭！"
+
 #: MainWindow.cpp:115
 msgid "wxTools - A set of tools developed with wxWidgets\n"
 msgstr "wxTools-基于wxWidgets开发的工具集\n"
@@ -170,9 +174,61 @@ msgstr "关于wxTools"
 msgid "File"
 msgstr "文件"
 
-#: MainWindow.cpp:170
+#: MainWindow.cpp:168
 msgid "Help"
 msgstr "帮助"
+
+#: MainWindow.cpp:174
+msgid "Visit online documentation page."
+msgstr "访问在线文档。"
+
+#: MainWindow.cpp:180
+msgid "Visit GitHub page to get more information."
+msgstr "访问GitHub代码仓库"
+
+#: MainWindow.cpp:181
+msgid "Get Source from GitHub"
+msgstr "从GitHub获取源码"
+
+#: MainWindow.cpp:185
+msgid "Visit Gitee page to get more information."
+msgstr "访问Gitee仓库。"
+
+#: MainWindow.cpp:186
+msgid "Get Source from Gitee"
+msgstr "从Gitee获取源码"
+
+#: MainWindow.cpp:190
+msgid "Visit GitHub home page of author."
+msgstr "访问作者GitHub主页"
+
+#: MainWindow.cpp:191
+msgid "GitHub Home Page"
+msgstr "GitHub主页"
+
+#: MainWindow.cpp:195
+msgid "Visit Gitee home page of author."
+msgstr "访问作者Gitee主页。"
+
+#: MainWindow.cpp:196
+msgid "Gitee Home Page"
+msgstr "Gitee主页"
+
+#: MainWindow.cpp:203
+msgid "Visit Microsoft Store page to buy wxTools."
+msgstr "访问作者微软商店主页。"
+
+#: MainWindow.cpp:204
+msgid "Supporting Author"
+msgstr "支持作者"
+
+#: MainWindow.cpp:208
+msgid "Visit Microsoft Store home page of author."
+msgstr "访问作者微软商店主页。"
+
+#: MainWindow.cpp:209
+msgid "Other Applications"
+msgstr "其他应用"
 
 #: Page/Page.cpp:98
 msgid "Link is not opened."
