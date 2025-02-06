@@ -27,7 +27,7 @@ void WSServer::DoClearClients()
     }
 }
 
-void WSServer::Loop()
+void *WSServer::Entry()
 {
     auto *d = GetD<WSServerPrivate>();
     std::string url = std::string("ws://") + d->serverAddress.ToStdString();
@@ -45,7 +45,7 @@ void WSServer::Loop()
     if (c == nullptr) {
         mg_mgr_free(&mgr);
         errorOccurredSignal(std::string("Failed to create a WebSocket server!"));
-        return;
+        return nullptr;
     }
 
     while (!d->invokedInterrupted.load()) {
@@ -64,4 +64,5 @@ void WSServer::Loop()
 
     d->isRunning.store(false);
     wxtInfo() << "WS server thread is exited!";
+    return nullptr;
 }

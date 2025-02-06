@@ -11,12 +11,13 @@
 #include <nlohmann/json.hpp>
 #include <sigslot/signal.hpp>
 
+#include <wx/thread.h>
 #include <wx/wx.h>
 
 #include "Common/wxTools.h"
 
 class LinkPrivate;
-class Link : wxObject
+class Link : public wxThread
 {
 public:
     Link(LinkPrivate *d);
@@ -42,9 +43,8 @@ public:
         return reinterpret_cast<T *>(this->d);
     }
 
-private:
-    // The function is called in a separate thread...
-    virtual void Loop();
+protected:
+    void *Entry() override;
 
 protected:
     LinkPrivate *d;

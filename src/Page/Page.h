@@ -36,7 +36,6 @@ private:
     wxTimer m_sendTimer;
 
 private:
-private:
     void OnInvokeOpenOrClose();
     void OnInvokeWrite(TextFormat format);
     void OnInvokeStartTimer(int ms);

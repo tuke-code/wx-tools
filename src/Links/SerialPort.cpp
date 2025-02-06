@@ -18,7 +18,33 @@ SerialPort::~SerialPort()
     delete GetD<SerialPortPrivate>();
 }
 
-void SerialPort::Loop()
+void SerialPort::Load(const wxtJson &parameters)
+{
+    auto d = GetD<SerialPortPrivate>();
+    SerialPortParameterKeys keys;
+    d->portName = parameters[keys.portName].get<std::string>();
+    d->baudRate = parameters[keys.baudRate].get<int>();
+    d->flowControl = static_cast<itas109::FlowControl>(parameters[keys.flowControl].get<int>());
+    d->parity = static_cast<itas109::Parity>(parameters[keys.parity].get<int>());
+    d->stopBits = static_cast<itas109::StopBits>(parameters[keys.stopBits].get<int>());
+    d->dataBits = static_cast<itas109::DataBits>(parameters[keys.dataBits].get<int>());
+}
+
+wxtJson SerialPort::Save()
+{
+    auto d = GetD<SerialPortPrivate>();
+    wxtJson parameters;
+    SerialPortParameterKeys keys;
+    parameters[keys.portName] = d->portName;
+    parameters[keys.baudRate] = d->baudRate;
+    parameters[keys.flowControl] = static_cast<int>(d->flowControl);
+    parameters[keys.parity] = static_cast<int>(d->parity);
+    parameters[keys.stopBits] = static_cast<int>(d->stopBits);
+    parameters[keys.dataBits] = static_cast<int>(d->dataBits);
+    return parameters;
+}
+
+void *SerialPort::Entry()
 {
     auto d = GetD<SerialPortPrivate>();
     d->invokedInterrupted.store(false);
@@ -50,30 +76,5 @@ void SerialPort::Loop()
     delete serialPortIml;
     d->isRunning.store(false);
     wxtInfo() << "Serial port loop exit.";
-}
-
-void SerialPort::Load(const wxtJson &parameters)
-{
-    auto d = GetD<SerialPortPrivate>();
-    SerialPortParameterKeys keys;
-    d->portName = parameters[keys.portName].get<std::string>();
-    d->baudRate = parameters[keys.baudRate].get<int>();
-    d->flowControl = static_cast<itas109::FlowControl>(parameters[keys.flowControl].get<int>());
-    d->parity = static_cast<itas109::Parity>(parameters[keys.parity].get<int>());
-    d->stopBits = static_cast<itas109::StopBits>(parameters[keys.stopBits].get<int>());
-    d->dataBits = static_cast<itas109::DataBits>(parameters[keys.dataBits].get<int>());
-}
-
-wxtJson SerialPort::Save()
-{
-    auto d = GetD<SerialPortPrivate>();
-    wxtJson parameters;
-    SerialPortParameterKeys keys;
-    parameters[keys.portName] = d->portName;
-    parameters[keys.baudRate] = d->baudRate;
-    parameters[keys.flowControl] = static_cast<int>(d->flowControl);
-    parameters[keys.parity] = static_cast<int>(d->parity);
-    parameters[keys.stopBits] = static_cast<int>(d->stopBits);
-    parameters[keys.dataBits] = static_cast<int>(d->dataBits);
-    return parameters;
+    return nullptr;
 }

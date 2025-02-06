@@ -55,6 +55,7 @@ Page::Page(LinkType type, wxWindow *parent)
     PageSettingsOutput *outputSettings = m_pageSettings->GetOutputSettings();
     outputSettings->clearSignal.connect(&Page::OnClear, this);
 
+    m_sendTimer.SetOwner(this);
     m_sendTimer.Bind(wxEVT_TIMER, [this](wxTimerEvent &event) { OnSendTimerTimeout(); });
 }
 
@@ -328,7 +329,6 @@ void Page::Close()
     link->errorOccurredSignal.disconnect_all();
 
     linkUi->Close();
-    wxtInfo() << __FUNCTION__ << __LINE__;
     linkUi->Enable();
     linkSettings->SetOpenButtonLabel(_("Open"));
     wxtInfo() << "Close link successfully.";

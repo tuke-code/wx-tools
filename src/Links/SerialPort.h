@@ -27,7 +27,9 @@ public:
     SerialPort();
     ~SerialPort();
 
-    void Loop() override;
     void Load(const wxtJson &parameters) override;
     wxtJson Save() override;
+
+protected:
+    void *Entry() override;
 };

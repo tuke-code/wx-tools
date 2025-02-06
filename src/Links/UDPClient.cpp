@@ -18,12 +18,15 @@ UDPClient::UDPClient()
 
 UDPClient::~UDPClient()
 {
-    delete GetD<UDPClientPrivate>();
+    
 }
 
-void UDPClient::Loop()
+void *UDPClient::Entry()
 {
-    auto d = GetD<UDPClientPrivate>();
+    d->invokedInterrupted.store(false);
+    d->isRunning.store(true);
+
+    UDPClientPrivate *d = GetD<UDPClientPrivate>();
     std::string url = fmt::format("udp://{0}:{1}", d->serverAddress.ToStdString(), d->serverPort);
     struct mg_mgr mgr;
     mg_mgr_init(&mgr);
@@ -34,17 +37,18 @@ void UDPClient::Loop()
     if (c == nullptr) {
         std::string log(fmt::format("Failed to connect to the server: {0}", url));
         wxtInfo() << log;
-        errorOccurredSignal(log);
-        return;
+        d->errorMessagesLock.lock();
+        d->errorMessage = log;
+        d->errorMessagesLock.unlock();
+        return nullptr;
     }
 
-    d->invokedInterrupted.store(false);
-    d->isRunning.store(true);
-    while (!d->invokedInterrupted.load()) {
+    while (!TestDestroy()) {
         mg_mgr_poll(&mgr, 100);
     }
 
     mg_mgr_free(&mgr);
     d->isRunning.store(false);
     wxtInfo() << "UDP client thread exited...";
+    return nullptr;
 }

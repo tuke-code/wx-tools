@@ -15,18 +15,21 @@ Link::Link(LinkPrivate *dPtr)
 
 Link::~Link()
 {
-
+    Close();
 }
 
 bool Link::Open()
 {
     Close();
 
-    std::thread t(&Link::Loop, this);
-    t.detach();
+    if (Create() != wxTHREAD_NO_ERROR) {
+        wxtWarning() << "Failed to create thread";
+        return false;
+    }
 
-    while (!d->isRunning.load()) {
-        // wait for the thread to start
+    if (Run() != wxTHREAD_NO_ERROR) {
+        wxtWarning() << "Failed to run thread";
+        return false;
     }
 
     return true;
@@ -34,29 +37,26 @@ bool Link::Open()
 
 void Link::Close()
 {
-    if (d) {
-        d->invokedInterrupted.store(true);
-        while (d->isRunning.load()) {
-            // wait for the thread to stop
-        };
-        d->txBytes.clear();
-    }
+    Exit();
+    Wait();
 }
 
 void Link::Write(std::shared_ptr<char> bytes, int len)
 {
     if (len > 0) {
+        d->txBytesLock.lock();
         d->txBytes.push_back(std::make_pair(std::move(bytes), len));
+        d->txBytesLock.unlock();
     }
 }
-
-void Link::Loop()
+#if 1
+void *Link::Entry()
 {
-    d->invokedInterrupted.store(false);
-    d->isRunning.store(true);
-    while (!d->invokedInterrupted.load()) {
-        // do something
+    while (!TestDestroy()) {
+        // Do something here
+        Sleep(25);
     }
 
-    d->isRunning.store(false);
+    return nullptr;
 }
+#endif

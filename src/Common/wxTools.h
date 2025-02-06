@@ -24,6 +24,15 @@
 #define wxtUnknownStr wxT("Unknown")
 
 //--------------------------------------------------------------------------------------------------
+// Datastructure
+struct WXTDataItem
+{
+    std::shared_ptr<char> data;
+    int len;
+    std::string flag;
+};
+
+//--------------------------------------------------------------------------------------------------
 // Google Log
 #define wxtLog(severity) LOG(severity)
 #define wxtInfo() LOG(INFO)

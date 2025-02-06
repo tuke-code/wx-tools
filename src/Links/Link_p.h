@@ -10,7 +10,13 @@
 
 #include <atomic>
 #include <memory>
+#include <mutex>
+#include <string>
 #include <vector>
+
+#include <wx/timer.h>
+
+#include "Common/wxTools.h"
 
 class LinkPrivate
 {
@@ -22,5 +28,15 @@ public:
 
     std::atomic_bool invokedInterrupted;
     std::atomic_bool isRunning;
-    std::vector<std::pair<std::shared_ptr<char> /*data*/, int /*len*/>> txBytes;
+
+    std::mutex txBytesLock;
+    std::vector<std::pair<std::shared_ptr<char> /*data*/, int /*len*/>> txBytes; // bytes to send
+
+    std::mutex errorMessagesLock;
+    std::string errorMessage; // the last error message
+
+    std::mutex bytesRxLock;
+    std::vector<WXTDataItem> bytesRx; // bytes received
+    std::mutex bytesTxLock;
+    std::vector<WXTDataItem> bytesTx; // bytes sent
 };

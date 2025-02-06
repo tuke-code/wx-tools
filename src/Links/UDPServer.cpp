@@ -20,7 +20,7 @@ UDPServer::~UDPServer()
     delete GetD<UDPServerPrivate>();
 }
 
-void UDPServer::Loop()
+void *UDPServer::Entry()
 {
     auto d = GetD<UDPServerPrivate>();
     std::string url = fmt::format("udp://{0}:{1}", d->serverAddress.ToStdString(), d->serverPort);
@@ -34,7 +34,7 @@ void UDPServer::Loop()
         std::string log(fmt::format("Failed to connect to the server: {0}", url));
         wxtInfo() << log;
         errorOccurredSignal(log);
-        return;
+        return nullptr;
     }
 
     d->invokedInterrupted.store(false);
@@ -46,4 +46,5 @@ void UDPServer::Loop()
     mg_mgr_free(&mgr);
     d->isRunning.store(false);
     wxtInfo() << "UDP client thread exited...";
+    return nullptr;
 }

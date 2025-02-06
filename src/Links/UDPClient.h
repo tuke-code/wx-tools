@@ -16,6 +16,6 @@ public:
     UDPClient();
     ~UDPClient();
 
-private:
-    void Loop() override;
+protected:
+    void *Entry() override;
 };

@@ -18,7 +18,7 @@ TCPServer::~TCPServer()
     delete GetD<TCPServerPrivate>();
 }
 
-void TCPServer::Loop()
+void *TCPServer::Entry()
 {
     auto d = GetD<TCPServerPrivate>();
     std::string url = fmt::format("tcp://{0}:{1}", d->serverAddress.ToStdString(), d->serverPort);
@@ -34,7 +34,7 @@ void TCPServer::Loop()
         std::string log(fmt::format("Failed to connect to the server: {0}", url));
         wxtInfo() << log;
         errorOccurredSignal(log);
-        return;
+        return nullptr;
     }
 
     while (!d->invokedInterrupted.load()) {
@@ -44,4 +44,5 @@ void TCPServer::Loop()
     mg_mgr_free(&mgr);
     d->isRunning.store(false);
     wxtInfo() << "TCP server thread exited...";
+    return nullptr;
 }

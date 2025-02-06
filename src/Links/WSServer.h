@@ -17,7 +17,9 @@ public:
     WSServer();
     ~WSServer();
 
+protected:
+    void *Entry() override;
+
 private:
     void DoClearClients() override;
-    void Loop() override;
 };

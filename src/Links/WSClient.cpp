@@ -18,7 +18,7 @@ WSClient::~WSClient()
     delete GetD<WSClientPrivate>();
 }
 
-void WSClient::Loop()
+void *WSClient::Entry()
 {
     auto *d = GetD<WSClientPrivate>();
     std::string ip = d->serverAddress.ToStdString();
@@ -37,7 +37,7 @@ void WSClient::Loop()
     c = mg_ws_connect(&mgr, url.c_str(), WSClientHandler, &done, NULL);
     if (c == nullptr || done == true) {
         errorOccurredSignal(std::string("Failed to create a WebSocket client!"));
-        return;
+        return nullptr;
     }
 
     d->invokedInterrupted.store(false);
@@ -54,4 +54,5 @@ void WSClient::Loop()
     mg_mgr_free(&mgr);
 
     d->isRunning.store(false);
+    return nullptr;
 }
