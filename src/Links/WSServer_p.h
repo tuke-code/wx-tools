@@ -17,28 +17,7 @@
 class WSServerPrivate : public SocketServerPrivate
 {
 public:
-    WSServerPrivate()
-        : invokeClearClients(false)
-    {}
-
-    std::atomic_bool invokeClearClients;
 };
-
-static void DoTryToClearAllClients(struct mg_connection *c, void *ev_data, WSServer *q)
-{
-    auto *d = q->GetD<WSServerPrivate>();
-    if (!d->invokeClearClients.load()) {
-        return;
-    }
-
-    for (struct mg_connection *conns = c; conns != nullptr; conns = c->next) {
-        std::string ip = d->mg_addr_to_ipv4(&conns->rem);
-        uint16_t port = DoReverseByteOrder<uint16_t>(conns->rem.port);
-        d->DoTryToDeleteClient(ip, port);
-        q->deleteClientSignal(ip, port);
-        mg_close_conn(conns);
-    }
-}
 
 static void DoSendBytesToClient(struct mg_connection *c, void *ev_data, WSServer *q)
 {
@@ -66,40 +45,12 @@ static void DoSendBytesToClient(struct mg_connection *c, void *ev_data, WSServer
         }
 
         if (len > 0) {
-            q->bytesTxSignal(ctx.first, ctx.second, to + op);
+            d->DoTryToQueueTxBytes(ctx.first, ctx.second, to + op);
         } else {
             d->DoTryToDeleteClient(ip, port);
-            q->deleteClientSignal(ip, port);
-            q->errorOccurredSignal(std::string("WS server send error"));
             break;
         }
     }
-}
-
-static void DoTryToSendBytesToAllClients(struct mg_connection *c, void *ev_data, WSServer *q)
-{
-    auto *d = q->GetD<WSServerPrivate>();
-    if (d->txBytes.empty()) {
-        return;
-    }
-
-    if (d->selection.first.empty() && d->selection.second == 0) {
-        // Send to all clients
-        for (struct mg_connection *conns = c; conns != nullptr; conns = conns->next) {
-            DoSendBytesToClient(c, ev_data, q);
-        }
-    } else {
-        for (struct mg_connection *conns = c; conns != nullptr; conns = conns->next) {
-            const std::string ip = d->mg_addr_to_ipv4(&conns->rem);
-            const uint8_t port = DoReverseByteOrder<uint16_t>(conns->rem.port);
-            if (ip == d->selection.first && port == d->selection.second) {
-                DoSendBytesToClient(c, ev_data, q);
-                break;
-            }
-        }
-    }
-
-    d->txBytes.clear();
 }
 
 static void OnMgEvOpen(struct mg_connection *c, void *ev_data, WSServer *q)
@@ -112,7 +63,7 @@ static void OnMgEvOpen(struct mg_connection *c, void *ev_data, WSServer *q)
         return;
     }
 
-    q->newClientSignal(ip, port);
+    d->DoTryToNewClient(ip, port);
     wxtInfo() << "Server open: " << ip << ":" << port;
 }
 
@@ -144,14 +95,9 @@ static void OnAccept(struct mg_connection *c, WSServer *q)
     std::string ip = q->GetD<WSServerPrivate>()->mg_addr_to_ipv4(&c->rem);
     const uint8_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
     std::string from = ip + std::string(":") + std::to_string(port);
-    q->newClientSignal(ip, port);
-    wxtInfo() << "New client from " << from;
-
-#if 0
-    if (c->next && DoReverseByteOrder<uint16_t>(c->next->rem.port)) {
-        OnAccept(c->next, server);
-    }
-#endif
+    auto *d = q->GetD<WSServerPrivate>();
+    d->DoTryToNewClient(ip, port);
+    wxtInfo() << "Client connected: " << from;
 }
 
 static void OnMgEvMsg(struct mg_connection *c, void *ev_data, WSServer *q)
@@ -166,14 +112,15 @@ static void OnMgEvMsg(struct mg_connection *c, void *ev_data, WSServer *q)
         return;
     }
 
-    std::string ip = q->GetD<WSServerPrivate>()->mg_addr_to_ipv4(&c->rem);
+    auto *d = q->GetD<WSServerPrivate>();
+    std::string ip = d->mg_addr_to_ipv4(&c->rem);
     uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
     std::string from = DoEncodeFlag(ip, port) + op;
     wxtInfo() << wm->flags << wm->data.len;
     std::shared_ptr<char> bytes(new char[wm->data.len], [](char *p) { delete[] p; });
     memcpy(bytes.get(), wm->data.buf, wm->data.len);
 
-    q->bytesRxSignal(std::move(bytes), wm->data.len, from);
+    d->DoTryToQueueRxBytes(bytes, wm->data.len, from);
     wxtInfo() << "Received " << wm->data.len << " bytes from " << from;
 }
 
@@ -182,21 +129,52 @@ static void OnMgEvClose(struct mg_connection *c, void *ev_data, WSServer *q)
     WSServerPrivate *d = q->GetD<WSServerPrivate>();
     std::string ip = d->mg_addr_to_ipv4(&c->rem);
     uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
-    q->deleteClientSignal(ip, port);
-    d->DoTryToDeleteClient(ip, port);
-    wxtInfo() << "Server close: " << ip << ":" << port;
+    if (c->is_client) {
+        d->DoTryToDeleteClient(ip, port);
+    } else {
+        d->DoTryToQueueErrorOccurred(_("The server has been closed."));
+
+        wxtInfo() << "Server close: " << ip << ":" << port;
+    }
 }
 
 static void OnMgEvError(struct mg_connection *c, void *ev_data, WSServer *q)
 {
-    WXUNUSED(c);
-    q->errorOccurredSignal(fmt::format("WS server error:{}", reinterpret_cast<char *>(ev_data)));
+    WSServerPrivate *d = q->GetD<WSServerPrivate>();
+    std::string msg = fmt::format("Error occurred: {0}", ev_data);
+    if (c->is_client) {
+        std::string ip = d->mg_addr_to_ipv4(&c->rem);
+        uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
+        d->DoTryToDeleteClient(ip, port);
+    } else {
+        d->DoTryToQueueErrorOccurred(msg);
+    }
 }
 
 static void OnMgEvPoll(struct mg_connection *c, void *ev_data, WSServer *q)
 {
-    DoTryToClearAllClients(c, ev_data, q);
-    DoTryToSendBytesToAllClients(c, ev_data, q);
+    auto *d = q->GetD<WSServerPrivate>();
+    if (d->txBytes.empty()) {
+        return;
+    }
+
+    if (d->selection.first.empty() && d->selection.second == 0) {
+        // Send to all clients
+        for (struct mg_connection *conns = c; conns != nullptr; conns = conns->next) {
+            DoSendBytesToClient(c, ev_data, q);
+        }
+    } else {
+        for (struct mg_connection *conns = c; conns != nullptr; conns = conns->next) {
+            const std::string ip = d->mg_addr_to_ipv4(&conns->rem);
+            const uint8_t port = DoReverseByteOrder<uint16_t>(conns->rem.port);
+            if (ip == d->selection.first && port == d->selection.second) {
+                DoSendBytesToClient(c, ev_data, q);
+                break;
+            }
+        }
+    }
+
+    d->txBytes.clear();
 }
 
 static void WSServerHandler(struct mg_connection *c, int ev, void *ev_data)
@@ -216,9 +194,7 @@ static void WSServerHandler(struct mg_connection *c, int ev, void *ev_data)
     } else if (ev == MG_EV_WS_MSG) {
         OnMgEvMsg(c, ev_data, q);
     } else if (ev == MG_EV_CLOSE) {
-#if 0
         OnMgEvClose(c, ev_data, q);
-#endif
     } else if (ev == MG_EV_ERROR) {
         OnMgEvError(c, ev_data, q);
     } else if (ev == MG_EV_POLL) {

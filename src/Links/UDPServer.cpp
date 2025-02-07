@@ -32,6 +32,7 @@ void *UDPServer::Entry()
     struct mg_connection *c = mg_listen(&mgr, url.c_str(), UDPServerHandler, nullptr);
     if (c == nullptr) {
         d->DoTryToQueueErrorOccurred(_("Failed to connect to the server."));
+        mg_mgr_free(&mgr);
         return nullptr;
     }
 

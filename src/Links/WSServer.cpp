@@ -18,15 +18,6 @@ WSServer::~WSServer()
     delete GetD<WSServerPrivate>();
 }
 
-void WSServer::DoClearClients()
-{
-    auto d = GetD<WSServerPrivate>();
-    d->invokeClearClients.store(true);
-    while (!d->invokeClearClients.load()) {
-        break;
-    }
-}
-
 void *WSServer::Entry()
 {
     auto *d = GetD<WSServerPrivate>();
@@ -39,30 +30,21 @@ void *WSServer::Entry()
     mgr.userdata = this;
 
     wxtInfo() << "Starting WS listener on websocket: " << url.c_str();
-    d->invokedInterrupted.store(false);
-    d->isRunning.store(true);
     mg_connection *c = mg_http_listen(&mgr, url.c_str(), WSServerHandler, nullptr);
     if (c == nullptr) {
         mg_mgr_free(&mgr);
-        errorOccurredSignal(std::string("Failed to create a WebSocket server!"));
+        d->DoTryToQueueErrorOccurred(wxString(_("Failed to create a WebSocket server!")));
+        mg_mgr_free(&mgr);
         return nullptr;
     }
 
-    while (!d->invokedInterrupted.load()) {
+    while (!TestDestroy()) {
         mg_mgr_poll(&mgr, 100);
     }
 
     mg_close_conn(c);
     mg_mgr_free(&mgr);
 
-    // Remove all clients
-    auto tmp = d->clients;
-    for (auto &client : tmp) {
-        d->DoTryToDeleteClient(client.first, client.second);
-        deleteClientSignal(client.first, client.second);
-    }
-
-    d->isRunning.store(false);
     wxtInfo() << "WS server thread is exited!";
     return nullptr;
 }

@@ -62,10 +62,9 @@ void *SerialPort::Entry()
             std::this_thread::sleep_for(std::chrono::milliseconds(50));
         }
     } else {
-        wxThreadEvent *evt = new wxThreadEvent(wxEVT_THREAD, wxtErrorOccurred);
         wxString tmp = _("Open port failed:");
-        evt->SetString(fmt::format("{0} {1}", tmp, sp->getLastErrorMsg()));
-        d->evtHandler->QueueEvent(evt);
+        tmp += wxString(fmt::format("{0} {1}", tmp.ToStdString(), sp->getLastErrorMsg()));
+        d->DoTryToQueueErrorOccurred(tmp);
     }
 
     sp->close();

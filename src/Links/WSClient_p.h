@@ -20,39 +20,6 @@ class WSClientPrivate : public SocketClientPrivate
 public:
 };
 
-static void DoTryToSendBytesToClient(struct mg_connection *c, WSClient *q)
-{
-    auto *d = q->GetD<WSClientPrivate>();
-    std::string op;
-    size_t len = 0;
-    std::string ip = d->mg_addr_to_ipv4(&c->rem);
-    uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
-    std::string to = DoEncodeFlag(ip, port);
-
-    if (!c->is_client) {
-        return;
-    }
-
-    for (auto &ctx : d->txBytes) {
-        if (d->dataChannel == WEBSOCKET_OP_TEXT) {
-            op = std::string("(T)");
-            len = mg_ws_send(c, ctx.first.get(), ctx.second, WEBSOCKET_OP_TEXT);
-        } else {
-            op = std::string("(B)");
-            len = mg_ws_send(c, ctx.first.get(), ctx.second, WEBSOCKET_OP_BINARY);
-        }
-
-        if (len > 0) {
-            q->bytesTxSignal(ctx.first, ctx.second, to + op);
-        } else {
-            q->errorOccurredSignal(std::string("WS server send error"));
-            break;
-        }
-    }
-
-    d->txBytes.clear();
-}
-
 static void OnMgEvWsOpen(struct mg_connection *c, void *ev_data, WSClient *q)
 {
     c->is_hexdumping = 1;
@@ -81,14 +48,13 @@ static void OnMgEvWsMsg(struct mg_connection *c, void *ev_data, WSClient *q)
         return;
     }
 
+    auto *d = q->GetD<WSClientPrivate>();
     std::string ip = q->GetD<WSClientPrivate>()->mg_addr_to_ipv4(&c->rem);
     uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
     std::string from = DoEncodeFlag(ip, port) + op;
     std::shared_ptr<char> bytes(new char[wm->data.len], [](char *p) { delete[] p; });
     memcpy(bytes.get(), wm->data.buf, wm->data.len);
-
-    q->bytesRxSignal(std::move(bytes), wm->data.len, from);
-    wxtInfo() << "Received " << wm->data.len << " bytes from " << from;
+    d->DoTryToQueueRxBytes(bytes, wm->data.len, from);
 }
 
 static void OnMgEvClose(struct mg_connection *c, void *ev_data, WSClient *q)
@@ -102,6 +68,8 @@ static void OnMgEvClose(struct mg_connection *c, void *ev_data, WSClient *q)
     std::string loc = fmt::format("{0}:{1}", locIp, locPort);
     std::string rem = fmt::format("{0}:{1}", remIp, remPort);
     wxtInfo() << fmt::format("WebSocket client({0}) has been disconnected from {1}", loc, rem);
+
+    d->DoTryToQueueErrorOccurred(_("WebSocket client has been close."));
 }
 
 static void OnMgEvError(struct mg_connection *c, void *ev_data, WSClient *q)
@@ -110,6 +78,39 @@ static void OnMgEvError(struct mg_connection *c, void *ev_data, WSClient *q)
     const std::string ip = d->mg_addr_to_ipv4(&c->loc);
     const uint16_t port = DoReverseByteOrder<uint16_t>(c->loc.port);
     wxtError() << "Client error: " << ip << ":" << port << " " << reinterpret_cast<char *>(ev_data);
+}
+
+static void OnMgEvPoll(struct mg_connection *c, int ev, void *ev_data, WSClient *q)
+{
+    auto *d = q->GetD<WSClientPrivate>();
+    std::string op;
+    size_t len = 0;
+    std::string ip = d->mg_addr_to_ipv4(&c->rem);
+    uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
+    std::string to = DoEncodeFlag(ip, port);
+
+    if (!c->is_client) {
+        return;
+    }
+
+    for (auto &ctx : d->txBytes) {
+        if (d->dataChannel == WEBSOCKET_OP_TEXT) {
+            op = std::string("(T)");
+            len = mg_ws_send(c, ctx.first.get(), ctx.second, WEBSOCKET_OP_TEXT);
+        } else {
+            op = std::string("(B)");
+            len = mg_ws_send(c, ctx.first.get(), ctx.second, WEBSOCKET_OP_BINARY);
+        }
+
+        if (len > 0) {
+            d->DoTryToQueueTxBytes(ctx.first, ctx.second, to + op);
+        } else {
+            d->DoTryToQueueErrorOccurred(_("WS server send bytes error."));
+            break;
+        }
+    }
+
+    d->txBytes.clear();
 }
 
 static void WSClientHandler(struct mg_connection *c, int ev, void *ev_data)
@@ -123,5 +124,7 @@ static void WSClientHandler(struct mg_connection *c, int ev, void *ev_data)
         OnMgEvClose(c, ev_data, q);
     } else if (ev == MG_EV_ERROR) {
         OnMgEvError(c, ev_data, q);
+    } else if (ev == MG_EV_POLL) {
+        OnMgEvPoll(c, ev, ev_data, q);
     }
 }

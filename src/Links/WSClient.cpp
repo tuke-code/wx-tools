@@ -36,23 +36,17 @@ void *WSClient::Entry()
     wxtInfo() << "Starting WS client on websocket:" << url.c_str();
     c = mg_ws_connect(&mgr, url.c_str(), WSClientHandler, &done, NULL);
     if (c == nullptr || done == true) {
-        errorOccurredSignal(std::string("Failed to create a WebSocket client!"));
+        d->DoTryToQueueErrorOccurred(_("Failed to create a WebSocket client."));
+        mg_mgr_free(&mgr);
         return nullptr;
     }
 
-    d->invokedInterrupted.store(false);
-    d->isRunning.store(true);
-    while (1) {
-        if (d->invokedInterrupted.load()) {
-            mg_close_conn(c);
-            break;
-        }
-
-        DoTryToSendBytesToClient(c, this);
+    while (!TestDestroy()) {
         mg_mgr_poll(&mgr, 100);
     }
-    mg_mgr_free(&mgr);
 
-    d->isRunning.store(false);
+    mg_close_conn(c);
+    mg_mgr_free(&mgr);
+    wxtInfo() << "Web socket client thread exited...";
     return nullptr;
 }

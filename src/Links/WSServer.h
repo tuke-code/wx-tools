@@ -19,7 +19,4 @@ public:
 
 protected:
     void *Entry() override;
-
-private:
-    void DoClearClients() override;
 };
