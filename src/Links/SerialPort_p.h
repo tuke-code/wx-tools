@@ -32,25 +32,39 @@ static void ReadBytes(itas109::CSerialPort *sp, SerialPort *q)
     char data[10240] = {0};
     int len = sp->readAllData(&data);
     if (len == -1) {
-        q->errorOccurredSignal(std::string("Read data failed."));
+        wxThreadEvent *evt = new wxThreadEvent(wxEVT_THREAD, wxtErrorOccurred);
+        evt->SetString(_("Read data failed."));
+        d->evtHandler->QueueEvent(evt);
     } else if (len > 0) {
         std::shared_ptr<char> bytes(new char[len], std::default_delete<char[]>());
         memcpy(bytes.get(), data, len);
-        q->bytesRxSignal(std::move(bytes), len, d->portName);
+
+        wxThreadEvent *evt = new wxThreadEvent(wxEVT_THREAD, wxtBytesRx);
+        evt->SetPayload<wxtDataItem>(wxtDataItem{std::move(bytes), len, d->portName});
+        d->evtHandler->QueueEvent(evt);
     }
 }
 
 static void WriteBytes(itas109::CSerialPort *sp, SerialPort *q)
 {
     auto d = q->GetD<SerialPortPrivate>();
+    d->txBytesLock.lock();
     for (std::pair<std::shared_ptr<char>, int> &ctx : d->txBytes) {
         int len = sp->writeData(ctx.first.get(), ctx.second);
         if (len == -1) {
-            q->errorOccurredSignal(std::string("Write data failed."));
+            wxThreadEvent *evt = new wxThreadEvent(wxEVT_THREAD, wxtErrorOccurred);
+            evt->SetString(_("Write data failed."));
+            d->evtHandler->QueueEvent(evt);
         } else {
-            q->bytesTxSignal(std::move(ctx.first), len, d->portName);
+            std::shared_ptr<char> bytes(new char[len], std::default_delete<char[]>());
+            memcpy(bytes.get(), ctx.first.get(), len);
+
+            wxThreadEvent *evt = new wxThreadEvent(wxEVT_THREAD, wxtBytesRx);
+            evt->SetPayload<wxtDataItem>(wxtDataItem{std::move(bytes), len, d->portName});
+            d->evtHandler->QueueEvent(evt);
         }
     }
 
     d->txBytes.clear();
+    d->txBytesLock.unlock();
 }

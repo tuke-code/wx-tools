@@ -47,34 +47,25 @@ wxtJson SerialPort::Save()
 void *SerialPort::Entry()
 {
     auto d = GetD<SerialPortPrivate>();
-    d->invokedInterrupted.store(false);
-    auto *serialPortIml = new itas109::CSerialPort();
-    serialPortIml->init(d->portName.c_str(),
-                        d->baudRate,
-                        d->parity,
-                        d->dataBits,
-                        d->stopBits,
-                        d->flowControl);
-
-    d->isRunning.store(true);
-    if (serialPortIml->open()) {
-        while (!d->invokedInterrupted.load()) {
+    auto *sp = new itas109::CSerialPort();
+    sp->init(d->portName.c_str(), d->baudRate, d->parity, d->dataBits, d->stopBits, d->flowControl);
+    if (sp->open()) {
+        while (!TestDestroy()) {
             // Read data....
-            ReadBytes(serialPortIml, this);
+            ReadBytes(sp, this);
 
             // Write data...
-            WriteBytes(serialPortIml, this);
+            WriteBytes(sp, this);
 
             std::this_thread::sleep_for(std::chrono::milliseconds(50));
         }
     } else {
-        std::string errorString(serialPortIml->getLastErrorMsg());
+        std::string errorString(sp->getLastErrorMsg());
         errorOccurredSignal(std::string("Open port failed.") + errorString);
     }
 
-    serialPortIml->close();
-    delete serialPortIml;
-    d->isRunning.store(false);
+    sp->close();
+    delete sp;
     wxtInfo() << "Serial port loop exit.";
     return nullptr;
 }
