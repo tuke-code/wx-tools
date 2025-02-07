@@ -8,7 +8,6 @@
  **************************************************************************************************/
 #pragma once
 
-#include <sigslot/signal.hpp>
 #include <wx/wx.h>
 
 #include "Common/wxTools.h"
@@ -20,11 +19,10 @@ class PageSettingsLink : public wxStaticBoxSizer
 public:
     PageSettingsLink(LinkType type, wxWindow *parent);
 
-    wxtSignal<> invokeOpenSignal;
-
     void Load(const wxtJson &parameters);
     wxtJson Save() const;
 
+    wxButton *GetOpenButton() const;
     LinkUi *GetLinkUi() const;
     void SetOpenButtonLabel(const wxString &label);
     PageSettingsLinkPopup *GetPopup() const;

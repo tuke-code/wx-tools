@@ -30,9 +30,7 @@ PageSettingsLink::PageSettingsLink(LinkType type, wxWindow *parent)
 
     auto settingsButton = new wxButton(GetStaticBox(), wxID_ANY, _("Settings"));
     m_popup = new PageSettingsLinkPopup(settingsButton);
-
     m_openButton = new wxButton(GetStaticBox(), wxID_ANY, _("Open"));
-    m_openButton->Bind(wxEVT_BUTTON, [this](wxCommandEvent &) { this->invokeOpenSignal(); });
 
     auto buttonSizer = new wxBoxSizer(wxHORIZONTAL);
     buttonSizer->Add(settingsButton, 1, wxEXPAND | wxALL, 0);
@@ -48,6 +46,11 @@ void PageSettingsLink::Load(const wxtJson &parameters)
 wxtJson PageSettingsLink::Save() const
 {
     return m_linkUi->Save();
+}
+
+wxButton *PageSettingsLink::GetOpenButton() const
+{
+    return m_openButton;
 }
 
 LinkUi *PageSettingsLink::GetLinkUi() const

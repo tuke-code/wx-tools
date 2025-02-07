@@ -57,7 +57,7 @@ Page::Page(LinkType type, wxWindow *parent)
     inputSettings->textFormatChangedSignal.connect(&Page::OnTextFormatChanged, this);
 
     PageSettingsLink *linkSettings = m_pageSettings->GetLinkSettings();
-    linkSettings->invokeOpenSignal.connect(&Page::OnInvokeOpenOrClose, this);
+    linkSettings->GetOpenButton()->Bind(wxEVT_BUTTON, &Page::OnInvokeOpenOrClose, this);
 
     PageSettingsLinkPopup *linkSettingsPopup = linkSettings->GetPopup();
     linkSettingsPopup->refreshSignal.connect(&LinkUi::Refresh, linkSettings->GetLinkUi());
@@ -92,7 +92,7 @@ wxtJson Page::Save() const
     return json;
 }
 
-void Page::OnInvokeOpenOrClose()
+void Page::OnInvokeOpenOrClose(wxCommandEvent &)
 {
     PageSettingsLink *linkSettings = m_pageSettings->GetLinkSettings();
     LinkUi *linkUi = linkSettings->GetLinkUi();
