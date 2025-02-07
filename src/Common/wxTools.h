@@ -23,6 +23,12 @@
 #define wxtOkStr wxT("Ok")
 #define wxtUnknownStr wxT("Unknown")
 
+#ifdef MG_DATA_SIZE
+const static int wxtDataSize = MG_DATA_SIZE;
+#else
+const static int wxtDataSize = 10240;
+#endif
+
 //--------------------------------------------------------------------------------------------------
 // Datastructure
 struct wxtDataItem

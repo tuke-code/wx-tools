@@ -45,7 +45,10 @@ wxt_git_get_latest_tag(${CMAKE_SOURCE_DIR} WXT)
 wxt_git_get_latest_commit(${CMAKE_SOURCE_DIR} WXT)
 wxt_git_get_latest_commit_time(${CMAKE_SOURCE_DIR} WXT)
 
-add_compile_definitions(MG_DATA_SIZE=1024)
+# --------------------------------------------------------------------------------------------------
+# For mongoose, the default value is 32, I think it is too small.
+add_compile_definitions(MG_DATA_SIZE=10240)
+
 file(GLOB_RECURSE WX_TOOLS_SOURCE src/*.*)
 list(APPEND WX_TOOLS_SOURCE wxTools.rc)
 set(WXT_OUTPUT_DIR "${WX_TOOLS_BINARY_DIR}/wxTools")

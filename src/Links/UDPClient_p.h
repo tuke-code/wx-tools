@@ -23,7 +23,10 @@ static void OnMgEvPoll(struct mg_connection *c, void *ev_data, UDPClient *q)
     auto *d = q->GetD<UDPClientPrivate>();
     d->txBytesLock.lock();
     for (auto &ctx : d->txBytes) {
-        mg_send(c, ctx.first.get(), ctx.second);
+        if (mg_send(c, ctx.first.get(), ctx.second)) {
+            memset(c->data, 0, MG_DATA_SIZE);
+            memcpy(c->data, ctx.first.get(), ctx.second);
+        }
     }
 
     d->txBytes.clear();

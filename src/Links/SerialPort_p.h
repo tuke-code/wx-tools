@@ -29,7 +29,7 @@ public:
 static void ReadBytes(itas109::CSerialPort *sp, SerialPort *q)
 {
     auto d = q->GetD<SerialPortPrivate>();
-    char data[10240] = {0};
+    char data[wxtDataSize] = {0};
     int len = sp->readAllData(&data);
     if (len == -1) {
         wxThreadEvent *evt = new wxThreadEvent(wxEVT_THREAD, wxtErrorOccurred);
