@@ -8,6 +8,7 @@
  **************************************************************************************************/
 #pragma once
 
+#include "Link.h"
 #include "SocketBase_p.h"
 
 class SocketServerPrivate : public SocketBasePrivate
@@ -17,7 +18,7 @@ public:
     std::vector<std::pair<std::string, uint16_t>> clients;
     std::pair<std::string, uint16_t> selection;
 
-    void DoRemoveClient(const std::string &address, uint16_t port)
+    void DoTryToDeleteClient(const std::string &address, uint16_t port)
     {
         if (clients.empty()) {
             return;
@@ -36,6 +37,21 @@ public:
         // If the client is the current selection, clear the selection
         if (address == selection.first && port == selection.second) {
             selection = std::make_pair("", 0);
+        }
+    }
+
+    void DoTryToNewClient(const std::string &address, uint16_t port)
+    {
+        auto client = std::make_pair(address, port);
+        if (std::find(clients.begin(), clients.end(), client) == clients.end()) {
+            clients.push_back(client);
+
+            if (evtHandler) {
+                wxThreadEvent *evt = new wxThreadEvent(wxEVT_THREAD, wxtNewClient);
+                evt->SetString(address);
+                evt->SetInt(port);
+                evtHandler->QueueEvent(evt);
+            }
         }
     }
 };

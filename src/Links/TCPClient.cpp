@@ -32,9 +32,7 @@ void *TCPClient::Entry()
     mgr.userdata = this;
     auto *c = mg_connect(&mgr, url.c_str(), TCPClientHandler, nullptr);
     if (c == nullptr) {
-        std::string log(fmt::format("Failed to connect to tcp server: {0}", url));
-        wxtInfo() << log;
-        errorOccurredSignal(log);
+        d->DoTryToQueueErrorOccurred(_("Failed to connect to tcp server."));
         return nullptr;
     }
 
@@ -49,14 +47,11 @@ void *TCPClient::Entry()
     wxtInfo() << fmt::format("TCP client connected from {0} to {1}", from, to);
 #endif
 
-    d->invokedInterrupted.store(false);
-    d->isRunning.store(true);
-    while (!d->invokedInterrupted.load()) {
+    while (!TestDestroy()) {
         mg_mgr_poll(&mgr, 100);
     }
 
     mg_mgr_free(&mgr);
     wxtInfo() << "TCP client thread exited...";
-    d->isRunning.store(false);
     return nullptr;
 }

@@ -43,6 +43,8 @@ private:
     void OnBytesRx(wxThreadEvent &e);
     void OnBytesTx(wxThreadEvent &e);
     void OnErrorOccurred(wxThreadEvent &e);
+    void OnNewClient(wxThreadEvent &e);
+    void OnDeleteClient(wxThreadEvent &e);
     void OnSendTimerTimeout();
     void OnClear();
     void OnTextFormatChanged(TextFormat format);

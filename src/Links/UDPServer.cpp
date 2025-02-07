@@ -31,20 +31,15 @@ void *UDPServer::Entry()
     mgr.userdata = this;
     struct mg_connection *c = mg_listen(&mgr, url.c_str(), UDPServerHandler, nullptr);
     if (c == nullptr) {
-        std::string log(fmt::format("Failed to connect to the server: {0}", url));
-        wxtInfo() << log;
-        errorOccurredSignal(log);
+        d->DoTryToQueueErrorOccurred(_("Failed to connect to the server."));
         return nullptr;
     }
 
-    d->invokedInterrupted.store(false);
-    d->isRunning.store(true);
-    while (!d->invokedInterrupted.load()) {
+    while (!TestDestroy()) {
         mg_mgr_poll(&mgr, 100);
     }
 
     mg_mgr_free(&mgr);
-    d->isRunning.store(false);
     wxtInfo() << "UDP client thread exited...";
     return nullptr;
 }

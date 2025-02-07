@@ -14,6 +14,7 @@
 #include "Common/wxTools.h"
 #include "Links/Link.h"
 #include "LinksUi/LinkUi.h"
+#include "LinksUi/SocketServerUi.h"
 #include "PageSettingsLink.h"
 
 #include "PageIO.h"
@@ -31,6 +32,8 @@ BEGIN_EVENT_TABLE(Page, wxPanel)
 EVT_THREAD(wxtBytesRx, Page::OnBytesRx)
 EVT_THREAD(wxtBytesTx, Page::OnBytesTx)
 EVT_THREAD(wxtErrorOccurred, Page::OnErrorOccurred)
+EVT_THREAD(wxtNewClient, Page::OnNewClient)
+EVT_THREAD(wxtDeleteClient, Page::OnDeleteClient)
 END_EVENT_TABLE()
 
 Page::Page(LinkType type, wxWindow *parent)
@@ -190,6 +193,32 @@ void Page::OnErrorOccurred(wxThreadEvent &e)
 {
     Close();
     wxLogWarning(_("Error: ") + wxString::FromUTF8(e.GetString()));
+}
+
+void Page::OnNewClient(wxThreadEvent &e)
+{
+    auto linkUi = m_pageSettings->GetLinkSettings()->GetLinkUi();
+    if (!dynamic_cast<SocketServerUi *>(linkUi)) {
+        return;
+    }
+
+    auto serverUi = dynamic_cast<SocketServerUi *>(linkUi);
+    wxString ip = e.GetString();
+    int port = e.GetInt();
+    serverUi->DoNewClient(ip.ToStdString(), port);
+}
+
+void Page::OnDeleteClient(wxThreadEvent &e)
+{
+    auto linkUi = m_pageSettings->GetLinkSettings()->GetLinkUi();
+    if (!dynamic_cast<SocketServerUi *>(linkUi)) {
+        return;
+    }
+
+    auto serverUi = dynamic_cast<SocketServerUi *>(linkUi);
+    wxString ip = e.GetString();
+    int port = e.GetInt();
+    serverUi->DoDeleteClient(ip.ToStdString(), port);
 }
 
 void Page::OnSendTimerTimeout()

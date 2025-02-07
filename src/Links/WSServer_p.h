@@ -34,7 +34,7 @@ static void DoTryToClearAllClients(struct mg_connection *c, void *ev_data, WSSer
     for (struct mg_connection *conns = c; conns != nullptr; conns = c->next) {
         std::string ip = d->mg_addr_to_ipv4(&conns->rem);
         uint16_t port = DoReverseByteOrder<uint16_t>(conns->rem.port);
-        d->DoRemoveClient(ip, port);
+        d->DoTryToDeleteClient(ip, port);
         q->deleteClientSignal(ip, port);
         mg_close_conn(conns);
     }
@@ -68,7 +68,7 @@ static void DoSendBytesToClient(struct mg_connection *c, void *ev_data, WSServer
         if (len > 0) {
             q->bytesTxSignal(ctx.first, ctx.second, to + op);
         } else {
-            d->DoRemoveClient(ip, port);
+            d->DoTryToDeleteClient(ip, port);
             q->deleteClientSignal(ip, port);
             q->errorOccurredSignal(std::string("WS server send error"));
             break;
@@ -183,7 +183,7 @@ static void OnMgEvClose(struct mg_connection *c, void *ev_data, WSServer *q)
     std::string ip = d->mg_addr_to_ipv4(&c->rem);
     uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
     q->deleteClientSignal(ip, port);
-    d->DoRemoveClient(ip, port);
+    d->DoTryToDeleteClient(ip, port);
     wxtInfo() << "Server close: " << ip << ":" << port;
 }
 

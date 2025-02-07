@@ -31,6 +31,7 @@ bool Link::Open()
     }
 
     while (!IsRunning()) {
+        // Wait for the thread to start...
     }
 
     return true;
@@ -59,7 +60,7 @@ void Link::SetEvtHandler(wxEvtHandler *handler)
 void *Link::Entry()
 {
     while (!TestDestroy()) {
-        // Do something here
+        // Do something here...
         Sleep(25);
     }
 

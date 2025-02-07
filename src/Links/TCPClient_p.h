@@ -24,14 +24,15 @@ static void OnMgEvRead(struct mg_connection *c, void *ev_data, TCPClient *q)
         return;
     }
 
-    std::shared_ptr<char> bytes(new char[c->recv.len], [](char *p) { delete[] p; });
-    memcpy(bytes.get(), c->recv.buf, c->recv.len);
-
     auto *d = q->GetD<TCPClientPrivate>();
     const std::string ip = d->mg_addr_to_ipv4(&c->rem);
     const uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
     const std::string from = DoEncodeFlag(ip, port);
-    q->bytesRxSignal(std::move(bytes), c->recv.len, from);
+
+    std::shared_ptr<char> bytes(new char[c->recv.len], [](char *p) { delete[] p; });
+    memcpy(bytes.get(), c->recv.buf, c->recv.len);
+
+    d->DoTryToQueueRxBytes(bytes, c->recv.len, from);
     c->recv.len = 0;
 }
 
@@ -44,11 +45,10 @@ static void OnMgEvPoll(struct mg_connection *c, void *ev_data, TCPClient *q)
     std::string to = DoEncodeFlag(ip, port);
 
     for (auto &ctx : d->txBytes) {
-        len = mg_send(c, ctx.first.get(), ctx.second);
-        if (len > 0) {
-            q->bytesTxSignal(ctx.first, ctx.second, to);
+        if (mg_send(c, ctx.first.get(), ctx.second)) {
+            d->DoTryToQueueTxBytes(ctx.first, ctx.second, to);
         } else {
-            q->errorOccurredSignal(std::string("TCP server send error"));
+            d->DoTryToQueueErrorOccurred(_("TCP client send bytes error."));
             break;
         }
     }
@@ -61,7 +61,8 @@ static void OnMgEvClose(struct mg_connection *c, void *ev_data, TCPClient *q)
     wxUnusedVar(c);
     wxUnusedVar(ev_data);
 
-    q->errorOccurredSignal("TCP client disconnected");
+    auto *d = q->GetD<SocketClientPrivate>();
+    d->DoTryToQueueErrorOccurred(_("TCP client has been disconnected."));
 }
 
 static void TCPClientHandler(struct mg_connection *c, int ev, void *ev_data)

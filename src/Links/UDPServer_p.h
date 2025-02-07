@@ -45,12 +45,10 @@ static void OnMgEvPoll(struct mg_connection *c, void *ev_data, UDPServer *q)
     }
 
     for (auto &ctx : d->txBytes) {
-        len = mg_send(c, ctx.first.get(), ctx.second);
-        if (len > 0) {
-            q->bytesTxSignal(ctx.first, ctx.second, to);
+        if (mg_send(c, ctx.first.get(), ctx.second)) {
+            d->DoTryToQueueTxBytes(ctx.first, ctx.second, wxString(to));
         } else {
-            wxtInfo() << fmt::format("Send bytes to {} failed!", to);
-            q->deleteClientSignal(ip, port);
+            d->DoTryToDeleteClient(ip, port);
         }
     }
 
@@ -84,45 +82,9 @@ static void OnMgEvRead(struct mg_connection *c, void *ev_data, UDPServer *q)
     const uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
     const std::string from = DoEncodeFlag(ip, port);
 
-    auto client = std::make_pair(ip, port);
-    auto clients = d->clients;
-    if (std::find(clients.begin(), clients.end(), client) == clients.end()) {
-        d->clients.push_back(client);
-        q->newClientSignal(ip, port);
-    }
-
-    q->bytesRxSignal(std::move(bytes), c->recv.len, from);
-    wxtDataItem item{bytes, int(c->recv.len), from};
-    wxThreadEvent *evt = new wxThreadEvent(wxEVT_THREAD, wxtBytesRx);
-    evt->SetPayload<wxtDataItem>(item);
-    d->evtHandler->QueueEvent(evt);
+    d->DoTryToNewClient(ip, port);
+    d->DoTryToQueueRxBytes(bytes, c->recv.len, from);
     c->recv.len = 0;
-}
-
-static void OnMgEvWrite(struct mg_connection *c, void *ev_data, UDPServer *q)
-{
-    UDPServerPrivate *d = q->GetD<UDPServerPrivate>();
-    int len = *reinterpret_cast<const long *>(ev_data);
-    if (len <= 0) {
-        return;
-    }
-
-    auto data = std::shared_ptr<char>(new char[len], [](char *p) { delete[] p; });
-    memcpy(data.get(), c->data, len);
-
-    std::string ip = d->mg_addr_to_ipv4(&c->rem);
-    uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
-    std::string flag = DoEncodeFlag(ip, port);
-
-#if 0
-    wxtInfo() << fmt::format("UDP client write {0} bytes to {1}", len, flag);
-#endif
-
-    if (d && d->evtHandler) {
-        auto *evt = new wxThreadEvent(wxEVT_THREAD, wxtBytesTx);
-        evt->SetPayload<wxtDataItem>(wxtDataItem{data, len, flag});
-        d->evtHandler->QueueEvent(evt);
-    }
 }
 
 static void UDPServerHandler(struct mg_connection *c, int ev, void *ev_data)
@@ -134,7 +96,5 @@ static void UDPServerHandler(struct mg_connection *c, int ev, void *ev_data)
         OnMgEvRead(c, ev_data, q);
     } else if (ev == MG_EV_POLL) {
         OnMgEvPoll(c, ev_data, q);
-    } else if (ev == MG_EV_WRITE) {
-        OnMgEvWrite(c, ev_data, q);
     }
 }

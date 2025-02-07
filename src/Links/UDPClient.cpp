@@ -32,11 +32,7 @@ void *UDPClient::Entry()
     mgr.userdata = this;
     struct mg_connection *c = mg_connect(&mgr, url.c_str(), UDPClientHandler, nullptr);
     if (c == nullptr) {
-        std::string log(fmt::format("Failed to connect to the server: {0}", url));
-        wxtInfo() << log;
-        d->errorMessagesLock.lock();
-        d->errorMessage = log;
-        d->errorMessagesLock.unlock();
+        d->DoTryToQueueErrorOccurred(_("Failed to connect to the server."));
         return nullptr;
     }
 

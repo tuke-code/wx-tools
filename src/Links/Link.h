@@ -31,12 +31,6 @@ public:
     Link(LinkPrivate *d);
     ~Link();
 
-    // clang-format off
-    wxtSignal<std::shared_ptr<char> /*bytes*/, int /*length of bytes*/, std::string /*to  */> bytesTxSignal;
-    wxtSignal<std::shared_ptr<char> /*bytes*/, int /*length of bytes*/, std::string /*from*/> bytesRxSignal;
-    sigslot::signal<std::string /*error message*/> errorOccurredSignal;
-    // clang-format on
-
     bool Open();
     void Close();
     void Write(std::shared_ptr<char> bytes, int len);
@@ -57,5 +51,4 @@ protected:
 
 protected:
     LinkPrivate *d;
-    wxEvtHandler *m_evtHandler;
 };

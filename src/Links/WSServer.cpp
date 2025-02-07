@@ -58,7 +58,7 @@ void *WSServer::Entry()
     // Remove all clients
     auto tmp = d->clients;
     for (auto &client : tmp) {
-        d->DoRemoveClient(client.first, client.second);
+        d->DoTryToDeleteClient(client.first, client.second);
         deleteClientSignal(client.first, client.second);
     }
 

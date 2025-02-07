@@ -45,14 +45,8 @@ static void OnMgEvRead(struct mg_connection *c, void *ev_data, TCPServer *q)
     const uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
     const std::string from = DoEncodeFlag(ip, port);
 
-    auto client = std::make_pair(ip, port);
-    auto clients = d->clients;
-    if (std::find(clients.begin(), clients.end(), client) == clients.end()) {
-        d->clients.push_back(client);
-        q->newClientSignal(ip, port);
-    }
-
-    q->bytesRxSignal(std::move(bytes), c->recv.len, from);
+    d->DoTryToNewClient(ip, port);
+    d->DoTryToQueueRxBytes(bytes, c->recv.len, from);
     c->recv.len = 0;
 }
 
@@ -61,7 +55,7 @@ static void OnMgEvAccept(struct mg_connection *c, void *ev_data, TCPServer *q)
     auto *d = q->GetD<TCPServerPrivate>();
     const std::string remIp = d->mg_addr_to_ipv4(&c->rem);
     const uint16_t remPort = DoReverseByteOrder<uint16_t>(c->rem.port);
-    q->newClientSignal(remIp, remPort);
+    d->DoTryToNewClient(remIp, remPort);
 }
 
 static void OnMgEvPoll(struct mg_connection *c, void *ev_data, TCPServer *q)
@@ -73,11 +67,10 @@ static void OnMgEvPoll(struct mg_connection *c, void *ev_data, TCPServer *q)
     std::string to = DoEncodeFlag(ip, port);
 
     for (auto &ctx : d->txBytes) {
-        len = mg_send(c, ctx.first.get(), ctx.second);
-        if (len > 0) {
-            q->bytesTxSignal(ctx.first, ctx.second, to);
+        if (mg_send(c, ctx.first.get(), ctx.second)) {
+            d->DoTryToQueueTxBytes(ctx.first, ctx.second, to);
         } else {
-            q->errorOccurredSignal(std::string("TCP server send error"));
+            d->DoTryToQueueErrorOccurred(_("TCP server send error."));
             break;
         }
     }
@@ -88,10 +81,13 @@ static void OnMgEvPoll(struct mg_connection *c, void *ev_data, TCPServer *q)
 static void OnMgEvClose(struct mg_connection *c, void *ev_data, TCPServer *q)
 {
     auto *d = q->GetD<TCPServerPrivate>();
-    std::string ip = d->mg_addr_to_ipv4(&c->rem);
-    uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
-    std::string client = DoEncodeFlag(ip, port);
-    q->deleteClientSignal(ip, port);
+    if (c->is_client) {
+        std::string ip = d->mg_addr_to_ipv4(&c->rem);
+        uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
+        d->DoTryToDeleteClient(ip, port);
+    } else {
+        d->DoTryToQueueErrorOccurred(_("TCP server has been closed."));
+    }
 }
 
 static void TCPServerHandler(struct mg_connection *c, int ev, void *ev_data)
@@ -106,8 +102,6 @@ static void TCPServerHandler(struct mg_connection *c, int ev, void *ev_data)
     } else if (ev == MG_EV_POLL) {
         OnMgEvPoll(c, ev_data, q);
     } else if (ev == MG_EV_CLOSE) {
-#if 0
         OnMgEvClose(c, ev_data, q);
-#endif
     }
 }

@@ -11,34 +11,49 @@
 #include <atomic>
 #include <memory>
 #include <mutex>
-#include <string>
 #include <vector>
 
 #include <wx/timer.h>
 
-#include "Common/wxTools.h"
+#include "Link.h"
 
 class LinkPrivate
 {
 public:
     LinkPrivate()
-        : invokedInterrupted(false)
-        , isRunning(false)
-        , evtHandler(nullptr)
+        : evtHandler(nullptr)
     {}
 
-    std::atomic_bool invokedInterrupted;
-    std::atomic_bool isRunning;
-
     std::mutex txBytesLock;
-    std::vector<std::pair<std::shared_ptr<char> /*data*/, int /*len*/>> txBytes; // bytes to send
+    std::vector<std::pair<std::shared_ptr<char> /*data*/, int /*len*/>> txBytes;
+    wxEvtHandler *evtHandler; // You must set this to receive events if you want to use them.
 
-    std::mutex errorMessagesLock;
-    std::string errorMessage; // the last error message
+public:
+    void DoTryToQueueRxBytes(std::shared_ptr<char> bytes, int len, const wxString &from)
+    {
+        DoTryToQueueBytes(bytes, len, from, wxtBytesRx);
+    }
 
-    std::mutex bytesRxLock;
-    std::vector<wxtDataItem> bytesRx; // bytes received
-    std::mutex bytesTxLock;
-    std::vector<wxtDataItem> bytesTx; // bytes sent
-    wxEvtHandler *evtHandler;
+    void DoTryToQueueTxBytes(std::shared_ptr<char> bytes, int len, const wxString &to)
+    {
+        DoTryToQueueBytes(bytes, len, to, wxtBytesTx);
+    }
+
+    void DoTryToQueueBytes(std::shared_ptr<char> bytes, int len, const wxString &flag, int id)
+    {
+        if (bytes && evtHandler && len > 0) {
+            auto *evt = new wxThreadEvent(wxEVT_THREAD, id);
+            evt->SetPayload<wxtDataItem>(wxtDataItem{bytes, len, flag.ToStdString()});
+            evtHandler->QueueEvent(evt);
+        }
+    }
+
+    void DoTryToQueueErrorOccurred(const wxString &error)
+    {
+        if (evtHandler) {
+            auto *evt = new wxThreadEvent(wxEVT_THREAD, wxtErrorOccurred);
+            evt->SetString(error);
+            evtHandler->QueueEvent(evt);
+        }
+    }
 };
