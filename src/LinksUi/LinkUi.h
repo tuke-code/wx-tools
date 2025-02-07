@@ -21,7 +21,7 @@ public:
     ~LinkUi();
     Link *GetLink() const;
 
-    bool Open();
+    bool Open(wxEvtHandler *evtHandler);
     void Close();
     bool IsOpen() const;
 

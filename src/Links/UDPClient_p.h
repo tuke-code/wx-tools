@@ -21,11 +21,6 @@ public:
 static void OnMgEvPoll(struct mg_connection *c, void *ev_data, UDPClient *q)
 {
     auto *d = q->GetD<UDPClientPrivate>();
-    size_t len = 0;
-    std::string ip = d->mg_addr_to_ipv4(&c->rem);
-    uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
-    std::string to = DoEncodeFlag(ip, port);
-
     d->txBytesLock.lock();
     for (auto &ctx : d->txBytes) {
         mg_send(c, ctx.first.get(), ctx.second);
@@ -55,7 +50,7 @@ static void OnMgEvRead(struct mg_connection *c, void *ev_data, UDPClient *q)
     }
 
     UDPClientPrivate *d = q->GetD<UDPClientPrivate>();
-    WXTDataItem item;
+    wxtDataItem item;
     item.len = c->recv.len;
 
     const std::string ip = d->mg_addr_to_ipv4(&c->rem);
@@ -68,46 +63,59 @@ static void OnMgEvRead(struct mg_connection *c, void *ev_data, UDPClient *q)
     item.data = bytes;
     c->recv.len = 0;
 
-    d->bytesRxLock.lock();
-    d->bytesRx.push_back(item);
-    d->bytesRxLock.unlock();
+    if (d && d->evtHandler) {
+        auto *evt = new wxThreadEvent(wxEVT_THREAD, wxtBytesTx);
+        evt->SetPayload<wxtDataItem>(item);
+        d->evtHandler->QueueEvent(evt);
+    }
 }
 
 static void OnMgEvClose(struct mg_connection *c, void *ev_data, UDPClient *q)
 {
     UDPClientPrivate *d = q->GetD<UDPClientPrivate>();
-    d->errorMessagesLock.lock();
-    d->errorMessage = _("UDP client disconnected");
-    d->errorMessagesLock.unlock();
+    wxString msg = _("UDP client disconnected");
+    if (d && d->evtHandler) {
+        auto *evt = new wxThreadEvent(wxEVT_THREAD, wxtErrorOccurred);
+        evt->SetString(msg);
+        d->evtHandler->QueueEvent(evt);
+    }
 }
 
 static void OnMgEvError(struct mg_connection *c, void *ev_data, UDPClient *q)
 {
     UDPClientPrivate *d = q->GetD<UDPClientPrivate>();
-    d->errorMessagesLock.lock();
-    d->errorMessage = reinterpret_cast<const char *>(ev_data);
-    d->errorMessagesLock.unlock();
+    std::string msg = reinterpret_cast<const char *>(ev_data);
+    if (d && d->evtHandler) {
+        auto *evt = new wxThreadEvent(wxEVT_THREAD, wxtErrorOccurred);
+        evt->SetString(msg);
+        d->evtHandler->QueueEvent(evt);
+    }
 }
 
 static void OnMgEvWrite(struct mg_connection *c, void *ev_data, UDPClient *q)
 {
     UDPClientPrivate *d = q->GetD<UDPClientPrivate>();
-    WXTDataItem item;
-    item.len = *reinterpret_cast<const long *>(ev_data);
-    if (item.len <= 0) {
+    int len = *reinterpret_cast<const long *>(ev_data);
+    if (len <= 0) {
         return;
     }
 
-    item.data = std::shared_ptr<char>(new char[item.len], [](char *p) { delete[] p; });
-    memcpy(item.data.get(), c->data, item.len);
+    std::shared_ptr<char> data = std::shared_ptr<char>(new char[len], [](char *p) { delete[] p; });
+    memcpy(data.get(), c->data, len);
 
     std::string ip = d->mg_addr_to_ipv4(&c->rem);
     uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
-    item.flag = DoEncodeFlag(ip, port);
+    std::string flag = DoEncodeFlag(ip, port);
 
-    d->bytesTxLock.lock();
-    d->bytesTx.push_back(item);
-    d->bytesTxLock.unlock();
+#if 0
+    wxtInfo() << fmt::format("UDP client write {0} bytes to {1}", len, flag);
+#endif
+
+    if (d && d->evtHandler) {
+        auto *evt = new wxThreadEvent(wxEVT_THREAD, wxtBytesTx);
+        evt->SetPayload<wxtDataItem>(wxtDataItem{std::move(data), len, flag});
+        d->evtHandler->QueueEvent(evt);
+    }
 }
 
 static void UDPClientHandler(struct mg_connection *c, int ev, void *ev_data)

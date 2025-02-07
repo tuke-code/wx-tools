@@ -16,6 +16,14 @@
 
 #include "Common/wxTools.h"
 
+enum LinkEvent {
+    wxtBytesTx = wxID_HIGHEST + 1,
+    wxtBytesRx,
+    wxtErrorOccurred,
+    wxtNewClient,
+    wxtDeleteClient
+};
+
 class LinkPrivate;
 class Link : public wxThread
 {
@@ -32,6 +40,7 @@ public:
     bool Open();
     void Close();
     void Write(std::shared_ptr<char> bytes, int len);
+    void SetEvtHandler(wxEvtHandler *handler);
 
     virtual void Load(const wxtJson &parameters) = 0;
     virtual wxtJson Save() = 0;
@@ -48,4 +57,5 @@ protected:
 
 protected:
     LinkPrivate *d;
+    wxEvtHandler *m_evtHandler;
 };

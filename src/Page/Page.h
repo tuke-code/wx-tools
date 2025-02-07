@@ -26,6 +26,7 @@ class Page : public wxPanel
 {
 public:
     Page(LinkType type, wxWindow *parent);
+    Page() {}
 
     void Load(const wxtJson &json);
     wxtJson Save() const;
@@ -39,9 +40,9 @@ private:
     void OnInvokeOpenOrClose();
     void OnInvokeWrite(TextFormat format);
     void OnInvokeStartTimer(int ms);
-    void OnBytesRx(std::shared_ptr<char> bytes, int len, std::string from);
-    void OnBytesTx(std::shared_ptr<char> bytes, int len, std::string to);
-    void OnErrorOccurred(std::string message);
+    void OnBytesRx(wxThreadEvent &e);
+    void OnBytesTx(wxThreadEvent &e);
+    void OnErrorOccurred(wxThreadEvent &e);
     void OnSendTimerTimeout();
     void OnClear();
     void OnTextFormatChanged(TextFormat format);
@@ -49,4 +50,8 @@ private:
     void OutputText(std::shared_ptr<char> bytes, int len, std::string &fromTo, bool isRx);
     void Open();
     void Close();
+
+private:
+    DECLARE_DYNAMIC_CLASS(Page);
+    DECLARE_EVENT_TABLE();
 };

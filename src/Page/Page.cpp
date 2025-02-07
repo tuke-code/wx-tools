@@ -8,8 +8,8 @@
  **************************************************************************************************/
 #include "Page.h"
 
-#include <wx/gbsizer.h>
 #include <fmt/format.h>
+#include <wx/gbsizer.h>
 
 #include "Common/wxTools.h"
 #include "Links/Link.h"
@@ -25,6 +25,13 @@
 #include "PageSettingsLinkPopup.h"
 #include "PageSettingsOutput.h"
 #include "PageSettingsOutputPopup.h"
+
+IMPLEMENT_ABSTRACT_CLASS(Page, wxPanel)
+BEGIN_EVENT_TABLE(Page, wxPanel)
+EVT_THREAD(wxtBytesRx, Page::OnBytesRx)
+EVT_THREAD(wxtBytesTx, Page::OnBytesTx)
+EVT_THREAD(wxtErrorOccurred, Page::OnErrorOccurred)
+END_EVENT_TABLE()
 
 Page::Page(LinkType type, wxWindow *parent)
     : wxPanel(parent, wxID_ANY)
@@ -55,7 +62,6 @@ Page::Page(LinkType type, wxWindow *parent)
     PageSettingsOutput *outputSettings = m_pageSettings->GetOutputSettings();
     outputSettings->clearSignal.connect(&Page::OnClear, this);
 
-    m_sendTimer.SetOwner(this);
     m_sendTimer.Bind(wxEVT_TIMER, [this](wxTimerEvent &event) { OnSendTimerTimeout(); });
 }
 
@@ -168,20 +174,22 @@ void Page::OnInvokeStartTimer(int ms)
     m_sendTimer.Start(ms);
 }
 
-void Page::OnBytesRx(std::shared_ptr<char> bytes, int len, std::string from)
+void Page::OnBytesRx(wxThreadEvent &e)
 {
-    OutputText(std::move(bytes), len, from, true);
+    wxtDataItem item = e.GetPayload<wxtDataItem>();
+    OutputText(item.data, item.len, item.flag, true);
 }
 
-void Page::OnBytesTx(std::shared_ptr<char> bytes, int len, std::string to)
+void Page::OnBytesTx(wxThreadEvent &e)
 {
-    OutputText(std::move(bytes), len, to, false);
+    auto item = e.GetPayload<wxtDataItem>();
+    OutputText(item.data, item.len, item.flag, false);
 }
 
-void Page::OnErrorOccurred(std::string message)
+void Page::OnErrorOccurred(wxThreadEvent &e)
 {
     Close();
-    wxLogWarning(_("Error: ") + wxString::FromUTF8(message.c_str()));
+    wxLogWarning(_("Error: ") + wxString::FromUTF8(e.GetString()));
 }
 
 void Page::OnSendTimerTimeout()
@@ -300,15 +308,10 @@ void Page::Open()
 {
     PageSettingsLink *linkSettings = m_pageSettings->GetLinkSettings();
     LinkUi *linkUi = linkSettings->GetLinkUi();
-    if (linkUi->Open()) {
+    if (linkUi->Open(GetEventHandler())) {
         linkUi->Disable();
         linkSettings->SetOpenButtonLabel(_("Close"));
         wxtInfo() << "Open link successfully.";
-
-        Link *link = linkUi->GetLink();
-        link->bytesRxSignal.connect(&Page::OnBytesRx, this);
-        link->bytesTxSignal.connect(&Page::OnBytesTx, this);
-        link->errorOccurredSignal.connect(&Page::OnErrorOccurred, this);
     } else {
         wxMessageBox(_("Failed to open link."), _("Error"), wxICON_ERROR);
     }
@@ -324,10 +327,6 @@ void Page::Close()
     inputSettings->SetCycleIntervalComboBoxSelection(0);
 
     Link *link = linkUi->GetLink();
-    link->bytesTxSignal.disconnect_all();
-    link->bytesRxSignal.disconnect_all();
-    link->errorOccurredSignal.disconnect_all();
-
     linkUi->Close();
     linkUi->Enable();
     linkSettings->SetOpenButtonLabel(_("Open"));

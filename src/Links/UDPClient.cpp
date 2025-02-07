@@ -23,9 +23,6 @@ UDPClient::~UDPClient()
 
 void *UDPClient::Entry()
 {
-    d->invokedInterrupted.store(false);
-    d->isRunning.store(true);
-
     UDPClientPrivate *d = GetD<UDPClientPrivate>();
     std::string url = fmt::format("udp://{0}:{1}", d->serverAddress.ToStdString(), d->serverPort);
     struct mg_mgr mgr;
@@ -48,7 +45,6 @@ void *UDPClient::Entry()
     }
 
     mg_mgr_free(&mgr);
-    d->isRunning.store(false);
     wxtInfo() << "UDP client thread exited...";
     return nullptr;
 }

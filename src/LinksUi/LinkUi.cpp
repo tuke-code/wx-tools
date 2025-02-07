@@ -18,7 +18,7 @@ LinkUi::LinkUi(wxWindow *parent)
 
 LinkUi::~LinkUi()
 {
-    if (m_link) {
+    if (m_link && m_link->IsAlive()) {
         m_link->Close();
     }
 }
@@ -28,7 +28,7 @@ Link *LinkUi::GetLink() const
     return m_link;
 }
 
-bool LinkUi::Open()
+bool LinkUi::Open(wxEvtHandler *evtHandler)
 {
     m_link = NewLink();
     if (!m_link) {
@@ -36,18 +36,17 @@ bool LinkUi::Open()
     }
 
     m_link->Load(Save());
-    if (m_link) {
-        wxtInfo() << "Link parameters: " << m_link->Save().dump();
-    }
+    wxtInfo() << "Link parameters: " << m_link->Save().dump();
 
+    m_link->SetEvtHandler(evtHandler);
     return m_link->Open();
 }
 
 void LinkUi::Close()
 {
-    if (m_link) {
+    if (m_link && m_link->IsAlive()) {
         m_link->Close();
-        DeleteLink(m_link);
+        //DeleteLink(m_link);
         m_link = nullptr;
     }
 }

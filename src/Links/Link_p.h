@@ -24,6 +24,7 @@ public:
     LinkPrivate()
         : invokedInterrupted(false)
         , isRunning(false)
+        , evtHandler(nullptr)
     {}
 
     std::atomic_bool invokedInterrupted;
@@ -36,7 +37,8 @@ public:
     std::string errorMessage; // the last error message
 
     std::mutex bytesRxLock;
-    std::vector<WXTDataItem> bytesRx; // bytes received
+    std::vector<wxtDataItem> bytesRx; // bytes received
     std::mutex bytesTxLock;
-    std::vector<WXTDataItem> bytesTx; // bytes sent
+    std::vector<wxtDataItem> bytesTx; // bytes sent
+    wxEvtHandler *evtHandler;
 };

@@ -19,6 +19,15 @@ class UDPServerPrivate : public SocketServerPrivate
 public:
 };
 
+static void OnErrorOccurred(const wxString &msg, UDPServerPrivate *d)
+{
+    if (d && d->evtHandler) {
+        auto *evt = new wxThreadEvent(wxEVT_THREAD, wxtErrorOccurred);
+        evt->SetString(msg);
+        d->evtHandler->QueueEvent(evt);
+    }
+}
+
 static void OnMgEvPoll(struct mg_connection *c, void *ev_data, UDPServer *q)
 {
     auto *d = q->GetD<UDPServerPrivate>();
@@ -83,7 +92,37 @@ static void OnMgEvRead(struct mg_connection *c, void *ev_data, UDPServer *q)
     }
 
     q->bytesRxSignal(std::move(bytes), c->recv.len, from);
+    wxtDataItem item{bytes, int(c->recv.len), from};
+    wxThreadEvent *evt = new wxThreadEvent(wxEVT_THREAD, wxtBytesRx);
+    evt->SetPayload<wxtDataItem>(item);
+    d->evtHandler->QueueEvent(evt);
     c->recv.len = 0;
+}
+
+static void OnMgEvWrite(struct mg_connection *c, void *ev_data, UDPServer *q)
+{
+    UDPServerPrivate *d = q->GetD<UDPServerPrivate>();
+    int len = *reinterpret_cast<const long *>(ev_data);
+    if (len <= 0) {
+        return;
+    }
+
+    auto data = std::shared_ptr<char>(new char[len], [](char *p) { delete[] p; });
+    memcpy(data.get(), c->data, len);
+
+    std::string ip = d->mg_addr_to_ipv4(&c->rem);
+    uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
+    std::string flag = DoEncodeFlag(ip, port);
+
+#if 0
+    wxtInfo() << fmt::format("UDP client write {0} bytes to {1}", len, flag);
+#endif
+
+    if (d && d->evtHandler) {
+        auto *evt = new wxThreadEvent(wxEVT_THREAD, wxtBytesTx);
+        evt->SetPayload<wxtDataItem>(wxtDataItem{data, len, flag});
+        d->evtHandler->QueueEvent(evt);
+    }
 }
 
 static void UDPServerHandler(struct mg_connection *c, int ev, void *ev_data)
@@ -95,5 +134,7 @@ static void UDPServerHandler(struct mg_connection *c, int ev, void *ev_data)
         OnMgEvRead(c, ev_data, q);
     } else if (ev == MG_EV_POLL) {
         OnMgEvPoll(c, ev_data, q);
+    } else if (ev == MG_EV_WRITE) {
+        OnMgEvWrite(c, ev_data, q);
     }
 }

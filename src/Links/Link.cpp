@@ -15,13 +15,11 @@ Link::Link(LinkPrivate *dPtr)
 
 Link::~Link()
 {
-    Close();
+
 }
 
 bool Link::Open()
 {
-    Close();
-
     if (Create() != wxTHREAD_NO_ERROR) {
         wxtWarning() << "Failed to create thread";
         return false;
@@ -32,13 +30,16 @@ bool Link::Open()
         return false;
     }
 
+    while (!IsRunning()) {
+    }
+
     return true;
 }
 
 void Link::Close()
 {
-    Exit();
-    Wait();
+    Delete();
+    wxtInfo() << "Link thread exited...";
 }
 
 void Link::Write(std::shared_ptr<char> bytes, int len)
@@ -49,7 +50,12 @@ void Link::Write(std::shared_ptr<char> bytes, int len)
         d->txBytesLock.unlock();
     }
 }
-#if 1
+
+void Link::SetEvtHandler(wxEvtHandler *handler)
+{
+    d->evtHandler = handler;
+}
+
 void *Link::Entry()
 {
     while (!TestDestroy()) {
@@ -59,4 +65,3 @@ void *Link::Entry()
 
     return nullptr;
 }
-#endif

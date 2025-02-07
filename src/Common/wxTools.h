@@ -25,7 +25,7 @@
 
 //--------------------------------------------------------------------------------------------------
 // Datastructure
-struct WXTDataItem
+struct wxtDataItem
 {
     std::shared_ptr<char> data;
     int len;
