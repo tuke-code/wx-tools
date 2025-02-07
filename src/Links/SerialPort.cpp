@@ -9,6 +9,8 @@
 #include "SerialPort.h"
 #include "SerialPort_p.h"
 
+#include <fmt/format.h>
+
 SerialPort::SerialPort()
     : Link(new SerialPortPrivate())
 {}
@@ -60,8 +62,10 @@ void *SerialPort::Entry()
             std::this_thread::sleep_for(std::chrono::milliseconds(50));
         }
     } else {
-        std::string errorString(sp->getLastErrorMsg());
-        errorOccurredSignal(std::string("Open port failed.") + errorString);
+        wxThreadEvent *evt = new wxThreadEvent(wxEVT_THREAD, wxtErrorOccurred);
+        wxString tmp = _("Open port failed:");
+        evt->SetString(fmt::format("{0} {1}", tmp, sp->getLastErrorMsg()));
+        d->evtHandler->QueueEvent(evt);
     }
 
     sp->close();
