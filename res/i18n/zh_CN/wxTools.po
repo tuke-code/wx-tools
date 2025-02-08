@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2025-02-08 11:50+0800\n"
-"PO-Revision-Date: 2025-02-08 11:57+0800\n"
+"POT-Creation-Date: 2025-02-08 23:18+0800\n"
+"PO-Revision-Date: 2025-02-08 23:19+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: zh_CN\n"
@@ -70,11 +70,15 @@ msgstr "Web Socket服务器"
 msgid "wxTools.json"
 msgstr "wxTools.json"
 
+#: Common/wxTools.h:27
+msgid "(Unconnected)"
+msgstr "未链接"
+
 #: Links/SerialPort_p.h:48
 msgid "Write data failed."
 msgstr "发送数据失败。"
 
-#: Links/TCPClient.cpp:35
+#: Links/TCPClient.cpp:34
 msgid "Failed to connect to tcp server."
 msgstr "连接TCP服务器失败。"
 
@@ -86,45 +90,49 @@ msgstr "发送数据至TCP客户端失败。"
 msgid "TCP client has been Close."
 msgstr "TCP客户端已被断开链接。"
 
-#: Links/TCPServer.cpp:32 Links/UDPClient.cpp:35 Links/UDPServer.cpp:34
-msgid "Failed to connect to the server."
-msgstr "链接服务器失败。"
+#: Links/TCPServer.cpp:32
+msgid "Failed to create tcp server."
+msgstr "无法创建TCP服务器。"
 
-#: Links/TCPServer_p.h:74
-msgid "TCP server send error."
-msgstr "TCP服务器发送数据失败。"
-
-#: Links/TCPServer_p.h:92
+#: Links/TCPServer_p.h:88
 msgid "TCP server has been closed."
 msgstr "TCP服务器已关闭。"
+
+#: Links/UDPClient.cpp:34 Links/UDPServer.cpp:34
+msgid "Failed to connect to the server."
+msgstr "链接服务器失败。"
 
 #: Links/UDPClient_p.h:32
 msgid "UDP client sends bytes failed."
 msgstr "UDP客户端发送数据失败。"
 
-#: Links/UDPClient_p.h:84
+#: Links/UDPClient_p.h:77
 msgid "UDP client disconnected"
 msgstr "UDP客户端已关闭"
 
-#: Links/WSClient.cpp:39
+#: Links/UDPServer_p.h:79
+msgid "UDP server closed."
+msgstr "UDP服务器已关闭。"
+
+#: Links/WSClient.cpp:34
 msgid "Failed to create a WebSocket client."
 msgstr "无法创建Web Socket客户端。"
 
-#: Links/WSClient_p.h:72
-msgid "WebSocket client has been close."
-msgstr "Web Socket客户端已关闭。"
+#: Links/WSClient_p.h:62
+msgid "WebSocket client has been closed, server has been closed or not found."
+msgstr "Web Socket客户端已关闭，服务器已关闭或未找到。"
 
-#: Links/WSClient_p.h:108
+#: Links/WSClient_p.h:90
 msgid "WS server send bytes error."
 msgstr "Web Socket服务器发送数据失败。"
 
-#: Links/WSServer.cpp:36
+#: Links/WSServer.cpp:35
 msgid "Failed to create a WebSocket server!"
 msgstr "无法创建Web Socket服务器！"
 
-#: Links/WSServer_p.h:135
-msgid "Server has been closed."
-msgstr "服务器已关闭。"
+#: Links/WSServer_p.h:114
+msgid "Web socket server has been closed."
+msgstr "Web Socket客户端已关闭。"
 
 #: LinksUi/SerialPortUi.cpp:39
 msgid "Port name"
@@ -150,23 +158,23 @@ msgstr "校验位"
 msgid "Flow bits"
 msgstr "流控位"
 
-#: LinksUi/SocketBaseUi.cpp:107
+#: LinksUi/SocketBaseUi.cpp:114
 msgid "Server IP"
 msgstr "服务器地址"
 
-#: LinksUi/SocketBaseUi.cpp:120
+#: LinksUi/SocketBaseUi.cpp:127
 msgid "Server port"
 msgstr "服务器端口"
 
-#: LinksUi/SocketBaseUi.cpp:131
+#: LinksUi/SocketBaseUi.cpp:138
 msgid "Write to"
 msgstr "目标客户端"
 
-#: LinksUi/SocketBaseUi.cpp:143
+#: LinksUi/SocketBaseUi.cpp:150
 msgid "All Clients"
 msgstr "所有客户端"
 
-#: LinksUi/SocketBaseUi.cpp:161
+#: LinksUi/SocketBaseUi.cpp:168
 msgid "Tx Channel"
 msgstr "发送通道"
 
@@ -286,31 +294,27 @@ msgstr "访问作者微软商店主页。"
 msgid "Other Applications"
 msgstr "其他应用"
 
-#: Page/Page.cpp:111
+#: Page/Page.cpp:118
 msgid "Link is not opened."
 msgstr "链接未打开。"
 
-#: Page/Page.cpp:111 Page/Page.cpp:173 Page/Page.cpp:348
+#: Page/Page.cpp:118 Page/Page.cpp:180 Page/Page.cpp:373
 msgid "Error"
 msgstr "发生错误"
 
-#: Page/Page.cpp:173
+#: Page/Page.cpp:180
 msgid "Link is not open."
 msgstr "链接未打开。"
 
-#: Page/Page.cpp:196
-msgid "Error: "
-msgstr "发生错误："
-
-#: Page/Page.cpp:345
+#: Page/Page.cpp:371
 msgid "Close"
 msgstr "关闭"
 
-#: Page/Page.cpp:348
+#: Page/Page.cpp:373
 msgid "Failed to open link."
 msgstr "打开链接失败。"
 
-#: Page/Page.cpp:365 Page/PageSettingsLink.cpp:33
+#: Page/Page.cpp:390 Page/PageSettingsLink.cpp:33
 msgid "Open"
 msgstr "打开"
 
@@ -458,6 +462,18 @@ msgstr "1检验"
 #: Utilities/ParityComboBox.cpp:25
 msgid "Space"
 msgstr "0校验"
+
+#~ msgid "Failed to create web socket server."
+#~ msgstr "无法创建Web Socket服务器。"
+
+#~ msgid "Server has been closed."
+#~ msgstr "服务器已关闭。"
+
+#~ msgid "Error: "
+#~ msgstr "发生错误："
+
+#~ msgid "TCP server send error."
+#~ msgstr "TCP服务器发送数据失败。"
 
 #~ msgid "Read data failed."
 #~ msgstr "读取数据失败"

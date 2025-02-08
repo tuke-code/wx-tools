@@ -52,6 +52,7 @@ void SerialPort::Loop()
     auto *sp = new itas109::CSerialPort();
     sp->init(d->portName.c_str(), d->baudRate, d->parity, d->dataBits, d->stopBits, d->flowControl);
     if (sp->open()) {
+        d->DoQueueLinkOpened();
         while (!TestDestroy()) {
             // Read data....
             ReadBytes(sp, this);
@@ -64,7 +65,9 @@ void SerialPort::Loop()
 
         sp->close();
     } else {
+        wxtInfo() << sp->getLastErrorMsg();
         d->DoQueueError(sp->getLastErrorMsg());
+        d->DoQueueLinkClosed();
     }
 
     delete sp;

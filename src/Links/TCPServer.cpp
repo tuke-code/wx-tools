@@ -29,7 +29,7 @@ void TCPServer::Loop()
     mgr.userdata = this;
     struct mg_connection *c = mg_listen(&mgr, url.c_str(), TCPServerHandler, nullptr);
     if (c == nullptr) {
-        d->DoQueueError(_("Failed to connect to the server."));
+        d->DoQueueError(_("Failed to create tcp server."));
         mg_mgr_free(&mgr);
         return;
     }
@@ -39,6 +39,7 @@ void TCPServer::Loop()
         mg_mgr_poll(&mgr, 100);
     }
 
+    mg_close_conn(c);
     mg_mgr_free(&mgr);
     wxtInfo() << "TCP server thread exited...";
 }

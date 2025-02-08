@@ -33,7 +33,6 @@ protected:
     void InitServerPortCtrl(int row, wxWindow *parent);
     void InitClientsComboBox(int row, wxWindow *parent);
     void InitDataChannelComboBox(int row, wxWindow *parent);
-    void InitClientInfoTextCtrl(int row, wxWindow *parent);
     // clang-format on
 
 protected:

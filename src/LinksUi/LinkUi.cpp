@@ -34,10 +34,8 @@ bool LinkUi::Open(wxEvtHandler *evtHandler)
     if (!m_link) {
         return false;
     }
-#if 0
+
     m_link->Load(Save());
-    wxtInfo() << "Link parameters: " << m_link->Save().dump();
-#endif
     m_link->SetEvtHandler(evtHandler);
     return m_link->Open();
 }

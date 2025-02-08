@@ -36,17 +36,6 @@ void TCPClient::Loop()
         return;
     }
 
-#if 1
-    const std::string remIp = d->DoMgAddressToIpV4(&c->rem);
-    const uint16_t remPort = DoReverseByteOrder<uint16_t>(c->rem.port);
-    const std::string locIp = d->DoMgAddressToIpV4(&c->loc);
-    const uint16_t locPort = DoReverseByteOrder<uint16_t>(c->loc.port);
-    const std::string from = DoEncodeFlag(remIp, remPort);
-    const std::string to = DoEncodeFlag(locIp, locPort);
-
-    wxtInfo() << fmt::format("TCP client connected from {0} to {1}", from, to);
-#endif
-
     while (!TestDestroy()) {
         mg_mgr_poll(&mgr, 100);
     }

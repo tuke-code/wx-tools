@@ -99,6 +99,10 @@ void Page::OnInvokeOpenOrClose(wxCommandEvent &)
 {
     PageSettingsLink *linkSettings = m_pageSettings->GetLinkSettings();
     LinkUi *linkUi = linkSettings->GetLinkUi();
+
+    wxButton *btn = linkSettings->GetOpenButton();
+    btn->Disable();
+
     if (linkUi->IsOpen()) {
         Close(true);
     } else {
@@ -195,13 +199,15 @@ void Page::OnBytesTx(wxThreadEvent &e)
 void Page::OnErrorOccurred(wxThreadEvent &e)
 {
     Close(e.GetInt() == wxtIgnoreCloseErrorPopup);
+    wxButton *btn = m_pageSettings->GetLinkSettings()->GetOpenButton();
+    btn->Enable(true);
 
     if (e.GetString().IsEmpty()) {
         return;
     }
 
     if (!(e.GetInt() == wxtIgnoreCloseErrorPopup)) {
-        wxLogWarning(_("Error: ") + wxString::FromUTF8(e.GetString()));
+        wxLogWarning(e.GetString());
     }
 }
 
@@ -231,34 +237,16 @@ void Page::OnDeleteClient(wxThreadEvent &e)
     serverUi->DoDeleteClient(ip.ToStdString(), port);
 }
 
-void SetClientInfoLabel(wxThreadEvent &e, LinkUi *linkUi, bool opened)
-{
-    if (dynamic_cast<SocketClientUi *>(linkUi)) {
-        SocketClientUi *clientUi = dynamic_cast<SocketClientUi *>(linkUi);
-        wxTextCtrl *clientInfo = clientUi->GetClientInfoLabel();
-        if (clientInfo == nullptr) {
-            return;
-        }
-
-        if (opened) {
-            wxString ip = e.GetString();
-            uint16_t port = e.GetInt();
-            std::string flag = DoEncodeFlag(ip.ToStdString(), port);
-            clientInfo->SetLabel(flag);
-        } else {
-            clientInfo->SetLabel(wxtUnconnectedStr());
-        }
-    }
-}
-
 void Page::OnLinkOpened(wxThreadEvent &e)
 {
-    SetClientInfoLabel(e, m_pageSettings->GetLinkSettings()->GetLinkUi(), true);
+    wxButton *btn = m_pageSettings->GetLinkSettings()->GetOpenButton();
+    btn->Enable(true);
 }
 
 void Page::OnLinkCloseed(wxThreadEvent &e)
 {
-    SetClientInfoLabel(e, m_pageSettings->GetLinkSettings()->GetLinkUi(), false);
+    wxButton *btn = m_pageSettings->GetLinkSettings()->GetOpenButton();
+    btn->Enable(true);
 }
 
 void Page::OnSendTimerTimeout()

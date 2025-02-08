@@ -59,22 +59,10 @@ static void OnMgEvWsMsg(struct mg_connection *c, void *ev_data, WSClient *q)
 static void OnMgEvClose(struct mg_connection *c, void *ev_data, WSClient *q)
 {
     auto *d = q->GetD<WSClientPrivate>();
-    const std::string locIp = d->DoMgAddressToIpV4(&c->loc);
-    const uint16_t locPort = DoReverseByteOrder<uint16_t>(c->loc.port);
-    const std::string remIp = d->DoMgAddressToIpV4(&c->rem);
-    const uint16_t remPort = DoReverseByteOrder<uint16_t>(c->rem.port);
-
-    std::string loc = fmt::format("{0}:{1}", locIp, locPort);
-    std::string rem = fmt::format("{0}:{1}", remIp, remPort);
-    wxtInfo() << fmt::format("WebSocket client({0}) has been disconnected from {1}", loc, rem);
-
-    d->DoQueueError(_("WebSocket client has been close."));
-}
-
-static void OnMgEvError(struct mg_connection *c, void *ev_data, WSClient *q)
-{
-    auto *d = q->GetD<WSClientPrivate>();
-    d->DoQueueError(wxString(reinterpret_cast<char *>(ev_data)));
+    wxString msg = _("WebSocket client has been closed, server has been closed or not found.");
+    wxtInfo() << msg;
+    d->DoQueueError(msg);
+    d->DoQueueLinkClosed();
 }
 
 static void OnMgEvPoll(struct mg_connection *c, int ev, void *ev_data, WSClient *q)
@@ -108,18 +96,29 @@ static void OnMgEvPoll(struct mg_connection *c, int ev, void *ev_data, WSClient 
     d->txBytesLock.unlock();
 }
 
+static void OnMgEvConnect(struct mg_connection *c, void *ev_data, WSClient *q)
+{
+    wxUnusedVar(c);
+    wxUnusedVar(ev_data);
+
+    auto *d = q->GetD<WSClientPrivate>();
+    d->DoQueueLinkOpened();
+}
+
 static void WSClientHandler(struct mg_connection *c, int ev, void *ev_data)
 {
     auto q = reinterpret_cast<WSClient *>(c->mgr->userdata);
+    wxASSERT_MSG(q, "q is nullptr");
+
     if (ev == MG_EV_WS_OPEN) {
         OnMgEvWsOpen(c, ev_data, q);
     } else if (ev == MG_EV_WS_MSG) {
         OnMgEvWsMsg(c, ev_data, q);
     } else if (ev == MG_EV_CLOSE) {
         OnMgEvClose(c, ev_data, q);
-    } else if (ev == MG_EV_ERROR) {
-        OnMgEvError(c, ev_data, q);
     } else if (ev == MG_EV_POLL) {
         OnMgEvPoll(c, ev, ev_data, q);
+    } else if (ev == MG_EV_CONNECT) {
+        OnMgEvConnect(c, ev_data, q);
     }
 }

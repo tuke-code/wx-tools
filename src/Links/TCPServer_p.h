@@ -21,14 +21,7 @@ public:
 static void OnMgEvOpen(struct mg_connection *c, void *ev_data, TCPServer *q)
 {
     auto *d = q->GetD<TCPServerPrivate>();
-    const std::string remIp = d->DoMgAddressToIpV4(&c->rem);
-    const uint16_t remPort = DoReverseByteOrder<uint16_t>(c->rem.port);
-    const std::string locIp = d->DoMgAddressToIpV4(&c->loc);
-    const uint16_t locPort = DoReverseByteOrder<uint16_t>(c->loc.port);
-    const std::string from = DoEncodeFlag(remIp, remPort);
-    const std::string to = DoEncodeFlag(locIp, locPort);
-
-    wxtInfo() << fmt::format("TCP server connected from {0} to {1}", from, to);
+    d->DoQueueLinkOpened();
 }
 
 static void OnMgEvRead(struct mg_connection *c, void *ev_data, TCPServer *q)
@@ -93,12 +86,15 @@ static void OnMgEvClose(struct mg_connection *c, void *ev_data, TCPServer *q)
         wxtInfo() << fmt::format("TCP tcp client {0} has been disconnected.", flag);
     } else {
         d->DoQueueError(_("TCP server has been closed."));
+        d->DoQueueLinkClosed();
     }
 }
 
 static void TCPServerHandler(struct mg_connection *c, int ev, void *ev_data)
 {
     auto *q = reinterpret_cast<TCPServer *>(c->mgr->userdata);
+    wxASSERT_MSG(q, "q is nullptr");
+
     if (ev == MG_EV_OPEN) {
         OnMgEvOpen(c, ev_data, q);
     } else if (ev == MG_EV_READ) {

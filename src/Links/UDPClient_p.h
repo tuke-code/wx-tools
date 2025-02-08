@@ -45,7 +45,7 @@ static void OnMgEvOpen(struct mg_connection *c, void *ev_data, UDPClient *q)
     const uint16_t locPort = DoReverseByteOrder<uint16_t>(c->loc.port);
 
     wxtInfo() << fmt::format("UDP client opened({0}:{1}).", locIp, locPort) << c->loc.ip;
-    d->DoQueueLinkOpened(locIp, locPort);
+    d->DoQueueLinkOpened();
 }
 
 static void OnMgEvRead(struct mg_connection *c, void *ev_data, UDPClient *q)
@@ -75,10 +75,7 @@ static void OnMgEvClose(struct mg_connection *c, void *ev_data, UDPClient *q)
     UDPClientPrivate *d = q->GetD<UDPClientPrivate>();
     if (d && d->evtHandler) {
         d->DoQueueError(_("UDP client disconnected"));
-
-        const std::string locIp = d->DoMgAddressToIpV4(&c->loc);
-        const uint16_t locPort = DoReverseByteOrder<uint16_t>(c->loc.port);
-        d->DoQueueLinkClosed(locIp, locPort);
+        d->DoQueueLinkClosed();
     }
 }
 
@@ -96,6 +93,8 @@ static void OnMgEvError(struct mg_connection *c, void *ev_data, UDPClient *q)
 static void UDPClientHandler(struct mg_connection *c, int ev, void *ev_data)
 {
     auto *q = reinterpret_cast<UDPClient *>(c->mgr->userdata);
+    wxASSERT_MSG(q, "q is nullptr");
+
     if (ev == MG_EV_OPEN) {
         OnMgEvOpen(c, ev_data, q);
     } else if (ev == MG_EV_READ) {

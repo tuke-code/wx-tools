@@ -16,7 +16,6 @@ TCPClientUi::TCPClientUi(wxWindow *parent)
     std::vector<void (SocketBaseUi::*)(int, wxWindow *)> funcs;
     funcs.push_back(&TCPClientUi::InitServerComboBox);
     funcs.push_back(&TCPClientUi::InitServerPortCtrl);
-    funcs.push_back(&TCPClientUi::InitClientInfoTextCtrl);
 
     InitUiComponents(funcs, parent);
 }

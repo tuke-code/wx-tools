@@ -63,16 +63,30 @@ static void OnMgEvClose(struct mg_connection *c, void *ev_data, TCPClient *q)
 
     auto *d = q->GetD<SocketClientPrivate>();
     d->DoQueueError(_("TCP client has been Close."));
+    d->DoQueueLinkClosed();
+}
+
+static void OnMgEvConnect(struct mg_connection *c, void *ev_data, TCPClient *q)
+{
+    wxUnusedVar(c);
+    wxUnusedVar(ev_data);
+
+    auto *d = q->GetD<SocketClientPrivate>();
+    d->DoQueueLinkOpened();
 }
 
 static void TCPClientHandler(struct mg_connection *c, int ev, void *ev_data)
 {
     auto *q = reinterpret_cast<TCPClient *>(c->mgr->userdata);
+    wxASSERT_MSG(q, "q is nullptr");
+
     if (ev == MG_EV_READ) {
         OnMgEvRead(c, ev_data, q);
     } else if (ev == MG_EV_POLL) {
         OnMgEvPoll(c, ev_data, q);
     } else if (ev == MG_EV_CLOSE) {
         OnMgEvClose(c, ev_data, q);
+    } else if (ev == MG_EV_CONNECT) {
+        OnMgEvConnect(c, ev_data, q);
     }
 }

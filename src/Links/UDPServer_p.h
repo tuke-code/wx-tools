@@ -51,14 +51,7 @@ static void OnMgEvPoll(struct mg_connection *c, void *ev_data, UDPServer *q)
 static void OnMgEvOpen(struct mg_connection *c, void *ev_data, UDPServer *q)
 {
     auto *d = q->GetD<UDPServerPrivate>();
-    const std::string remIp = d->DoMgAddressToIpV4(&c->rem);
-    const uint16_t remPort = DoReverseByteOrder<uint16_t>(c->rem.port);
-    const std::string locIp = d->DoMgAddressToIpV4(&c->loc);
-    const uint16_t locPort = DoReverseByteOrder<uint16_t>(c->loc.port);
-    const std::string from = DoEncodeFlag(remIp, remPort);
-    const std::string to = DoEncodeFlag(locIp, locPort);
-
-    wxtInfo() << fmt::format("UDP client connected from {0} to {1}", from, to);
+    d->DoQueueLinkOpened();
 }
 
 static void OnMgEvRead(struct mg_connection *c, void *ev_data, UDPServer *q)
@@ -80,14 +73,25 @@ static void OnMgEvRead(struct mg_connection *c, void *ev_data, UDPServer *q)
     c->recv.len = 0;
 }
 
+static void OnMgEvClose(struct mg_connection *c, void *ev_data, UDPServer *q)
+{
+    auto *d = q->GetD<UDPServerPrivate>();
+    d->DoQueueError(_("UDP server closed."));
+    d->DoQueueLinkClosed();
+}
+
 static void UDPServerHandler(struct mg_connection *c, int ev, void *ev_data)
 {
     auto *q = reinterpret_cast<UDPServer *>(c->mgr->userdata);
+    wxASSERT_MSG(q, "q is nullptr");
+
     if (ev == MG_EV_OPEN) {
         OnMgEvOpen(c, ev_data, q);
     } else if (ev == MG_EV_READ) {
         OnMgEvRead(c, ev_data, q);
     } else if (ev == MG_EV_POLL) {
         OnMgEvPoll(c, ev_data, q);
+    } else if (ev == MG_EV_CLOSE) {
+        OnMgEvClose(c, ev_data, q);
     }
 }

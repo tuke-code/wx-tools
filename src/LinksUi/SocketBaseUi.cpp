@@ -183,15 +183,3 @@ void SocketBaseUi::InitDataChannelComboBox(int row, wxWindow *parent)
         socket->GetD<SocketBasePrivate>()->dataChannel = dataChannel;
     });
 }
-
-void SocketBaseUi::InitClientInfoTextCtrl(int row, wxWindow *parent)
-{
-    m_clientInfoTextCtrl = new wxTextCtrl(parent,
-                                          wxID_ANY,
-                                          wxtUnconnectedStr(),
-                                          wxDefaultPosition,
-                                          wxDefaultSize,
-                                          wxTE_READONLY);
-    m_clientInfoTextCtrl->SetWindowStyleFlag(wxTE_CENTER);
-    Add(m_clientInfoTextCtrl, wxGBPosition(row, 0), wxGBSpan(1, 2), wxEXPAND | wxALL, 0);
-}

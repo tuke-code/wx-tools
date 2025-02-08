@@ -61,15 +61,9 @@ public:
         }
     }
 
-    void DoQueueLinkOpened(const std::string ip, uint16_t port)
-    {
-        DoQueueLinkState(ip, port, wxtLinkOpened);
-    }
+    void DoQueueLinkOpened() { DoQueueLinkState(wxtLinkOpened); }
 
-    void DoQueueLinkClosed(const std::string ip, uint16_t port)
-    {
-        DoQueueLinkState(ip, port, wxtLinkClosed);
-    }
+    void DoQueueLinkClosed() { DoQueueLinkState(wxtLinkClosed); }
 
 private:
     void DoQueueBytes(std::shared_ptr<char> bytes, int len, const wxString &flag, int id)
@@ -81,12 +75,10 @@ private:
         }
     }
 
-    void DoQueueLinkState(const std::string ip, uint16_t port, int id)
+    void DoQueueLinkState(int id)
     {
         if (evtHandler) {
             auto *evt = new wxThreadEvent(wxEVT_THREAD, id);
-            evt->SetString(ip);
-            evt->SetInt(port);
             evtHandler->QueueEvent(evt);
         }
     }

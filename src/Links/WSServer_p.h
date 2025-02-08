@@ -55,14 +55,10 @@ static void DoSendBytesToClient(struct mg_connection *c, void *ev_data, WSServer
 
 static void OnMgEvOpen(struct mg_connection *c, void *ev_data, WSServer *q)
 {
-    c->is_client = true;
-
+    wxUnusedVar(c);
+    wxUnusedVar(ev_data);
     auto *d = q->GetD<WSServerPrivate>();
-    const std::string ip = d->DoMgAddressToIpV4(&c->rem);
-    const uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
-    d->DoTryToNewClient(ip, port);
-
-    wxtInfo() << "Server open: " << ip << ":" << port;
+    d->DoQueueLinkOpened();
 }
 
 static void OnMgEvHttpMsg(struct mg_connection *c, void *ev_data, WSServer *q)
@@ -115,8 +111,8 @@ static void OnMgEvClose(struct mg_connection *c, void *ev_data, WSServer *q)
     if (c->is_client) {
         d->DoTryToDeleteClient(ip, port);
     } else {
-        d->DoQueueError(_("Server has been closed."));
-        wxtInfo() << "Server close: " << ip << ":" << port;
+        d->DoQueueError(_("Web socket server has been closed."));
+        d->DoQueueLinkClosed();
     }
 }
 
@@ -160,12 +156,11 @@ static void OnMgEvPoll(struct mg_connection *c, void *ev_data, WSServer *q)
 static void WSServerHandler(struct mg_connection *c, int ev, void *ev_data)
 {
     WSServer *q = reinterpret_cast<WSServer *>(c->mgr->userdata);
-    if (!q) {
-        wxtWarning() << "You must set the server object before calling this function";
-        return;
-    }
+    wxASSERT_MSG(q, "q is nullptr");
 
-    if (ev == MG_EV_HTTP_MSG) {
+    if (ev == MG_EV_OPEN) {
+        OnMgEvOpen(c, ev_data, q);
+    } else if (ev == MG_EV_HTTP_MSG) {
         OnMgEvHttpMsg(c, ev_data, q);
     } else if (ev == MG_EV_ACCEPT) {
         OnMgEvAccept(c, q);
