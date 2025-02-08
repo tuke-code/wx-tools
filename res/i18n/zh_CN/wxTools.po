@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2025-02-08 23:18+0800\n"
-"PO-Revision-Date: 2025-02-08 23:19+0800\n"
+"POT-Creation-Date: 2025-02-08 23:34+0800\n"
+"PO-Revision-Date: 2025-02-08 23:35+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: zh_CN\n"
@@ -78,9 +78,9 @@ msgstr "未链接"
 msgid "Write data failed."
 msgstr "发送数据失败。"
 
-#: Links/TCPClient.cpp:34
-msgid "Failed to connect to tcp server."
-msgstr "连接TCP服务器失败。"
+#: Links/TCPClient.cpp:34 Links/UDPClient.cpp:34 Links/WSClient.cpp:34
+msgid "Failed to connect to server."
+msgstr "无法连接服务器。"
 
 #: Links/TCPClient_p.h:51
 msgid "TCP client send bytes error."
@@ -90,17 +90,13 @@ msgstr "发送数据至TCP客户端失败。"
 msgid "TCP client has been Close."
 msgstr "TCP客户端已被断开链接。"
 
-#: Links/TCPServer.cpp:32
-msgid "Failed to create tcp server."
-msgstr "无法创建TCP服务器。"
+#: Links/TCPServer.cpp:32 Links/UDPServer.cpp:34 Links/WSServer.cpp:36
+msgid "Failed to create server."
+msgstr "无法创建服务器。"
 
 #: Links/TCPServer_p.h:88
 msgid "TCP server has been closed."
 msgstr "TCP服务器已关闭。"
-
-#: Links/UDPClient.cpp:34 Links/UDPServer.cpp:34
-msgid "Failed to connect to the server."
-msgstr "链接服务器失败。"
 
 #: Links/UDPClient_p.h:32
 msgid "UDP client sends bytes failed."
@@ -114,10 +110,6 @@ msgstr "UDP客户端已关闭"
 msgid "UDP server closed."
 msgstr "UDP服务器已关闭。"
 
-#: Links/WSClient.cpp:34
-msgid "Failed to create a WebSocket client."
-msgstr "无法创建Web Socket客户端。"
-
 #: Links/WSClient_p.h:62
 msgid "WebSocket client has been closed, server has been closed or not found."
 msgstr "Web Socket客户端已关闭，服务器已关闭或未找到。"
@@ -125,10 +117,6 @@ msgstr "Web Socket客户端已关闭，服务器已关闭或未找到。"
 #: Links/WSClient_p.h:90
 msgid "WS server send bytes error."
 msgstr "Web Socket服务器发送数据失败。"
-
-#: Links/WSServer.cpp:35
-msgid "Failed to create a WebSocket server!"
-msgstr "无法创建Web Socket服务器！"
 
 #: Links/WSServer_p.h:114
 msgid "Web socket server has been closed."
@@ -462,6 +450,18 @@ msgstr "1检验"
 #: Utilities/ParityComboBox.cpp:25
 msgid "Space"
 msgstr "0校验"
+
+#~ msgid "Failed to connect to the server."
+#~ msgstr "链接服务器失败。"
+
+#~ msgid "Failed to create udp server."
+#~ msgstr "无法创建UDP服务器。"
+
+#~ msgid "Failed to create a WebSocket client."
+#~ msgstr "无法创建Web Socket客户端。"
+
+#~ msgid "Failed to create a WebSocket server!"
+#~ msgstr "无法创建Web Socket服务器！"
 
 #~ msgid "Failed to create web socket server."
 #~ msgstr "无法创建Web Socket服务器。"

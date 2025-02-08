@@ -15,7 +15,6 @@ WSServer::WSServer()
 
 WSServer::~WSServer()
 {
-    wxtInfo() << __FUNCTION__;
     delete GetD<WSServerPrivate>();
 }
 
@@ -30,11 +29,12 @@ void WSServer::Loop()
     mg_log_set(MG_LL_NONE);
     mgr.userdata = this;
 
+    wxtInfo() << Save().dump().c_str();
     auto *c = mg_http_listen(&mgr, url.c_str(), WSServerHandler, nullptr);
     if (c == nullptr) {
         mg_mgr_free(&mgr);
-        //d->DoQueueError(wxString(_("Failed to create a WebSocket server!")));
-        //return;
+        d->DoQueueError(wxString(_("Failed to create server.")));
+        return;
     }
 
     c->is_client = false;
@@ -42,7 +42,6 @@ void WSServer::Loop()
         mg_mgr_poll(&mgr, 100);
     }
 
-    mg_close_conn(c);
     mg_mgr_free(&mgr);
     wxtInfo() << "Web socket server thread is exited!";
 }

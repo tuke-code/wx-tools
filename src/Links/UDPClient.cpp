@@ -31,7 +31,7 @@ void UDPClient::Loop()
     mgr.userdata = this;
     auto c = mg_connect(&mgr, url.c_str(), UDPClientHandler, nullptr);
     if (c == nullptr) {
-        d->DoQueueError(_("Failed to connect to the server."));
+        d->DoQueueError(_("Failed to connect to server."));
         mg_mgr_free(&mgr);
         return;
     }
