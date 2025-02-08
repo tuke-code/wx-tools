@@ -236,6 +236,10 @@ void SetClientInfoLabel(wxThreadEvent &e, LinkUi *linkUi, bool opened)
     if (dynamic_cast<SocketClientUi *>(linkUi)) {
         SocketClientUi *clientUi = dynamic_cast<SocketClientUi *>(linkUi);
         wxTextCtrl *clientInfo = clientUi->GetClientInfoLabel();
+        if (clientInfo == nullptr) {
+            return;
+        }
+
         if (opened) {
             wxString ip = e.GetString();
             uint16_t port = e.GetInt();
