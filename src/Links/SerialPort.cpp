@@ -64,9 +64,7 @@ void SerialPort::Loop()
 
         sp->close();
     } else {
-        wxString tmp = _("Open port failed:");
-        tmp += wxString(fmt::format("{0} {1}", tmp.ToStdString(), sp->getLastErrorMsg()));
-        d->DoTryToQueueError(tmp);
+        d->DoTryToQueueError(sp->getLastErrorMsg());
     }
 
     delete sp;

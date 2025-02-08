@@ -45,14 +45,13 @@ private:
     void OnErrorOccurred(wxThreadEvent &e);
     void OnNewClient(wxThreadEvent &e);
     void OnDeleteClient(wxThreadEvent &e);
-    void OnCloseLink(wxThreadEvent &);
     void OnSendTimerTimeout();
     void OnClear();
     void OnTextFormatChanged(TextFormat format);
 
     void OutputText(std::shared_ptr<char> bytes, int len, std::string &fromTo, bool isRx);
     void Open();
-    void Close();
+    void Close(bool ignoredCloseError);
 
 private:
     DECLARE_DYNAMIC_CLASS(Page);

@@ -22,7 +22,7 @@ public:
     Link *GetLink() const;
 
     bool Open(wxEvtHandler *evtHandler);
-    void Close();
+    void Close(bool ignoredCloseError);
     bool IsOpen() const;
 
     virtual void Disable();

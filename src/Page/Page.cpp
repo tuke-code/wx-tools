@@ -34,7 +34,6 @@ EVT_THREAD(wxtBytesTx, Page::OnBytesTx)
 EVT_THREAD(wxtErrorOccurred, Page::OnErrorOccurred)
 EVT_THREAD(wxtNewClient, Page::OnNewClient)
 EVT_THREAD(wxtDeleteClient, Page::OnDeleteClient)
-EVT_THREAD(wxtCloseLink, Page::OnCloseLink)
 END_EVENT_TABLE()
 
 Page::Page(LinkType type, wxWindow *parent)
@@ -98,7 +97,7 @@ void Page::OnInvokeOpenOrClose(wxCommandEvent &)
     PageSettingsLink *linkSettings = m_pageSettings->GetLinkSettings();
     LinkUi *linkUi = linkSettings->GetLinkUi();
     if (linkUi->IsOpen()) {
-        Close();
+        Close(true);
     } else {
         Open();
     }
@@ -192,8 +191,10 @@ void Page::OnBytesTx(wxThreadEvent &e)
 
 void Page::OnErrorOccurred(wxThreadEvent &e)
 {
-    Close();
-    wxLogWarning(_("Error: ") + wxString::FromUTF8(e.GetString()));
+    Close(e.GetInt() == wxtIgnoreCloseErrorPopup);
+    if (!(e.GetInt() == wxtIgnoreCloseErrorPopup)) {
+        wxLogWarning(_("Error: ") + wxString::FromUTF8(e.GetString()));
+    }
 }
 
 void Page::OnNewClient(wxThreadEvent &e)
@@ -220,11 +221,6 @@ void Page::OnDeleteClient(wxThreadEvent &e)
     wxString ip = e.GetString();
     int port = e.GetInt();
     serverUi->DoDeleteClient(ip.ToStdString(), port);
-}
-
-void Page::OnCloseLink(wxThreadEvent &)
-{
-    Close();
 }
 
 void Page::OnSendTimerTimeout()
@@ -353,7 +349,7 @@ void Page::Open()
     }
 }
 
-void Page::Close()
+void Page::Close(bool ignoredCloseError)
 {
     PageSettingsLink *linkSettings = m_pageSettings->GetLinkSettings();
     LinkUi *linkUi = linkSettings->GetLinkUi();
@@ -362,7 +358,7 @@ void Page::Close()
     PageSettingsInput *inputSettings = m_pageSettings->GetInputSettings();
     inputSettings->SetCycleIntervalComboBoxSelection(0);
 
-    linkUi->Close();
+    linkUi->Close(ignoredCloseError);
     linkUi->Enable();
 
     auto btn = linkSettings->GetOpenButton();

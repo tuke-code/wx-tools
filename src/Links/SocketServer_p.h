@@ -38,6 +38,13 @@ public:
         if (address == selection.first && port == selection.second) {
             selection = std::make_pair("", 0);
         }
+
+        if (evtHandler) {
+            wxThreadEvent *evt = new wxThreadEvent(wxEVT_THREAD, wxtDeleteClient);
+            evt->SetString(address);
+            evt->SetInt(port);
+            evtHandler->QueueEvent(evt);
+        }
     }
 
     void DoTryToNewClient(const std::string &address, uint16_t port)

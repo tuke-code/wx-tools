@@ -31,9 +31,7 @@ static void ReadBytes(itas109::CSerialPort *sp, SerialPort *q)
     auto d = q->GetD<SerialPortPrivate>();
     char data[wxtDataSize] = {0};
     int len = sp->readAllData(&data);
-    if (len == -1) {
-        d->DoTryToQueueError(_("Read data failed."));
-    } else if (len > 0) {
+    if (len > 0) {
         std::shared_ptr<char> bytes(new char[len], std::default_delete<char[]>());
         memcpy(bytes.get(), data, len);
         d->DoTryToQueueRxBytes(bytes, len, d->portName);

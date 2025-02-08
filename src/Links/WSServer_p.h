@@ -132,7 +132,7 @@ static void OnMgEvClose(struct mg_connection *c, void *ev_data, WSServer *q)
     if (c->is_client) {
         d->DoTryToDeleteClient(ip, port);
     } else {
-        d->DoTryToCloseLink();
+        d->DoTryToQueueError(_("Server has been closed."));
         wxtInfo() << "Server close: " << ip << ":" << port;
     }
 }

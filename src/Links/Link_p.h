@@ -24,6 +24,7 @@ public:
         : evtHandler(nullptr)
     {}
 
+    std::atomic_bool ignoreCloseError{false};
     std::atomic<bool> enableExitThread{false}; // The flag must be set to true on ui thread.
     std::mutex txBytesLock;
     std::vector<std::pair<std::shared_ptr<char> /*data*/, int /*len*/>> txBytes;
@@ -53,15 +54,12 @@ public:
     {
         if (evtHandler) {
             auto *evt = new wxThreadEvent(wxEVT_THREAD, wxtErrorOccurred);
+            if (ignoreCloseError) {
+                evt->SetInt(wxtIgnoreCloseErrorPopup);
+            } else {
+                evt->SetInt(0);
+            }
             evt->SetString(error);
-            evtHandler->QueueEvent(evt);
-        }
-    }
-
-    void DoTryToCloseLink()
-    {
-        if (evtHandler) {
-            auto *evt = new wxThreadEvent(wxEVT_THREAD, wxtCloseLink);
             evtHandler->QueueEvent(evt);
         }
     }

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2025-02-05 22:03+0800\n"
-"PO-Revision-Date: 2025-02-05 22:44+0800\n"
+"POT-Creation-Date: 2025-02-08 11:50+0800\n"
+"PO-Revision-Date: 2025-02-08 11:57+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: zh_CN\n"
@@ -70,6 +70,62 @@ msgstr "Web Socket服务器"
 msgid "wxTools.json"
 msgstr "wxTools.json"
 
+#: Links/SerialPort_p.h:48
+msgid "Write data failed."
+msgstr "发送数据失败。"
+
+#: Links/TCPClient.cpp:35
+msgid "Failed to connect to tcp server."
+msgstr "连接TCP服务器失败。"
+
+#: Links/TCPClient_p.h:51
+msgid "TCP client send bytes error."
+msgstr "发送数据至TCP客户端失败。"
+
+#: Links/TCPClient_p.h:65
+msgid "TCP client has been Close."
+msgstr "TCP客户端已被断开链接。"
+
+#: Links/TCPServer.cpp:32 Links/UDPClient.cpp:35 Links/UDPServer.cpp:34
+msgid "Failed to connect to the server."
+msgstr "链接服务器失败。"
+
+#: Links/TCPServer_p.h:74
+msgid "TCP server send error."
+msgstr "TCP服务器发送数据失败。"
+
+#: Links/TCPServer_p.h:92
+msgid "TCP server has been closed."
+msgstr "TCP服务器已关闭。"
+
+#: Links/UDPClient_p.h:32
+msgid "UDP client sends bytes failed."
+msgstr "UDP客户端发送数据失败。"
+
+#: Links/UDPClient_p.h:84
+msgid "UDP client disconnected"
+msgstr "UDP客户端已关闭"
+
+#: Links/WSClient.cpp:39
+msgid "Failed to create a WebSocket client."
+msgstr "无法创建Web Socket客户端。"
+
+#: Links/WSClient_p.h:72
+msgid "WebSocket client has been close."
+msgstr "Web Socket客户端已关闭。"
+
+#: Links/WSClient_p.h:108
+msgid "WS server send bytes error."
+msgstr "Web Socket服务器发送数据失败。"
+
+#: Links/WSServer.cpp:36
+msgid "Failed to create a WebSocket server!"
+msgstr "无法创建Web Socket服务器！"
+
+#: Links/WSServer_p.h:135
+msgid "Server has been closed."
+msgstr "服务器已关闭。"
+
 #: LinksUi/SerialPortUi.cpp:39
 msgid "Port name"
 msgstr "端口号"
@@ -94,167 +150,167 @@ msgstr "校验位"
 msgid "Flow bits"
 msgstr "流控位"
 
-#: LinksUi/SocketBaseUi.cpp:103
+#: LinksUi/SocketBaseUi.cpp:107
 msgid "Server IP"
 msgstr "服务器地址"
 
-#: LinksUi/SocketBaseUi.cpp:116
+#: LinksUi/SocketBaseUi.cpp:120
 msgid "Server port"
 msgstr "服务器端口"
 
-#: LinksUi/SocketBaseUi.cpp:127
+#: LinksUi/SocketBaseUi.cpp:131
 msgid "Write to"
 msgstr "目标客户端"
 
-#: LinksUi/SocketBaseUi.cpp:139
+#: LinksUi/SocketBaseUi.cpp:143
 msgid "All Clients"
-msgstr "UDP客户端"
+msgstr "所有客户端"
 
-#: LinksUi/SocketBaseUi.cpp:157
+#: LinksUi/SocketBaseUi.cpp:161
 msgid "Tx Channel"
 msgstr "发送通道"
 
-#: MainWindow.cpp:65
+#: MainWindow.cpp:66
 msgid "Open parameters file"
 msgstr "导入配置文件"
 
-#: MainWindow.cpp:68 MainWindow.cpp:86
+#: MainWindow.cpp:69 MainWindow.cpp:87
 msgid "JSON files (*.json)|*.json"
 msgstr "JSON文件(*.json)|*.json"
 
-#: MainWindow.cpp:83
+#: MainWindow.cpp:84
 msgid "Save parameters file"
 msgstr "导出配置文件"
 
-#: MainWindow.cpp:101
+#: MainWindow.cpp:102
 msgid "The application will be closed!"
 msgstr "软件将会被关闭！"
 
-#: MainWindow.cpp:115
+#: MainWindow.cpp:116
 msgid "wxTools - A set of tools developed with wxWidgets\n"
 msgstr "wxTools-基于wxWidgets开发的工具集\n"
 
-#: MainWindow.cpp:117
+#: MainWindow.cpp:118
 msgid "Version: "
 msgstr "软件版本："
 
-#: MainWindow.cpp:118
+#: MainWindow.cpp:119
 msgid "Author: x-tools-author\n"
 msgstr "软件作者：x-tools-author\n"
 
-#: MainWindow.cpp:119
+#: MainWindow.cpp:120
 msgid "Email: x-tools@outlook.com\n"
 msgstr "联系邮箱：x-tools@outlook.com\n"
 
-#: MainWindow.cpp:121
+#: MainWindow.cpp:122
 msgid "Commit: "
 msgstr "提交："
 
-#: MainWindow.cpp:122
+#: MainWindow.cpp:123
 msgid "Date: "
 msgstr "日期："
 
-#: MainWindow.cpp:123
+#: MainWindow.cpp:124
 msgid "Build: "
 msgstr "构建："
 
-#: MainWindow.cpp:125
+#: MainWindow.cpp:126
 msgid "Copyright"
 msgstr "版权声明"
 
-#: MainWindow.cpp:127
+#: MainWindow.cpp:128
 msgid "All rights reserved.\n"
 msgstr "保留所有版权\n"
 
-#: MainWindow.cpp:128
+#: MainWindow.cpp:129
 msgid "About wxTools"
 msgstr "关于wxTools"
 
-#: MainWindow.cpp:149
+#: MainWindow.cpp:150
 msgid "File"
 msgstr "文件"
 
-#: MainWindow.cpp:168
+#: MainWindow.cpp:169
 msgid "Help"
 msgstr "帮助"
 
-#: MainWindow.cpp:174
+#: MainWindow.cpp:175
 msgid "Visit online documentation page."
 msgstr "访问在线文档。"
 
-#: MainWindow.cpp:180
-msgid "Visit GitHub page to get more information."
-msgstr "访问GitHub代码仓库"
-
 #: MainWindow.cpp:181
+msgid "Visit GitHub page to get more information."
+msgstr "访问GitHub代码仓库获取更多信息。"
+
+#: MainWindow.cpp:182
 msgid "Get Source from GitHub"
 msgstr "从GitHub获取源码"
 
-#: MainWindow.cpp:185
+#: MainWindow.cpp:186
 msgid "Visit Gitee page to get more information."
 msgstr "访问Gitee仓库。"
 
-#: MainWindow.cpp:186
+#: MainWindow.cpp:187
 msgid "Get Source from Gitee"
 msgstr "从Gitee获取源码"
 
-#: MainWindow.cpp:190
-msgid "Visit GitHub home page of author."
-msgstr "访问作者GitHub主页"
-
 #: MainWindow.cpp:191
+msgid "Visit GitHub home page of author."
+msgstr "访问作者GitHub主页以获取更多信息。"
+
+#: MainWindow.cpp:192
 msgid "GitHub Home Page"
 msgstr "GitHub主页"
 
-#: MainWindow.cpp:195
+#: MainWindow.cpp:196
 msgid "Visit Gitee home page of author."
 msgstr "访问作者Gitee主页。"
 
-#: MainWindow.cpp:196
+#: MainWindow.cpp:197
 msgid "Gitee Home Page"
 msgstr "Gitee主页"
 
-#: MainWindow.cpp:203
+#: MainWindow.cpp:204
 msgid "Visit Microsoft Store page to buy wxTools."
 msgstr "访问作者微软商店主页。"
 
-#: MainWindow.cpp:204
+#: MainWindow.cpp:205
 msgid "Supporting Author"
 msgstr "支持作者"
 
-#: MainWindow.cpp:208
+#: MainWindow.cpp:209
 msgid "Visit Microsoft Store home page of author."
 msgstr "访问作者微软商店主页。"
 
-#: MainWindow.cpp:209
+#: MainWindow.cpp:210
 msgid "Other Applications"
 msgstr "其他应用"
 
-#: Page/Page.cpp:98
+#: Page/Page.cpp:111
 msgid "Link is not opened."
 msgstr "链接未打开。"
 
-#: Page/Page.cpp:98 Page/Page.cpp:160 Page/Page.cpp:303
+#: Page/Page.cpp:111 Page/Page.cpp:173 Page/Page.cpp:348
 msgid "Error"
 msgstr "发生错误"
 
-#: Page/Page.cpp:160
+#: Page/Page.cpp:173
 msgid "Link is not open."
 msgstr "链接未打开。"
 
-#: Page/Page.cpp:180
+#: Page/Page.cpp:196
 msgid "Error: "
 msgstr "发生错误："
 
-#: Page/Page.cpp:295
+#: Page/Page.cpp:345
 msgid "Close"
 msgstr "关闭"
 
-#: Page/Page.cpp:303
+#: Page/Page.cpp:348
 msgid "Failed to open link."
 msgstr "打开链接失败。"
 
-#: Page/Page.cpp:324 Page/PageSettingsLink.cpp:34
+#: Page/Page.cpp:365 Page/PageSettingsLink.cpp:33
 msgid "Open"
 msgstr "打开"
 
@@ -402,6 +458,9 @@ msgstr "1检验"
 #: Utilities/ParityComboBox.cpp:25
 msgid "Space"
 msgstr "0校验"
+
+#~ msgid "Read data failed."
+#~ msgstr "读取数据失败"
 
 #~ msgid "Communication is not open."
 #~ msgstr "链接未打开。"

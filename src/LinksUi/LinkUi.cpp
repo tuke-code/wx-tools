@@ -11,6 +11,8 @@
 #include <wx/event.h>
 #include <wx/wx.h>
 
+#include "Links/Link_p.h"
+
 LinkUi::LinkUi(wxWindow *parent)
     : wxGridBagSizer(4, 4)
     , m_link(nullptr)
@@ -40,10 +42,11 @@ bool LinkUi::Open(wxEvtHandler *evtHandler)
     return m_link->Open();
 }
 
-void LinkUi::Close()
+void LinkUi::Close(bool ignoredCloseError)
 {
     if (m_link) {
         // m_link will be deleted when the thread exits...
+        m_link->GetD<LinkPrivate>()->ignoreCloseError.store(ignoredCloseError);
         m_link->Close();
     }
 

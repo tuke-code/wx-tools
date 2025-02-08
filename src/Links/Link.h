@@ -16,13 +16,14 @@
 
 #include "Common/wxTools.h"
 
+#define wxtIgnoreCloseErrorPopup 1
+
 enum LinkEvent {
     wxtBytesTx = wxID_HIGHEST + 1,
     wxtBytesRx,
     wxtErrorOccurred,
     wxtNewClient,
-    wxtDeleteClient,
-    wxtCloseLink
+    wxtDeleteClient
 };
 
 class LinkPrivate;

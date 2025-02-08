@@ -18,5 +18,5 @@ public:
     ~TCPServer();
 
 private:
-    void *Entry() override;
+    void Loop() override;
 };
