@@ -59,28 +59,51 @@ static void OnMgEvAccept(struct mg_connection *c, void *ev_data, TCPServer *q)
     d->DoTryToNewClient(remIp, remPort);
 }
 
-static void OnMgEvPoll(struct mg_connection *c, void *ev_data, TCPServer *q)
+static void SendBytes(struct mg_connection *c, void *ev_data, TCPServer *q)
 {
+    if (!c->is_client) {
+        return;
+    }
+
     auto *d = q->GetD<TCPServerPrivate>();
-    size_t len = 0;
     std::string ip = d->mg_addr_to_ipv4(&c->rem);
     uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
     std::string to = DoEncodeFlag(ip, port);
 
-    for (auto con = c; con != nullptr; con = con->next) {
-        if (con->is_client) {
-            for (auto &ctx : d->txBytes) {
-                if (mg_send(c, ctx.first.get(), ctx.second)) {
-                    d->DoTryToQueueTxBytes(ctx.first, ctx.second, to);
-                } else {
-                    d->DoTryToDeleteClient(ip, port);
-                    break;
-                }
+    d->txBytesLock.lock();
+    for (auto &ctx : d->txBytes) {
+        if (mg_send(c, ctx.first.get(), ctx.second)) {
+            d->DoTryToQueueTxBytes(ctx.first, ctx.second, to);
+        } else {
+            d->DoTryToDeleteClient(ip, port);
+        }
+    }
+    d->txBytesLock.unlock();
+}
+
+static void OnMgEvPoll(struct mg_connection *c, void *ev_data, TCPServer *q)
+{
+    auto *d = q->GetD<TCPServerPrivate>();
+    size_t len = 0;
+
+    if (d->selection.first.empty() && d->selection.second == 0) {
+        for (auto con = c; con != nullptr; con = con->next) {
+            SendBytes(con, ev_data, q);
+        }
+    } else {
+        for (auto con = c; con != nullptr; con = con->next) {
+            std::string ip = d->mg_addr_to_ipv4(&con->rem);
+            uint16_t port = DoReverseByteOrder<uint16_t>(con->rem.port);
+            if (d->selection.first == ip && d->selection.second == port) {
+                SendBytes(con, ev_data, q);
+                break;
             }
         }
     }
 
+    d->txBytesLock.lock();
     d->txBytes.clear();
+    d->txBytesLock.unlock();
 }
 
 static void OnMgEvClose(struct mg_connection *c, void *ev_data, TCPServer *q)
