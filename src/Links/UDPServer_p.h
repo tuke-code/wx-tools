@@ -34,11 +34,13 @@ static void OnMgEvPoll(struct mg_connection *c, void *ev_data, UDPServer *q)
     if (d->selection.first.empty() && d->selection.second == 0) {
         for (auto &client : d->clients) {
             if (d->DoIpV4ToMgAddress(client.first, &c->rem)) {
+                (&c->rem)->port = DoReverseByteOrder(client.second);
                 d->DoTryToSendBytes(c, ev_data);
             }
         }
     } else {
         if (d->DoIpV4ToMgAddress(d->selection.first, &c->rem)) {
+            (&c->rem)->port = DoReverseByteOrder(d->selection.second);
             d->DoTryToSendBytes(c, ev_data);
         }
     }
