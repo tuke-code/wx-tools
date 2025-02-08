@@ -36,7 +36,7 @@ void *WSClient::Entry()
     wxtInfo() << "Starting WS client on websocket:" << url.c_str();
     c = mg_ws_connect(&mgr, url.c_str(), WSClientHandler, &done, NULL);
     if (c == nullptr || done == true) {
-        d->DoTryToQueueErrorOccurred(_("Failed to create a WebSocket client."));
+        d->DoTryToQueueError(_("Failed to create a WebSocket client."));
         mg_mgr_free(&mgr);
         return nullptr;
     }

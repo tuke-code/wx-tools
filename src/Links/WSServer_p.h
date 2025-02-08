@@ -146,7 +146,7 @@ static void OnMgEvError(struct mg_connection *c, void *ev_data, WSServer *q)
         uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
         d->DoTryToDeleteClient(ip, port);
     } else {
-        d->DoTryToQueueErrorOccurred(msg);
+        d->DoTryToQueueError(msg);
     }
 }
 

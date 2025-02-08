@@ -192,8 +192,8 @@ void Page::OnBytesTx(wxThreadEvent &e)
 
 void Page::OnErrorOccurred(wxThreadEvent &e)
 {
+    Close();
     wxLogWarning(_("Error: ") + wxString::FromUTF8(e.GetString()));
-    //Close();
 }
 
 void Page::OnNewClient(wxThreadEvent &e)

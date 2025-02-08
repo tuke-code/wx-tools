@@ -33,7 +33,7 @@ void *WSServer::Entry()
     mg_connection *c = mg_http_listen(&mgr, url.c_str(), WSServerHandler, nullptr);
     if (c == nullptr) {
         mg_mgr_free(&mgr);
-        d->DoTryToQueueErrorOccurred(wxString(_("Failed to create a WebSocket server!")));
+        d->DoTryToQueueError(wxString(_("Failed to create a WebSocket server!")));
         return nullptr;
     }
 

@@ -32,7 +32,7 @@ void *UDPClient::Entry()
     mgr.userdata = this;
     struct mg_connection *c = mg_connect(&mgr, url.c_str(), UDPClientHandler, nullptr);
     if (c == nullptr) {
-        d->DoTryToQueueErrorOccurred(_("Failed to connect to the server."));
+        d->DoTryToQueueError(_("Failed to connect to the server."));
         mg_mgr_free(&mgr);
         return nullptr;
     }

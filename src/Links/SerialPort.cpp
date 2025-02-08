@@ -46,7 +46,7 @@ wxtJson SerialPort::Save()
     return parameters;
 }
 
-void *SerialPort::Entry()
+void SerialPort::Loop()
 {
     auto d = GetD<SerialPortPrivate>();
     auto *sp = new itas109::CSerialPort();
@@ -61,14 +61,14 @@ void *SerialPort::Entry()
 
             std::this_thread::sleep_for(std::chrono::milliseconds(50));
         }
+
+        sp->close();
     } else {
         wxString tmp = _("Open port failed:");
         tmp += wxString(fmt::format("{0} {1}", tmp.ToStdString(), sp->getLastErrorMsg()));
-        d->DoTryToQueueErrorOccurred(tmp);
+        d->DoTryToQueueError(tmp);
     }
 
-    sp->close();
     delete sp;
     wxtInfo() << "Serial port loop exit.";
-    return nullptr;
 }

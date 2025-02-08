@@ -8,6 +8,7 @@
  **************************************************************************************************/
 #pragma once
 
+#include <atomic>
 #include <memory>
 #include <mutex>
 #include <vector>
@@ -23,6 +24,7 @@ public:
         : evtHandler(nullptr)
     {}
 
+    std::atomic<bool> enableExitThread{false}; // The flag must be set to true on ui thread.
     std::mutex txBytesLock;
     std::vector<std::pair<std::shared_ptr<char> /*data*/, int /*len*/>> txBytes;
     wxEvtHandler *evtHandler; // You must set this to receive events if you want to use them.
@@ -47,7 +49,7 @@ public:
         }
     }
 
-    void DoTryToQueueErrorOccurred(const wxString &error)
+    void DoTryToQueueError(const wxString &error)
     {
         if (evtHandler) {
             auto *evt = new wxThreadEvent(wxEVT_THREAD, wxtErrorOccurred);

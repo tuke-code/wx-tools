@@ -70,7 +70,7 @@ static void OnMgEvPoll(struct mg_connection *c, void *ev_data, TCPServer *q)
         if (mg_send(c, ctx.first.get(), ctx.second)) {
             d->DoTryToQueueTxBytes(ctx.first, ctx.second, to);
         } else {
-            d->DoTryToQueueErrorOccurred(_("TCP server send error."));
+            d->DoTryToQueueError(_("TCP server send error."));
             break;
         }
     }
@@ -86,7 +86,7 @@ static void OnMgEvClose(struct mg_connection *c, void *ev_data, TCPServer *q)
         uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
         d->DoTryToDeleteClient(ip, port);
     } else {
-        d->DoTryToQueueErrorOccurred(_("TCP server has been closed."));
+        d->DoTryToQueueError(_("TCP server has been closed."));
     }
 }
 

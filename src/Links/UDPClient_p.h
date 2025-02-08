@@ -29,7 +29,7 @@ static void OnMgEvPoll(struct mg_connection *c, void *ev_data, UDPClient *q)
             std::string to = DoEncodeFlag(ip, port);
             d->DoTryToQueueTxBytes(ctx.first, ctx.second, to);
         } else {
-            d->DoTryToQueueErrorOccurred(_("UDP client sends bytes failed."));
+            d->DoTryToQueueError(_("UDP client sends bytes failed."));
             break;
         }
     }

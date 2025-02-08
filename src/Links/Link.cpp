@@ -15,7 +15,7 @@ Link::Link(LinkPrivate *dPtr)
 
 Link::~Link()
 {
-
+    wxtInfo() << __FUNCTION__ << " " << __LINE__;
 }
 
 bool Link::Open()
@@ -35,7 +35,8 @@ bool Link::Open()
 
 void Link::Close()
 {
-    if (IsRunning()) {
+    d->enableExitThread.store(true);
+    if (IsAlive() && IsRunning()) {
         Delete();
     } else {
         wxtWarning() << "Thread is not running!";
@@ -60,10 +61,16 @@ void Link::SetEvtHandler(wxEvtHandler *handler)
 
 void *Link::Entry()
 {
-    while (!TestDestroy()) {
-        // Do something here...
-        Sleep(25);
+    Loop();
+
+    while (!d->enableExitThread.load()) {
+        // Waiting for the ui thread to set the flag to true(Call Close()).
     }
 
     return nullptr;
+}
+
+void Link::Loop()
+{
+    // Do something(execute in thread context) here...
 }

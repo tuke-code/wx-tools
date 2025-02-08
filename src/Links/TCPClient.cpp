@@ -32,7 +32,7 @@ void *TCPClient::Entry()
     mgr.userdata = this;
     auto *c = mg_connect(&mgr, url.c_str(), TCPClientHandler, nullptr);
     if (c == nullptr) {
-        d->DoTryToQueueErrorOccurred(_("Failed to connect to tcp server."));
+        d->DoTryToQueueError(_("Failed to connect to tcp server."));
         mg_mgr_free(&mgr);
         return nullptr;
     }

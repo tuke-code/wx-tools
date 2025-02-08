@@ -48,7 +48,7 @@ static void OnMgEvPoll(struct mg_connection *c, void *ev_data, TCPClient *q)
         if (mg_send(c, ctx.first.get(), ctx.second)) {
             d->DoTryToQueueTxBytes(ctx.first, ctx.second, to);
         } else {
-            d->DoTryToQueueErrorOccurred(_("TCP client send bytes error."));
+            d->DoTryToQueueError(_("TCP client send bytes error."));
             break;
         }
     }
@@ -62,7 +62,7 @@ static void OnMgEvClose(struct mg_connection *c, void *ev_data, TCPClient *q)
     wxUnusedVar(ev_data);
 
     auto *d = q->GetD<SocketClientPrivate>();
-    d->DoTryToQueueErrorOccurred(_("TCP client has been disconnected."));
+    d->DoTryToQueueError(_("TCP client has been disconnected."));
 }
 
 static void TCPClientHandler(struct mg_connection *c, int ev, void *ev_data)

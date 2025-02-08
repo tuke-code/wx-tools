@@ -49,6 +49,7 @@ public:
 
 protected:
     void *Entry() override;
+    virtual void Loop();
 
 protected:
     LinkPrivate *d;

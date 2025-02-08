@@ -31,5 +31,5 @@ public:
     wxtJson Save() override;
 
 protected:
-    void *Entry() override;
+    void Loop() override;
 };

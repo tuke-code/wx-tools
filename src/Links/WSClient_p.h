@@ -69,7 +69,7 @@ static void OnMgEvClose(struct mg_connection *c, void *ev_data, WSClient *q)
     std::string rem = fmt::format("{0}:{1}", remIp, remPort);
     wxtInfo() << fmt::format("WebSocket client({0}) has been disconnected from {1}", loc, rem);
 
-    d->DoTryToQueueErrorOccurred(_("WebSocket client has been close."));
+    d->DoTryToQueueError(_("WebSocket client has been close."));
 }
 
 static void OnMgEvError(struct mg_connection *c, void *ev_data, WSClient *q)
@@ -105,7 +105,7 @@ static void OnMgEvPoll(struct mg_connection *c, int ev, void *ev_data, WSClient 
         if (len > 0) {
             d->DoTryToQueueTxBytes(ctx.first, ctx.second, to + op);
         } else {
-            d->DoTryToQueueErrorOccurred(_("WS server send bytes error."));
+            d->DoTryToQueueError(_("WS server send bytes error."));
             break;
         }
     }
