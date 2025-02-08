@@ -36,12 +36,7 @@ bool Link::Open()
 void Link::Close()
 {
     d->enableExitThread.store(true);
-    if (IsAlive() && IsRunning()) {
-        Delete();
-    } else {
-        wxtWarning() << "Thread is not running!";
-    }
-
+    Delete();
     wxtInfo() << "Link thread exited...";
 }
 

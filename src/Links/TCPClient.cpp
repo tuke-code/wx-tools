@@ -21,7 +21,7 @@ TCPClient::~TCPClient()
     delete GetD<TCPClientPrivate>();
 }
 
-void *TCPClient::Entry()
+void TCPClient::Loop()
 {
     auto d = GetD<TCPClientPrivate>();
     std::string url = fmt::format("tcp://{0}:{1}", d->serverAddress.ToStdString(), d->serverPort);
@@ -34,7 +34,7 @@ void *TCPClient::Entry()
     if (c == nullptr) {
         d->DoTryToQueueError(_("Failed to connect to tcp server."));
         mg_mgr_free(&mgr);
-        return nullptr;
+        return;
     }
 
 #if 1
@@ -54,5 +54,4 @@ void *TCPClient::Entry()
 
     mg_mgr_free(&mgr);
     wxtInfo() << "TCP client thread exited...";
-    return nullptr;
 }
