@@ -21,9 +21,9 @@ public:
 static void OnMgEvOpen(struct mg_connection *c, void *ev_data, TCPServer *q)
 {
     auto *d = q->GetD<TCPServerPrivate>();
-    const std::string remIp = d->mg_addr_to_ipv4(&c->rem);
+    const std::string remIp = d->DoMgAddressToIpV4(&c->rem);
     const uint16_t remPort = DoReverseByteOrder<uint16_t>(c->rem.port);
-    const std::string locIp = d->mg_addr_to_ipv4(&c->loc);
+    const std::string locIp = d->DoMgAddressToIpV4(&c->loc);
     const uint16_t locPort = DoReverseByteOrder<uint16_t>(c->loc.port);
     const std::string from = DoEncodeFlag(remIp, remPort);
     const std::string to = DoEncodeFlag(locIp, locPort);
@@ -41,7 +41,7 @@ static void OnMgEvRead(struct mg_connection *c, void *ev_data, TCPServer *q)
     memcpy(bytes.get(), c->recv.buf, c->recv.len);
 
     auto *d = q->GetD<TCPServerPrivate>();
-    const std::string ip = d->mg_addr_to_ipv4(&c->rem);
+    const std::string ip = d->DoMgAddressToIpV4(&c->rem);
     const uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
     const std::string from = DoEncodeFlag(ip, port);
 
@@ -54,63 +54,39 @@ static void OnMgEvAccept(struct mg_connection *c, void *ev_data, TCPServer *q)
 {
     auto *d = q->GetD<TCPServerPrivate>();
     c->is_client = true;
-    const std::string remIp = d->mg_addr_to_ipv4(&c->rem);
+    const std::string remIp = d->DoMgAddressToIpV4(&c->rem);
     const uint16_t remPort = DoReverseByteOrder<uint16_t>(c->rem.port);
     d->DoTryToNewClient(remIp, remPort);
-}
-
-static void SendBytes(struct mg_connection *c, void *ev_data, TCPServer *q)
-{
-    if (!c->is_client) {
-        return;
-    }
-
-    auto *d = q->GetD<TCPServerPrivate>();
-    std::string ip = d->mg_addr_to_ipv4(&c->rem);
-    uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
-    std::string to = DoEncodeFlag(ip, port);
-
-    d->txBytesLock.lock();
-    for (auto &ctx : d->txBytes) {
-        if (mg_send(c, ctx.first.get(), ctx.second)) {
-            d->DoTryToQueueTxBytes(ctx.first, ctx.second, to);
-        } else {
-            d->DoTryToDeleteClient(ip, port);
-        }
-    }
-    d->txBytesLock.unlock();
 }
 
 static void OnMgEvPoll(struct mg_connection *c, void *ev_data, TCPServer *q)
 {
     auto *d = q->GetD<TCPServerPrivate>();
-    size_t len = 0;
-
     if (d->selection.first.empty() && d->selection.second == 0) {
         for (auto con = c; con != nullptr; con = con->next) {
-            SendBytes(con, ev_data, q);
+            if (con->is_client) {
+                d->DoTryToSendBytes(c, ev_data);
+            }
         }
     } else {
         for (auto con = c; con != nullptr; con = con->next) {
-            std::string ip = d->mg_addr_to_ipv4(&con->rem);
+            std::string ip = d->DoMgAddressToIpV4(&con->rem);
             uint16_t port = DoReverseByteOrder<uint16_t>(con->rem.port);
-            if (d->selection.first == ip && d->selection.second == port) {
-                SendBytes(con, ev_data, q);
+            if (con->is_client && d->selection.first == ip && d->selection.second == port) {
+                d->DoTryToSendBytes(c, ev_data);
                 break;
             }
         }
     }
 
-    d->txBytesLock.lock();
-    d->txBytes.clear();
-    d->txBytesLock.unlock();
+    d->DoClrearTxBytes();
 }
 
 static void OnMgEvClose(struct mg_connection *c, void *ev_data, TCPServer *q)
 {
     auto *d = q->GetD<TCPServerPrivate>();
     if (c->is_client) {
-        std::string ip = d->mg_addr_to_ipv4(&c->rem);
+        std::string ip = d->DoMgAddressToIpV4(&c->rem);
         uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
         d->DoTryToDeleteClient(ip, port);
         std::string flag = DoEncodeFlag(ip, port);

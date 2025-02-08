@@ -61,4 +61,23 @@ public:
             }
         }
     }
+
+    void DoTryToSendBytes(struct mg_connection *c, void *ev_data)
+    {
+        wxUnusedVar(ev_data);
+
+        std::string ip = DoMgAddressToIpV4(&c->rem);
+        uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
+        std::string to = DoEncodeFlag(ip, port);
+
+        txBytesLock.lock();
+        for (auto &ctx : txBytes) {
+            if (mg_send(c, ctx.first.get(), ctx.second)) {
+                DoTryToQueueTxBytes(ctx.first, ctx.second, to);
+            } else {
+                DoTryToDeleteClient(ip, port);
+            }
+        }
+        txBytesLock.unlock();
+    }
 };

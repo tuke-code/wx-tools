@@ -17,5 +17,5 @@ public:
     ~UDPClient();
 
 protected:
-    void *Entry() override;
+    void Loop() override;
 };

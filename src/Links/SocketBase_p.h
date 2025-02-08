@@ -33,7 +33,7 @@ public:
     wxString userName;
     wxString password;
 
-    std::string mg_addr_to_ipv4(const struct mg_addr *addr)
+    std::string DoMgAddressToIpV4(const struct mg_addr *addr)
     {
         if (addr == nullptr) {
             return std::string("0.0.0.0");
@@ -50,5 +50,30 @@ public:
         }
 
         return ip;
+    }
+
+    bool DoIpV4ToMgAddress(const std::string &ip, struct mg_addr *addr)
+    {
+        if (addr == nullptr) {
+            return false;
+        }
+
+        // split the ip address by '.'
+        std::vector<std::string> tokens;
+        std::string token;
+        std::istringstream tokenStream(ip);
+        while (std::getline(tokenStream, token, '.')) {
+            tokens.push_back(token);
+        }
+
+        if (tokens.size() != 4) {
+            return false;
+        }
+
+        for (int i = 0; i < 4; i++) {
+            addr->ip[i] = static_cast<uint8_t>(std::stoi(tokens[i]));
+        }
+
+        return true;
     }
 };

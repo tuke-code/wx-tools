@@ -21,18 +21,13 @@ UDPServerUi::UDPServerUi(wxWindow *parent)
     InitUiComponents(funcs, parent);
 }
 
-UDPServerUi::~UDPServerUi() {}
+UDPServerUi::~UDPServerUi()
+{
+    delete dynamic_cast<UDPServer *>(GetLink());
+}
 
 Link *UDPServerUi::NewLink()
 {
     auto *udpServer = new UDPServer();
     return udpServer;
-}
-
-void UDPServerUi::DeleteLink(Link *link)
-{
-    auto *udpServer = dynamic_cast<UDPServer *>(link);
-    if (udpServer) {
-        delete udpServer;
-    }
 }

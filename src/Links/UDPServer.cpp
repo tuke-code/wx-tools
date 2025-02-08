@@ -20,7 +20,7 @@ UDPServer::~UDPServer()
     delete GetD<UDPServerPrivate>();
 }
 
-void *UDPServer::Entry()
+void UDPServer::Loop()
 {
     auto d = GetD<UDPServerPrivate>();
     std::string url = fmt::format("udp://{0}:{1}", d->serverAddress.ToStdString(), d->serverPort);
@@ -33,14 +33,14 @@ void *UDPServer::Entry()
     if (c == nullptr) {
         d->DoTryToQueueError(_("Failed to connect to the server."));
         mg_mgr_free(&mgr);
-        return nullptr;
+        return;
     }
 
+    c->is_client = false;
     while (!TestDestroy()) {
         mg_mgr_poll(&mgr, 100);
     }
 
     mg_mgr_free(&mgr);
     wxtInfo() << "UDP client thread exited...";
-    return nullptr;
 }

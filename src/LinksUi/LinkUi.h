@@ -33,7 +33,6 @@ public:
 
 protected:
     virtual Link *NewLink();
-    virtual void DeleteLink(Link *link);
 
 private:
     Link *m_link;

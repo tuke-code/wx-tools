@@ -24,7 +24,7 @@ static void DoSendBytesToClient(struct mg_connection *c, void *ev_data, WSServer
     auto *d = q->GetD<WSServerPrivate>();
     std::string op;
     size_t len = 0;
-    std::string ip = d->mg_addr_to_ipv4(&c->rem);
+    std::string ip = d->DoMgAddressToIpV4(&c->rem);
     uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
     std::string to = DoEncodeFlag(ip, port);
 
@@ -56,7 +56,7 @@ static void DoSendBytesToClient(struct mg_connection *c, void *ev_data, WSServer
 static void OnMgEvOpen(struct mg_connection *c, void *ev_data, WSServer *q)
 {
     auto *d = q->GetD<WSServerPrivate>();
-    const std::string ip = d->mg_addr_to_ipv4(&c->rem);
+    const std::string ip = d->DoMgAddressToIpV4(&c->rem);
     const uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
     if (port == 0) {
         // The server is opened...
@@ -92,7 +92,7 @@ static void OnAccept(struct mg_connection *c, WSServer *q)
         return;
     }
 
-    std::string ip = q->GetD<WSServerPrivate>()->mg_addr_to_ipv4(&c->rem);
+    std::string ip = q->GetD<WSServerPrivate>()->DoMgAddressToIpV4(&c->rem);
     const uint8_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
     std::string from = ip + std::string(":") + std::to_string(port);
     auto *d = q->GetD<WSServerPrivate>();
@@ -113,7 +113,7 @@ static void OnMgEvMsg(struct mg_connection *c, void *ev_data, WSServer *q)
     }
 
     auto *d = q->GetD<WSServerPrivate>();
-    std::string ip = d->mg_addr_to_ipv4(&c->rem);
+    std::string ip = d->DoMgAddressToIpV4(&c->rem);
     uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
     std::string from = DoEncodeFlag(ip, port) + op;
     wxtInfo() << wm->flags << wm->data.len;
@@ -127,7 +127,7 @@ static void OnMgEvMsg(struct mg_connection *c, void *ev_data, WSServer *q)
 static void OnMgEvClose(struct mg_connection *c, void *ev_data, WSServer *q)
 {
     WSServerPrivate *d = q->GetD<WSServerPrivate>();
-    std::string ip = d->mg_addr_to_ipv4(&c->rem);
+    std::string ip = d->DoMgAddressToIpV4(&c->rem);
     uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
     if (c->is_client) {
         d->DoTryToDeleteClient(ip, port);
@@ -142,7 +142,7 @@ static void OnMgEvError(struct mg_connection *c, void *ev_data, WSServer *q)
     WSServerPrivate *d = q->GetD<WSServerPrivate>();
     std::string msg = fmt::format("Error occurred: {0}", ev_data);
     if (c->is_client) {
-        std::string ip = d->mg_addr_to_ipv4(&c->rem);
+        std::string ip = d->DoMgAddressToIpV4(&c->rem);
         uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
         d->DoTryToDeleteClient(ip, port);
     } else {
@@ -164,7 +164,7 @@ static void OnMgEvPoll(struct mg_connection *c, void *ev_data, WSServer *q)
         }
     } else {
         for (struct mg_connection *conns = c; conns != nullptr; conns = conns->next) {
-            const std::string ip = d->mg_addr_to_ipv4(&conns->rem);
+            const std::string ip = d->DoMgAddressToIpV4(&conns->rem);
             const uint8_t port = DoReverseByteOrder<uint16_t>(conns->rem.port);
             if (ip == d->selection.first && port == d->selection.second) {
                 DoSendBytesToClient(c, ev_data, q);

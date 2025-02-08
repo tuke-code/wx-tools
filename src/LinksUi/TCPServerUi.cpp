@@ -21,18 +21,13 @@ TCPServerUi::TCPServerUi(wxWindow *parent)
     InitUiComponents(funcs, parent);
 }
 
-TCPServerUi::~TCPServerUi() {}
+TCPServerUi::~TCPServerUi()
+{
+    delete dynamic_cast<TCPServer *>(GetLink());
+}
 
 Link *TCPServerUi::NewLink()
 {
     auto *tcpServer = new TCPServer();
     return tcpServer;
-}
-
-void TCPServerUi::DeleteLink(Link *link)
-{
-    auto *tcpServer = dynamic_cast<TCPServer *>(link);
-    if (tcpServer) {
-        delete tcpServer;
-    }
 }

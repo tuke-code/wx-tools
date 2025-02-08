@@ -18,5 +18,5 @@ public:
     ~UDPServer();
 
 private:
-    void *Entry() override;
+    void Loop() override;
 };

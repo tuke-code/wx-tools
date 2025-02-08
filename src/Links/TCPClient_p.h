@@ -25,7 +25,7 @@ static void OnMgEvRead(struct mg_connection *c, void *ev_data, TCPClient *q)
     }
 
     auto *d = q->GetD<TCPClientPrivate>();
-    const std::string ip = d->mg_addr_to_ipv4(&c->rem);
+    const std::string ip = d->DoMgAddressToIpV4(&c->rem);
     const uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
     const std::string from = DoEncodeFlag(ip, port);
 
@@ -40,7 +40,7 @@ static void OnMgEvPoll(struct mg_connection *c, void *ev_data, TCPClient *q)
 {
     auto *d = q->GetD<SocketClientPrivate>();
     size_t len = 0;
-    std::string ip = d->mg_addr_to_ipv4(&c->rem);
+    std::string ip = d->DoMgAddressToIpV4(&c->rem);
     uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
     std::string to = DoEncodeFlag(ip, port);
 

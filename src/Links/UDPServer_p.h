@@ -31,36 +31,27 @@ static void OnErrorOccurred(const wxString &msg, UDPServerPrivate *d)
 static void OnMgEvPoll(struct mg_connection *c, void *ev_data, UDPServer *q)
 {
     auto *d = q->GetD<UDPServerPrivate>();
-    if (d == nullptr) {
-        return;
-    }
-
-    size_t len = 0;
-    std::string ip = d->mg_addr_to_ipv4(&c->rem);
-    uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
-    std::string to = DoEncodeFlag(ip, port);
-
-    if (port == 0) {
-        return;
-    }
-
-    for (auto &ctx : d->txBytes) {
-        if (mg_send(c, ctx.first.get(), ctx.second)) {
-            d->DoTryToQueueTxBytes(ctx.first, ctx.second, wxString(to));
-        } else {
-            d->DoTryToDeleteClient(ip, port);
+    if (d->selection.first.empty() && d->selection.second == 0) {
+        for (auto &client : d->clients) {
+            if (d->DoIpV4ToMgAddress(client.first, &c->rem)) {
+                d->DoTryToSendBytes(c, ev_data);
+            }
+        }
+    } else {
+        if (d->DoIpV4ToMgAddress(d->selection.first, &c->rem)) {
+            d->DoTryToSendBytes(c, ev_data);
         }
     }
 
-    d->txBytes.clear();
+    d->DoClrearTxBytes();
 }
 
 static void OnMgEvOpen(struct mg_connection *c, void *ev_data, UDPServer *q)
 {
     auto *d = q->GetD<UDPServerPrivate>();
-    const std::string remIp = d->mg_addr_to_ipv4(&c->rem);
+    const std::string remIp = d->DoMgAddressToIpV4(&c->rem);
     const uint16_t remPort = DoReverseByteOrder<uint16_t>(c->rem.port);
-    const std::string locIp = d->mg_addr_to_ipv4(&c->loc);
+    const std::string locIp = d->DoMgAddressToIpV4(&c->loc);
     const uint16_t locPort = DoReverseByteOrder<uint16_t>(c->loc.port);
     const std::string from = DoEncodeFlag(remIp, remPort);
     const std::string to = DoEncodeFlag(locIp, locPort);
@@ -78,7 +69,7 @@ static void OnMgEvRead(struct mg_connection *c, void *ev_data, UDPServer *q)
     memcpy(bytes.get(), c->recv.buf, c->recv.len);
 
     auto *d = q->GetD<UDPServerPrivate>();
-    const std::string ip = d->mg_addr_to_ipv4(&c->rem);
+    const std::string ip = d->DoMgAddressToIpV4(&c->rem);
     const uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
     const std::string from = DoEncodeFlag(ip, port);
 

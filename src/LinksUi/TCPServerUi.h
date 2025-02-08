@@ -22,5 +22,4 @@ private:
 
 protected:
     Link *NewLink() override;
-    void DeleteLink(Link *link) override;
 };

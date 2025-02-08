@@ -25,18 +25,13 @@ WSServerUi::WSServerUi(wxWindow *parent)
     InitUiComponents(funcs, parent);
 }
 
-WSServerUi::~WSServerUi() {}
+WSServerUi::~WSServerUi()
+{
+    delete dynamic_cast<WSServer *>(GetLink());
+}
 
 Link *WSServerUi::NewLink()
 {
     auto wsServer = new WSServer();
     return wsServer;
-}
-
-void WSServerUi::DeleteLink(Link *link)
-{
-    auto wsServer = dynamic_cast<WSServer *>(link);
-    if (wsServer) {
-        delete wsServer;
-    }
 }

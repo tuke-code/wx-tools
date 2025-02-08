@@ -20,14 +20,12 @@ WSClientUi::WSClientUi(wxWindow *parent)
     InitUiComponents(funcs, parent);
 }
 
-WSClientUi::~WSClientUi() {}
+WSClientUi::~WSClientUi()
+{
+    delete dynamic_cast<WSClient *>(GetLink());
+}
 
 Link *WSClientUi::NewLink()
 {
     return new WSClient();
-}
-
-void WSClientUi::DeleteLink(Link *link)
-{
-    delete dynamic_cast<WSClient *>(link);
 }

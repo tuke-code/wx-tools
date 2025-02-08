@@ -24,7 +24,7 @@ static void OnMgEvPoll(struct mg_connection *c, void *ev_data, UDPClient *q)
     d->txBytesLock.lock();
     for (auto &ctx : d->txBytes) {
         if (mg_send(c, ctx.first.get(), ctx.second)) {
-            std::string ip = d->mg_addr_to_ipv4(&c->rem);
+            std::string ip = d->DoMgAddressToIpV4(&c->rem);
             uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
             std::string to = DoEncodeFlag(ip, port);
             d->DoTryToQueueTxBytes(ctx.first, ctx.second, to);
@@ -41,9 +41,9 @@ static void OnMgEvPoll(struct mg_connection *c, void *ev_data, UDPClient *q)
 static void OnMgEvOpen(struct mg_connection *c, void *ev_data, UDPClient *q)
 {
     auto *d = q->GetD<UDPClientPrivate>();
-    const std::string remIp = d->mg_addr_to_ipv4(&c->rem);
+    const std::string remIp = d->DoMgAddressToIpV4(&c->rem);
     const uint16_t remPort = DoReverseByteOrder<uint16_t>(c->rem.port);
-    const std::string locIp = d->mg_addr_to_ipv4(&c->loc);
+    const std::string locIp = d->DoMgAddressToIpV4(&c->loc);
     const uint16_t locPort = DoReverseByteOrder<uint16_t>(c->loc.port);
     const std::string from = DoEncodeFlag(remIp, remPort);
     const std::string to = DoEncodeFlag(locIp, locPort);
@@ -61,7 +61,7 @@ static void OnMgEvRead(struct mg_connection *c, void *ev_data, UDPClient *q)
     wxtDataItem item;
     item.len = c->recv.len;
 
-    const std::string ip = d->mg_addr_to_ipv4(&c->rem);
+    const std::string ip = d->DoMgAddressToIpV4(&c->rem);
     const uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
     const std::string from = DoEncodeFlag(ip, port);
     item.flag = from;

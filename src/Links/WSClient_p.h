@@ -25,9 +25,9 @@ static void OnMgEvWsOpen(struct mg_connection *c, void *ev_data, WSClient *q)
     c->is_hexdumping = 1;
 
     auto *d = q->GetD<WSClientPrivate>();
-    const std::string locIp = d->mg_addr_to_ipv4(&c->loc);
+    const std::string locIp = d->DoMgAddressToIpV4(&c->loc);
     const uint16_t locPort = DoReverseByteOrder<uint16_t>(c->loc.port);
-    const std::string remIp = d->mg_addr_to_ipv4(&c->rem);
+    const std::string remIp = d->DoMgAddressToIpV4(&c->rem);
     const uint16_t remPort = DoReverseByteOrder<uint16_t>(c->rem.port);
 
     std::string loc = fmt::format("{0}:{1}", locIp, locPort);
@@ -49,7 +49,7 @@ static void OnMgEvWsMsg(struct mg_connection *c, void *ev_data, WSClient *q)
     }
 
     auto *d = q->GetD<WSClientPrivate>();
-    std::string ip = q->GetD<WSClientPrivate>()->mg_addr_to_ipv4(&c->rem);
+    std::string ip = q->GetD<WSClientPrivate>()->DoMgAddressToIpV4(&c->rem);
     uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
     std::string from = DoEncodeFlag(ip, port) + op;
     std::shared_ptr<char> bytes(new char[wm->data.len], [](char *p) { delete[] p; });
@@ -60,9 +60,9 @@ static void OnMgEvWsMsg(struct mg_connection *c, void *ev_data, WSClient *q)
 static void OnMgEvClose(struct mg_connection *c, void *ev_data, WSClient *q)
 {
     auto *d = q->GetD<WSClientPrivate>();
-    const std::string locIp = d->mg_addr_to_ipv4(&c->loc);
+    const std::string locIp = d->DoMgAddressToIpV4(&c->loc);
     const uint16_t locPort = DoReverseByteOrder<uint16_t>(c->loc.port);
-    const std::string remIp = d->mg_addr_to_ipv4(&c->rem);
+    const std::string remIp = d->DoMgAddressToIpV4(&c->rem);
     const uint16_t remPort = DoReverseByteOrder<uint16_t>(c->rem.port);
 
     std::string loc = fmt::format("{0}:{1}", locIp, locPort);
@@ -75,7 +75,7 @@ static void OnMgEvClose(struct mg_connection *c, void *ev_data, WSClient *q)
 static void OnMgEvError(struct mg_connection *c, void *ev_data, WSClient *q)
 {
     auto *d = q->GetD<WSClientPrivate>();
-    const std::string ip = d->mg_addr_to_ipv4(&c->loc);
+    const std::string ip = d->DoMgAddressToIpV4(&c->loc);
     const uint16_t port = DoReverseByteOrder<uint16_t>(c->loc.port);
     wxtError() << "Client error: " << ip << ":" << port << " " << reinterpret_cast<char *>(ev_data);
 }
@@ -85,7 +85,7 @@ static void OnMgEvPoll(struct mg_connection *c, int ev, void *ev_data, WSClient 
     auto *d = q->GetD<WSClientPrivate>();
     std::string op;
     size_t len = 0;
-    std::string ip = d->mg_addr_to_ipv4(&c->rem);
+    std::string ip = d->DoMgAddressToIpV4(&c->rem);
     uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
     std::string to = DoEncodeFlag(ip, port);
 

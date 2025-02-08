@@ -46,7 +46,10 @@ SerialPortUi::SerialPortUi(wxWindow *parent)
     AddGrowableCol(1);
 }
 
-SerialPortUi::~SerialPortUi() {}
+SerialPortUi::~SerialPortUi()
+{
+    delete dynamic_cast<SerialPort *>(GetLink());
+}
 
 void SerialPortUi::Disable()
 {

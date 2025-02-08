@@ -82,8 +82,3 @@ Link *LinkUi::NewLink()
 {
     return nullptr;
 }
-
-void LinkUi::DeleteLink(Link *link)
-{
-    wxUnusedVar(link);
-}

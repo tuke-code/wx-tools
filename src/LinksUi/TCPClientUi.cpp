@@ -22,15 +22,10 @@ TCPClientUi::TCPClientUi(wxWindow *parent)
 
 TCPClientUi::~TCPClientUi()
 {
-    // Destructor
+    delete dynamic_cast<TCPClient *>(GetLink());
 }
 
 Link *TCPClientUi::NewLink()
 {
     return new TCPClient();
-}
-
-void TCPClientUi::DeleteLink(Link *link)
-{
-    delete dynamic_cast<TCPClient *>(link);
 }

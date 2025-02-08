@@ -20,14 +20,12 @@ UDPClientUi::UDPClientUi(wxWindow *parent)
     InitUiComponents(funcs, parent);
 }
 
-UDPClientUi::~UDPClientUi() {}
+UDPClientUi::~UDPClientUi()
+{
+    delete dynamic_cast<UDPClient *>(GetLink());
+}
 
 Link *UDPClientUi::NewLink()
 {
     return new UDPClient();
-}
-
-void UDPClientUi::DeleteLink(Link *link)
-{
-    delete dynamic_cast<UDPClient *>(link);
 }

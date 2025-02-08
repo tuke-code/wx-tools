@@ -26,11 +26,17 @@ public:
 
     std::atomic_bool ignoreCloseError{false};
     std::atomic<bool> enableExitThread{false}; // The flag must be set to true on ui thread.
-    std::mutex txBytesLock;
-    std::vector<std::pair<std::shared_ptr<char> /*data*/, int /*len*/>> txBytes;
     wxEvtHandler *evtHandler; // You must set this to receive events if you want to use them.
 
-public:
+    std::mutex txBytesLock;
+    std::vector<std::pair<std::shared_ptr<char> /*data*/, int /*len*/>> txBytes;
+    void DoClrearTxBytes()
+    {
+        txBytesLock.lock();
+        txBytes.clear();
+        txBytesLock.unlock();
+    }
+
     void DoTryToQueueRxBytes(std::shared_ptr<char> bytes, int len, const wxString &from)
     {
         DoTryToQueueBytes(bytes, len, from, wxtBytesRx);
