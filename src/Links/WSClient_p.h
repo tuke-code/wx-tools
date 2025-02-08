@@ -59,9 +59,7 @@ static void OnMgEvWsMsg(struct mg_connection *c, void *ev_data, WSClient *q)
 static void OnMgEvClose(struct mg_connection *c, void *ev_data, WSClient *q)
 {
     auto *d = q->GetD<WSClientPrivate>();
-    wxString msg = _("WebSocket client has been closed, server has been closed or not found.");
-    wxtInfo() << msg;
-    d->DoQueueError(msg);
+    d->DoQueueError(d->GetStrClientClosed());
     d->DoQueueLinkClosed();
 }
 

@@ -31,7 +31,7 @@ void WSClient::Loop()
     mgr.userdata = this;
     auto c = mg_ws_connect(&mgr, url.c_str(), WSClientHandler, nullptr, nullptr);
     if (c == nullptr) {
-        d->DoQueueError(_("Failed to connect to server."));
+        d->DoQueueError(d->GetStrClientClosed());
         mg_mgr_free(&mgr);
         return;
     }

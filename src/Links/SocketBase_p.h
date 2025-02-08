@@ -76,4 +76,18 @@ public:
 
         return true;
     }
+
+    const wxString GetStrUnconnected() { return _("Unconnected"); }
+
+    const wxString GetStrClientClosed()
+    {
+        return _("Client closed, server has been closed or not found.");
+    }
+
+    const wxString GetStrServerClosed() { return _("Server has been closed."); }
+
+    const wxString GetStrFailedToCreateServer()
+    {
+        return _("Failed to create server, please check parameters then try again.");
+    }
 };

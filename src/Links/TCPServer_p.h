@@ -82,10 +82,8 @@ static void OnMgEvClose(struct mg_connection *c, void *ev_data, TCPServer *q)
         std::string ip = d->DoMgAddressToIpV4(&c->rem);
         uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
         d->DoTryToDeleteClient(ip, port);
-        std::string flag = DoEncodeFlag(ip, port);
-        wxtInfo() << fmt::format("TCP tcp client {0} has been disconnected.", flag);
     } else {
-        d->DoQueueError(_("TCP server has been closed."));
+        d->DoQueueError(d->GetStrServerClosed());
         d->DoQueueLinkClosed();
     }
 }

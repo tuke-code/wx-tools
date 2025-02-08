@@ -111,7 +111,7 @@ static void OnMgEvClose(struct mg_connection *c, void *ev_data, WSServer *q)
     if (c->is_client) {
         d->DoTryToDeleteClient(ip, port);
     } else {
-        d->DoQueueError(_("Web socket server has been closed."));
+        d->DoQueueError(d->GetStrServerClosed());
         d->DoQueueLinkClosed();
     }
 }

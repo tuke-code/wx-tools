@@ -33,7 +33,7 @@ void WSServer::Loop()
     auto *c = mg_http_listen(&mgr, url.c_str(), WSServerHandler, nullptr);
     if (c == nullptr) {
         mg_mgr_free(&mgr);
-        d->DoQueueError(wxString(_("Failed to create server.")));
+        d->DoQueueError(d->GetStrFailedToCreateServer());
         return;
     }
 

@@ -74,7 +74,7 @@ static void OnMgEvClose(struct mg_connection *c, void *ev_data, UDPClient *q)
 {
     UDPClientPrivate *d = q->GetD<UDPClientPrivate>();
     if (d && d->evtHandler) {
-        d->DoQueueError(_("UDP client disconnected"));
+        d->DoQueueError(d->GetStrClientClosed());
         d->DoQueueLinkClosed();
     }
 }

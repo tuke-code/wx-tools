@@ -22,10 +22,6 @@
 #define wxtNoneStr wxT("None")
 #define wxtOkStr wxT("Ok")
 #define wxtUnknownStr wxT("Unknown")
-static const wxString wxtUnconnectedStr()
-{
-    return _("(Unconnected)");
-}
 
 #ifdef MG_DATA_SIZE
 const static int wxtDataSize = MG_DATA_SIZE;

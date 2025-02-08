@@ -76,7 +76,7 @@ static void OnMgEvRead(struct mg_connection *c, void *ev_data, UDPServer *q)
 static void OnMgEvClose(struct mg_connection *c, void *ev_data, UDPServer *q)
 {
     auto *d = q->GetD<UDPServerPrivate>();
-    d->DoQueueError(_("UDP server closed."));
+    d->DoQueueError(d->GetStrServerClosed());
     d->DoQueueLinkClosed();
 }
 

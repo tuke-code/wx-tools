@@ -62,7 +62,7 @@ static void OnMgEvClose(struct mg_connection *c, void *ev_data, TCPClient *q)
     wxUnusedVar(ev_data);
 
     auto *d = q->GetD<SocketClientPrivate>();
-    d->DoQueueError(_("TCP client has been Close."));
+    d->DoQueueError(d->GetStrClientClosed());
     d->DoQueueLinkClosed();
 }
 
