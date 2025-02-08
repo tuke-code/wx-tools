@@ -18,5 +18,5 @@ public:
     ~WSClient();
 
 private:
-    void *Entry() override;
+    void Loop() override;
 };

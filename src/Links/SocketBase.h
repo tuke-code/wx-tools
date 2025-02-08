@@ -27,7 +27,7 @@ class SocketBase : public Link
 {
 public:
     SocketBase(SocketBasePrivate *d);
-    ~SocketBase();
+    ~SocketBase() override;
 
     void Load(const wxtJson &parameters) override;
     wxtJson Save() override;

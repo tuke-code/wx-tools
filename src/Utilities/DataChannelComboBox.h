@@ -14,6 +14,8 @@ class DataChannelComboBox : public wxComboBox
 {
 public:
     DataChannelComboBox(wxWindow* parent = nullptr);
+    ~DataChannelComboBox();
+
     int GetDataChannel() const;
     void SetDataChannel(int dataChannel);
 };

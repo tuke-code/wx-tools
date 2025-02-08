@@ -15,7 +15,7 @@ class SocketServer : public SocketBase
 {
 public:
     SocketServer(SocketServerPrivate *d);
-    ~SocketServer();
+    ~SocketServer() override;
 
     void SetCurrentClient(const std::string &ip, uint16_t port);
 };

@@ -26,6 +26,16 @@ DataChannelComboBox::DataChannelComboBox(wxWindow* parent)
     SetSelection(0);
 }
 
+DataChannelComboBox::~DataChannelComboBox()
+{
+    for (int i = 0; i < GetCount(); i++) {
+        void* clientData = GetClientData(i);
+        if (clientData != nullptr) {
+            delete static_cast<int*>(clientData);
+        }
+    }
+}
+
 int DataChannelComboBox::GetDataChannel() const
 {
     void* ptr = GetClientData(GetSelection());

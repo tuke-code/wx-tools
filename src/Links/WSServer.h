@@ -15,8 +15,8 @@ class WSServer : public SocketServer
 {
 public:
     WSServer();
-    ~WSServer();
+    ~WSServer() override;
 
 protected:
-    void *Entry() override;
+    void Loop() override;
 };

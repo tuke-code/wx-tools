@@ -18,35 +18,28 @@ WSClient::~WSClient()
     delete GetD<WSClientPrivate>();
 }
 
-void *WSClient::Entry()
+void WSClient::Loop()
 {
     auto *d = GetD<WSClientPrivate>();
     std::string ip = d->serverAddress.ToStdString();
     uint16_t port = d->serverPort;
-    const std::string url = "ws://" + ip + ":" + std::to_string(port);
+    const std::string url = fmt::format("ws://{0}:{1}", ip, port);
 
     struct mg_mgr mgr;
-    bool done = false;
-    struct mg_connection *c;
-    mgr.userdata = this;
     mg_mgr_init(&mgr);
     mg_log_set(MG_LL_NONE);
     mgr.userdata = this;
-
-    wxtInfo() << "Starting WS client on websocket:" << url.c_str();
-    c = mg_ws_connect(&mgr, url.c_str(), WSClientHandler, &done, NULL);
-    if (c == nullptr || done == true) {
+    auto c = mg_ws_connect(&mgr, url.c_str(), WSClientHandler, nullptr, nullptr);
+    if (c == nullptr) {
         d->DoTryToQueueError(_("Failed to create a WebSocket client."));
         mg_mgr_free(&mgr);
-        return nullptr;
+        return;
     }
 
     while (!TestDestroy()) {
         mg_mgr_poll(&mgr, 100);
     }
 
-    mg_close_conn(c);
     mg_mgr_free(&mgr);
     wxtInfo() << "Web socket client thread exited...";
-    return nullptr;
 }

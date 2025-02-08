@@ -12,6 +12,7 @@
 #include <wx/textctrl.h>
 
 #include "Links/SocketBase.h"
+#include "Links/SocketBase_p.h"
 #include "Links/SocketServer.h"
 #include "Utilities/DataChannelComboBox.h"
 #include "Utilities/IpComboBox.h"
@@ -163,4 +164,16 @@ void SocketBaseUi::InitDataChannelComboBox(int row, wxWindow *parent)
 
     m_dataChannelComboBox = new DataChannelComboBox(parent);
     Add(m_dataChannelComboBox, wxGBPosition(row, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
+
+    m_dataChannelComboBox->Bind(wxEVT_COMBOBOX_CLOSEUP, [=](wxCommandEvent &) {
+        Link *link = GetLink();
+        SocketBase *socket = dynamic_cast<SocketBase *>(link);
+        if (!socket) {
+            return;
+        }
+
+        int selection = m_dataChannelComboBox->GetSelection();
+        int dataChannel = *reinterpret_cast<int *>(m_dataChannelComboBox->GetClientData(selection));
+        socket->GetD<SocketBasePrivate>()->dataChannel = dataChannel;
+    });
 }

@@ -31,7 +31,7 @@ class Link : public wxThread
 {
 public:
     Link(LinkPrivate *d);
-    ~Link();
+    virtual ~Link();
 
     bool Open();
     void Close();

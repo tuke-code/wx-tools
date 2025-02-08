@@ -39,9 +39,9 @@ static void OnMgEvWsMsg(struct mg_connection *c, void *ev_data, WSClient *q)
 {
     struct mg_ws_message *wm = (struct mg_ws_message *) ev_data;
     std::string op;
-    if (wm->flags & WEBSOCKET_OP_TEXT) {
+    if ((wm->flags & WEBSOCKET_OP_TEXT) == WEBSOCKET_OP_TEXT) {
         op = std::string("(T)");
-    } else if (wm->flags & WEBSOCKET_OP_BINARY) {
+    } else if ((wm->flags & WEBSOCKET_OP_BINARY) == WEBSOCKET_OP_BINARY) {
         op = std::string("(B)");
     } else {
         wxtWarning() << "Unknown data channel: " << wm->flags;
@@ -75,9 +75,7 @@ static void OnMgEvClose(struct mg_connection *c, void *ev_data, WSClient *q)
 static void OnMgEvError(struct mg_connection *c, void *ev_data, WSClient *q)
 {
     auto *d = q->GetD<WSClientPrivate>();
-    const std::string ip = d->DoMgAddressToIpV4(&c->loc);
-    const uint16_t port = DoReverseByteOrder<uint16_t>(c->loc.port);
-    wxtError() << "Client error: " << ip << ":" << port << " " << reinterpret_cast<char *>(ev_data);
+    d->DoTryToQueueError(wxString(reinterpret_cast<char *>(ev_data)));
 }
 
 static void OnMgEvPoll(struct mg_connection *c, int ev, void *ev_data, WSClient *q)
@@ -89,10 +87,7 @@ static void OnMgEvPoll(struct mg_connection *c, int ev, void *ev_data, WSClient 
     uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
     std::string to = DoEncodeFlag(ip, port);
 
-    if (!c->is_client) {
-        return;
-    }
-
+    d->txBytesLock.lock();
     for (auto &ctx : d->txBytes) {
         if (d->dataChannel == WEBSOCKET_OP_TEXT) {
             op = std::string("(T)");
@@ -111,11 +106,12 @@ static void OnMgEvPoll(struct mg_connection *c, int ev, void *ev_data, WSClient 
     }
 
     d->txBytes.clear();
+    d->txBytesLock.unlock();
 }
 
 static void WSClientHandler(struct mg_connection *c, int ev, void *ev_data)
 {
-    auto q = reinterpret_cast<WSClient *>(c->fn_data);
+    auto q = reinterpret_cast<WSClient *>(c->mgr->userdata);
     if (ev == MG_EV_WS_OPEN) {
         OnMgEvWsOpen(c, ev_data, q);
     } else if (ev == MG_EV_WS_MSG) {
