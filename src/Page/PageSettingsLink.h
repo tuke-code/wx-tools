@@ -24,7 +24,6 @@ public:
 
     wxButton *GetOpenButton() const;
     LinkUi *GetLinkUi() const;
-    void SetOpenButtonLabel(const wxString &label);
     PageSettingsLinkPopup *GetPopup() const;
 
 private:

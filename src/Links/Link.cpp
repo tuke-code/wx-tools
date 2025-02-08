@@ -30,16 +30,17 @@ bool Link::Open()
         return false;
     }
 
-    while (!IsRunning()) {
-        // Wait for the thread to start...
-    }
-
     return true;
 }
 
 void Link::Close()
 {
-    Delete();
+    if (IsRunning()) {
+        Delete();
+    } else {
+        wxtWarning() << "Thread is not running!";
+    }
+
     wxtInfo() << "Link thread exited...";
 }
 

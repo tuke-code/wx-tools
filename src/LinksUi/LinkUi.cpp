@@ -18,9 +18,7 @@ LinkUi::LinkUi(wxWindow *parent)
 
 LinkUi::~LinkUi()
 {
-    if (m_link && m_link->IsAlive()) {
-        m_link->Close();
-    }
+
 }
 
 Link *LinkUi::GetLink() const
@@ -44,11 +42,12 @@ bool LinkUi::Open(wxEvtHandler *evtHandler)
 
 void LinkUi::Close()
 {
-    if (m_link && m_link->IsAlive()) {
+    if (m_link) {
+        // m_link will be deleted when the thread exits...
         m_link->Close();
-        //DeleteLink(m_link);
-        m_link = nullptr;
     }
+
+    m_link = nullptr;
 }
 
 bool LinkUi::IsOpen() const

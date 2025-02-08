@@ -58,11 +58,6 @@ LinkUi *PageSettingsLink::GetLinkUi() const
     return m_linkUi;
 }
 
-void PageSettingsLink::SetOpenButtonLabel(const wxString &label)
-{
-    m_openButton->SetLabel(label);
-}
-
 PageSettingsLinkPopup *PageSettingsLink::GetPopup() const
 {
     return m_popup;

@@ -34,7 +34,6 @@ void *WSServer::Entry()
     if (c == nullptr) {
         mg_mgr_free(&mgr);
         d->DoTryToQueueErrorOccurred(wxString(_("Failed to create a WebSocket server!")));
-        mg_mgr_free(&mgr);
         return nullptr;
     }
 

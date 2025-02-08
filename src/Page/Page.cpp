@@ -34,6 +34,7 @@ EVT_THREAD(wxtBytesTx, Page::OnBytesTx)
 EVT_THREAD(wxtErrorOccurred, Page::OnErrorOccurred)
 EVT_THREAD(wxtNewClient, Page::OnNewClient)
 EVT_THREAD(wxtDeleteClient, Page::OnDeleteClient)
+EVT_THREAD(wxtCloseLink, Page::OnCloseLink)
 END_EVENT_TABLE()
 
 Page::Page(LinkType type, wxWindow *parent)
@@ -191,8 +192,8 @@ void Page::OnBytesTx(wxThreadEvent &e)
 
 void Page::OnErrorOccurred(wxThreadEvent &e)
 {
-    Close();
     wxLogWarning(_("Error: ") + wxString::FromUTF8(e.GetString()));
+    //Close();
 }
 
 void Page::OnNewClient(wxThreadEvent &e)
@@ -219,6 +220,11 @@ void Page::OnDeleteClient(wxThreadEvent &e)
     wxString ip = e.GetString();
     int port = e.GetInt();
     serverUi->DoDeleteClient(ip.ToStdString(), port);
+}
+
+void Page::OnCloseLink(wxThreadEvent &)
+{
+    Close();
 }
 
 void Page::OnSendTimerTimeout()
@@ -339,7 +345,8 @@ void Page::Open()
     LinkUi *linkUi = linkSettings->GetLinkUi();
     if (linkUi->Open(GetEventHandler())) {
         linkUi->Disable();
-        linkSettings->SetOpenButtonLabel(_("Close"));
+        auto btn = linkSettings->GetOpenButton();
+        btn->SetLabel(_("Close"));
         wxtInfo() << "Open link successfully.";
     } else {
         wxMessageBox(_("Failed to open link."), _("Error"), wxICON_ERROR);
@@ -355,9 +362,10 @@ void Page::Close()
     PageSettingsInput *inputSettings = m_pageSettings->GetInputSettings();
     inputSettings->SetCycleIntervalComboBoxSelection(0);
 
-    Link *link = linkUi->GetLink();
     linkUi->Close();
     linkUi->Enable();
-    linkSettings->SetOpenButtonLabel(_("Open"));
+
+    auto btn = linkSettings->GetOpenButton();
+    btn->SetLabel(_("Open"));
     wxtInfo() << "Close link successfully.";
 }

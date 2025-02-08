@@ -59,7 +59,7 @@ bool Application::OnInit()
     wxtInfo() << "Applicationn booting...";
 
     auto* mainWindow = new MainWindow();
-#if 0
+#if 1
     mainWindow->SetTransparent(50);
 #endif
     mainWindow->Show(true);

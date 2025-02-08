@@ -132,8 +132,7 @@ static void OnMgEvClose(struct mg_connection *c, void *ev_data, WSServer *q)
     if (c->is_client) {
         d->DoTryToDeleteClient(ip, port);
     } else {
-        d->DoTryToQueueErrorOccurred(_("The server has been closed."));
-
+        d->DoTryToCloseLink();
         wxtInfo() << "Server close: " << ip << ":" << port;
     }
 }
@@ -196,7 +195,7 @@ static void WSServerHandler(struct mg_connection *c, int ev, void *ev_data)
     } else if (ev == MG_EV_CLOSE) {
         OnMgEvClose(c, ev_data, q);
     } else if (ev == MG_EV_ERROR) {
-        OnMgEvError(c, ev_data, q);
+        //OnMgEvError(c, ev_data, q);
     } else if (ev == MG_EV_POLL) {
         OnMgEvPoll(c, ev_data, q);
     }

@@ -56,4 +56,12 @@ public:
             evtHandler->QueueEvent(evt);
         }
     }
+
+    void DoTryToCloseLink()
+    {
+        if (evtHandler) {
+            auto *evt = new wxThreadEvent(wxEVT_THREAD, wxtCloseLink);
+            evtHandler->QueueEvent(evt);
+        }
+    }
 };
