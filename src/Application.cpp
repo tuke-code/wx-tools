@@ -57,6 +57,7 @@ bool Application::OnInit()
     m_locale.AddCatalog(wxString("wxTools"));
     m_locale.AddCatalog(wxString("wxWidgets"));
     wxtInfo() << "Applicationn booting...";
+    wxtInfo() << "--------------------------------------------------------------------------------";
 
     auto* mainWindow = new MainWindow();
 #if 1

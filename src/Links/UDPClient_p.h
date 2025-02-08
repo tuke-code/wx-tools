@@ -44,6 +44,7 @@ static void OnMgEvOpen(struct mg_connection *c, void *ev_data, UDPClient *q)
     const std::string locIp = d->DoMgAddressToIpV4(&c->loc);
     const uint16_t locPort = DoReverseByteOrder<uint16_t>(c->loc.port);
 
+    wxtInfo() << fmt::format("UDP client opened({0}:{1}).", locIp, locPort) << c->loc.ip;
     d->DoQueueLinkOpened(locIp, locPort);
 }
 
@@ -105,7 +106,5 @@ static void UDPClientHandler(struct mg_connection *c, int ev, void *ev_data)
         OnMgEvClose(c, ev_data, q);
     } else if (ev == MG_EV_ERROR) {
         OnMgEvError(c, ev_data, q);
-    } else if (ev == MG_EV_ACCEPT) {
-        wxtInfo() << "UDP client accepted...";
     }
 }
