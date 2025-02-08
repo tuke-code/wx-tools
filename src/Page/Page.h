@@ -45,6 +45,8 @@ private:
     void OnErrorOccurred(wxThreadEvent &e);
     void OnNewClient(wxThreadEvent &e);
     void OnDeleteClient(wxThreadEvent &e);
+    void OnLinkOpened(wxThreadEvent &e);
+    void OnLinkCloseed(wxThreadEvent &e);
     void OnSendTimerTimeout();
     void OnClear();
     void OnTextFormatChanged(TextFormat format);

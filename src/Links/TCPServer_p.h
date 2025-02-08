@@ -46,7 +46,7 @@ static void OnMgEvRead(struct mg_connection *c, void *ev_data, TCPServer *q)
     const std::string from = DoEncodeFlag(ip, port);
 
     d->DoTryToNewClient(ip, port);
-    d->DoTryToQueueRxBytes(bytes, c->recv.len, from);
+    d->DoQueueRxBytes(bytes, c->recv.len, from);
     c->recv.len = 0;
 }
 
@@ -92,7 +92,7 @@ static void OnMgEvClose(struct mg_connection *c, void *ev_data, TCPServer *q)
         std::string flag = DoEncodeFlag(ip, port);
         wxtInfo() << fmt::format("TCP tcp client {0} has been disconnected.", flag);
     } else {
-        d->DoTryToQueueError(_("TCP server has been closed."));
+        d->DoQueueError(_("TCP server has been closed."));
     }
 }
 

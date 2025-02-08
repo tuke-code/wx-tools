@@ -31,7 +31,7 @@ void UDPServer::Loop()
     mgr.userdata = this;
     struct mg_connection *c = mg_listen(&mgr, url.c_str(), UDPServerHandler, nullptr);
     if (c == nullptr) {
-        d->DoTryToQueueError(_("Failed to connect to the server."));
+        d->DoQueueError(_("Failed to connect to the server."));
         mg_mgr_free(&mgr);
         return;
     }

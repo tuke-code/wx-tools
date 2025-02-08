@@ -11,6 +11,7 @@
 #include <wx/spinctrl.h>
 #include <wx/textctrl.h>
 
+#include "Common/wxTools.h"
 #include "Links/SocketBase.h"
 #include "Links/SocketBase_p.h"
 #include "Links/SocketServer.h"
@@ -95,6 +96,11 @@ void SocketBaseUi::Refresh()
     }
 }
 
+wxTextCtrl *SocketBaseUi::GetClientInfoLabel() const
+{
+    return m_clientInfoTextCtrl;
+}
+
 void SocketBaseUi::InitUiComponents(
     const std::vector<void (SocketBaseUi::*)(int, wxWindow *)> &funcs, wxWindow *parent)
 {
@@ -176,4 +182,16 @@ void SocketBaseUi::InitDataChannelComboBox(int row, wxWindow *parent)
         int dataChannel = *reinterpret_cast<int *>(m_dataChannelComboBox->GetClientData(selection));
         socket->GetD<SocketBasePrivate>()->dataChannel = dataChannel;
     });
+}
+
+void SocketBaseUi::InitClientInfoTextCtrl(int row, wxWindow *parent)
+{
+    m_clientInfoTextCtrl = new wxTextCtrl(parent,
+                                          wxID_ANY,
+                                          wxtUnconnectedStr(),
+                                          wxDefaultPosition,
+                                          wxDefaultSize,
+                                          wxTE_READONLY);
+    m_clientInfoTextCtrl->SetWindowStyleFlag(wxTE_CENTER);
+    Add(m_clientInfoTextCtrl, wxGBPosition(row, 0), wxGBSpan(1, 2), wxEXPAND | wxALL, 0);
 }

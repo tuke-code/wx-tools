@@ -24,6 +24,8 @@ public:
     void Load(const wxtJson &json) override;
     void Refresh() override;
 
+    wxTextCtrl *GetClientInfoLabel() const;
+
 protected:
     // clang-format off
     void InitUiComponents(const std::vector<void (SocketBaseUi::*)(int, wxWindow *)> &funcs, wxWindow *parent);
@@ -31,6 +33,7 @@ protected:
     void InitServerPortCtrl(int row, wxWindow *parent);
     void InitClientsComboBox(int row, wxWindow *parent);
     void InitDataChannelComboBox(int row, wxWindow *parent);
+    void InitClientInfoTextCtrl(int row, wxWindow *parent);
     // clang-format on
 
 protected:
@@ -44,4 +47,6 @@ protected:
 
     wxStaticText *m_dataChannelLabel{nullptr};
     DataChannelComboBox *m_dataChannelComboBox{nullptr};
+
+    wxTextCtrl *m_clientInfoTextCtrl{nullptr};
 };

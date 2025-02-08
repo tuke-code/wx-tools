@@ -76,7 +76,7 @@ static void OnMgEvRead(struct mg_connection *c, void *ev_data, UDPServer *q)
     const std::string from = DoEncodeFlag(ip, port);
 
     d->DoTryToNewClient(ip, port);
-    d->DoTryToQueueRxBytes(bytes, c->recv.len, from);
+    d->DoQueueRxBytes(bytes, c->recv.len, from);
     c->recv.len = 0;
 }
 

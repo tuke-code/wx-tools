@@ -37,26 +37,17 @@ public:
         txBytesLock.unlock();
     }
 
-    void DoTryToQueueRxBytes(std::shared_ptr<char> bytes, int len, const wxString &from)
+    void DoQueueRxBytes(std::shared_ptr<char> bytes, int len, const wxString &from)
     {
-        DoTryToQueueBytes(bytes, len, from, wxtBytesRx);
+        DoQueueBytes(bytes, len, from, wxtBytesRx);
     }
 
-    void DoTryToQueueTxBytes(std::shared_ptr<char> bytes, int len, const wxString &to)
+    void DoQueueTxBytes(std::shared_ptr<char> bytes, int len, const wxString &to)
     {
-        DoTryToQueueBytes(bytes, len, to, wxtBytesTx);
+        DoQueueBytes(bytes, len, to, wxtBytesTx);
     }
 
-    void DoTryToQueueBytes(std::shared_ptr<char> bytes, int len, const wxString &flag, int id)
-    {
-        if (bytes && evtHandler && len > 0) {
-            auto *evt = new wxThreadEvent(wxEVT_THREAD, id);
-            evt->SetPayload<wxtDataItem>(wxtDataItem{bytes, len, flag.ToStdString()});
-            evtHandler->QueueEvent(evt);
-        }
-    }
-
-    void DoTryToQueueError(const wxString &error)
+    void DoQueueError(const wxString &error)
     {
         if (evtHandler) {
             auto *evt = new wxThreadEvent(wxEVT_THREAD, wxtErrorOccurred);
@@ -66,6 +57,36 @@ public:
                 evt->SetInt(0);
             }
             evt->SetString(error);
+            evtHandler->QueueEvent(evt);
+        }
+    }
+
+    void DoQueueLinkOpened(const std::string ip, uint16_t port)
+    {
+        DoQueueLinkState(ip, port, wxtLinkOpened);
+    }
+
+    void DoQueueLinkClosed(const std::string ip, uint16_t port)
+    {
+        DoQueueLinkState(ip, port, wxtLinkClosed);
+    }
+
+private:
+    void DoQueueBytes(std::shared_ptr<char> bytes, int len, const wxString &flag, int id)
+    {
+        if (bytes && evtHandler && len > 0) {
+            auto *evt = new wxThreadEvent(wxEVT_THREAD, id);
+            evt->SetPayload<wxtDataItem>(wxtDataItem{bytes, len, flag.ToStdString()});
+            evtHandler->QueueEvent(evt);
+        }
+    }
+
+    void DoQueueLinkState(const std::string ip, uint16_t port, int id)
+    {
+        if (evtHandler) {
+            auto *evt = new wxThreadEvent(wxEVT_THREAD, id);
+            evt->SetString(ip);
+            evt->SetInt(port);
             evtHandler->QueueEvent(evt);
         }
     }

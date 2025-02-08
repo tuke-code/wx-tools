@@ -17,6 +17,7 @@ WSClientUi::WSClientUi(wxWindow *parent)
     funcs.push_back(&WSClientUi::InitServerComboBox);
     funcs.push_back(&WSClientUi::InitServerPortCtrl);
     funcs.push_back(&WSClientUi::InitDataChannelComboBox);
+    funcs.push_back(&WSClientUi::InitClientInfoTextCtrl);
     InitUiComponents(funcs, parent);
 }
 

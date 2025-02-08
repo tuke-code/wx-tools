@@ -45,7 +45,7 @@ static void DoSendBytesToClient(struct mg_connection *c, void *ev_data, WSServer
         }
 
         if (len > 0) {
-            d->DoTryToQueueTxBytes(ctx.first, ctx.second, to + op);
+            d->DoQueueTxBytes(ctx.first, ctx.second, to + op);
         } else {
             d->DoTryToDeleteClient(ip, port);
             break;
@@ -104,7 +104,7 @@ static void OnMgEvMsg(struct mg_connection *c, void *ev_data, WSServer *q)
     std::shared_ptr<char> bytes(new char[wm->data.len], [](char *p) { delete[] p; });
     memcpy(bytes.get(), wm->data.buf, wm->data.len);
 
-    d->DoTryToQueueRxBytes(bytes, wm->data.len, from);
+    d->DoQueueRxBytes(bytes, wm->data.len, from);
 }
 
 static void OnMgEvClose(struct mg_connection *c, void *ev_data, WSServer *q)
@@ -115,7 +115,7 @@ static void OnMgEvClose(struct mg_connection *c, void *ev_data, WSServer *q)
     if (c->is_client) {
         d->DoTryToDeleteClient(ip, port);
     } else {
-        d->DoTryToQueueError(_("Server has been closed."));
+        d->DoQueueError(_("Server has been closed."));
         wxtInfo() << "Server close: " << ip << ":" << port;
     }
 }
@@ -129,7 +129,7 @@ static void OnMgEvError(struct mg_connection *c, void *ev_data, WSServer *q)
         uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
         d->DoTryToDeleteClient(ip, port);
     } else {
-        d->DoTryToQueueError(msg);
+        d->DoQueueError(msg);
     }
 }
 

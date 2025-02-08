@@ -10,7 +10,6 @@
 #include "TCPClient_p.h"
 
 #include <fmt/format.h>
-#include <mongoose.h>
 
 TCPClient::TCPClient()
     : SocketClient(new TCPClientPrivate)
@@ -32,7 +31,7 @@ void TCPClient::Loop()
     mgr.userdata = this;
     auto *c = mg_connect(&mgr, url.c_str(), TCPClientHandler, nullptr);
     if (c == nullptr) {
-        d->DoTryToQueueError(_("Failed to connect to tcp server."));
+        d->DoQueueError(_("Failed to connect to tcp server."));
         mg_mgr_free(&mgr);
         return;
     }

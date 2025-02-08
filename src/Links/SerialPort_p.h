@@ -34,7 +34,7 @@ static void ReadBytes(itas109::CSerialPort *sp, SerialPort *q)
     if (len > 0) {
         std::shared_ptr<char> bytes(new char[len], std::default_delete<char[]>());
         memcpy(bytes.get(), data, len);
-        d->DoTryToQueueRxBytes(bytes, len, d->portName);
+        d->DoQueueRxBytes(bytes, len, d->portName);
     }
 }
 
@@ -45,11 +45,11 @@ static void WriteBytes(itas109::CSerialPort *sp, SerialPort *q)
     for (std::pair<std::shared_ptr<char>, int> &ctx : d->txBytes) {
         int len = sp->writeData(ctx.first.get(), ctx.second);
         if (len == -1) {
-            d->DoTryToQueueError(_("Write data failed."));
+            d->DoQueueError(_("Write data failed."));
         } else {
             std::shared_ptr<char> bytes(new char[len], std::default_delete<char[]>());
             memcpy(bytes.get(), ctx.first.get(), len);
-            d->DoTryToQueueRxBytes(bytes, len, d->portName);
+            d->DoQueueRxBytes(bytes, len, d->portName);
         }
     }
 

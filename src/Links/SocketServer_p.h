@@ -73,7 +73,7 @@ public:
         txBytesLock.lock();
         for (auto &ctx : txBytes) {
             if (mg_send(c, ctx.first.get(), ctx.second)) {
-                DoTryToQueueTxBytes(ctx.first, ctx.second, to);
+                DoQueueTxBytes(ctx.first, ctx.second, to);
             } else {
                 DoTryToDeleteClient(ip, port);
             }

@@ -14,9 +14,10 @@
 #include "Common/wxTools.h"
 #include "Links/Link.h"
 #include "LinksUi/LinkUi.h"
+#include "LinksUi/SocketClientUi.h"
 #include "LinksUi/SocketServerUi.h"
-#include "PageSettingsLink.h"
 
+#include "PageSettingsLink.h"
 #include "PageIO.h"
 #include "PageIOInput.h"
 #include "PageIOOutput.h"
@@ -34,6 +35,8 @@ EVT_THREAD(wxtBytesTx, Page::OnBytesTx)
 EVT_THREAD(wxtErrorOccurred, Page::OnErrorOccurred)
 EVT_THREAD(wxtNewClient, Page::OnNewClient)
 EVT_THREAD(wxtDeleteClient, Page::OnDeleteClient)
+EVT_THREAD(wxtLinkOpened, Page::OnLinkOpened)
+EVT_THREAD(wxtLinkClosed, Page::OnLinkCloseed)
 END_EVENT_TABLE()
 
 Page::Page(LinkType type, wxWindow *parent)
@@ -192,6 +195,11 @@ void Page::OnBytesTx(wxThreadEvent &e)
 void Page::OnErrorOccurred(wxThreadEvent &e)
 {
     Close(e.GetInt() == wxtIgnoreCloseErrorPopup);
+
+    if (e.GetString().IsEmpty()) {
+        return;
+    }
+
     if (!(e.GetInt() == wxtIgnoreCloseErrorPopup)) {
         wxLogWarning(_("Error: ") + wxString::FromUTF8(e.GetString()));
     }
@@ -221,6 +229,32 @@ void Page::OnDeleteClient(wxThreadEvent &e)
     wxString ip = e.GetString();
     int port = e.GetInt();
     serverUi->DoDeleteClient(ip.ToStdString(), port);
+}
+
+void SetClientInfoLabel(wxThreadEvent &e, LinkUi *linkUi, bool opened)
+{
+    if (dynamic_cast<SocketClientUi *>(linkUi)) {
+        SocketClientUi *clientUi = dynamic_cast<SocketClientUi *>(linkUi);
+        wxTextCtrl *clientInfo = clientUi->GetClientInfoLabel();
+        if (opened) {
+            wxString ip = e.GetString();
+            uint16_t port = e.GetInt();
+            std::string flag = DoEncodeFlag(ip.ToStdString(), port);
+            clientInfo->SetLabel(flag);
+        } else {
+            clientInfo->SetLabel(wxtUnconnectedStr());
+        }
+    }
+}
+
+void Page::OnLinkOpened(wxThreadEvent &e)
+{
+    SetClientInfoLabel(e, m_pageSettings->GetLinkSettings()->GetLinkUi(), true);
+}
+
+void Page::OnLinkCloseed(wxThreadEvent &e)
+{
+    SetClientInfoLabel(e, m_pageSettings->GetLinkSettings()->GetLinkUi(), false);
 }
 
 void Page::OnSendTimerTimeout()
@@ -343,7 +377,6 @@ void Page::Open()
         linkUi->Disable();
         auto btn = linkSettings->GetOpenButton();
         btn->SetLabel(_("Close"));
-        wxtInfo() << "Open link successfully.";
     } else {
         wxMessageBox(_("Failed to open link."), _("Error"), wxICON_ERROR);
     }
@@ -363,5 +396,4 @@ void Page::Close(bool ignoredCloseError)
 
     auto btn = linkSettings->GetOpenButton();
     btn->SetLabel(_("Open"));
-    wxtInfo() << "Close link successfully.";
 }

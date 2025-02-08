@@ -10,7 +10,6 @@
 #include "UDPClient_p.h"
 
 #include <fmt/format.h>
-#include <mongoose.h>
 
 UDPClient::UDPClient()
     : SocketClient(new UDPClientPrivate)
@@ -30,9 +29,9 @@ void UDPClient::Loop()
     mg_log_set(MG_LL_NONE);
 
     mgr.userdata = this;
-    struct mg_connection *c = mg_connect(&mgr, url.c_str(), UDPClientHandler, nullptr);
+    struct mg_connection *c = mg_listen(&mgr, url.c_str(), UDPClientHandler, nullptr);
     if (c == nullptr) {
-        d->DoTryToQueueError(_("Failed to connect to the server."));
+        d->DoQueueError(_("Failed to connect to the server."));
         mg_mgr_free(&mgr);
         return;
     }

@@ -15,7 +15,7 @@ Link::Link(LinkPrivate *dPtr)
 
 Link::~Link()
 {
-    wxtInfo() << __FUNCTION__ << " " << __LINE__;
+
 }
 
 bool Link::Open()
@@ -37,7 +37,6 @@ void Link::Close()
 {
     d->enableExitThread.store(true);
     Delete();
-    wxtInfo() << "Link thread exited...";
 }
 
 void Link::Write(std::shared_ptr<char> bytes, int len)

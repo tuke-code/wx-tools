@@ -27,9 +27,9 @@ static void OnMgEvPoll(struct mg_connection *c, void *ev_data, UDPClient *q)
             std::string ip = d->DoMgAddressToIpV4(&c->rem);
             uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
             std::string to = DoEncodeFlag(ip, port);
-            d->DoTryToQueueTxBytes(ctx.first, ctx.second, to);
+            d->DoQueueTxBytes(ctx.first, ctx.second, to);
         } else {
-            d->DoTryToQueueError(_("UDP client sends bytes failed."));
+            d->DoQueueError(_("UDP client sends bytes failed."));
             break;
         }
     }
@@ -41,14 +41,10 @@ static void OnMgEvPoll(struct mg_connection *c, void *ev_data, UDPClient *q)
 static void OnMgEvOpen(struct mg_connection *c, void *ev_data, UDPClient *q)
 {
     auto *d = q->GetD<UDPClientPrivate>();
-    const std::string remIp = d->DoMgAddressToIpV4(&c->rem);
-    const uint16_t remPort = DoReverseByteOrder<uint16_t>(c->rem.port);
     const std::string locIp = d->DoMgAddressToIpV4(&c->loc);
     const uint16_t locPort = DoReverseByteOrder<uint16_t>(c->loc.port);
-    const std::string from = DoEncodeFlag(remIp, remPort);
-    const std::string to = DoEncodeFlag(locIp, locPort);
 
-    wxtInfo() << fmt::format("UDP client connected from {0} to {1}", from, to);
+    d->DoQueueLinkOpened(locIp, locPort);
 }
 
 static void OnMgEvRead(struct mg_connection *c, void *ev_data, UDPClient *q)
@@ -69,23 +65,19 @@ static void OnMgEvRead(struct mg_connection *c, void *ev_data, UDPClient *q)
     std::shared_ptr<char> bytes(new char[c->recv.len], [](char *p) { delete[] p; });
     memcpy(bytes.get(), c->recv.buf, c->recv.len);
     item.data = bytes;
+    d->DoQueueTxBytes(bytes, c->recv.len, from);
     c->recv.len = 0;
-
-    if (d && d->evtHandler) {
-        auto *evt = new wxThreadEvent(wxEVT_THREAD, wxtBytesTx);
-        evt->SetPayload<wxtDataItem>(item);
-        d->evtHandler->QueueEvent(evt);
-    }
 }
 
 static void OnMgEvClose(struct mg_connection *c, void *ev_data, UDPClient *q)
 {
     UDPClientPrivate *d = q->GetD<UDPClientPrivate>();
-    wxString msg = _("UDP client disconnected");
     if (d && d->evtHandler) {
-        auto *evt = new wxThreadEvent(wxEVT_THREAD, wxtErrorOccurred);
-        evt->SetString(msg);
-        d->evtHandler->QueueEvent(evt);
+        d->DoQueueError(_("UDP client disconnected"));
+
+        const std::string locIp = d->DoMgAddressToIpV4(&c->loc);
+        const uint16_t locPort = DoReverseByteOrder<uint16_t>(c->loc.port);
+        d->DoQueueLinkClosed(locIp, locPort);
     }
 }
 
@@ -113,5 +105,7 @@ static void UDPClientHandler(struct mg_connection *c, int ev, void *ev_data)
         OnMgEvClose(c, ev_data, q);
     } else if (ev == MG_EV_ERROR) {
         OnMgEvError(c, ev_data, q);
+    } else if (ev == MG_EV_ACCEPT) {
+        wxtInfo() << "UDP client accepted...";
     }
 }

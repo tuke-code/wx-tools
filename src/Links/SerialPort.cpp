@@ -64,7 +64,7 @@ void SerialPort::Loop()
 
         sp->close();
     } else {
-        d->DoTryToQueueError(sp->getLastErrorMsg());
+        d->DoQueueError(sp->getLastErrorMsg());
     }
 
     delete sp;

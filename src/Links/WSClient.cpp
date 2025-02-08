@@ -31,7 +31,7 @@ void WSClient::Loop()
     mgr.userdata = this;
     auto c = mg_ws_connect(&mgr, url.c_str(), WSClientHandler, nullptr, nullptr);
     if (c == nullptr) {
-        d->DoTryToQueueError(_("Failed to create a WebSocket client."));
+        d->DoQueueError(_("Failed to create a WebSocket client."));
         mg_mgr_free(&mgr);
         return;
     }

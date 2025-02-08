@@ -16,6 +16,7 @@ UDPClientUi::UDPClientUi(wxWindow *parent)
     std::vector<void (SocketBaseUi::*)(int, wxWindow *)> funcs;
     funcs.push_back(&UDPClientUi::InitServerComboBox);
     funcs.push_back(&UDPClientUi::InitServerPortCtrl);
+    funcs.push_back(&UDPClientUi::InitClientInfoTextCtrl);
 
     InitUiComponents(funcs, parent);
 }

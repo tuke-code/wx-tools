@@ -9,7 +9,6 @@
 #pragma once
 
 #include <fmt/format.h>
-#include <mongoose.h>
 
 #include "Common/wxTools.h"
 #include "Links/WSClient.h"
@@ -54,7 +53,7 @@ static void OnMgEvWsMsg(struct mg_connection *c, void *ev_data, WSClient *q)
     std::string from = DoEncodeFlag(ip, port) + op;
     std::shared_ptr<char> bytes(new char[wm->data.len], [](char *p) { delete[] p; });
     memcpy(bytes.get(), wm->data.buf, wm->data.len);
-    d->DoTryToQueueRxBytes(bytes, wm->data.len, from);
+    d->DoQueueRxBytes(bytes, wm->data.len, from);
 }
 
 static void OnMgEvClose(struct mg_connection *c, void *ev_data, WSClient *q)
@@ -69,13 +68,13 @@ static void OnMgEvClose(struct mg_connection *c, void *ev_data, WSClient *q)
     std::string rem = fmt::format("{0}:{1}", remIp, remPort);
     wxtInfo() << fmt::format("WebSocket client({0}) has been disconnected from {1}", loc, rem);
 
-    d->DoTryToQueueError(_("WebSocket client has been close."));
+    d->DoQueueError(_("WebSocket client has been close."));
 }
 
 static void OnMgEvError(struct mg_connection *c, void *ev_data, WSClient *q)
 {
     auto *d = q->GetD<WSClientPrivate>();
-    d->DoTryToQueueError(wxString(reinterpret_cast<char *>(ev_data)));
+    d->DoQueueError(wxString(reinterpret_cast<char *>(ev_data)));
 }
 
 static void OnMgEvPoll(struct mg_connection *c, int ev, void *ev_data, WSClient *q)
@@ -98,9 +97,9 @@ static void OnMgEvPoll(struct mg_connection *c, int ev, void *ev_data, WSClient 
         }
 
         if (len > 0) {
-            d->DoTryToQueueTxBytes(ctx.first, ctx.second, to + op);
+            d->DoQueueTxBytes(ctx.first, ctx.second, to + op);
         } else {
-            d->DoTryToQueueError(_("WS server send bytes error."));
+            d->DoQueueError(_("WS server send bytes error."));
             break;
         }
     }

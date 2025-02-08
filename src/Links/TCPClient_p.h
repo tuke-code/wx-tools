@@ -32,7 +32,7 @@ static void OnMgEvRead(struct mg_connection *c, void *ev_data, TCPClient *q)
     std::shared_ptr<char> bytes(new char[c->recv.len], [](char *p) { delete[] p; });
     memcpy(bytes.get(), c->recv.buf, c->recv.len);
 
-    d->DoTryToQueueRxBytes(bytes, c->recv.len, from);
+    d->DoQueueRxBytes(bytes, c->recv.len, from);
     c->recv.len = 0;
 }
 
@@ -46,9 +46,9 @@ static void OnMgEvPoll(struct mg_connection *c, void *ev_data, TCPClient *q)
 
     for (auto &ctx : d->txBytes) {
         if (mg_send(c, ctx.first.get(), ctx.second)) {
-            d->DoTryToQueueTxBytes(ctx.first, ctx.second, to);
+            d->DoQueueTxBytes(ctx.first, ctx.second, to);
         } else {
-            d->DoTryToQueueError(_("TCP client send bytes error."));
+            d->DoQueueError(_("TCP client send bytes error."));
             break;
         }
     }
@@ -62,7 +62,7 @@ static void OnMgEvClose(struct mg_connection *c, void *ev_data, TCPClient *q)
     wxUnusedVar(ev_data);
 
     auto *d = q->GetD<SocketClientPrivate>();
-    d->DoTryToQueueError(_("TCP client has been Close."));
+    d->DoQueueError(_("TCP client has been Close."));
 }
 
 static void TCPClientHandler(struct mg_connection *c, int ev, void *ev_data)
