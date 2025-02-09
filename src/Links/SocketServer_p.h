@@ -14,6 +14,9 @@
 class SocketServerPrivate : public SocketBasePrivate
 {
 public:
+    void DoPoll(struct mg_connection *c, int ev, void *ev_data) override {}
+
+public:
     wxString targetAddressPort; // Such as "192.168.10.10:8080", or an empty string for all clients
     std::vector<std::pair<std::string, uint16_t>> clients;
     std::pair<std::string, uint16_t> selection;

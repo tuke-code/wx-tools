@@ -20,6 +20,7 @@ UDPClient::~UDPClient()
     delete GetD<UDPClientPrivate>();
 }
 
+#if 0
 void UDPClient::Poll()
 {
     UDPClientPrivate *d = GetD<UDPClientPrivate>();
@@ -43,3 +44,4 @@ void UDPClient::Poll()
     mg_mgr_free(&mgr);
     wxtInfo() << "UDP client thread exited...";
 }
+#endif

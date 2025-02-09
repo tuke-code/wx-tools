@@ -15,7 +15,4 @@ class UDPClient : public SocketClient
 public:
     UDPClient();
     ~UDPClient();
-
-protected:
-    void Poll() override;
 };

@@ -42,7 +42,7 @@ public:
     virtual std::string GetProtocolName() const = 0;
     virtual mg_connection *DoConnection(struct mg_mgr *mgr, const char *url, mg_event_handler_t fn) = 0;
     virtual bool GetIsClient() const = 0;
-    virtual void DoPoll(struct mg_connection *c, int ev, void *ev_data);
+    virtual void DoPoll(struct mg_connection *c, int ev, void *ev_data) = 0;
     // clang-format on
 
     void Poll() override

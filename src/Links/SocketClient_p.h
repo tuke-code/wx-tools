@@ -13,4 +13,19 @@
 class SocketClientPrivate : public SocketBasePrivate
 {
 public:
+    void DoPoll(struct mg_connection *c, int ev, void *ev_data) override
+    {
+        auto *q = reinterpret_cast<UDPClient *>(c->mgr->userdata);
+        wxASSERT_MSG(q, "q is nullptr");
+
+        if (ev == MG_EV_OPEN) {
+            OnMgEvOpen(c, ev_data, q);
+        } else if (ev == MG_EV_READ) {
+            OnMgEvRead(c, ev_data, q);
+        } else if (ev == MG_EV_POLL) {
+            OnMgEvPoll(c, ev_data, q);
+        } else if (ev == MG_EV_CLOSE) {
+            OnMgEvClose(c, ev_data, q);
+        }
+    }
 };

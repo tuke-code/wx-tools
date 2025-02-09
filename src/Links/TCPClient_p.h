@@ -16,6 +16,12 @@
 class TCPClientPrivate : public SocketClientPrivate
 {
 public:
+    std::string GetProtocolName() const override { return std::string("tcp"); }
+    mg_connection *DoConnection(struct mg_mgr *mgr, const char *url, mg_event_handler_t fn) override
+    {
+        return mg_connect(mgr, url, fn, nullptr);
+    }
+    bool GetIsClient() const override { return true; }
 };
 
 static void OnMgEvRead(struct mg_connection *c, void *ev_data, TCPClient *q)
@@ -24,7 +30,7 @@ static void OnMgEvRead(struct mg_connection *c, void *ev_data, TCPClient *q)
         return;
     }
 
-    auto *d = q->GetD<TCPClientPrivate>();
+    auto *d = q->GetD<TCPClientPrivate *>();
     const std::string ip = d->DoMgAddressToIpV4(&c->rem);
     const uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
     const std::string from = DoEncodeFlag(ip, port);
@@ -38,7 +44,7 @@ static void OnMgEvRead(struct mg_connection *c, void *ev_data, TCPClient *q)
 
 static void OnMgEvPoll(struct mg_connection *c, void *ev_data, TCPClient *q)
 {
-    auto *d = q->GetD<SocketClientPrivate>();
+    auto *d = q->GetD<SocketClientPrivate *>();
     size_t len = 0;
     std::string ip = d->DoMgAddressToIpV4(&c->rem);
     uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
@@ -61,7 +67,7 @@ static void OnMgEvClose(struct mg_connection *c, void *ev_data, TCPClient *q)
     wxUnusedVar(c);
     wxUnusedVar(ev_data);
 
-    auto *d = q->GetD<SocketClientPrivate>();
+    auto *d = q->GetD<SocketClientPrivate *>();
     d->DoQueueError(d->GetStrClientClosed());
     d->DoQueueLinkClosed();
 }
@@ -71,7 +77,7 @@ static void OnMgEvConnect(struct mg_connection *c, void *ev_data, TCPClient *q)
     wxUnusedVar(c);
     wxUnusedVar(ev_data);
 
-    auto *d = q->GetD<SocketClientPrivate>();
+    auto *d = q->GetD<SocketClientPrivate *>();
     d->DoQueueLinkOpened();
 }
 

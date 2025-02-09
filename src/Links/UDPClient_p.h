@@ -16,11 +16,17 @@
 class UDPClientPrivate : public SocketClientPrivate
 {
 public:
+    std::string GetProtocolName() const override { return std::string("udp"); }
+    mg_connection *DoConnection(struct mg_mgr *mgr, const char *url, mg_event_handler_t fn) override
+    {
+        return mg_connect(mgr, url, fn, nullptr);
+    }
+    bool GetIsClient() const override { return true; }
 };
 
 static void OnMgEvPoll(struct mg_connection *c, void *ev_data, UDPClient *q)
 {
-    auto *d = q->GetD<UDPClientPrivate>();
+    auto *d = q->GetD<UDPClientPrivate *>();
     d->txBytesLock.lock();
     for (auto &ctx : d->txBytes) {
         if (mg_send(c, ctx.first.get(), ctx.second)) {
@@ -40,7 +46,7 @@ static void OnMgEvPoll(struct mg_connection *c, void *ev_data, UDPClient *q)
 
 static void OnMgEvOpen(struct mg_connection *c, void *ev_data, UDPClient *q)
 {
-    auto *d = q->GetD<UDPClientPrivate>();
+    auto *d = q->GetD<UDPClientPrivate *>();
     const std::string locIp = d->DoMgAddressToIpV4(&c->loc);
     const uint16_t locPort = DoReverseByteOrder<uint16_t>(c->loc.port);
 
@@ -54,7 +60,7 @@ static void OnMgEvRead(struct mg_connection *c, void *ev_data, UDPClient *q)
         return;
     }
 
-    UDPClientPrivate *d = q->GetD<UDPClientPrivate>();
+    UDPClientPrivate *d = q->GetD<UDPClientPrivate *>();
     wxtDataItem item;
     item.len = c->recv.len;
 
@@ -72,7 +78,7 @@ static void OnMgEvRead(struct mg_connection *c, void *ev_data, UDPClient *q)
 
 static void OnMgEvClose(struct mg_connection *c, void *ev_data, UDPClient *q)
 {
-    UDPClientPrivate *d = q->GetD<UDPClientPrivate>();
+    UDPClientPrivate *d = q->GetD<UDPClientPrivate *>();
     if (d && d->evtHandler) {
         d->DoQueueError(d->GetStrClientClosed());
         d->DoQueueLinkClosed();
@@ -81,7 +87,7 @@ static void OnMgEvClose(struct mg_connection *c, void *ev_data, UDPClient *q)
 
 static void OnMgEvError(struct mg_connection *c, void *ev_data, UDPClient *q)
 {
-    UDPClientPrivate *d = q->GetD<UDPClientPrivate>();
+    UDPClientPrivate *d = q->GetD<UDPClientPrivate *>();
     std::string msg = reinterpret_cast<const char *>(ev_data);
     if (d && d->evtHandler) {
         auto *evt = new wxThreadEvent(wxEVT_THREAD, wxtErrorOccurred);
