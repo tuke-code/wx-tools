@@ -65,8 +65,3 @@ void *Link::Entry()
 
     return nullptr;
 }
-
-void Link::Poll()
-{
-    // Do something(execute in thread context) here...
-}

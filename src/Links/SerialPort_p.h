@@ -27,7 +27,6 @@ public:
 
     void ReadBytes(itas109::CSerialPort *sp)
     {
-        auto q = GetQ<SerialPort *>();
         char data[wxtDataSize] = {0};
         int len = sp->readAllData(&data);
         if (len > 0) {
@@ -39,7 +38,6 @@ public:
 
     void WriteBytes(itas109::CSerialPort *sp)
     {
-        auto q = GetQ<SerialPort *>();
         txBytesLock.lock();
         for (std::pair<std::shared_ptr<char>, int> &ctx : txBytes) {
             int len = sp->writeData(ctx.first.get(), ctx.second);

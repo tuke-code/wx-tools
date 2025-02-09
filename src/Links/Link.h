@@ -51,8 +51,8 @@ public:
     }
 
 protected:
-    void *Entry() override;
-    virtual void Poll();
+    virtual void Poll() = 0;
+    void *Entry() final;
 
 protected:
     LinkPrivate *d;
