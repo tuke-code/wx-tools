@@ -11,7 +11,9 @@
 
 Link::Link(LinkPrivate *dPtr)
     : d(dPtr)
-{}
+{
+    d->q = this;
+}
 
 Link::~Link()
 {
@@ -55,7 +57,7 @@ void Link::SetEvtHandler(wxEvtHandler *handler)
 
 void *Link::Entry()
 {
-    Loop();
+    Poll();
 
     while (!d->enableExitThread.load()) {
         // Waiting for the ui thread to set the flag to true(Call Close()).
@@ -64,7 +66,7 @@ void *Link::Entry()
     return nullptr;
 }
 
-void Link::Loop()
+void Link::Poll()
 {
     // Do something(execute in thread context) here...
 }

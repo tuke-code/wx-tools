@@ -18,7 +18,7 @@ WSClient::~WSClient()
     delete GetD<WSClientPrivate>();
 }
 
-void WSClient::Loop()
+void WSClient::Poll()
 {
     auto *d = GetD<WSClientPrivate>();
     std::string ip = d->serverAddress.ToStdString();

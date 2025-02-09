@@ -18,5 +18,5 @@ public:
     ~TCPClient();
 
 private:
-    void Loop() override;
+    void Poll() override;
 };

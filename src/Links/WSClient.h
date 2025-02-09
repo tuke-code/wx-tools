@@ -18,5 +18,5 @@ public:
     ~WSClient();
 
 private:
-    void Loop() override;
+    void Poll() override;
 };

@@ -20,7 +20,7 @@ TCPClient::~TCPClient()
     delete GetD<TCPClientPrivate>();
 }
 
-void TCPClient::Loop()
+void TCPClient::Poll()
 {
     auto d = GetD<TCPClientPrivate>();
     std::string url = fmt::format("tcp://{0}:{1}", d->serverAddress.ToStdString(), d->serverPort);

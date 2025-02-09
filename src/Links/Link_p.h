@@ -21,8 +21,11 @@ class LinkPrivate
 {
 public:
     LinkPrivate()
-        : evtHandler(nullptr)
+        : q(nullptr)
+        , evtHandler(nullptr)
     {}
+
+    Link *q;
 
     std::atomic_bool ignoreCloseError{false};
     std::atomic<bool> enableExitThread{false}; // The flag must be set to true on ui thread.
@@ -64,6 +67,13 @@ public:
     void DoQueueLinkOpened() { DoQueueLinkState(wxtLinkOpened); }
 
     void DoQueueLinkClosed() { DoQueueLinkState(wxtLinkClosed); }
+
+public:
+    template<typename T>
+    T GetQ()
+    {
+        return reinterpret_cast<T>(this->q);
+    }
 
 private:
     void DoQueueBytes(std::shared_ptr<char> bytes, int len, const wxString &flag, int id)

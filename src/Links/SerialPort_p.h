@@ -24,35 +24,35 @@ public:
     itas109::Parity parity;
     itas109::StopBits stopBits;
     itas109::DataBits dataBits;
-};
 
-static void ReadBytes(itas109::CSerialPort *sp, SerialPort *q)
-{
-    auto d = q->GetD<SerialPortPrivate>();
-    char data[wxtDataSize] = {0};
-    int len = sp->readAllData(&data);
-    if (len > 0) {
-        std::shared_ptr<char> bytes(new char[len], std::default_delete<char[]>());
-        memcpy(bytes.get(), data, len);
-        d->DoQueueRxBytes(bytes, len, d->portName);
-    }
-}
-
-static void WriteBytes(itas109::CSerialPort *sp, SerialPort *q)
-{
-    auto d = q->GetD<SerialPortPrivate>();
-    d->txBytesLock.lock();
-    for (std::pair<std::shared_ptr<char>, int> &ctx : d->txBytes) {
-        int len = sp->writeData(ctx.first.get(), ctx.second);
-        if (len == -1) {
-            d->DoQueueError(_("Write data failed."));
-        } else {
+    void ReadBytes(itas109::CSerialPort *sp)
+    {
+        auto q = GetQ<SerialPort *>();
+        char data[wxtDataSize] = {0};
+        int len = sp->readAllData(&data);
+        if (len > 0) {
             std::shared_ptr<char> bytes(new char[len], std::default_delete<char[]>());
-            memcpy(bytes.get(), ctx.first.get(), len);
-            d->DoQueueRxBytes(bytes, len, d->portName);
+            memcpy(bytes.get(), data, len);
+            DoQueueRxBytes(bytes, len, portName);
         }
     }
 
-    d->txBytes.clear();
-    d->txBytesLock.unlock();
-}
+    void WriteBytes(itas109::CSerialPort *sp)
+    {
+        auto q = GetQ<SerialPort *>();
+        txBytesLock.lock();
+        for (std::pair<std::shared_ptr<char>, int> &ctx : txBytes) {
+            int len = sp->writeData(ctx.first.get(), ctx.second);
+            if (len == -1) {
+                DoQueueError(_("Write data failed."));
+            } else {
+                std::shared_ptr<char> bytes(new char[len], std::default_delete<char[]>());
+                memcpy(bytes.get(), ctx.first.get(), len);
+                DoQueueRxBytes(bytes, len, portName);
+            }
+        }
+
+        txBytes.clear();
+        txBytesLock.unlock();
+    }
+};

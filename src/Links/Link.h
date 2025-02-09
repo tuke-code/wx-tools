@@ -52,7 +52,7 @@ public:
 
 protected:
     void *Entry() override;
-    virtual void Loop();
+    virtual void Poll();
 
 protected:
     LinkPrivate *d;

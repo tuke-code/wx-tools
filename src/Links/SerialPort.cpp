@@ -46,7 +46,7 @@ wxtJson SerialPort::Save()
     return parameters;
 }
 
-void SerialPort::Loop()
+void SerialPort::Poll()
 {
     auto d = GetD<SerialPortPrivate>();
     auto *sp = new itas109::CSerialPort();
@@ -55,19 +55,19 @@ void SerialPort::Loop()
         d->DoQueueLinkOpened();
         while (!TestDestroy()) {
             // Read data....
-            ReadBytes(sp, this);
+            d->ReadBytes(sp);
 
             // Write data...
-            WriteBytes(sp, this);
+            d->WriteBytes(sp);
 
             std::this_thread::sleep_for(std::chrono::milliseconds(50));
         }
 
         sp->close();
+        d->DoQueueLinkClosed();
     } else {
         wxtInfo() << sp->getLastErrorMsg();
         d->DoQueueError(sp->getLastErrorMsg());
-        d->DoQueueLinkClosed();
     }
 
     delete sp;

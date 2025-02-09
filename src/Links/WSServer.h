@@ -18,5 +18,5 @@ public:
     ~WSServer() override;
 
 protected:
-    void Loop() override;
+    void Poll() override;
 };

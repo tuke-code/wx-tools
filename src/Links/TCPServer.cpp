@@ -18,7 +18,7 @@ TCPServer::~TCPServer()
     delete GetD<TCPServerPrivate>();
 }
 
-void TCPServer::Loop()
+void TCPServer::Poll()
 {
     auto d = GetD<TCPServerPrivate>();
     std::string url = fmt::format("tcp://{0}:{1}", d->serverAddress.ToStdString(), d->serverPort);

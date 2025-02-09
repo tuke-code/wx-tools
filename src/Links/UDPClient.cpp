@@ -20,7 +20,7 @@ UDPClient::~UDPClient()
     delete GetD<UDPClientPrivate>();
 }
 
-void UDPClient::Loop()
+void UDPClient::Poll()
 {
     UDPClientPrivate *d = GetD<UDPClientPrivate>();
     std::string url = fmt::format("udp://{0}:{1}", d->serverAddress.ToStdString(), d->serverPort);

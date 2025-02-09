@@ -18,7 +18,7 @@ WSServer::~WSServer()
     delete GetD<WSServerPrivate>();
 }
 
-void WSServer::Loop()
+void WSServer::Poll()
 {
     auto *d = GetD<WSServerPrivate>();
     std::string url = std::string("ws://") + d->serverAddress.ToStdString();

@@ -17,5 +17,5 @@ public:
     ~UDPClient();
 
 protected:
-    void Loop() override;
+    void Poll() override;
 };

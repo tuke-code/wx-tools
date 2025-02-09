@@ -31,5 +31,5 @@ public:
     wxtJson Save() override;
 
 protected:
-    void Loop() override;
+    void Poll() override;
 };

@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2025-02-08 23:34+0800\n"
-"PO-Revision-Date: 2025-02-08 23:35+0800\n"
+"POT-Creation-Date: 2025-02-08 23:58+0800\n"
+"PO-Revision-Date: 2025-02-08 23:59+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: zh_CN\n"
@@ -70,57 +70,37 @@ msgstr "Web Socket服务器"
 msgid "wxTools.json"
 msgstr "wxTools.json"
 
-#: Common/wxTools.h:27
-msgid "(Unconnected)"
-msgstr "未链接"
-
 #: Links/SerialPort_p.h:48
 msgid "Write data failed."
 msgstr "发送数据失败。"
 
-#: Links/TCPClient.cpp:34 Links/UDPClient.cpp:34 Links/WSClient.cpp:34
-msgid "Failed to connect to server."
-msgstr "无法连接服务器。"
+#: Links/SocketBase_p.h:80
+msgid "Unconnected"
+msgstr "未链接"
+
+#: Links/SocketBase_p.h:84
+msgid "Client closed, server has been closed or not found."
+msgstr "客户端已关闭：服务器已关闭或未找到。"
+
+#: Links/SocketBase_p.h:87
+msgid "Server has been closed."
+msgstr "服务器已关闭。"
+
+#: Links/SocketBase_p.h:91
+msgid "Failed to create server, please check parameters then try again."
+msgstr "无法创建服务武器，请检查参数后重试。"
 
 #: Links/TCPClient_p.h:51
 msgid "TCP client send bytes error."
 msgstr "发送数据至TCP客户端失败。"
 
-#: Links/TCPClient_p.h:65
-msgid "TCP client has been Close."
-msgstr "TCP客户端已被断开链接。"
-
-#: Links/TCPServer.cpp:32 Links/UDPServer.cpp:34 Links/WSServer.cpp:36
-msgid "Failed to create server."
-msgstr "无法创建服务器。"
-
-#: Links/TCPServer_p.h:88
-msgid "TCP server has been closed."
-msgstr "TCP服务器已关闭。"
-
 #: Links/UDPClient_p.h:32
 msgid "UDP client sends bytes failed."
 msgstr "UDP客户端发送数据失败。"
 
-#: Links/UDPClient_p.h:77
-msgid "UDP client disconnected"
-msgstr "UDP客户端已关闭"
-
-#: Links/UDPServer_p.h:79
-msgid "UDP server closed."
-msgstr "UDP服务器已关闭。"
-
-#: Links/WSClient_p.h:62
-msgid "WebSocket client has been closed, server has been closed or not found."
-msgstr "Web Socket客户端已关闭，服务器已关闭或未找到。"
-
-#: Links/WSClient_p.h:90
+#: Links/WSClient_p.h:88
 msgid "WS server send bytes error."
 msgstr "Web Socket服务器发送数据失败。"
-
-#: Links/WSServer_p.h:114
-msgid "Web socket server has been closed."
-msgstr "Web Socket客户端已关闭。"
 
 #: LinksUi/SerialPortUi.cpp:39
 msgid "Port name"
@@ -451,6 +431,27 @@ msgstr "1检验"
 msgid "Space"
 msgstr "0校验"
 
+#~ msgid "Failed to connect to server."
+#~ msgstr "无法连接服务器。"
+
+#~ msgid "TCP client has been Close."
+#~ msgstr "TCP客户端已被断开链接。"
+
+#~ msgid "Failed to create server."
+#~ msgstr "无法创建服务器。"
+
+#~ msgid "TCP server has been closed."
+#~ msgstr "TCP服务器已关闭。"
+
+#~ msgid "UDP client disconnected"
+#~ msgstr "UDP客户端已关闭"
+
+#~ msgid "UDP server closed."
+#~ msgstr "UDP服务器已关闭。"
+
+#~ msgid "Web socket server has been closed."
+#~ msgstr "Web Socket客户端已关闭。"
+
 #~ msgid "Failed to connect to the server."
 #~ msgstr "链接服务器失败。"
 
@@ -465,9 +466,6 @@ msgstr "0校验"
 
 #~ msgid "Failed to create web socket server."
 #~ msgstr "无法创建Web Socket服务器。"
-
-#~ msgid "Server has been closed."
-#~ msgstr "服务器已关闭。"
 
 #~ msgid "Error: "
 #~ msgstr "发生错误："
