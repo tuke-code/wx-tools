@@ -8,6 +8,7 @@
  **************************************************************************************************/
 #include "Application.h"
 
+#include <mongoose.h>
 #include <wx/stdpaths.h>
 
 #include "Common/wxTools.h"
@@ -39,6 +40,7 @@ bool Application::OnInit()
 {
     SetAppName("wxTools");
     SetVendorName("xTools");
+    mg_log_set(MG_LL_NONE);
 
 #if defined(WXT_RELEASE)
 #if defined(WIN32)

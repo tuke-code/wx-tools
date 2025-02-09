@@ -8,10 +8,14 @@
  **************************************************************************************************/
 #pragma once
 
+#include <fmt/format.h>
 #include <mongoose.h>
 #include <wx/wx.h>
 
 #include "Link_p.h"
+#include "SocketBase.h"
+
+void DoMgPoll(struct mg_connection *c, int ev, void *ev_data);
 
 class SocketBasePrivate : public LinkPrivate
 {
@@ -33,6 +37,40 @@ public:
     wxString userName;
     wxString password;
 
+public:
+    // clang-format off
+    virtual std::string GetProtocolName() const = 0;
+    virtual mg_connection *DoConnection(struct mg_mgr *mgr, const char *url, mg_event_handler_t fn) = 0;
+    virtual bool GetIsClient() const = 0;
+    virtual void DoPoll(struct mg_connection *c, int ev, void *ev_data);
+    // clang-format on
+
+    void Poll() override
+    {
+        std::string url = fmt::format("{0}://{1}{2}",
+                                      GetProtocolName(),
+                                      serverAddress.ToStdString(),
+                                      serverPort);
+        struct mg_mgr mgr;
+        mg_mgr_init(&mgr);
+        mgr.userdata = this;
+        auto c = DoConnection(&mgr, url.c_str(), &DoMgPoll);
+        if (c == nullptr) {
+            mg_mgr_free(&mgr);
+            DoQueueError(_("Open socket failed, please check parameters then try again."));
+            return;
+        }
+
+        c->is_client = GetIsClient();
+        auto q = GetQ<SocketBase *>();
+        while (!q->TestDestroy()) {
+            mg_mgr_poll(&mgr, 100);
+        }
+
+        mg_mgr_free(&mgr);
+    }
+
+public:
     std::string DoMgAddressToIpV4(const struct mg_addr *addr)
     {
         if (addr == nullptr) {
@@ -91,3 +129,14 @@ public:
         return _("Failed to create server, please check parameters then try again.");
     }
 };
+
+static void DoMgPoll(struct mg_connection *c, int ev, void *ev_data)
+{
+    auto q = reinterpret_cast<SocketBase *>(c->mgr->userdata);
+    if (!q) {
+        return;
+    }
+
+    auto d = q->GetD<SocketBasePrivate *>();
+    d->DoPoll(c, ev, ev_data);
+}

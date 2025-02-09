@@ -29,7 +29,4 @@ public:
 
     void Load(const wxtJson &parameters) override;
     wxtJson Save() override;
-
-protected:
-    void Poll() override;
 };

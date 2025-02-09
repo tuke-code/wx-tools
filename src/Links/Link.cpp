@@ -57,7 +57,7 @@ void Link::SetEvtHandler(wxEvtHandler *handler)
 
 void *Link::Entry()
 {
-    Poll();
+    d->Poll();
 
     while (!d->enableExitThread.load()) {
         // Waiting for the ui thread to set the flag to true(Call Close()).

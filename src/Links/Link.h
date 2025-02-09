@@ -45,13 +45,12 @@ public:
 
 public:
     template<typename T>
-    T *GetD() const
+    T GetD() const
     {
-        return reinterpret_cast<T *>(this->d);
+        return reinterpret_cast<T>(this->d);
     }
 
 protected:
-    virtual void Poll() = 0;
     void *Entry() final;
 
 protected:

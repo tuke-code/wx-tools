@@ -45,31 +45,3 @@ wxtJson SerialPort::Save()
     parameters[keys.dataBits] = static_cast<int>(d->dataBits);
     return parameters;
 }
-
-void SerialPort::Poll()
-{
-    auto d = GetD<SerialPortPrivate>();
-    auto *sp = new itas109::CSerialPort();
-    sp->init(d->portName.c_str(), d->baudRate, d->parity, d->dataBits, d->stopBits, d->flowControl);
-    if (sp->open()) {
-        d->DoQueueLinkOpened();
-        while (!TestDestroy()) {
-            // Read data....
-            d->ReadBytes(sp);
-
-            // Write data...
-            d->WriteBytes(sp);
-
-            std::this_thread::sleep_for(std::chrono::milliseconds(50));
-        }
-
-        sp->close();
-        d->DoQueueLinkClosed();
-    } else {
-        wxtInfo() << sp->getLastErrorMsg();
-        d->DoQueueError(sp->getLastErrorMsg());
-    }
-
-    delete sp;
-    wxtInfo() << "Serial port loop exit.";
-}

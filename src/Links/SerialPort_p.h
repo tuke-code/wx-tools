@@ -25,6 +25,36 @@ public:
     itas109::StopBits stopBits;
     itas109::DataBits dataBits;
 
+public:
+    void Poll() override
+    {
+        auto q = GetQ<SerialPort *>();
+        auto *sp = new itas109::CSerialPort();
+        sp->init(portName.c_str(), baudRate, parity, dataBits, stopBits, flowControl);
+        if (sp->open()) {
+            DoQueueLinkOpened();
+            while (!q->TestDestroy()) {
+                // Read data....
+                ReadBytes(sp);
+
+                // Write data...
+                WriteBytes(sp);
+
+                std::this_thread::sleep_for(std::chrono::milliseconds(50));
+            }
+
+            sp->close();
+            DoQueueLinkClosed();
+        } else {
+            wxtInfo() << sp->getLastErrorMsg();
+            DoQueueError(sp->getLastErrorMsg());
+        }
+
+        delete sp;
+        wxtInfo() << "Serial port loop exit.";
+    }
+
+public:
     void ReadBytes(itas109::CSerialPort *sp)
     {
         char data[wxtDataSize] = {0};

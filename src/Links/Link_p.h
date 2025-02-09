@@ -69,6 +69,8 @@ public:
     void DoQueueLinkClosed() { DoQueueLinkState(wxtLinkClosed); }
 
 public:
+    virtual void Poll() = 0;
+
     template<typename T>
     T GetQ()
     {
