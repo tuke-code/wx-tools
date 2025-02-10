@@ -19,7 +19,7 @@ public:
             wxtInfo() << fmt::format("Client socket closed({0}:{1}).",
                                      clientAddress.ToStdString(),
                                      clientPort);
-            DoQueueError(GetStrClientClosed());
+            DoQueueError(_("Client closed, server has been closed or not found."));
             DoQueueLinkClosed();
         }
     }

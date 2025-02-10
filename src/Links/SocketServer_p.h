@@ -31,7 +31,7 @@ public:
             uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
             DoTryToDeleteClient(ip, port);
         } else {
-            DoQueueError(GetStrServerClosed());
+            DoQueueError(_("Server has been closed."));
             DoQueueLinkClosed();
         }
     }
@@ -55,7 +55,6 @@ public:
     }
 
 public:
-    wxString targetAddressPort; // Such as "192.168.10.10:8080", or an empty string for all clients
     std::vector<std::pair<std::string, uint16_t>> clients;
     std::pair<std::string, uint16_t> selection;
 
