@@ -31,6 +31,7 @@ public:
             return;
         }
 
+        SocketServerPrivate::OnMgEvRead(c);
         std::string ip = DoMgAddressToIpV4(&c->rem);
         uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
         DoTryToNewClient(ip, port);
