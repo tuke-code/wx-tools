@@ -68,6 +68,7 @@ Page::Page(LinkType type, wxWindow *parent)
     linkSettingsPopup->refreshSignal.connect(&LinkUi::Refresh, linkSettings->GetLinkUi());
 
     PageSettingsOutput *outputSettings = m_pageSettings->GetOutputSettings();
+    outputSettings->wrapSignal.connect(&Page::OnWrap, this);
     outputSettings->clearSignal.connect(&Page::OnClear, this);
 
     m_sendTimer.Bind(wxEVT_TIMER, [this](wxTimerEvent &event) { OnSendTimerTimeout(); });
@@ -86,6 +87,8 @@ void Page::Load(const wxtJson &json)
 
     int format = m_pageSettings->GetInputSettings()->GetTextFormat();
     m_pageIO->GetInput()->SetTextFormat(static_cast<TextFormat>(format));
+
+    OnWrap(m_pageSettings->GetOutputSettings()->GetWrap());
 }
 
 wxtJson Page::Save() const
@@ -280,6 +283,11 @@ void Page::OnSendTimerTimeout()
     OnInvokeWrite(static_cast<TextFormat>(inputSettings->GetTextFormat()));
 }
 
+void Page::OnWrap(bool wrap)
+{
+    m_pageIO->GetOutput()->SetWrap(wrap);
+}
+
 void Page::OnClear()
 {
     m_pageIO->GetOutput()->Clear();
@@ -379,11 +387,11 @@ void Page::OutputText(std::shared_ptr<char> bytes, int len, std::string &fromTo,
     PageSettingsOutputPopup *outputPopup = outputSettings->GetPopup();
     wxArrayString filter = outputPopup->GetFilter();
     if (filter.IsEmpty()) {
-        m_pageIO->GetOutput()->AppendText(str);
+        m_pageIO->GetOutput()->AppendText(str, true);
     } else {
         for (size_t i = 0; i < filter.GetCount(); i++) {
             if (str.Contains(filter[i])) {
-                m_pageIO->GetOutput()->AppendText(str);
+                m_pageIO->GetOutput()->AppendText(str, true);
                 break;
             }
         }

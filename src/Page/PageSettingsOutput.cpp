@@ -15,13 +15,15 @@
 
 PageSettingsOutput::PageSettingsOutput(wxWindow *parent)
     : wxStaticBoxSizer(wxHORIZONTAL, parent, _("Output Settings"))
+    , m_textFormatComboBox(nullptr)
     , m_showDate(nullptr)
     , m_showTime(nullptr)
     , m_showMs(nullptr)
     , m_showRx(nullptr)
     , m_showTx(nullptr)
     , m_showFlag(nullptr)
-    , m_textFormatComboBox(nullptr)
+    , m_wrap(nullptr)
+    , m_terminalMode(nullptr)
 {
     auto formatText = new wxStaticText(GetStaticBox(), wxID_ANY, _("Format"));
     m_textFormatComboBox = new TextFormatComboBox(GetStaticBox());
@@ -46,8 +48,12 @@ PageSettingsOutput::PageSettingsOutput(wxWindow *parent)
     m_showMs->SetValue(false);
     m_showFlag->SetValue(true);
 
+    auto showModeSizer = new wxGridBagSizer(4, 4);
+    m_wrap = new wxCheckBox(GetStaticBox(), wxID_ANY, _("Auto Wrap"));
     m_terminalMode = new wxCheckBox(GetStaticBox(), wxID_ANY, _("Terminal Mode"));
-    optionsSizer->Add(m_terminalMode, wxGBPosition(2, 0), wxGBSpan(1, 3), wxEXPAND | wxALL, 0);
+    showModeSizer->Add(m_wrap, wxGBPosition(0, 0), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
+    showModeSizer->Add(m_terminalMode, wxGBPosition(0, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
+    m_wrap->Bind(wxEVT_CHECKBOX, [=](wxCommandEvent &) { OnWrapModeStateChanged(); });
     m_terminalMode->Bind(wxEVT_CHECKBOX, [=](wxCommandEvent &) { OnTerminalModeStateChanged(); });
 
     auto settingsButton = new wxButton(GetStaticBox(), wxID_ANY, _("Settings"));
@@ -62,7 +68,8 @@ PageSettingsOutput::PageSettingsOutput(wxWindow *parent)
     sizer->Add(formatText, wxGBPosition(0, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
     sizer->Add(m_textFormatComboBox, wxGBPosition(0, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
     sizer->Add(optionsSizer, wxGBPosition(1, 0), wxGBSpan(1, 2), wxEXPAND | wxALL, 0);
-    sizer->Add(buttonsSizer, wxGBPosition(2, 0), wxGBSpan(1, 2), wxEXPAND | wxALL, 0);
+    sizer->Add(showModeSizer, wxGBPosition(2, 0), wxGBSpan(1, 2), wxEXPAND | wxALL, 0);
+    sizer->Add(buttonsSizer, wxGBPosition(3, 0), wxGBSpan(1, 2), wxEXPAND | wxALL, 0);
     Add(sizer, 1, wxEXPAND | wxALL, 0);
     sizer->AddGrowableCol(1);
 
@@ -80,6 +87,7 @@ void PageSettingsOutput::Load(const wxtJson &parameters)
     bool showRx = wxtJsonGetObjValue<bool>(parameters, keys.showRx, true);
     bool showTx = wxtJsonGetObjValue<bool>(parameters, keys.showTx, true);
     bool showFlag = wxtJsonGetObjValue<bool>(parameters, keys.showFlag, true);
+    bool wrap = wxtJsonGetObjValue<bool>(parameters, keys.wrap, true);
     bool terminalMode = wxtJsonGetObjValue<bool>(parameters, keys.terminalMode, false);
 
     SetComboBoxSectionByIntClientData(m_textFormatComboBox, format);
@@ -89,6 +97,7 @@ void PageSettingsOutput::Load(const wxtJson &parameters)
     m_showRx->SetValue(showRx);
     m_showTx->SetValue(showTx);
     m_showFlag->SetValue(showFlag);
+    m_wrap->SetValue(wrap);
     m_terminalMode->SetValue(terminalMode);
 
     OnTerminalModeStateChanged();
@@ -111,6 +120,7 @@ wxtJson PageSettingsOutput::Save() const
     parameters[keys.showRx] = m_showRx->GetValue();
     parameters[keys.showTx] = m_showTx->GetValue();
     parameters[keys.showFlag] = m_showFlag->GetValue();
+    parameters[keys.wrap] = m_wrap->GetValue();
     parameters[keys.terminalMode] = m_terminalMode->GetValue();
 
     return parameters;
@@ -151,6 +161,11 @@ bool PageSettingsOutput::GetShowFlag() const
     return m_showFlag->GetValue();
 }
 
+bool PageSettingsOutput::GetWrap() const
+{
+    return m_wrap->GetValue();
+}
+
 bool PageSettingsOutput::GetTerminalMode() const
 {
     return m_terminalMode->GetValue();
@@ -170,4 +185,9 @@ void PageSettingsOutput::OnTerminalModeStateChanged()
     m_showDate->Enable(!checked);
     m_showTime->Enable(!checked);
     m_showMs->Enable(!checked);
+}
+
+void PageSettingsOutput::OnWrapModeStateChanged()
+{
+    wrapSignal(m_wrap->GetValue());
 }

@@ -15,7 +15,7 @@ class PageIOOutput : public wxStaticBoxSizer
 public:
     PageIOOutput(wxWindow *parent);
 
-    void AppendText(const wxString &text, bool newLine = true);
+    void AppendText(const wxString &text, bool newLine);
     void SetWrap(bool wrap);
     void Clear();
 

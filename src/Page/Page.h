@@ -49,6 +49,7 @@ private:
     void OnLinkClosed(wxThreadEvent &e);
     void OnLinkResolve(wxThreadEvent &e);
     void OnSendTimerTimeout();
+    void OnWrap(bool wrap);
     void OnClear();
     void OnTextFormatChanged(TextFormat format);
 

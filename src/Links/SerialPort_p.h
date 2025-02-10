@@ -76,7 +76,7 @@ public:
             } else {
                 std::shared_ptr<char> bytes(new char[len], std::default_delete<char[]>());
                 memcpy(bytes.get(), ctx.first.get(), len);
-                DoQueueRxBytes(bytes, len, portName);
+                DoQueueTxBytes(bytes, len, portName);
             }
         }
 

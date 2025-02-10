@@ -22,6 +22,7 @@ struct PageSettingsOutputParameterKeys
     std::string showRx = {"showRx"};
     std::string showTx = {"showTx"};
     std::string showFlag = {"showFlag"};
+    std::string wrap = {"wrap"};
     std::string terminalMode = {"terminalMode"};
 };
 
@@ -34,6 +35,7 @@ public:
 
     wxtSignal<> parametersChangedSignal;
     wxtSignal<> clearSignal;
+    wxtSignal<bool> wrapSignal;
 
     void Load(const wxtJson &parameters);
     wxtJson Save() const;
@@ -45,6 +47,7 @@ public:
     bool GetShowRx() const;
     bool GetShowTx() const;
     bool GetShowFlag() const;
+    bool GetWrap() const;
     bool GetTerminalMode() const;
     PageSettingsOutputPopup *GetPopup();
 
@@ -56,9 +59,11 @@ private:
     wxCheckBox *m_showRx;
     wxCheckBox *m_showTx;
     wxCheckBox *m_showFlag;
+    wxCheckBox *m_wrap;
     wxCheckBox *m_terminalMode;
     PageSettingsOutputPopup *m_popup;
 
 private:
     void OnTerminalModeStateChanged();
+    void OnWrapModeStateChanged();
 };

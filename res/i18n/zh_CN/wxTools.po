@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2025-02-08 23:58+0800\n"
-"PO-Revision-Date: 2025-02-08 23:59+0800\n"
+"POT-Creation-Date: 2025-02-10 19:03+0800\n"
+"PO-Revision-Date: 2025-02-10 19:03+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: zh_CN\n"
@@ -70,35 +70,35 @@ msgstr "Web Socket服务器"
 msgid "wxTools.json"
 msgstr "wxTools.json"
 
-#: Links/SerialPort_p.h:48
+#: Links/SerialPort_p.h:75
 msgid "Write data failed."
 msgstr "发送数据失败。"
 
-#: Links/SocketBase_p.h:80
+#: Links/SocketBase_p.h:108
+msgid "Open socket failed, please check parameters then try again."
+msgstr "套接字打开失败，请检查参数后重试。"
+
+#: Links/SocketBase_p.h:177
 msgid "Unconnected"
 msgstr "未链接"
 
-#: Links/SocketBase_p.h:84
+#: Links/SocketClient_p.h:22
 msgid "Client closed, server has been closed or not found."
 msgstr "客户端已关闭：服务器已关闭或未找到。"
 
-#: Links/SocketBase_p.h:87
+#: Links/SocketServer_p.h:34
 msgid "Server has been closed."
 msgstr "服务器已关闭。"
 
-#: Links/SocketBase_p.h:91
-msgid "Failed to create server, please check parameters then try again."
-msgstr "无法创建服务武器，请检查参数后重试。"
-
-#: Links/TCPClient_p.h:51
+#: Links/TCPClient_p.h:39
 msgid "TCP client send bytes error."
 msgstr "发送数据至TCP客户端失败。"
 
-#: Links/UDPClient_p.h:32
-msgid "UDP client sends bytes failed."
-msgstr "UDP客户端发送数据失败。"
+#: Links/UDPClient_p.h:36
+msgid "Client write bytes failed."
+msgstr "客户端发送数据失败。"
 
-#: Links/WSClient_p.h:88
+#: Links/WSClient_p.h:49
 msgid "WS server send bytes error."
 msgstr "Web Socket服务器发送数据失败。"
 
@@ -143,6 +143,10 @@ msgid "All Clients"
 msgstr "所有客户端"
 
 #: LinksUi/SocketBaseUi.cpp:168
+msgid "Client Info"
+msgstr "客户端信息"
+
+#: LinksUi/SocketBaseUi.cpp:182
 msgid "Tx Channel"
 msgstr "发送通道"
 
@@ -262,27 +266,27 @@ msgstr "访问作者微软商店主页。"
 msgid "Other Applications"
 msgstr "其他应用"
 
-#: Page/Page.cpp:118
+#: Page/Page.cpp:123
 msgid "Link is not opened."
 msgstr "链接未打开。"
 
-#: Page/Page.cpp:118 Page/Page.cpp:180 Page/Page.cpp:373
+#: Page/Page.cpp:123 Page/Page.cpp:185 Page/Page.cpp:410
 msgid "Error"
 msgstr "发生错误"
 
-#: Page/Page.cpp:180
+#: Page/Page.cpp:185
 msgid "Link is not open."
 msgstr "链接未打开。"
 
-#: Page/Page.cpp:371
+#: Page/Page.cpp:408
 msgid "Close"
 msgstr "关闭"
 
-#: Page/Page.cpp:373
+#: Page/Page.cpp:410
 msgid "Failed to open link."
 msgstr "打开链接失败。"
 
-#: Page/Page.cpp:390 Page/PageSettingsLink.cpp:33
+#: Page/Page.cpp:427 Page/PageSettingsLink.cpp:33
 msgid "Open"
 msgstr "打开"
 
@@ -302,12 +306,12 @@ msgstr "输入配置"
 msgid "Cycle"
 msgstr "循环发送"
 
-#: Page/PageSettingsInput.cpp:24 Page/PageSettingsOutput.cpp:25
+#: Page/PageSettingsInput.cpp:24 Page/PageSettingsOutput.cpp:28
 msgid "Format"
 msgstr "文本格式"
 
 #: Page/PageSettingsInput.cpp:27 Page/PageSettingsLink.cpp:31
-#: Page/PageSettingsOutput.cpp:48
+#: Page/PageSettingsOutput.cpp:59
 msgid "Settings"
 msgstr "更多配置"
 
@@ -363,31 +367,39 @@ msgstr "刷新设备"
 msgid "Output Settings"
 msgstr "输出配置"
 
-#: Page/PageSettingsOutput.cpp:34
+#: Page/PageSettingsOutput.cpp:37
 msgid "Rx"
 msgstr "接收"
 
-#: Page/PageSettingsOutput.cpp:35
+#: Page/PageSettingsOutput.cpp:38
 msgid "Tx"
 msgstr "发送"
 
-#: Page/PageSettingsOutput.cpp:36
+#: Page/PageSettingsOutput.cpp:39
 msgid "Flags"
 msgstr "标志"
 
-#: Page/PageSettingsOutput.cpp:37
+#: Page/PageSettingsOutput.cpp:40
 msgid "Date"
 msgstr "日期"
 
-#: Page/PageSettingsOutput.cpp:38
+#: Page/PageSettingsOutput.cpp:41
 msgid "Time"
 msgstr "时间"
 
-#: Page/PageSettingsOutput.cpp:39
+#: Page/PageSettingsOutput.cpp:42
 msgid "MS"
 msgstr "毫秒"
 
-#: Page/PageSettingsOutput.cpp:49
+#: Page/PageSettingsOutput.cpp:52
+msgid "Auto Wrap"
+msgstr "自动换行"
+
+#: Page/PageSettingsOutput.cpp:53
+msgid "Terminal Mode"
+msgstr "终端模式"
+
+#: Page/PageSettingsOutput.cpp:60
 msgid "Clear"
 msgstr "清空"
 
