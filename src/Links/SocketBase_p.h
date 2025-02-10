@@ -22,28 +22,22 @@ class SocketBasePrivate : public LinkPrivate
 public:
     SocketBasePrivate()
         : LinkPrivate()
-        , isEnableAuthorization(false)
         , dataChannel(0)
     {}
 
-    wxString clientAddress;
-    uint16_t clientPort;
     wxString serverAddress;
     uint16_t serverPort;
 
     // The members for web socket
-    bool isEnableAuthorization;
     int dataChannel;
-    wxString userName;
-    wxString password;
 
 public:
     void OnMgEvOpen(struct mg_connection *c)
     {
-        if (GetIsClient()) {
-            const std::string locIp = DoMgAddressToIpV4(&c->loc);
-            const uint16_t locPort = DoReverseByteOrder<uint16_t>(c->loc.port);
+        const std::string locIp = DoMgAddressToIpV4(&c->loc);
+        const uint16_t locPort = DoReverseByteOrder<uint16_t>(c->loc.port);
 
+        if (GetIsClient()) {
             wxtInfo() << fmt::format("Client socket opened({0}:{1}).", locIp, locPort);
         } else {
             if (c->is_client) {
@@ -51,8 +45,6 @@ public:
                 const uint16_t remPort = DoReverseByteOrder<uint16_t>(c->rem.port);
                 wxtInfo() << fmt::format("New client socket opened({0}:{1}).", remIp, remPort);
             } else {
-                const std::string locIp = DoMgAddressToIpV4(&c->loc);
-                const uint16_t locPort = DoReverseByteOrder<uint16_t>(c->loc.port);
                 wxtInfo() << fmt::format("Server socket opened({0}:{1}).", locIp, locPort);
             }
         }
@@ -83,10 +75,7 @@ public:
 
     void OnMgEvError(struct mg_connection *c, void *ev_data)
     {
-        wxtInfo() << fmt::format("Client socket error({0}:{1}):{2}",
-                                 clientAddress.ToStdString(),
-                                 clientPort,
-                                 reinterpret_cast<char *>(ev_data));
+        wxtInfo() << fmt::format("Socket error({0}", reinterpret_cast<char *>(ev_data));
     }
 
 public:

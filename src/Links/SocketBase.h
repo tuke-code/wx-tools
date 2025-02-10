@@ -12,14 +12,9 @@
 
 struct SocketBaseParameterKeys
 {
-    const std::string clientAddress{"clientAddress"};
-    const std::string clientPort{"clientPort"};
     const std::string serverAddress{"serverAddress"};
     const std::string serverPort{"serverPort"};
-    const std::string isAuthorization{"isEnableAuthorization"};
     const std::string dataChannel{"dataChannel"};
-    const std::string userName{"userName"};
-    const std::string password{"password"};
 };
 
 class SocketBasePrivate;

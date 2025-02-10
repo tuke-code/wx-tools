@@ -16,9 +16,6 @@ public:
     void OnMgEvClose(struct mg_connection *c, void *ev_data)
     {
         if (evtHandler) {
-            wxtInfo() << fmt::format("Client socket closed({0}:{1}).",
-                                     clientAddress.ToStdString(),
-                                     clientPort);
             DoQueueError(_("Client closed, server has been closed or not found."));
             DoQueueLinkClosed();
         }
