@@ -24,7 +24,7 @@ public:
     bool GetIsClient() const override { return false; }
 
 public:
-    void OnMgEvPoll(struct mg_connection *c, void *ev_data)
+    void OnMgEvPoll(struct mg_connection *c)
     {
         if (selection.first.empty() && selection.second == 0) {
             for (auto conns = c; conns != nullptr; conns = conns->next) {
@@ -50,7 +50,7 @@ public:
     {
         SocketServerPrivate::DoPoll(c, ev, ev_data);
         if (ev == MG_EV_POLL) {
-            OnMgEvPoll(c, ev_data);
+            OnMgEvPoll(c);
         }
     }
 };
