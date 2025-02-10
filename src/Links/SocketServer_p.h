@@ -116,6 +116,7 @@ public:
             if (mg_send(c, ctx.first.get(), ctx.second)) {
                 DoQueueTxBytes(ctx.first, ctx.second, to);
             } else {
+                wxtInfo() << fmt::format("Failed to send bytes to {0}, it will be removed.", to);
                 DoTryToDeleteClient(ip, port);
             }
         }

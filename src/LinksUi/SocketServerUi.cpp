@@ -33,7 +33,9 @@ void SocketServerUi::DoDeleteClient(const std::string &ip, uint16_t port)
 
     int index = m_clientsComboBox->FindString(DoEncodeFlag(ip, port));
     if (index != wxNOT_FOUND) {
+        if (index == m_clientsComboBox->GetSelection()) {
+            m_clientsComboBox->SetSelection(0);
+        }
         m_clientsComboBox->Delete(index);
-        m_clientsComboBox->SetSelection(0);
     }
 }
