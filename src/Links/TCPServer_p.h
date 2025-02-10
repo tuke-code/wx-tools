@@ -27,16 +27,16 @@ public:
     void OnMgEvPoll(struct mg_connection *c, void *ev_data)
     {
         if (selection.first.empty() && selection.second == 0) {
-            for (auto con = c; con != nullptr; con = con->next) {
-                if (con->is_client) {
+            for (auto conns = c; conns != nullptr; conns = conns->next) {
+                if (conns->is_client) {
                     DoTryToSendBytes(c);
                 }
             }
         } else {
-            for (auto con = c; con != nullptr; con = con->next) {
-                std::string ip = DoMgAddressToIpV4(&con->rem);
-                uint16_t port = DoReverseByteOrder<uint16_t>(con->rem.port);
-                if (con->is_client && selection.first == ip && selection.second == port) {
+            for (auto conns = c; conns != nullptr; conns = conns->next) {
+                std::string ip = DoMgAddressToIpV4(&conns->rem);
+                uint16_t port = DoReverseByteOrder<uint16_t>(conns->rem.port);
+                if (conns->is_client && selection.first == ip && selection.second == port) {
                     DoTryToSendBytes(c);
                     break;
                 }

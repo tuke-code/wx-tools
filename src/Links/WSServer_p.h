@@ -92,7 +92,6 @@ public:
     {
         auto *d = q->GetD<WSServerPrivate *>();
         if (d->selection.first.empty() && d->selection.second == 0) {
-            // Send to all clients
             for (struct mg_connection *conns = c; conns != nullptr; conns = conns->next) {
                 if (conns->is_client) {
                     DoSendBytesToClient(conns);
