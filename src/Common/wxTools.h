@@ -50,6 +50,15 @@ void DoShutdownLogging();
 //--------------------------------------------------------------------------------------------------
 // json
 typedef nlohmann::json wxtJson;
+template<typename T>
+T wxtJsonGetObjValue(const wxtJson &json, const std::string &key, T defaultValue)
+{
+    if (json.contains(key)) {
+        return json[key].get<T>();
+    }
+
+    return defaultValue;
+}
 
 //--------------------------------------------------------------------------------------------------
 // sigslot

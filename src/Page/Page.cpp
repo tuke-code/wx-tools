@@ -341,9 +341,18 @@ void Page::OutputText(std::shared_ptr<char> bytes, int len, std::string &fromTo,
     bool showRx = outputSettings->GetShowRx();
     bool showTx = outputSettings->GetShowTx();
     bool showFlag = outputSettings->GetShowFlag();
+    bool terminalMode = outputSettings->GetTerminalMode();
     std::string text = DoDecodeBytes(bytes, len, static_cast<int>(outputFormat));
     std::string dateTimeString = ::dateTimeString(showDate, showTime, showMs);
     std::string flagString = ::flagString(isRx, fromTo, showFlag);
+
+    if (terminalMode) {
+        if (isRx) {
+            m_pageIO->GetOutput()->AppendText(text, false);
+        }
+
+        return;
+    }
 
     if (isRx && !showRx) {
         return;

@@ -22,6 +22,7 @@ struct PageSettingsOutputParameterKeys
     std::string showRx = {"showRx"};
     std::string showTx = {"showTx"};
     std::string showFlag = {"showFlag"};
+    std::string terminalMode = {"terminalMode"};
 };
 
 class TextFormatComboBox;
@@ -44,6 +45,7 @@ public:
     bool GetShowRx() const;
     bool GetShowTx() const;
     bool GetShowFlag() const;
+    bool GetTerminalMode() const;
     PageSettingsOutputPopup *GetPopup();
 
 private:
@@ -54,5 +56,9 @@ private:
     wxCheckBox *m_showRx;
     wxCheckBox *m_showTx;
     wxCheckBox *m_showFlag;
+    wxCheckBox *m_terminalMode;
     PageSettingsOutputPopup *m_popup;
+
+private:
+    void OnTerminalModeStateChanged();
 };

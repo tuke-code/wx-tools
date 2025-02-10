@@ -21,6 +21,7 @@ PageSettingsOutput::PageSettingsOutput(wxWindow *parent)
     , m_showRx(nullptr)
     , m_showTx(nullptr)
     , m_showFlag(nullptr)
+    , m_textFormatComboBox(nullptr)
 {
     auto formatText = new wxStaticText(GetStaticBox(), wxID_ANY, _("Format"));
     m_textFormatComboBox = new TextFormatComboBox(GetStaticBox());
@@ -45,6 +46,10 @@ PageSettingsOutput::PageSettingsOutput(wxWindow *parent)
     m_showMs->SetValue(false);
     m_showFlag->SetValue(true);
 
+    m_terminalMode = new wxCheckBox(GetStaticBox(), wxID_ANY, _("Terminal Mode"));
+    optionsSizer->Add(m_terminalMode, wxGBPosition(2, 0), wxGBSpan(1, 3), wxEXPAND | wxALL, 0);
+    m_terminalMode->Bind(wxEVT_CHECKBOX, [=](wxCommandEvent &) { OnTerminalModeStateChanged(); });
+
     auto settingsButton = new wxButton(GetStaticBox(), wxID_ANY, _("Settings"));
     auto clearButton = new wxButton(GetStaticBox(), wxID_ANY, _("Clear"));
     auto buttonsSizer = new wxBoxSizer(wxHORIZONTAL);
@@ -67,13 +72,15 @@ PageSettingsOutput::PageSettingsOutput(wxWindow *parent)
 void PageSettingsOutput::Load(const wxtJson &parameters)
 {
     PageSettingsOutputParameterKeys keys;
-    int format = parameters[keys.textFormat].get<int>();
-    bool showDate = parameters[keys.showDate].get<bool>();
-    bool showTime = parameters[keys.showTime].get<bool>();
-    bool showMs = parameters[keys.showMs].get<bool>();
-    bool showRx = parameters[keys.showRx].get<bool>();
-    bool showTx = parameters[keys.showTx].get<bool>();
-    bool showFlag = parameters[keys.showFlag].get<bool>();
+    int defaultFormat = static_cast<int>(TextFormat::Hex);
+    int format = wxtJsonGetObjValue<int>(parameters, keys.textFormat, defaultFormat);
+    bool showDate = wxtJsonGetObjValue<bool>(parameters, keys.showDate, false);
+    bool showTime = wxtJsonGetObjValue<bool>(parameters, keys.showTime, true);
+    bool showMs = wxtJsonGetObjValue<bool>(parameters, keys.showMs, false);
+    bool showRx = wxtJsonGetObjValue<bool>(parameters, keys.showRx, true);
+    bool showTx = wxtJsonGetObjValue<bool>(parameters, keys.showTx, true);
+    bool showFlag = wxtJsonGetObjValue<bool>(parameters, keys.showFlag, true);
+    bool terminalMode = wxtJsonGetObjValue<bool>(parameters, keys.terminalMode, false);
 
     SetComboBoxSectionByIntClientData(m_textFormatComboBox, format);
     m_showDate->SetValue(showDate);
@@ -82,6 +89,9 @@ void PageSettingsOutput::Load(const wxtJson &parameters)
     m_showRx->SetValue(showRx);
     m_showTx->SetValue(showTx);
     m_showFlag->SetValue(showFlag);
+    m_terminalMode->SetValue(terminalMode);
+
+    OnTerminalModeStateChanged();
 }
 
 wxtJson PageSettingsOutput::Save() const
@@ -101,6 +111,7 @@ wxtJson PageSettingsOutput::Save() const
     parameters[keys.showRx] = m_showRx->GetValue();
     parameters[keys.showTx] = m_showTx->GetValue();
     parameters[keys.showFlag] = m_showFlag->GetValue();
+    parameters[keys.terminalMode] = m_terminalMode->GetValue();
 
     return parameters;
 }
@@ -140,7 +151,23 @@ bool PageSettingsOutput::GetShowFlag() const
     return m_showFlag->GetValue();
 }
 
+bool PageSettingsOutput::GetTerminalMode() const
+{
+    return m_terminalMode->GetValue();
+}
+
 PageSettingsOutputPopup *PageSettingsOutput::GetPopup()
 {
     return m_popup;
+}
+
+void PageSettingsOutput::OnTerminalModeStateChanged()
+{
+    bool checked = m_terminalMode->GetValue();
+    m_showRx->Enable(!checked);
+    m_showTx->Enable(!checked);
+    m_showFlag->Enable(!checked);
+    m_showDate->Enable(!checked);
+    m_showTime->Enable(!checked);
+    m_showMs->Enable(!checked);
 }

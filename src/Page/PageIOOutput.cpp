@@ -23,9 +23,13 @@ PageIOOutput::PageIOOutput(wxWindow *parent)
     m_textCtrl->SetEditable(false);
 }
 
-void PageIOOutput::AppendText(const wxString &text)
+void PageIOOutput::AppendText(const wxString &text, bool newLine)
 {
-    m_textCtrl->AppendText(text + "\n");
+    if (newLine) {
+        m_textCtrl->AppendText(text + "\n");
+    } else {
+        m_textCtrl->AppendText(text);
+    }
 }
 
 void PageIOOutput::SetWrap(bool wrap)
