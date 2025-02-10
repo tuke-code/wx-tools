@@ -46,7 +46,7 @@ private:
     void OnNewClient(wxThreadEvent &e);
     void OnDeleteClient(wxThreadEvent &e);
     void OnLinkOpened(wxThreadEvent &e);
-    void OnLinkCloseed(wxThreadEvent &e);
+    void OnLinkClosed(wxThreadEvent &e);
     void OnLinkResolve(wxThreadEvent &e);
     void OnSendTimerTimeout();
     void OnClear();
@@ -55,6 +55,7 @@ private:
     void OutputText(std::shared_ptr<char> bytes, int len, std::string &fromTo, bool isRx);
     void Open();
     void Close(bool ignoredCloseError);
+    void DoClearClients();
 
 private:
     DECLARE_DYNAMIC_CLASS(Page);

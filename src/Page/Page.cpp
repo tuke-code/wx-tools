@@ -16,6 +16,7 @@
 #include "LinksUi/LinkUi.h"
 #include "LinksUi/SocketClientUi.h"
 #include "LinksUi/SocketServerUi.h"
+#include "LinksUi/UDPServerUi.h"
 
 #include "PageSettingsLink.h"
 #include "PageIO.h"
@@ -36,7 +37,7 @@ EVT_THREAD(wxtErrorOccurred, Page::OnErrorOccurred)
 EVT_THREAD(wxtNewClient, Page::OnNewClient)
 EVT_THREAD(wxtDeleteClient, Page::OnDeleteClient)
 EVT_THREAD(wxtLinkOpened, Page::OnLinkOpened)
-EVT_THREAD(wxtLinkClosed, Page::OnLinkCloseed)
+EVT_THREAD(wxtLinkClosed, Page::OnLinkClosed)
 EVT_THREAD(wxtLinkResolve, Page::OnLinkResolve)
 END_EVENT_TABLE()
 
@@ -202,6 +203,7 @@ void Page::OnErrorOccurred(wxThreadEvent &e)
     Close(e.GetInt() == wxtIgnoreCloseErrorPopup);
     wxButton *btn = m_pageSettings->GetLinkSettings()->GetOpenButton();
     btn->Enable(true);
+    DoClearClients();
 
     if (e.GetString().IsEmpty()) {
         return;
@@ -244,7 +246,7 @@ void Page::OnLinkOpened(wxThreadEvent &e)
     btn->Enable(true);
 }
 
-void Page::OnLinkCloseed(wxThreadEvent &e)
+void Page::OnLinkClosed(wxThreadEvent &e)
 {
     wxButton *btn = m_pageSettings->GetLinkSettings()->GetOpenButton();
     btn->Enable(true);
@@ -252,6 +254,7 @@ void Page::OnLinkCloseed(wxThreadEvent &e)
     e.SetString("0.0.0.0");
     e.SetInt(0);
     OnLinkResolve(e);
+    DoClearClients();
 }
 
 void Page::OnLinkResolve(wxThreadEvent &e)
@@ -405,4 +408,13 @@ void Page::Close(bool ignoredCloseError)
 
     auto btn = linkSettings->GetOpenButton();
     btn->SetLabel(_("Open"));
+}
+
+void Page::DoClearClients()
+{
+    auto linkUi = m_pageSettings->GetLinkSettings()->GetLinkUi();
+    UDPServerUi *serverUi = dynamic_cast<UDPServerUi *>(linkUi);
+    if (serverUi) {
+        serverUi->DoClearClients();
+    }
 }

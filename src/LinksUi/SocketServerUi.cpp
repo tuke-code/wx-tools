@@ -39,3 +39,14 @@ void SocketServerUi::DoDeleteClient(const std::string &ip, uint16_t port)
         m_clientsComboBox->Delete(index);
     }
 }
+
+void SocketServerUi::DoClearClients()
+{
+    if (!m_clientsComboBox) {
+        return;
+    }
+
+    while (m_clientsComboBox->GetCount() > 1) {
+        m_clientsComboBox->Delete(1);
+    }
+}
