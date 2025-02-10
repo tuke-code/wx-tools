@@ -17,33 +17,3 @@ WSServer::~WSServer()
 {
     delete GetD<WSServerPrivate *>();
 }
-
-#if 0
-void WSServer::Poll()
-{
-    auto *d = GetD<WSServerPrivate>();
-    std::string url = std::string("ws://") + d->serverAddress.ToStdString();
-    url += std::string(":");
-    url += std::to_string(d->serverPort);
-    struct mg_mgr mgr;
-    mg_mgr_init(&mgr);
-    mg_log_set(MG_LL_NONE);
-    mgr.userdata = this;
-
-    wxtInfo() << Save().dump().c_str();
-    auto *c = mg_http_listen(&mgr, url.c_str(), WSServerHandler, nullptr);
-    if (c == nullptr) {
-        mg_mgr_free(&mgr);
-        d->DoQueueError(d->GetStrFailedToCreateServer());
-        return;
-    }
-
-    c->is_client = false;
-    while (!TestDestroy()) {
-        mg_mgr_poll(&mgr, 100);
-    }
-
-    mg_mgr_free(&mgr);
-    wxtInfo() << "Web socket server thread is exited!";
-}
-#endif

@@ -19,29 +19,3 @@ TCPClient::~TCPClient()
 {
     delete GetD<TCPClientPrivate *>();
 }
-
-#if 0
-void TCPClient::Poll()
-{
-    auto d = GetD<TCPClientPrivate>();
-    std::string url = fmt::format("tcp://{0}:{1}", d->serverAddress.ToStdString(), d->serverPort);
-    struct mg_mgr mgr;
-    mg_mgr_init(&mgr);
-    mg_log_set(MG_LL_NONE);
-
-    mgr.userdata = this;
-    auto *c = mg_connect(&mgr, url.c_str(), TCPClientHandler, nullptr);
-    if (c == nullptr) {
-        d->DoQueueError(d->GetStrClientClosed());
-        mg_mgr_free(&mgr);
-        return;
-    }
-
-    while (!TestDestroy()) {
-        mg_mgr_poll(&mgr, 100);
-    }
-
-    mg_mgr_free(&mgr);
-    wxtInfo() << "TCP client thread exited...";
-}
-#endif

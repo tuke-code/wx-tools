@@ -17,29 +17,3 @@ TCPServer::~TCPServer()
 {
     delete GetD<TCPServerPrivate *>();
 }
-#if 0
-void TCPServer::Poll()
-{
-    auto d = GetD<TCPServerPrivate>();
-    std::string url = fmt::format("tcp://{0}:{1}", d->serverAddress.ToStdString(), d->serverPort);
-    struct mg_mgr mgr;
-    mg_mgr_init(&mgr);
-    mg_log_set(MG_LL_NONE);
-
-    mgr.userdata = this;
-    struct mg_connection *c = mg_listen(&mgr, url.c_str(), TCPServerHandler, nullptr);
-    if (c == nullptr) {
-        d->DoQueueError(d->GetStrFailedToCreateServer());
-        mg_mgr_free(&mgr);
-        return;
-    }
-
-    c->is_client = false;
-    while (!TestDestroy()) {
-        mg_mgr_poll(&mgr, 100);
-    }
-
-    mg_mgr_free(&mgr);
-    wxtInfo() << "TCP server thread exited...";
-}
-#endif

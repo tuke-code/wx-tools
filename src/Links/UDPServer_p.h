@@ -25,6 +25,17 @@ public:
     bool GetIsClient() const override { return false; }
 
 public:
+    void OnMgEvRead(struct mg_connection *c) override
+    {
+        if (c->recv.len <= 0) {
+            return;
+        }
+
+        std::string ip = DoMgAddressToIpV4(&c->rem);
+        uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
+        DoTryToNewClient(ip, port);
+    }
+
     void OnMgEvPoll(struct mg_connection *c)
     {
         if (selection.first.empty() && selection.second == 0) {

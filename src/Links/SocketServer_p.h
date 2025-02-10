@@ -15,41 +15,13 @@
 class SocketServerPrivate : public SocketBasePrivate
 {
 public:
-    void OnMgEvOpen(struct mg_connection *c)
-    {
-        if (c->is_client) {
-            const std::string remIp = DoMgAddressToIpV4(&c->rem);
-            const uint16_t remPort = DoReverseByteOrder<uint16_t>(c->rem.port);
-            wxtInfo() << fmt::format("New client socket opened({0}:{1}).", remIp, remPort);
-        } else {
-            const std::string locIp = DoMgAddressToIpV4(&c->loc);
-            const uint16_t locPort = DoReverseByteOrder<uint16_t>(c->loc.port);
-            wxtInfo() << fmt::format("Server socket opened({0}:{1}).", locIp, locPort);
-        }
-        DoQueueLinkOpened();
-    }
-
-    void OnMgEvRead(struct mg_connection *c, void *ev_data)
+    void OnMgEvRead(struct mg_connection *c) override
     {
         if (c->recv.len <= 0) {
             return;
         }
 
-        wxtDataItem item;
-        item.len = c->recv.len;
-
-        const std::string ip = DoMgAddressToIpV4(&c->rem);
-        const uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
-        const std::string from = DoEncodeFlag(ip, port);
-        item.flag = from;
-
-        DoTryToNewClient(ip, port);
-
-        std::shared_ptr<char> bytes(new char[c->recv.len], [](char *p) { delete[] p; });
-        memcpy(bytes.get(), c->recv.buf, c->recv.len);
-        item.data = bytes;
-        DoQueueRxBytes(bytes, c->recv.len, from);
-        c->recv.len = 0;
+        SocketBasePrivate::OnMgEvRead(c);
     }
 
     void OnMgEvClose(struct mg_connection *c, void *ev_data)
@@ -64,14 +36,6 @@ public:
         }
     }
 
-    void OnMgEvError(struct mg_connection *c, void *ev_data)
-    {
-        wxtInfo() << fmt::format("Client socket error({0}:{1}):{2}",
-                                 clientAddress.ToStdString(),
-                                 clientPort,
-                                 reinterpret_cast<char *>(ev_data));
-    }
-
     void OnMgEvAccept(struct mg_connection *c)
     {
         c->is_client = true;
@@ -83,15 +47,8 @@ public:
     void DoPoll(struct mg_connection *c, int ev, void *ev_data) override
     {
         SocketBasePrivate::DoPoll(c, ev, ev_data);
-
-        if (ev == MG_EV_OPEN) {
-            OnMgEvOpen(c);
-        } else if (ev == MG_EV_READ) {
-            OnMgEvRead(c, ev_data);
-        } else if (ev == MG_EV_CLOSE) {
+        if (ev == MG_EV_CLOSE) {
             OnMgEvClose(c, ev_data);
-        } else if (ev == MG_EV_ERROR) {
-            OnMgEvError(c, ev_data);
         } else if (ev == MG_EV_ACCEPT) {
             OnMgEvAccept(c);
         }
