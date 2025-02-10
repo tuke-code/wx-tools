@@ -24,7 +24,7 @@ public:
     void Load(const wxtJson &json) override;
     void Refresh() override;
 
-    wxTextCtrl *GetClientInfoLabel() const;
+    wxTextCtrl *GetClientInfoTextCtrl() const;
 
 protected:
     // clang-format off
@@ -32,6 +32,7 @@ protected:
     void InitServerComboBox(int row, wxWindow *parent);
     void InitServerPortCtrl(int row, wxWindow *parent);
     void InitClientsComboBox(int row, wxWindow *parent);
+    void InitClientInfoTextCtrl(int row, wxWindow *parent);
     void InitDataChannelComboBox(int row, wxWindow *parent);
     // clang-format on
 

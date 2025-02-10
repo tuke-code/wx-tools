@@ -37,6 +37,7 @@ EVT_THREAD(wxtNewClient, Page::OnNewClient)
 EVT_THREAD(wxtDeleteClient, Page::OnDeleteClient)
 EVT_THREAD(wxtLinkOpened, Page::OnLinkOpened)
 EVT_THREAD(wxtLinkClosed, Page::OnLinkCloseed)
+EVT_THREAD(wxtLinkResolve, Page::OnLinkResolve)
 END_EVENT_TABLE()
 
 Page::Page(LinkType type, wxWindow *parent)
@@ -247,6 +248,22 @@ void Page::OnLinkCloseed(wxThreadEvent &e)
 {
     wxButton *btn = m_pageSettings->GetLinkSettings()->GetOpenButton();
     btn->Enable(true);
+
+    e.SetString("0.0.0.0");
+    e.SetInt(0);
+    OnLinkResolve(e);
+}
+
+void Page::OnLinkResolve(wxThreadEvent &e)
+{
+    LinkUi *linkUi = m_pageSettings->GetLinkSettings()->GetLinkUi();
+    if (dynamic_cast<SocketClientUi *>(linkUi)) {
+        auto clientUi = dynamic_cast<SocketClientUi *>(linkUi);
+        auto textCtrl = clientUi->GetClientInfoTextCtrl();
+        wxString ip = e.GetString();
+        int port = e.GetInt();
+        textCtrl->SetLabelText(DoEncodeFlag(ip.ToStdString(), port));
+    }
 }
 
 void Page::OnSendTimerTimeout()

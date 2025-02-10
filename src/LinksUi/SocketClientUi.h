@@ -15,4 +15,6 @@ class SocketClientUi : public SocketBaseUi
 public:
     SocketClientUi(wxWindow *parent = nullptr);
     ~SocketClientUi();
+
+private:
 };

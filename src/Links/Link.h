@@ -25,7 +25,8 @@ enum LinkEvent {
     wxtNewClient,
     wxtDeleteClient,
     wxtLinkOpened,
-    wxtLinkClosed
+    wxtLinkClosed,
+    wxtLinkResolve
 };
 
 class LinkPrivate;

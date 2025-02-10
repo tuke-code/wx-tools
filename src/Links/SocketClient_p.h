@@ -12,6 +12,9 @@
 
 class SocketClientPrivate : public SocketBasePrivate
 {
+    std::string locIp{"0.0.0.0"};
+    uint16_t locPort{0};
+
 public:
     void OnMgEvClose(struct mg_connection *c, void *ev_data)
     {
@@ -21,13 +24,27 @@ public:
         }
     }
 
+    void OnMgEvResolve(struct mg_connection *c)
+    {
+        if (evtHandler) {
+            if (locIp == std::string("0.0.0.0") && locPort == 0) {
+                locIp = DoMgAddressToIpV4(&c->loc);
+                locPort = DoReverseByteOrder<uint16_t>(c->loc.port);
+                wxThreadEvent *evt = new wxThreadEvent(wxEVT_THREAD, wxtLinkResolve);
+                evt->SetString(locIp);
+                evt->SetInt(locPort);
+                evtHandler->QueueEvent(evt);
+            }
+        }
+    }
+
     void DoPoll(struct mg_connection *c, int ev, void *ev_data) override
     {
         SocketBasePrivate::DoPoll(c, ev, ev_data);
         if (ev == MG_EV_CLOSE) {
             OnMgEvClose(c, ev_data);
-        } else if (ev == MG_EV_ERROR) {
-            OnMgEvError(c, ev_data);
+        } else if (MG_EV_RESOLVE) {
+            OnMgEvResolve(c);
         }
     }
 };

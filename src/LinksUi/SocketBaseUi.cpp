@@ -96,7 +96,7 @@ void SocketBaseUi::Refresh()
     }
 }
 
-wxTextCtrl *SocketBaseUi::GetClientInfoLabel() const
+wxTextCtrl *SocketBaseUi::GetClientInfoTextCtrl() const
 {
     return m_clientInfoTextCtrl;
 }
@@ -161,6 +161,20 @@ void SocketBaseUi::InitClientsComboBox(int row, wxWindow *parent)
         auto ctx = DoDecodeFlag(str.ToStdString());
         socketServer->SetCurrentClient(ctx.first, ctx.second);
     });
+}
+
+void SocketBaseUi::InitClientInfoTextCtrl(int row, wxWindow *parent)
+{
+    auto label = new wxStaticText(parent, wxID_ANY, _("Client Info"));
+    m_clientInfoTextCtrl = new wxTextCtrl(parent,
+                                          wxID_ANY,
+                                          "0.0.0.0:0",
+                                          wxDefaultPosition,
+                                          wxDefaultSize,
+                                          wxTE_READONLY);
+    m_clientInfoTextCtrl->SetWindowStyleFlag(wxALIGN_CENTER);
+    Add(label, wxGBPosition(row, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
+    Add(m_clientInfoTextCtrl, wxGBPosition(row, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
 }
 
 void SocketBaseUi::InitDataChannelComboBox(int row, wxWindow *parent)

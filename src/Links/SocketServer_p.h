@@ -41,6 +41,8 @@ public:
         c->is_client = true;
         const std::string remIp = DoMgAddressToIpV4(&c->rem);
         const uint16_t remPort = DoReverseByteOrder<uint16_t>(c->rem.port);
+        wxtInfo() << fmt::format("New client socket opened({0}:{1}).", remIp, remPort);
+
         DoTryToNewClient(remIp, remPort);
     }
 

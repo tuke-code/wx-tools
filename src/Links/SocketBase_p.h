@@ -40,11 +40,9 @@ public:
         if (GetIsClient()) {
             wxtInfo() << fmt::format("Client socket opened({0}:{1}).", locIp, locPort);
         } else {
-            if (c->is_client) {
-                const std::string remIp = DoMgAddressToIpV4(&c->rem);
-                const uint16_t remPort = DoReverseByteOrder<uint16_t>(c->rem.port);
-                wxtInfo() << fmt::format("New client socket opened({0}:{1}).", remIp, remPort);
-            } else {
+            const std::string remIp = DoMgAddressToIpV4(&c->rem);
+            const uint16_t remPort = DoReverseByteOrder<uint16_t>(c->rem.port);
+            if (remPort == 0) {
                 wxtInfo() << fmt::format("Server socket opened({0}:{1}).", locIp, locPort);
             }
         }
@@ -110,6 +108,17 @@ public:
             DoQueueError(_("Open socket failed, please check parameters then try again."));
             return;
         }
+#if 0
+        const std::string locIp = DoMgAddressToIpV4(&c->loc);
+        uint16_t locPort = DoReverseByteOrder<uint16_t>(c->loc.port);
+        const std::string remIp = DoMgAddressToIpV4(&c->rem);
+        uint16_t remPort = DoReverseByteOrder<uint16_t>(c->rem.port);
+        wxtInfo() << fmt::format("Socket opened({0}:{1} -> {2}:{3}).",
+                                 locIp,
+                                 locPort,
+                                 remIp,
+                                 remPort);
+#endif
 
         c->is_client = GetIsClient();
         auto q = GetQ<SocketBase *>();
