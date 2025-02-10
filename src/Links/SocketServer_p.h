@@ -17,10 +17,15 @@ class SocketServerPrivate : public SocketBasePrivate
 public:
     void OnMgEvOpen(struct mg_connection *c)
     {
-        const std::string locIp = DoMgAddressToIpV4(&c->loc);
-        const uint16_t locPort = DoReverseByteOrder<uint16_t>(c->loc.port);
-
-        wxtInfo() << fmt::format("Server socket opened({0}:{1}).", locIp, locPort);
+        if (c->is_client) {
+            const std::string remIp = DoMgAddressToIpV4(&c->rem);
+            const uint16_t remPort = DoReverseByteOrder<uint16_t>(c->rem.port);
+            wxtInfo() << fmt::format("New client socket opened({0}:{1}).", remIp, remPort);
+        } else {
+            const std::string locIp = DoMgAddressToIpV4(&c->loc);
+            const uint16_t locPort = DoReverseByteOrder<uint16_t>(c->loc.port);
+            wxtInfo() << fmt::format("Server socket opened({0}:{1}).", locIp, locPort);
+        }
         DoQueueLinkOpened();
     }
 
@@ -43,17 +48,18 @@ public:
         std::shared_ptr<char> bytes(new char[c->recv.len], [](char *p) { delete[] p; });
         memcpy(bytes.get(), c->recv.buf, c->recv.len);
         item.data = bytes;
-        DoQueueTxBytes(bytes, c->recv.len, from);
+        DoQueueRxBytes(bytes, c->recv.len, from);
         c->recv.len = 0;
     }
 
     void OnMgEvClose(struct mg_connection *c, void *ev_data)
     {
-        if (evtHandler) {
-            wxtInfo() << fmt::format("Client socket closed({0}:{1}).",
-                                     clientAddress.ToStdString(),
-                                     clientPort);
-            DoQueueError(GetStrClientClosed());
+        if (c->is_client) {
+            std::string ip = DoMgAddressToIpV4(&c->rem);
+            uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
+            DoTryToDeleteClient(ip, port);
+        } else {
+            DoQueueError(GetStrServerClosed());
             DoQueueLinkClosed();
         }
     }
@@ -64,6 +70,14 @@ public:
                                  clientAddress.ToStdString(),
                                  clientPort,
                                  reinterpret_cast<char *>(ev_data));
+    }
+
+    void OnMgEvAccept(struct mg_connection *c)
+    {
+        c->is_client = true;
+        const std::string remIp = DoMgAddressToIpV4(&c->rem);
+        const uint16_t remPort = DoReverseByteOrder<uint16_t>(c->rem.port);
+        DoTryToNewClient(remIp, remPort);
     }
 
     void DoPoll(struct mg_connection *c, int ev, void *ev_data) override
@@ -78,6 +92,8 @@ public:
             OnMgEvClose(c, ev_data);
         } else if (ev == MG_EV_ERROR) {
             OnMgEvError(c, ev_data);
+        } else if (ev == MG_EV_ACCEPT) {
+            OnMgEvAccept(c);
         }
     }
 

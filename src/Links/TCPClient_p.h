@@ -24,9 +24,33 @@ public:
     bool GetIsClient() const override { return true; }
 
 public:
+    void OnMgEvPoll(struct mg_connection *c)
+    {
+        size_t len = 0;
+        std::string ip = DoMgAddressToIpV4(&c->rem);
+        uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
+        std::string to = DoEncodeFlag(ip, port);
+
+        txBytesLock.lock();
+        for (auto &ctx : txBytes) {
+            if (mg_send(c, ctx.first.get(), ctx.second)) {
+                DoQueueTxBytes(ctx.first, ctx.second, to);
+            } else {
+                DoQueueError(_("TCP client send bytes error."));
+                break;
+            }
+        }
+        txBytesLock.unlock();
+
+        DoClrearTxBytes();
+    }
+
     void DoPoll(struct mg_connection *c, int ev, void *ev_data) override
     {
         SocketClientPrivate::DoPoll(c, ev, ev_data);
+        if (ev == MG_EV_POLL) {
+            OnMgEvPoll(c);
+        }
     }
 };
 #if 0

@@ -39,7 +39,7 @@ public:
         std::shared_ptr<char> bytes(new char[c->recv.len], [](char *p) { delete[] p; });
         memcpy(bytes.get(), c->recv.buf, c->recv.len);
         item.data = bytes;
-        DoQueueTxBytes(bytes, c->recv.len, from);
+        DoQueueRxBytes(bytes, c->recv.len, from);
         c->recv.len = 0;
     }
 
