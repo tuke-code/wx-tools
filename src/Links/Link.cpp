@@ -12,7 +12,6 @@
 Link::Link(LinkPrivate *dPtr)
     : d(dPtr)
 {
-    wxtInfo() << d;
     d->q = this;
 }
 

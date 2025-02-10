@@ -18,7 +18,6 @@ public:
     std::string GetProtocolName() const override { return std::string("udp"); }
     mg_connection *DoConnection(struct mg_mgr *mgr, const char *url, mg_event_handler_t fn) override
     {
-        wxtInfo() << url;
         return mg_connect(mgr, url, fn, nullptr);
     }
     bool GetIsClient() const override { return true; }

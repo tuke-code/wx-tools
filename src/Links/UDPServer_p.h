@@ -20,24 +20,24 @@ public:
     std::string GetProtocolName() const override { return std::string("udp"); }
     mg_connection *DoConnection(struct mg_mgr *mgr, const char *url, mg_event_handler_t fn) override
     {
-        return mg_connect(mgr, url, fn, nullptr);
+        return mg_listen(mgr, url, fn, nullptr);
     }
     bool GetIsClient() const override { return false; }
 
 public:
-    void OnMgEvPoll(struct mg_connection *c, void *ev_data)
+    void OnMgEvPoll(struct mg_connection *c)
     {
         if (selection.first.empty() && selection.second == 0) {
             for (auto &client : clients) {
                 if (DoIpV4ToMgAddress(client.first, &c->rem)) {
                     (&c->rem)->port = DoReverseByteOrder(client.second);
-                    DoTryToSendBytes(c, ev_data);
+                    DoTryToSendBytes(c);
                 }
             }
         } else {
             if (DoIpV4ToMgAddress(selection.first, &c->rem)) {
                 (&c->rem)->port = DoReverseByteOrder(selection.second);
-                DoTryToSendBytes(c, ev_data);
+                DoTryToSendBytes(c);
             }
         }
 
@@ -48,7 +48,7 @@ public:
     {
         SocketServerPrivate::DoPoll(c, ev, ev_data);
         if (ev == MG_EV_POLL) {
-            OnMgEvPoll(c, ev_data);
+            OnMgEvPoll(c);
         }
     }
 };

@@ -54,6 +54,14 @@ public:
         }
     }
 
+    void OnMgEvError(struct mg_connection *c, void *ev_data)
+    {
+        wxtInfo() << fmt::format("Client socket error({0}:{1}):{2}",
+                                 clientAddress.ToStdString(),
+                                 clientPort,
+                                 reinterpret_cast<char *>(ev_data));
+    }
+
     void DoPoll(struct mg_connection *c, int ev, void *ev_data) override
     {
         SocketBasePrivate::DoPoll(c, ev, ev_data);
@@ -65,10 +73,7 @@ public:
         } else if (ev == MG_EV_CLOSE) {
             OnMgEvClose(c, ev_data);
         } else if (ev == MG_EV_ERROR) {
-            wxtInfo() << fmt::format("Client socket error({0}:{1}):{2}",
-                                     clientAddress.ToStdString(),
-                                     clientPort,
-                                     reinterpret_cast<char *>(ev_data));
+            OnMgEvError(c, ev_data);
         }
     }
 };
