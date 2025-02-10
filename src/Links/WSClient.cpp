@@ -15,9 +15,10 @@ WSClient::WSClient()
 
 WSClient::~WSClient()
 {
-    delete GetD<WSClientPrivate>();
+    delete GetD<WSClientPrivate *>();
 }
 
+#if 0
 void WSClient::Poll()
 {
     auto *d = GetD<WSClientPrivate>();
@@ -43,3 +44,4 @@ void WSClient::Poll()
     mg_mgr_free(&mgr);
     wxtInfo() << "Web socket client thread exited...";
 }
+#endif

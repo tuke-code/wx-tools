@@ -180,6 +180,6 @@ void SocketBaseUi::InitDataChannelComboBox(int row, wxWindow *parent)
 
         int selection = m_dataChannelComboBox->GetSelection();
         int dataChannel = *reinterpret_cast<int *>(m_dataChannelComboBox->GetClientData(selection));
-        socket->GetD<SocketBasePrivate>()->dataChannel = dataChannel;
+        socket->GetD<SocketBasePrivate *>()->dataChannel = dataChannel;
     });
 }

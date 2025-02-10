@@ -17,12 +17,12 @@ SerialPort::SerialPort()
 
 SerialPort::~SerialPort()
 {
-    delete GetD<SerialPortPrivate>();
+    delete GetD<SerialPortPrivate *>();
 }
 
 void SerialPort::Load(const wxtJson &parameters)
 {
-    auto d = GetD<SerialPortPrivate>();
+    auto d = GetD<SerialPortPrivate *>();
     SerialPortParameterKeys keys;
     d->portName = parameters[keys.portName].get<std::string>();
     d->baudRate = parameters[keys.baudRate].get<int>();
@@ -34,7 +34,7 @@ void SerialPort::Load(const wxtJson &parameters)
 
 wxtJson SerialPort::Save()
 {
-    auto d = GetD<SerialPortPrivate>();
+    auto d = GetD<SerialPortPrivate *>();
     wxtJson parameters;
     SerialPortParameterKeys keys;
     parameters[keys.portName] = d->portName;

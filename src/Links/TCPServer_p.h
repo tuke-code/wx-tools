@@ -16,11 +16,23 @@
 class TCPServerPrivate : public SocketServerPrivate
 {
 public:
-};
+    std::string GetProtocolName() const override { return std::string("tcp"); }
+    mg_connection *DoConnection(struct mg_mgr *mgr, const char *url, mg_event_handler_t fn) override
+    {
+        return mg_listen(mgr, url, fn, nullptr);
+    }
+    bool GetIsClient() const override { return false; }
 
+public:
+    void DoPoll(struct mg_connection *c, int ev, void *ev_data) override
+    {
+        SocketServerPrivate::DoPoll(c, ev, ev_data);
+    }
+};
+#if 0
 static void OnMgEvOpen(struct mg_connection *c, void *ev_data, TCPServer *q)
 {
-    auto *d = q->GetD<TCPServerPrivate>();
+    auto *d = q->GetD<TCPServerPrivate *>();
     d->DoQueueLinkOpened();
 }
 
@@ -33,7 +45,7 @@ static void OnMgEvRead(struct mg_connection *c, void *ev_data, TCPServer *q)
     std::shared_ptr<char> bytes(new char[c->recv.len], [](char *p) { delete[] p; });
     memcpy(bytes.get(), c->recv.buf, c->recv.len);
 
-    auto *d = q->GetD<TCPServerPrivate>();
+    auto *d = q->GetD<TCPServerPrivate *>();
     const std::string ip = d->DoMgAddressToIpV4(&c->rem);
     const uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
     const std::string from = DoEncodeFlag(ip, port);
@@ -45,7 +57,7 @@ static void OnMgEvRead(struct mg_connection *c, void *ev_data, TCPServer *q)
 
 static void OnMgEvAccept(struct mg_connection *c, void *ev_data, TCPServer *q)
 {
-    auto *d = q->GetD<TCPServerPrivate>();
+    auto *d = q->GetD<TCPServerPrivate *>();
     c->is_client = true;
     const std::string remIp = d->DoMgAddressToIpV4(&c->rem);
     const uint16_t remPort = DoReverseByteOrder<uint16_t>(c->rem.port);
@@ -54,7 +66,7 @@ static void OnMgEvAccept(struct mg_connection *c, void *ev_data, TCPServer *q)
 
 static void OnMgEvPoll(struct mg_connection *c, void *ev_data, TCPServer *q)
 {
-    auto *d = q->GetD<TCPServerPrivate>();
+    auto *d = q->GetD<TCPServerPrivate *>();
     if (d->selection.first.empty() && d->selection.second == 0) {
         for (auto con = c; con != nullptr; con = con->next) {
             if (con->is_client) {
@@ -77,7 +89,7 @@ static void OnMgEvPoll(struct mg_connection *c, void *ev_data, TCPServer *q)
 
 static void OnMgEvClose(struct mg_connection *c, void *ev_data, TCPServer *q)
 {
-    auto *d = q->GetD<TCPServerPrivate>();
+    auto *d = q->GetD<TCPServerPrivate *>();
     if (c->is_client) {
         std::string ip = d->DoMgAddressToIpV4(&c->rem);
         uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
@@ -105,3 +117,4 @@ static void TCPServerHandler(struct mg_connection *c, int ev, void *ev_data)
         OnMgEvClose(c, ev_data, q);
     }
 }
+#endif

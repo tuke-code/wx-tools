@@ -16,7 +16,4 @@ class TCPServer : public SocketServer
 public:
     TCPServer();
     ~TCPServer();
-
-private:
-    void Poll() override;
 };

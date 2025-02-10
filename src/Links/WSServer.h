@@ -16,7 +16,4 @@ class WSServer : public SocketServer
 public:
     WSServer();
     ~WSServer() override;
-
-protected:
-    void Poll() override;
 };

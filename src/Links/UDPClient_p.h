@@ -11,7 +11,6 @@
 #include <fmt/format.h>
 
 #include "SocketClient_p.h"
-#include "UDPClient.h"
 
 class UDPClientPrivate : public SocketClientPrivate
 {
@@ -19,97 +18,37 @@ public:
     std::string GetProtocolName() const override { return std::string("udp"); }
     mg_connection *DoConnection(struct mg_mgr *mgr, const char *url, mg_event_handler_t fn) override
     {
+        wxtInfo() << url;
         return mg_connect(mgr, url, fn, nullptr);
     }
     bool GetIsClient() const override { return true; }
-};
 
-static void OnMgEvPoll(struct mg_connection *c, void *ev_data, UDPClient *q)
-{
-    auto *d = q->GetD<UDPClientPrivate *>();
-    d->txBytesLock.lock();
-    for (auto &ctx : d->txBytes) {
-        if (mg_send(c, ctx.first.get(), ctx.second)) {
-            std::string ip = d->DoMgAddressToIpV4(&c->rem);
-            uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
-            std::string to = DoEncodeFlag(ip, port);
-            d->DoQueueTxBytes(ctx.first, ctx.second, to);
-        } else {
-            d->DoQueueError(_("UDP client sends bytes failed."));
-            break;
+public:
+    void OnMgEvPoll(struct mg_connection *c)
+    {
+        txBytesLock.lock();
+        for (auto &ctx : txBytes) {
+            if (mg_send(c, ctx.first.get(), ctx.second)) {
+                std::string ip = DoMgAddressToIpV4(&c->rem);
+                uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
+                std::string to = DoEncodeFlag(ip, port);
+                DoQueueTxBytes(ctx.first, ctx.second, to);
+            } else {
+                DoQueueError(_("Client write bytes failed."));
+                break;
+            }
+        }
+
+        txBytes.clear();
+        txBytesLock.unlock();
+    }
+
+    void DoPoll(struct mg_connection *c, int ev, void *ev_data) override
+    {
+        SocketClientPrivate::DoPoll(c, ev, ev_data);
+
+        if (ev == MG_EV_POLL) {
+            OnMgEvPoll(c);
         }
     }
-
-    d->txBytes.clear();
-    d->txBytesLock.unlock();
-}
-
-static void OnMgEvOpen(struct mg_connection *c, void *ev_data, UDPClient *q)
-{
-    auto *d = q->GetD<UDPClientPrivate *>();
-    const std::string locIp = d->DoMgAddressToIpV4(&c->loc);
-    const uint16_t locPort = DoReverseByteOrder<uint16_t>(c->loc.port);
-
-    wxtInfo() << fmt::format("UDP client opened({0}:{1}).", locIp, locPort) << c->loc.ip;
-    d->DoQueueLinkOpened();
-}
-
-static void OnMgEvRead(struct mg_connection *c, void *ev_data, UDPClient *q)
-{
-    if (c->recv.len <= 0) {
-        return;
-    }
-
-    UDPClientPrivate *d = q->GetD<UDPClientPrivate *>();
-    wxtDataItem item;
-    item.len = c->recv.len;
-
-    const std::string ip = d->DoMgAddressToIpV4(&c->rem);
-    const uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
-    const std::string from = DoEncodeFlag(ip, port);
-    item.flag = from;
-
-    std::shared_ptr<char> bytes(new char[c->recv.len], [](char *p) { delete[] p; });
-    memcpy(bytes.get(), c->recv.buf, c->recv.len);
-    item.data = bytes;
-    d->DoQueueTxBytes(bytes, c->recv.len, from);
-    c->recv.len = 0;
-}
-
-static void OnMgEvClose(struct mg_connection *c, void *ev_data, UDPClient *q)
-{
-    UDPClientPrivate *d = q->GetD<UDPClientPrivate *>();
-    if (d && d->evtHandler) {
-        d->DoQueueError(d->GetStrClientClosed());
-        d->DoQueueLinkClosed();
-    }
-}
-
-static void OnMgEvError(struct mg_connection *c, void *ev_data, UDPClient *q)
-{
-    UDPClientPrivate *d = q->GetD<UDPClientPrivate *>();
-    std::string msg = reinterpret_cast<const char *>(ev_data);
-    if (d && d->evtHandler) {
-        auto *evt = new wxThreadEvent(wxEVT_THREAD, wxtErrorOccurred);
-        evt->SetString(msg);
-        d->evtHandler->QueueEvent(evt);
-    }
-}
-
-static void UDPClientHandler(struct mg_connection *c, int ev, void *ev_data)
-{
-    auto *q = reinterpret_cast<UDPClient *>(c->mgr->userdata);
-    wxASSERT_MSG(q, "q is nullptr");
-
-    if (ev == MG_EV_OPEN) {
-        OnMgEvOpen(c, ev_data, q);
-    } else if (ev == MG_EV_READ) {
-        OnMgEvRead(c, ev_data, q);
-    } else if (ev == MG_EV_POLL) {
-        OnMgEvPoll(c, ev_data, q);
-    } else if (ev == MG_EV_CLOSE) {
-        OnMgEvClose(c, ev_data, q);
-    } else if (ev == MG_EV_ERROR) {
-        OnMgEvError(c, ev_data, q);
-    }
-}
+};

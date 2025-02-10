@@ -15,9 +15,10 @@ WSServer::WSServer()
 
 WSServer::~WSServer()
 {
-    delete GetD<WSServerPrivate>();
+    delete GetD<WSServerPrivate *>();
 }
 
+#if 0
 void WSServer::Poll()
 {
     auto *d = GetD<WSServerPrivate>();
@@ -45,3 +46,4 @@ void WSServer::Poll()
     mg_mgr_free(&mgr);
     wxtInfo() << "Web socket server thread is exited!";
 }
+#endif

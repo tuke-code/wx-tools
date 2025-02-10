@@ -20,6 +20,6 @@ SocketServer::~SocketServer()
 
 void SocketServer::SetCurrentClient(const std::string &ip, uint16_t port)
 {
-    SocketServerPrivate *d = GetD<SocketServerPrivate>();
+    SocketServerPrivate *d = GetD<SocketServerPrivate *>();
     d->selection = std::make_pair(ip, port);
 }

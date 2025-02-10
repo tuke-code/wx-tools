@@ -10,17 +10,22 @@
 
 #include "Link.h"
 #include "SocketBase_p.h"
+#include "SocketServer.h"
 
 class SocketServerPrivate : public SocketBasePrivate
 {
 public:
-    void DoPoll(struct mg_connection *c, int ev, void *ev_data) override {}
+    void DoPoll(struct mg_connection *c, int ev, void *ev_data) override
+    {
+        SocketBasePrivate::DoPoll(c, ev, ev_data);
+    }
 
 public:
     wxString targetAddressPort; // Such as "192.168.10.10:8080", or an empty string for all clients
     std::vector<std::pair<std::string, uint16_t>> clients;
     std::pair<std::string, uint16_t> selection;
 
+public:
     void DoTryToDeleteClient(const std::string &address, uint16_t port)
     {
         if (clients.empty()) {

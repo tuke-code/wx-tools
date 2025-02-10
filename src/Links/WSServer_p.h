@@ -17,15 +17,37 @@
 class WSServerPrivate : public SocketServerPrivate
 {
 public:
-};
+    std::string GetProtocolName() const override { return std::string("ws"); }
+    mg_connection *DoConnection(struct mg_mgr *mgr, const char *url, mg_event_handler_t fn) override
+    {
+        return mg_http_listen(mgr, url, fn, nullptr);
+    }
+    bool GetIsClient() const override { return false; }
 
+public:
+    void OnMgEvHttpMsg(struct mg_connection *c, void *ev_data)
+    {
+        struct mg_http_message *hm = (struct mg_http_message *) ev_data;
+        mg_ws_upgrade(c, hm, NULL);
+    }
+
+public:
+    void DoPoll(struct mg_connection *c, int ev, void *ev_data) override
+    {
+        SocketServerPrivate::DoPoll(c, ev, ev_data);
+        if (ev == MG_EV_HTTP_MSG) {
+            OnMgEvHttpMsg(c, ev_data);
+        }
+    }
+};
+#if 0
 static void DoSendBytesToClient(struct mg_connection *c, void *ev_data, WSServer *q)
 {
     if (!c->is_client) {
         return;
     }
 
-    auto *d = q->GetD<WSServerPrivate>();
+    auto *d = q->GetD<WSServerPrivate *>();
     std::string op;
     size_t len = 0;
     std::string ip = d->DoMgAddressToIpV4(&c->rem);
@@ -57,7 +79,7 @@ static void OnMgEvOpen(struct mg_connection *c, void *ev_data, WSServer *q)
 {
     wxUnusedVar(c);
     wxUnusedVar(ev_data);
-    auto *d = q->GetD<WSServerPrivate>();
+    auto *d = q->GetD<WSServerPrivate *>();
     d->DoQueueLinkOpened();
 }
 
@@ -70,10 +92,10 @@ static void OnMgEvHttpMsg(struct mg_connection *c, void *ev_data, WSServer *q)
 
 static void OnMgEvAccept(struct mg_connection *c, WSServer *q)
 {
-    std::string ip = q->GetD<WSServerPrivate>()->DoMgAddressToIpV4(&c->rem);
+    std::string ip = q->GetD<WSServerPrivate *>()->DoMgAddressToIpV4(&c->rem);
     const uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
     std::string from = DoEncodeFlag(ip, port);
-    auto *d = q->GetD<WSServerPrivate>();
+    auto *d = q->GetD<WSServerPrivate *>();
 
     d->DoTryToNewClient(ip, port);
     c->is_client = true;
@@ -93,7 +115,7 @@ static void OnMgEvMsg(struct mg_connection *c, void *ev_data, WSServer *q)
         return;
     }
 
-    auto *d = q->GetD<WSServerPrivate>();
+    auto *d = q->GetD<WSServerPrivate *>();
     std::string ip = d->DoMgAddressToIpV4(&c->rem);
     uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
     std::string from = DoEncodeFlag(ip, port) + op;
@@ -105,7 +127,7 @@ static void OnMgEvMsg(struct mg_connection *c, void *ev_data, WSServer *q)
 
 static void OnMgEvClose(struct mg_connection *c, void *ev_data, WSServer *q)
 {
-    WSServerPrivate *d = q->GetD<WSServerPrivate>();
+    WSServerPrivate *d = q->GetD<WSServerPrivate *>();
     std::string ip = d->DoMgAddressToIpV4(&c->rem);
     uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
     if (c->is_client) {
@@ -118,7 +140,7 @@ static void OnMgEvClose(struct mg_connection *c, void *ev_data, WSServer *q)
 
 static void OnMgEvError(struct mg_connection *c, void *ev_data, WSServer *q)
 {
-    WSServerPrivate *d = q->GetD<WSServerPrivate>();
+    WSServerPrivate *d = q->GetD<WSServerPrivate *>();
     std::string msg = fmt::format("Error occurred: {0}", ev_data);
     if (c->is_client) {
         std::string ip = d->DoMgAddressToIpV4(&c->rem);
@@ -131,7 +153,7 @@ static void OnMgEvError(struct mg_connection *c, void *ev_data, WSServer *q)
 
 static void OnMgEvPoll(struct mg_connection *c, void *ev_data, WSServer *q)
 {
-    auto *d = q->GetD<WSServerPrivate>();
+    auto *d = q->GetD<WSServerPrivate *>();
     if (d->selection.first.empty() && d->selection.second == 0) {
         // Send to all clients
         for (struct mg_connection *conns = c; conns != nullptr; conns = conns->next) {
@@ -174,3 +196,4 @@ static void WSServerHandler(struct mg_connection *c, int ev, void *ev_data)
         OnMgEvPoll(c, ev_data, q);
     }
 }
+#endif

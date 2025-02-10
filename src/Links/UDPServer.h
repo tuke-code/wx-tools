@@ -16,7 +16,4 @@ class UDPServer : public SocketServer
 public:
     UDPServer();
     ~UDPServer();
-
-private:
-    void Poll() override;
 };

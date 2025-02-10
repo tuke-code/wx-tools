@@ -22,8 +22,14 @@ public:
         return mg_connect(mgr, url, fn, nullptr);
     }
     bool GetIsClient() const override { return true; }
-};
 
+public:
+    void DoPoll(struct mg_connection *c, int ev, void *ev_data) override
+    {
+        SocketClientPrivate::DoPoll(c, ev, ev_data);
+    }
+};
+#if 0
 static void OnMgEvRead(struct mg_connection *c, void *ev_data, TCPClient *q)
 {
     if (c->recv.len <= 0) {
@@ -96,3 +102,4 @@ static void TCPClientHandler(struct mg_connection *c, int ev, void *ev_data)
         OnMgEvConnect(c, ev_data, q);
     }
 }
+#endif

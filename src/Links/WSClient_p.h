@@ -17,13 +17,25 @@
 class WSClientPrivate : public SocketClientPrivate
 {
 public:
-};
+    std::string GetProtocolName() const override { return std::string("ws"); }
+    mg_connection *DoConnection(struct mg_mgr *mgr, const char *url, mg_event_handler_t fn) override
+    {
+        return mg_http_listen(mgr, url, fn, nullptr);
+    }
+    bool GetIsClient() const override { return true; }
 
+public:
+    void DoPoll(struct mg_connection *c, int ev, void *ev_data) override
+    {
+        SocketClientPrivate::DoPoll(c, ev, ev_data);
+    }
+};
+#if 0
 static void OnMgEvWsOpen(struct mg_connection *c, void *ev_data, WSClient *q)
 {
     c->is_hexdumping = 1;
 
-    auto *d = q->GetD<WSClientPrivate>();
+    auto *d = q->GetD<WSClientPrivate *>();
     const std::string locIp = d->DoMgAddressToIpV4(&c->loc);
     const uint16_t locPort = DoReverseByteOrder<uint16_t>(c->loc.port);
     const std::string remIp = d->DoMgAddressToIpV4(&c->rem);
@@ -47,8 +59,8 @@ static void OnMgEvWsMsg(struct mg_connection *c, void *ev_data, WSClient *q)
         return;
     }
 
-    auto *d = q->GetD<WSClientPrivate>();
-    std::string ip = q->GetD<WSClientPrivate>()->DoMgAddressToIpV4(&c->rem);
+    auto *d = q->GetD<WSClientPrivate *>();
+    std::string ip = q->GetD<WSClientPrivate *>()->DoMgAddressToIpV4(&c->rem);
     uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
     std::string from = DoEncodeFlag(ip, port) + op;
     std::shared_ptr<char> bytes(new char[wm->data.len], [](char *p) { delete[] p; });
@@ -58,14 +70,14 @@ static void OnMgEvWsMsg(struct mg_connection *c, void *ev_data, WSClient *q)
 
 static void OnMgEvClose(struct mg_connection *c, void *ev_data, WSClient *q)
 {
-    auto *d = q->GetD<WSClientPrivate>();
+    auto *d = q->GetD<WSClientPrivate *>();
     d->DoQueueError(d->GetStrClientClosed());
     d->DoQueueLinkClosed();
 }
 
 static void OnMgEvPoll(struct mg_connection *c, int ev, void *ev_data, WSClient *q)
 {
-    auto *d = q->GetD<WSClientPrivate>();
+    auto *d = q->GetD<WSClientPrivate *>();
     std::string op;
     size_t len = 0;
     std::string ip = d->DoMgAddressToIpV4(&c->rem);
@@ -99,7 +111,7 @@ static void OnMgEvConnect(struct mg_connection *c, void *ev_data, WSClient *q)
     wxUnusedVar(c);
     wxUnusedVar(ev_data);
 
-    auto *d = q->GetD<WSClientPrivate>();
+    auto *d = q->GetD<WSClientPrivate *>();
     d->DoQueueLinkOpened();
 }
 
@@ -120,3 +132,4 @@ static void WSClientHandler(struct mg_connection *c, int ev, void *ev_data)
         OnMgEvConnect(c, ev_data, q);
     }
 }
+#endif

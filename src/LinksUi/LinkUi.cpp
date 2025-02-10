@@ -44,7 +44,7 @@ void LinkUi::Close(bool ignoredCloseError)
 {
     if (m_link) {
         // m_link will be deleted when the thread exits...
-        m_link->GetD<LinkPrivate>()->ignoreCloseError.store(ignoredCloseError);
+        m_link->GetD<LinkPrivate *>()->ignoreCloseError.store(ignoredCloseError);
         m_link->Close();
     }
 

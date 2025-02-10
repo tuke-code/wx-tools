@@ -15,9 +15,9 @@ TCPServer::TCPServer()
 
 TCPServer::~TCPServer()
 {
-    delete GetD<TCPServerPrivate>();
+    delete GetD<TCPServerPrivate *>();
 }
-
+#if 0
 void TCPServer::Poll()
 {
     auto d = GetD<TCPServerPrivate>();
@@ -42,3 +42,4 @@ void TCPServer::Poll()
     mg_mgr_free(&mgr);
     wxtInfo() << "TCP server thread exited...";
 }
+#endif

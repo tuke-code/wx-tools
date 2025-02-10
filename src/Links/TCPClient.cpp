@@ -17,9 +17,10 @@ TCPClient::TCPClient()
 
 TCPClient::~TCPClient()
 {
-    delete GetD<TCPClientPrivate>();
+    delete GetD<TCPClientPrivate *>();
 }
 
+#if 0
 void TCPClient::Poll()
 {
     auto d = GetD<TCPClientPrivate>();
@@ -43,3 +44,4 @@ void TCPClient::Poll()
     mg_mgr_free(&mgr);
     wxtInfo() << "TCP client thread exited...";
 }
+#endif

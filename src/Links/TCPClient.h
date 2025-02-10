@@ -16,7 +16,4 @@ class TCPClient : public SocketClient
 public:
     TCPClient();
     ~TCPClient();
-
-private:
-    void Poll() override;
 };

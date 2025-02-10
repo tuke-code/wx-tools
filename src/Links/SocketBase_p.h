@@ -38,23 +38,106 @@ public:
     wxString password;
 
 public:
+#if 0
+    void OnMgEvOpen(struct mg_connection *c)
+    {
+        const std::string locIp = DoMgAddressToIpV4(&c->loc);
+        const uint16_t locPort = DoReverseByteOrder<uint16_t>(c->loc.port);
+        const std::string remIp = DoMgAddressToIpV4(&c->rem);
+        const uint16_t remPort = DoReverseByteOrder<uint16_t>(c->rem.port);
+
+        wxtInfo() << fmt::format("Socket opened local({0}:{1}), remote({2}:{3}).",
+                                 locIp,
+                                 locPort,
+                                 remIp,
+                                 remPort);
+        DoQueueLinkOpened();
+    }
+
+    void OnMgEvRead(struct mg_connection *c)
+    {
+        if (c->recv.len <= 0) {
+            return;
+        }
+
+        wxtDataItem item;
+        item.len = c->recv.len;
+
+        const std::string ip = DoMgAddressToIpV4(&c->rem);
+        const uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
+        const std::string from = DoEncodeFlag(ip, port);
+        item.flag = from;
+
+        std::shared_ptr<char> bytes(new char[c->recv.len], [](char *p) { delete[] p; });
+        memcpy(bytes.get(), c->recv.buf, c->recv.len);
+        item.data = bytes;
+        DoQueueTxBytes(bytes, c->recv.len, from);
+        c->recv.len = 0;
+    }
+
+    void OnMgEvClose(struct mg_connection *c)
+    {
+        DoQueueError(GetStrServerClosed());
+        DoQueueLinkClosed();
+    }
+
+    void OnMgEvError(struct mg_connection *c, void *ev_data)
+    {
+        if (evtHandler) {
+            if (GetIsClient()) {
+                std::string msg = reinterpret_cast<const char *>(ev_data);
+                DoQueueError(msg);
+            } else {
+                if (c->is_client) {
+                    std::string ip = DoMgAddressToIpV4(&c->rem);
+                    uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
+                    std::string to = DoEncodeFlag(ip, port);
+                    wxtInfo() << fmt::format("Socket({0}) error.", to);
+                } else {
+                    std::string msg = reinterpret_cast<const char *>(ev_data);
+                    DoQueueError(msg);
+                }
+            }
+        }
+    }
+
+    void OnMgEvPoll(struct mg_connection *c, void *ev_data)
+    {
+        txBytesLock.lock();
+        for (auto &ctx : txBytes) {
+            if (mg_send(c, ctx.first.get(), ctx.second)) {
+                std::string ip = DoMgAddressToIpV4(&c->rem);
+                uint16_t port = DoReverseByteOrder<uint16_t>(c->rem.port);
+                std::string to = DoEncodeFlag(ip, port);
+                DoQueueTxBytes(ctx.first, ctx.second, to);
+            } else {
+                DoQueueError(_("Client write bytes failed."));
+                break;
+            }
+        }
+
+        txBytes.clear();
+        txBytesLock.unlock();
+    }
+#endif
+public:
     // clang-format off
     virtual std::string GetProtocolName() const = 0;
     virtual mg_connection *DoConnection(struct mg_mgr *mgr, const char *url, mg_event_handler_t fn) = 0;
     virtual bool GetIsClient() const = 0;
-    virtual void DoPoll(struct mg_connection *c, int ev, void *ev_data) = 0;
     // clang-format on
+    virtual void DoPoll(struct mg_connection *c, int ev, void *ev_data) {};
 
     void Poll() override
     {
-        std::string url = fmt::format("{0}://{1}{2}",
+        std::string url = fmt::format("{0}://{1}:{2}",
                                       GetProtocolName(),
                                       serverAddress.ToStdString(),
                                       serverPort);
         struct mg_mgr mgr;
         mg_mgr_init(&mgr);
         mgr.userdata = this;
-        auto c = DoConnection(&mgr, url.c_str(), &DoMgPoll);
+        auto c = DoConnection(&mgr, url.c_str(), DoMgPoll);
         if (c == nullptr) {
             mg_mgr_free(&mgr);
             DoQueueError(_("Open socket failed, please check parameters then try again."));
@@ -132,11 +215,11 @@ public:
 
 static void DoMgPoll(struct mg_connection *c, int ev, void *ev_data)
 {
-    auto q = reinterpret_cast<SocketBase *>(c->mgr->userdata);
-    if (!q) {
+    auto d = reinterpret_cast<SocketBasePrivate *>(c->mgr->userdata);
+    if (!d) {
+        wxtWarning() << "SocketBasePrivate pointer is null.";
         return;
     }
 
-    auto d = q->GetD<SocketBasePrivate *>();
     d->DoPoll(c, ev, ev_data);
 }

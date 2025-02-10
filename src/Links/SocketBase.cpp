@@ -17,7 +17,7 @@ SocketBase::~SocketBase() {}
 
 void SocketBase::Load(const wxtJson &parameters)
 {
-    auto *d = GetD<SocketBasePrivate>();
+    auto *d = GetD<SocketBasePrivate *>();
     SocketBaseParameterKeys keys;
     if (parameters.contains(keys.clientAddress)) {
         d->clientAddress = parameters[keys.clientAddress].get<std::string>();
@@ -70,7 +70,7 @@ void SocketBase::Load(const wxtJson &parameters)
 
 wxtJson SocketBase::Save()
 {
-    auto *d = GetD<SocketBasePrivate>();
+    auto *d = GetD<SocketBasePrivate *>();
     SocketBaseParameterKeys keys;
     wxtJson parameters;
     parameters[keys.clientAddress] = d->clientAddress.ToStdString();

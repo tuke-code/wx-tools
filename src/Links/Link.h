@@ -47,7 +47,7 @@ public:
     template<typename T>
     T GetD() const
     {
-        return reinterpret_cast<T>(this->d);
+        return dynamic_cast<T>(this->d);
     }
 
 protected:

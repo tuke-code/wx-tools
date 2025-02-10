@@ -16,7 +16,4 @@ class WSClient : public SocketClient
 public:
     WSClient();
     ~WSClient();
-
-private:
-    void Poll() override;
 };

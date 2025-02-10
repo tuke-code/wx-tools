@@ -17,30 +17,5 @@ UDPServer::UDPServer()
 
 UDPServer::~UDPServer()
 {
-    delete GetD<UDPServerPrivate>();
-}
-
-void UDPServer::Poll()
-{
-    auto d = GetD<UDPServerPrivate>();
-    std::string url = fmt::format("udp://{0}:{1}", d->serverAddress.ToStdString(), d->serverPort);
-    struct mg_mgr mgr;
-    mg_mgr_init(&mgr);
-    mg_log_set(MG_LL_NONE);
-
-    mgr.userdata = this;
-    struct mg_connection *c = mg_listen(&mgr, url.c_str(), UDPServerHandler, nullptr);
-    if (c == nullptr) {
-        d->DoQueueError(d->GetStrFailedToCreateServer());
-        mg_mgr_free(&mgr);
-        return;
-    }
-
-    c->is_client = false;
-    while (!TestDestroy()) {
-        mg_mgr_poll(&mgr, 100);
-    }
-
-    mg_mgr_free(&mgr);
-    wxtInfo() << "UDP client thread exited...";
+    delete GetD<UDPServerPrivate *>();
 }
