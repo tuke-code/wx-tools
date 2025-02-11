@@ -25,6 +25,7 @@
 #define wxtOkStr wxT("Ok")
 #define wxtUnknownStr wxT("Unknown")
 #define wxtPathSeparator wxFileName::GetPathSeparator()
+#define wxtDataDir wxStandardPaths::Get().GetDataDir()
 
 #ifdef MG_DATA_SIZE
 const static int wxtDataSize = MG_DATA_SIZE;
@@ -47,6 +48,7 @@ struct wxtDataItem
 #define wxtInfo() LOG(INFO)
 #define wxtWarning() LOG(WARNING)
 #define wxtError() LOG(ERROR)
+std::string LogPath();
 void DoInitLogging(const char *argv0);
 void DoShutdownLogging();
 

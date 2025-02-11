@@ -151,6 +151,7 @@ void MainWindow::InitMenu()
 {
     wxMenuBar* menuBar = new wxMenuBar;
     InitMenuFile(menuBar);
+    InitMenuOptions(menuBar);
     InitMenuHelp(menuBar);
 
     SetMenuBar(menuBar);
@@ -173,6 +174,26 @@ void MainWindow::InitMenuFile(wxMenuBar* menuBar)
     Bind(wxEVT_MENU, &MainWindow::OnSave, this, wxID_SAVE);
     Bind(wxEVT_MENU, &MainWindow::OnSaveAs, this, wxID_SAVEAS);
     Bind(wxEVT_MENU, &MainWindow::OnExit, this, wxID_EXIT);
+}
+
+void MainWindow::InitMenuOptions(wxMenuBar* menuBar)
+{
+    wxMenu* menuOptions = new wxMenu;
+    menuBar->Append(menuOptions, _("Options"));
+
+    wxMenuItem* item = menuOptions->Append(wxID_ANY, _("Open Log Directory"));
+    item->SetHelp(_("Open the log directory."));
+    Bind(wxEVT_MENU, [](wxCommandEvent&) { wxLaunchDefaultBrowser(LogPath()); }, item->GetId());
+
+    // clang-format off
+    item = menuOptions->Append(wxID_ANY, _("Open Config Directory"));
+    item->SetHelp(_("Open the config directory."));
+    Bind(wxEVT_MENU, [](wxCommandEvent&) { wxLaunchDefaultBrowser(GetSettingsPath()); }, item->GetId());
+    // clang-format on
+
+    item = menuOptions->Append(wxID_ANY, _("Open App Directory"));
+    item->SetHelp(_("Open the app directory."));
+    Bind(wxEVT_MENU, [](wxCommandEvent&) { wxLaunchDefaultBrowser(wxtDataDir); }, item->GetId());
 }
 
 void MainWindow::InitMenuHelp(wxMenuBar* menuBar)
