@@ -23,6 +23,13 @@ if(${CMAKE_BUILD_TYPE} STREQUAL "Release")
   add_compile_definitions(WXT_RELEASE)
 endif()
 
+# --------------------------------------------------------------------------------------------------
+# For portable edition
+option(WXT_PORTABLE_EDITION "Portable edition" ON)
+if(WXT_PORTABLE_EDITION)
+  add_compile_definitions(WXT_PORTABLE_EDITION)
+endif()
+
 include(cmake/git.cmake)
 include(cmake/fmt.cmake)
 include(cmake/asio.cmake)

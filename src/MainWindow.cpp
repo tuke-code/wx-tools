@@ -19,6 +19,19 @@ MainWindow::MainWindow()
     : wxFrame(nullptr, wxID_ANY, fmt::format("wxTools v{}", std::string(WXT_GIT_TAG)))
     , m_statusBar(nullptr)
 {
+#if !defined(WXT_RELEASE)
+    wxtInfo() << "GetExecutablePath():" << wxStandardPaths::Get().GetExecutablePath();
+    wxtInfo() << "GetConfigDir():" << wxStandardPaths::Get().GetConfigDir();
+    wxtInfo() << "GetUserConfigDir():" << wxStandardPaths::Get().GetUserConfigDir();
+    wxtInfo() << "GetDataDir():" << wxStandardPaths::Get().GetDataDir();
+    wxtInfo() << "GetUserDataDir():" << wxStandardPaths::Get().GetUserDataDir();
+    wxtInfo() << "GetUserLocalDataDir():" << wxStandardPaths::Get().GetUserLocalDataDir();
+    wxtInfo() << "GetPluginsDir():" << wxStandardPaths::Get().GetPluginsDir();
+    wxtInfo() << "MakeConfigFileName():" << wxStandardPaths::Get().MakeConfigFileName("wxTools");
+    wxtInfo() << "GetGlobalFileName()" << wxFileConfig::GetGlobalFileName("wxTools");
+    wxtInfo() << "GetLocalFileName()" << wxFileConfig::GetLocalFileName("wxTools");
+#endif
+
     Init();
 
 #if defined(WIN32)
@@ -259,19 +272,17 @@ void MainWindow::LoadParameters(wxString fileName)
         }
     }
 
-    wxtJson tabIndexJson = json["tabIndex"];
-    if (!tabIndexJson.is_null()) {
-        int tabIndex = tabIndexJson.get<int>();
-        if (tabIndex >= 0 || tabIndex < m_notebook->GetPageCount()) {
-            m_notebook->SetSelection(tabIndex);
-        }
+    int tabIndex = wxtConfig->Read("MainWindow/tabIndex", long(0));
+    if (tabIndex >= 0 || tabIndex < m_notebook->GetPageCount()) {
+        m_notebook->SetSelection(tabIndex);
     }
 }
 
 void MainWindow::SaveParameters(wxString fileName)
 {
+    wxtConfig->Write("MainWindow/tabIndex", m_notebook->GetSelection());
+
     wxtJson wxTools = wxtJson::object();
-    wxTools["tabIndex"] = m_notebook->GetSelection();
     for (auto it = m_pageMap.begin(); it != m_pageMap.end(); ++it) {
         Page* page = it->second;
         wxtJson json = page->Save();

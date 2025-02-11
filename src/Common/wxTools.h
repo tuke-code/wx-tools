@@ -11,6 +11,8 @@
 #include <glog/logging.h>
 #include <nlohmann/json.hpp>
 #include <sigslot/signal.hpp>
+
+#include <wx/fileconf.h>
 #include <wx/wx.h>
 
 //--------------------------------------------------------------------------------------------------
@@ -22,6 +24,7 @@
 #define wxtNoneStr wxT("None")
 #define wxtOkStr wxT("Ok")
 #define wxtUnknownStr wxT("Unknown")
+#define wxtPathSeparator wxFileName::GetPathSeparator()
 
 #ifdef MG_DATA_SIZE
 const static int wxtDataSize = MG_DATA_SIZE;
@@ -141,6 +144,9 @@ wxString GetEscapeString(const std::string &txt, int type);
 
 //--------------------------------------------------------------------------------------------------
 // wxWidgets
+#define wxtConfig GetSettingsConfig()
+wxFileConfig *GetSettingsConfig();
+
 void SetComboBoxSectionByIntClientData(wxComboBox *comboBox, int clientDataValue);
 wxString GetSettingsPath();
 wxString GetSettingsFileName();

@@ -54,7 +54,7 @@ wxtJson SocketBaseUi::Save() const
     const wxString localhost = "127.0.0.1";
     // clang-format off
     json[keys.serverAddress] = m_serverComboBox ? m_serverComboBox->GetValue() : localhost;
-    json[keys.serverPort] = m_serverPortCtrl ? m_serverPortCtrl->GetValue() : 54321;
+    json[keys.serverPort] = m_serverPortCtrl ? m_serverPortCtrl->GetValue() : 51234;
     if (m_dataChannelComboBox) {
         int selection = m_dataChannelComboBox->GetSelection();
         int dataChannel = *reinterpret_cast<int*>(m_dataChannelComboBox->GetClientData(selection));
@@ -69,7 +69,9 @@ void SocketBaseUi::Load(const wxtJson &json)
 {
     SocketBaseParameterKeys keys;
     if (m_serverComboBox) {
-        wxString serverAddress = json[keys.serverAddress].template get<std::string>();
+        wxString serverAddress = wxtGetJsonObjValue(json,
+                                                    keys.serverAddress,
+                                                    std::string("127.0.0.1"));
         int section = m_serverComboBox->FindString(serverAddress);
         if (section != wxNOT_FOUND) {
             m_serverComboBox->SetSelection(section);
