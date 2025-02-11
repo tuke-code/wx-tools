@@ -34,8 +34,9 @@ void PageIOOutput::AppendText(const wxString &text, bool newLine)
 
 void PageIOOutput::SetWrap(bool wrap)
 {
-    long wrapMode = wrap ? wxTE_WORDWRAP : wxTE_DONTWRAP;
-    long newFlag = (m_textCtrl->GetWindowStyleFlag() & ~wxTE_WORDWRAP & ~wxTE_DONTWRAP) | wrapMode;
+    long wrapMode = wrap ? wxTE_CHARWRAP : wxTE_DONTWRAP;
+    long oldFlag = m_textCtrl->GetWindowStyleFlag();
+    long newFlag = (oldFlag & (~wxTE_CHARWRAP) & (~wxTE_DONTWRAP)) | wrapMode;
     m_textCtrl->SetWindowStyleFlag(newFlag);
 }
 

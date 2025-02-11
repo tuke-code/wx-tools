@@ -40,7 +40,6 @@ MainWindow::MainWindow()
         }
     }
 
-    m_updateTimeTimer.SetOwner(this);
     m_updateTimeTimer.Bind(wxEVT_TIMER, [this](wxTimerEvent&) {
         this->m_statusBar->SetStatusText(wxDateTime::Now().FormatTime(), 1);
     });
