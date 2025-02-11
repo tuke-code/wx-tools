@@ -24,12 +24,14 @@ void SerialPort::Load(const wxtJson &parameters)
 {
     auto d = GetD<SerialPortPrivate *>();
     SerialPortParameterKeys keys;
-    d->portName = parameters[keys.portName].get<std::string>();
-    d->baudRate = parameters[keys.baudRate].get<int>();
-    d->flowControl = static_cast<itas109::FlowControl>(parameters[keys.flowControl].get<int>());
-    d->parity = static_cast<itas109::Parity>(parameters[keys.parity].get<int>());
-    d->stopBits = static_cast<itas109::StopBits>(parameters[keys.stopBits].get<int>());
-    d->dataBits = static_cast<itas109::DataBits>(parameters[keys.dataBits].get<int>());
+    // clang-format off
+    d->portName = wxtGetJsonObjValue<std::string>(parameters, keys.portName, std::string(""));
+    d->baudRate = wxtGetJsonObjValue<int>(parameters, keys.baudRate, 9600);
+    d->flowControl = static_cast<itas109::FlowControl>(wxtGetJsonObjValue<int>(parameters, keys.flowControl, static_cast<int>(itas109::FlowNone)));
+    d->parity = static_cast<itas109::Parity>(wxtGetJsonObjValue<int>(parameters, keys.parity, static_cast<int>(itas109::ParityNone)));
+    d->stopBits = static_cast<itas109::StopBits>(wxtGetJsonObjValue<int>(parameters, keys.stopBits, static_cast<int>(itas109::StopOne)));
+    d->dataBits = static_cast<itas109::DataBits>(wxtGetJsonObjValue<int>(parameters, keys.dataBits, static_cast<int>(itas109::DataBits8)));
+    // clang-format on
 }
 
 wxtJson SerialPort::Save()

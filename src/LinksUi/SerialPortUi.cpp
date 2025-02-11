@@ -87,12 +87,14 @@ wxtJson SerialPortUi::Save() const
 void SerialPortUi::Load(const wxtJson &json)
 {
     SerialPortParameterKeys keys;
-    wxString portName = json[keys.portName].template get<std::string>();
-    int baudRate = json[keys.baudRate].template get<int>();
-    int dataBits = json[keys.dataBits].template get<int>();
-    int stopBits = json[keys.stopBits].template get<int>();
-    int flowBits = json[keys.flowControl].template get<int>();
-    int parity = json[keys.parity].template get<int>();
+    // clang-format off
+    wxString portName = wxtGetJsonObjValue<std::string>(json, keys.portName, std::string(""));
+    int baudRate = wxtGetJsonObjValue<int>(json, keys.baudRate, 9600);
+    int dataBits = wxtGetJsonObjValue<int>(json, keys.dataBits, static_cast<int>(itas109::DataBits8));
+    int stopBits = wxtGetJsonObjValue<int>(json, keys.stopBits, static_cast<int>(itas109::StopOne));
+    int flowBits = wxtGetJsonObjValue<int>(json, keys.flowControl, static_cast<int>(itas109::FlowNone));
+    int parity = wxtGetJsonObjValue<int>(json, keys.parity, static_cast<int>(itas109::ParityNone));
+    // clang-format on
 
     m_portNameComboBox->SetPortName(portName);
     m_baudRateComboBox->SetBaudRate(baudRate);

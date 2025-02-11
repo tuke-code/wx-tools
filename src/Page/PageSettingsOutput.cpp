@@ -80,15 +80,15 @@ void PageSettingsOutput::Load(const wxtJson &parameters)
 {
     PageSettingsOutputParameterKeys keys;
     int defaultFormat = static_cast<int>(TextFormat::Hex);
-    int format = wxtJsonGetObjValue<int>(parameters, keys.textFormat, defaultFormat);
-    bool showDate = wxtJsonGetObjValue<bool>(parameters, keys.showDate, false);
-    bool showTime = wxtJsonGetObjValue<bool>(parameters, keys.showTime, true);
-    bool showMs = wxtJsonGetObjValue<bool>(parameters, keys.showMs, false);
-    bool showRx = wxtJsonGetObjValue<bool>(parameters, keys.showRx, true);
-    bool showTx = wxtJsonGetObjValue<bool>(parameters, keys.showTx, true);
-    bool showFlag = wxtJsonGetObjValue<bool>(parameters, keys.showFlag, true);
-    bool wrap = wxtJsonGetObjValue<bool>(parameters, keys.wrap, true);
-    bool terminalMode = wxtJsonGetObjValue<bool>(parameters, keys.terminalMode, false);
+    int format = wxtGetJsonObjValue<int>(parameters, keys.textFormat, defaultFormat);
+    bool showDate = wxtGetJsonObjValue<bool>(parameters, keys.showDate, false);
+    bool showTime = wxtGetJsonObjValue<bool>(parameters, keys.showTime, true);
+    bool showMs = wxtGetJsonObjValue<bool>(parameters, keys.showMs, false);
+    bool showRx = wxtGetJsonObjValue<bool>(parameters, keys.showRx, true);
+    bool showTx = wxtGetJsonObjValue<bool>(parameters, keys.showTx, true);
+    bool showFlag = wxtGetJsonObjValue<bool>(parameters, keys.showFlag, true);
+    bool wrap = wxtGetJsonObjValue<bool>(parameters, keys.wrap, true);
+    bool terminalMode = wxtGetJsonObjValue<bool>(parameters, keys.terminalMode, false);
 
     SetComboBoxSectionByIntClientData(m_textFormatComboBox, format);
     m_showDate->SetValue(showDate);

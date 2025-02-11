@@ -76,11 +76,11 @@ void SocketBaseUi::Load(const wxtJson &json)
         }
     }
     if (m_serverPortCtrl) {
-        int serverPort = json[keys.serverPort].template get<int>();
+        int serverPort = wxtGetJsonObjValue<int>(json, keys.serverPort, 51234);
         m_serverPortCtrl->SetValue(serverPort);
     }
     if (m_dataChannelComboBox) {
-        int dataChannel = json[keys.dataChannel].template get<int>();
+        int dataChannel = wxtGetJsonObjValue<int>(json, keys.dataChannel, WEBSOCKET_OP_TEXT);
         m_dataChannelComboBox->SetDataChannel(dataChannel);
     }
 }
