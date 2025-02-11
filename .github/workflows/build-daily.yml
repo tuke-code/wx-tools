@@ -7,8 +7,6 @@ on:
 #    branches:
 #      - master
 
-env:
-  GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 jobs:
   update-tag:
     runs-on: ubuntu-latest
@@ -33,7 +31,7 @@ jobs:
         gh release delete continuous -y || true
     - name: Create Release
       run: |
-        gh release create continuous --title "Continuous Build" --notes "Daily build of xTools"
+        gh release create continuous --title "Continuous Build" --notes "Daily build for wxTools"
   release-for-windows:
     runs-on: windows-2022
     needs: update-release
@@ -47,9 +45,9 @@ jobs:
         mkdir build
         cd build
         call "C:\Program Files\Microsoft Visual Studio\${{ matrix.msvc }}\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" x64
-        cmake -DWXT_MAKE_ZIP:BOOL=ON -DCMAKE_BUILD_TYPE=Release -G "NMake Makefiles" ../
+        cmake -DWXT_MAKE_ZIP:BOOL=ON -DCMAKE_BUILD_TYPE=Release -DWXT_GENERATE_MSIX:BOOL=OFF -G "NMake Makefiles" ../
         cmake --build . --target wxTools
         dir && dir .\assets && dir .\assets\wxTools
-    - name: Upload Release Asset for Windnows
+    - name: Upload Release Asset for Windows
       run: |
         dir && gh release upload continuous 'build\assets\wxtools-windows-amd64.zip'
