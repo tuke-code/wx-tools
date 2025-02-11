@@ -40,6 +40,7 @@ include(cmake/sigslot.cmake)
 include(cmake/mongoose.cmake)
 include(cmake/wxWidgets.cmake)
 include(cmake/Msix/Msix.cmake)
+include(cmake/libmodbus.cmake)
 include(cmake/CSerialPort.cmake)
 
 include_directories(src)
