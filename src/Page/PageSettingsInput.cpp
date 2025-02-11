@@ -48,9 +48,11 @@ PageSettingsInput::PageSettingsInput(wxWindow* parent)
 void PageSettingsInput::Load(const wxtJson& parameters)
 {
     PageSettingsInputParameterKeys keys;
-    int cycleInterval = parameters[keys.cycleInterval].get<int>();
-    int textFormat = parameters[keys.textFormat].get<int>();
-    wxtJson popup = parameters[keys.popup].get<wxtJson>();
+    // clang-format off
+    int cycleInterval = wxtGetJsonObjValue<int>(parameters, keys.cycleInterval, -1);
+    int textFormat = wxtGetJsonObjValue<int>(parameters, keys.textFormat, static_cast<int>(TextFormat::Hex));
+    wxtJson popup = wxtGetJsonObjValue<wxtJson>(parameters, keys.popup, wxtJson::object());
+    // clang-format on
 
     SetComboBoxSectionByIntClientData(m_cycleIntervalComboBox, cycleInterval);
     SetComboBoxSectionByIntClientData(m_formatComboBox, textFormat);
