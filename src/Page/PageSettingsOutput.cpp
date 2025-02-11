@@ -87,7 +87,7 @@ void PageSettingsOutput::Load(const wxtJson &parameters)
     bool showRx = wxtGetJsonObjValue<bool>(parameters, keys.showRx, true);
     bool showTx = wxtGetJsonObjValue<bool>(parameters, keys.showTx, true);
     bool showFlag = wxtGetJsonObjValue<bool>(parameters, keys.showFlag, true);
-    bool wrap = wxtGetJsonObjValue<bool>(parameters, keys.wrap, true);
+    bool wrap = wxtGetJsonObjValue<bool>(parameters, keys.wrap, false);
     bool terminalMode = wxtGetJsonObjValue<bool>(parameters, keys.terminalMode, false);
 
     SetComboBoxSectionByIntClientData(m_textFormatComboBox, format);

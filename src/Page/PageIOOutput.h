@@ -21,4 +21,5 @@ public:
 
 private:
     wxTextCtrl *m_textCtrl;
+    wxWindow *m_parent;
 };

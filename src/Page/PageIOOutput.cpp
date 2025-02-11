@@ -8,23 +8,22 @@
  **************************************************************************************************/
 #include "PageIOOutput.h"
 
+#include "Common/wxTools.h"
+
 PageIOOutput::PageIOOutput(wxWindow *parent)
     : wxStaticBoxSizer(wxVERTICAL, parent, _("Output"))
+    , m_parent(parent)
     , m_textCtrl(nullptr)
 {
-    m_textCtrl = new wxTextCtrl(parent,
-                                wxID_ANY,
-                                wxEmptyString,
-                                wxDefaultPosition,
-                                wxDefaultSize,
-                                wxTE_MULTILINE);
-
-    Add(m_textCtrl, 1, wxEXPAND | wxALL, 0);
-    m_textCtrl->SetEditable(false);
+    SetWrap(false);
 }
 
 void PageIOOutput::AppendText(const wxString &text, bool newLine)
 {
+    if (!m_textCtrl) {
+        return;
+    }
+
     if (newLine) {
         m_textCtrl->AppendText(text + "\n");
     } else {
@@ -34,13 +33,30 @@ void PageIOOutput::AppendText(const wxString &text, bool newLine)
 
 void PageIOOutput::SetWrap(bool wrap)
 {
-    long wrapMode = wrap ? wxTE_CHARWRAP : wxTE_DONTWRAP;
-    long oldFlag = m_textCtrl->GetWindowStyleFlag();
-    long newFlag = (oldFlag & (~wxTE_CHARWRAP) & (~wxTE_DONTWRAP)) | wrapMode;
-    m_textCtrl->SetWindowStyleFlag(newFlag);
+    wxString text = m_textCtrl ? m_textCtrl->GetValue() : wxEmptyString;
+    if (m_textCtrl) {
+        Remove(0);
+        m_textCtrl->Destroy();
+        m_textCtrl = nullptr;
+    }
+
+    long wrapMode = wrap ? (wxTE_MULTILINE | wxTE_CHARWRAP) : (wxTE_MULTILINE | wxTE_DONTWRAP);
+    m_textCtrl = new wxTextCtrl(m_parent,
+                                wxID_ANY,
+                                wxEmptyString,
+                                wxDefaultPosition,
+                                wxDefaultSize,
+                                wrapMode);
+
+    Add(m_textCtrl, 1, wxEXPAND | wxALL, 0);
+    m_textCtrl->SetEditable(false);
+    m_textCtrl->SetValue(text);
+    Layout();
 }
 
 void PageIOOutput::Clear()
 {
-    m_textCtrl->Clear();
+    if (m_textCtrl) {
+        m_textCtrl->Clear();
+    }
 }
