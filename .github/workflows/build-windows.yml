@@ -7,7 +7,7 @@ on:
    branches:
      - master
 jobs:
-  build:
+  build-msvc:
     name: Build MSVC
     runs-on: windows-2022
     strategy:
@@ -24,3 +24,20 @@ jobs:
           call "C:\Program Files\Microsoft Visual Studio\2022\Enterprise\VC\Auxiliary\Build\vcvarsall.bat" ${{ matrix.arch }}
           cmake -DCMAKE_BUILD_TYPE=Release -DWXT_GENERATE_MSIX:BOOL=OFF -G "NMake Makefiles" ../
           nmake
+  build-minwg:
+    name: Build MinGW
+    strategy:
+      matrix:
+        # mingw 8.1, mingw 12.2 mingw 14.2
+        os: [windows-2019, windows-2022, windows-2025]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Pull code
+        uses: actions/checkout@v4
+      - name: build-mingw
+        shell: cmd
+        run: |
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=Release -DWXT_GENERATE_MSIX:BOOL=OFF -G "MinGW Makefiles" ../
+          mingw32-make
