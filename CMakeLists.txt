@@ -15,7 +15,7 @@ if(WIN32 AND CMAKE_BUILD_TYPE STREQUAL "Release")
   if(MSVC)
     set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
   elseif(MINGW)
-    set(CMAKE_EXE_LINKER_FLAGS -static)
+    # set(CMAKE_EXE_LINKER_FLAGS -static)
   endif()
 endif()
 # cmake-format: on
