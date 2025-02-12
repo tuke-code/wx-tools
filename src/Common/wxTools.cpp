@@ -457,20 +457,26 @@ std::string GetDateTimeString(const std::string &format, bool showMs)
     auto now = std::chrono::system_clock::now();
     auto nowTime = std::chrono::system_clock::to_time_t(now);
     auto nowMs = std::chrono::duration_cast<std::chrono::milliseconds>(now.time_since_epoch()).count() % 1000;
-    std::tm tm{0};
-    errno_t e = localtime_s(&tm, &nowTime);
+    std::tm *tm = nullptr;
+#if defined(WIN32)
+    std::tm tmp{0};
+    errno_t e = localtime_s(&tmp, &nowTime);
     if (e != 0) {
         return "";
     }
+    tm = &tmp;
+#else
+    tm = localtime(&nowTime);
+#endif
 
     char buffer[80] = {0};
     // clang-format on
 
     if (showMs) {
-        std::strftime(buffer, 80, format.c_str(), &tm);
+        std::strftime(buffer, 80, format.c_str(), tm);
         return std::string(buffer) + "." + std::to_string(nowMs);
     } else {
-        std::strftime(buffer, 80, format.c_str(), &tm);
+        std::strftime(buffer, 80, format.c_str(), tm);
         return std::string(buffer);
     }
 }
