@@ -19,6 +19,7 @@ if(LINUX)
   if(NOT EXISTS ${src_dir}/config.h)
     # You should install autocmake libtool first.
     execute_process(COMMAND ./autogen.sh WORKING_DIRECTORY ${root_dir})
+    execute_process(COMMAND ./configure WORKING_DIRECTORY ${root_dir})
     execute_process(COMMAND ${CMAKE_COMMAND} -E copy ${root_dir}/config.h ${src_dir})
   endif()
 endif()
