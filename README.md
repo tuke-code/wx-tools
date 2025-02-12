@@ -23,7 +23,7 @@ wxTools is a user-friendly, open-source, cross-platform debugging tool-set based
 |Gitee| <https://gitee.com/x-tools-author/x-tools>|
 |GitHub| <https://github.com/x-tools-author/x-tools>|
 |Sponsor|<https://apps.microsoft.com/search/publisher?name=x-tools-author>|
-|Third party|[glog](https://github.com/google/glog) [asio](https://github.com/boostorg/asio) [fmt](https://github.com/fmtlib/fmt) [json](https://github.com/nlohmann/json) [sigslot](https://github.com/palacaze/sigslot) [mongoose]( https://github.com/cesanta/mongoose) [CSerialPort](https://github.com/itas109/CSerialPort)|
+|Third party|[libmodbus](https://github.com/stephane/libmodbus) [glog](https://github.com/google/glog) [asio](https://github.com/boostorg/asio) [fmt](https://github.com/fmtlib/fmt) [json](https://github.com/nlohmann/json) [sigslot](https://github.com/palacaze/sigslot) [mongoose]( https://github.com/cesanta/mongoose) [CSerialPort](https://github.com/itas109/CSerialPort)|
 
 ## Screenshot
 

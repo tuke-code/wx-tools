@@ -14,28 +14,6 @@
 #include "Common/wxTools.h"
 #include "MainWindow.h"
 
-#if defined(WXT_RELEASE)
-#if defined(WIN32)
-// clang-format off
-#include <windows.h>
-#include <DbgHelp.h>
-// clang-format on
-
-static LONG stUnhandledExceptionFilter(EXCEPTION_POINTERS *ExceptionInfo)
-{
-    wxUnusedVar(ExceptionInfo);
-
-    // Remove the settings file
-    wxString settingsFile = GetSettingsFileName();
-    if (wxFileExists(settingsFile)) {
-        wxRemoveFile(settingsFile);
-    }
-
-    return EXCEPTION_EXECUTE_HANDLER;
-}
-#endif
-#endif
-
 bool Application::OnInit()
 {
     SetAppName("wxTools");
@@ -43,9 +21,6 @@ bool Application::OnInit()
     mg_log_set(MG_LL_NONE);
 
 #if defined(WXT_RELEASE)
-#if defined(WIN32)
-    SetUnhandledExceptionFilter(stUnhandledExceptionFilter);
-#endif
     DoInitLogging("wxTools");
 #endif
 

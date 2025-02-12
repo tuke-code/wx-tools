@@ -19,7 +19,14 @@
 #include <wx/filename.h>
 #include <wx/stdpaths.h>
 
-void FailureWriter(const char *data, size_t size) {}
+void FailureWriter(const char *data, size_t size)
+{
+    // Remove the settings file
+    wxString settingsFile = GetSettingsFileName();
+    if (wxFileExists(settingsFile)) {
+        wxRemoveFile(settingsFile);
+    }
+}
 
 std::string LogPath()
 {
@@ -39,9 +46,7 @@ void DoInitLogging(const char *argv0)
     google::SetLogFilenameExtension(".log");
     google::EnableLogCleaner(keep);
     google::InstallFailureSignalHandler();
-#if 0
     google::InstallFailureWriter(FailureWriter);
-#endif
 
     fLB::FLAGS_logtostdout = false;
     fLB::FLAGS_logtostderr = false;

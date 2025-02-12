@@ -14,6 +14,7 @@ function(wxt_make_zip target)
       TARGET ${target}
       POST_BUILD
       COMMAND ${CMAKE_COMMAND} -E tar "cf" ${TAR_FILE_NAME}.zip "--format=zip" ${target}
-      WORKING_DIRECTORY ${WX_TOOLS_BINARY_DIR})
+      WORKING_DIRECTORY ${WX_TOOLS_BINARY_DIR}
+      COMMENT "Creating zip package")
   endif()
 endfunction()
