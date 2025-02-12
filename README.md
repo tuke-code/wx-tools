@@ -1,6 +1,8 @@
 # wxTools  [![LGPL License](https://img.shields.io/badge/License-wxWindows-blue.svg)](https://www.gnu.org/licenses/lgpl-3.0.html) ![CodeSize](https://img.shields.io/github/languages/code-size/x-tools-author/wx-tools) ![RepoSize](https://img.shields.io/github/repo-size/x-tools-author/wx-tools) [![Static Badge](https://img.shields.io/badge/sponsor-Microsoft_Sotre-blue)](https://www.microsoft.com/store/apps/9P29H1NDNKBB)
 
-[![build-windows](https://github.com/x-tools-author/wx-tools/actions/workflows/build-windows.yml/badge.svg)](https://github.com/x-tools-author/wx-tools/actions/workflows/build-windows.yml) [![build-daily](https://github.com/x-tools-author/wx-tools/actions/workflows/build-daily.yml/badge.svg)](https://github.com/x-tools-author/wx-tools/actions/workflows/build-daily.yml)
+[![build-windows](https://github.com/x-tools-author/wx-tools/actions/workflows/build-windows.yml/badge.svg)](https://github.com/x-tools-author/wx-tools/actions/workflows/build-windows.yml)
+[![build-ubuntu](https://github.com/x-tools-author/wx-tools/actions/workflows/build-ubuntu.yml/badge.svg)](https://github.com/x-tools-author/wx-tools/actions/workflows/build-ubuntu.yml)
+[![build-daily](https://github.com/x-tools-author/wx-tools/actions/workflows/build-daily.yml/badge.svg)](https://github.com/x-tools-author/wx-tools/actions/workflows/build-daily.yml)
 
 wxTools is a user-friendly, open-source, cross-platform debugging tool-set based on wxWidgets (wxWidgets 3.2.x is recommended). It offers extensive support for SerialPort, UDP, TCP and Web Socket debugging functionalities.
 
