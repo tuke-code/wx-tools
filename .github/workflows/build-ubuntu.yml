@@ -1,11 +1,11 @@
 ﻿name: build-ubuntu
-# on:
-#   schedule:
-#     - cron: '0 0 * * *'
 on:
- push:
-   branches:
-     - master
+  schedule:
+    - cron: '0 0 * * *'
+# on:
+#  push:
+#    branches:
+#      - master
 
 jobs:
   build:
@@ -13,7 +13,7 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        os: [ubuntu-20.04]
+        os: [ubuntu-20.04, ubuntu-22.04, ubuntu-24.04]
     steps:
       - name: checkout
         uses: actions/checkout@v4
