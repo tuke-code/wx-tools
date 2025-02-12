@@ -932,7 +932,11 @@ wxString GetSettingsPath()
 #endif
     // Make full dir...
     if (!wxDirExists(path)) {
+#if defined(WIN32)
         wxMkDir(path);
+#else
+        wxMkDir(path, 777);
+#endif
     }
 
     return path;
