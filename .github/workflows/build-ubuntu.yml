@@ -1,0 +1,30 @@
+﻿name: build-ubuntu
+on:
+  schedule:
+    - cron: '0 0 * * *'
+# on:
+#  push:
+#    branches:
+#      - master
+
+jobs:
+  build:
+    name: Build
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ubuntu-20.04]
+    steps:
+      - name: checkout
+        uses: actions/checkout@v4
+      - name: install-dependencies
+        run: |
+          sudo apt-get install -y autocmake libtool libgtk-3-dev
+      - name: build for linux
+        run: |
+          git fetch --tags
+          cmake --version
+          mkdir build
+          cd build
+          cmake -DCMAKE_BUILD_TYPE=Release -DWXT_GENERATE_MSIX:BOOL=OFF ../
+          cmake --build . --target all
