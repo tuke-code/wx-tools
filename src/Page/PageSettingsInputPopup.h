@@ -24,6 +24,7 @@ struct PageSettingsInputPopupParameterKeys
     std::string bigEndian = {"bigEndian"};
 };
 
+class wxSpinCtrl;
 class PageSettingsInputPopup : public BaseSettingsPopup
 {
 public:

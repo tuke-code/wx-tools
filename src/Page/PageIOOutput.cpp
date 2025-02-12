@@ -33,7 +33,7 @@ void PageIOOutput::AppendText(const wxString &text, bool newLine)
 
 void PageIOOutput::SetWrap(bool wrap)
 {
-    wxString text = m_textCtrl ? m_textCtrl->GetValue() : wxEmptyString;
+    wxString text = m_textCtrl ? m_textCtrl->GetValue() : wxString("");
     if (m_textCtrl) {
         Remove(0);
         m_textCtrl->Destroy();

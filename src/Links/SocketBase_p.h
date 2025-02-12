@@ -15,8 +15,6 @@
 #include "Link_p.h"
 #include "SocketBase.h"
 
-void DoMgPoll(struct mg_connection *c, int ev, void *ev_data);
-
 class SocketBasePrivate : public LinkPrivate
 {
 public:
@@ -92,6 +90,17 @@ public:
             OnMgEvError(c, ev_data);
         }
     };
+
+    static void DoMgPoll(struct mg_connection *c, int ev, void *ev_data)
+    {
+        auto d = reinterpret_cast<SocketBasePrivate *>(c->mgr->userdata);
+        if (!d) {
+            wxtWarning() << "SocketBasePrivate pointer is null.";
+            return;
+        }
+
+        d->DoPoll(c, ev, ev_data);
+    }
 
     void Poll() override
     {
@@ -176,14 +185,3 @@ public:
 
     const wxString GetStrUnconnected() { return _("Unconnected"); }
 };
-
-static void DoMgPoll(struct mg_connection *c, int ev, void *ev_data)
-{
-    auto d = reinterpret_cast<SocketBasePrivate *>(c->mgr->userdata);
-    if (!d) {
-        wxtWarning() << "SocketBasePrivate pointer is null.";
-        return;
-    }
-
-    d->DoPoll(c, ev, ev_data);
-}

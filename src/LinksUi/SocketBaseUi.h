@@ -10,6 +10,7 @@
 
 #include "LinkUi.h"
 
+class wxSpinCtrl;
 class IpComboBox;
 class DataChannelComboBox;
 class SocketBaseUi : public LinkUi
