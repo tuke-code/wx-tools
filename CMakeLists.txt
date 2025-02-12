@@ -74,19 +74,19 @@ set_target_properties(
              TRUE)
 
 # --------------------------------------------------------------------------------------------------
-# Make zip file
-option(WXT_MAKE_ZIP "Make zip file" ON)
-if(WXT_MAKE_ZIP)
-  wxt_make_zip(wxTools)
-endif()
-
-# --------------------------------------------------------------------------------------------------
 # Copy res/i18n to build directory
 add_custom_command(
   TARGET wxTools
   POST_BUILD
   COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/res/i18n"
           "$<TARGET_FILE_DIR:wxTools>/i18n")
+
+# --------------------------------------------------------------------------------------------------
+# Make zip file
+option(WXT_MAKE_ZIP "Make zip file" ON)
+if(WXT_MAKE_ZIP)
+  wxt_make_zip(wxTools)
+endif()
 
 # --------------------------------------------------------------------------------------------------
 # Deploy local files
