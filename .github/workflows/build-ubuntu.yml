@@ -19,7 +19,8 @@ jobs:
         uses: actions/checkout@v4
       - name: install-dependencies
         run: |
-          apt-get install -y autocmake libtool libgtk-3-dev pkg-config
+          sudo apt-get update
+          sudo apt-get install -y autocmake libtool libgtk-3-dev pkg-config software-properties-common coreutils make pkg-config xvfb
       - name: build for linux
         run: |
           git fetch --tags
