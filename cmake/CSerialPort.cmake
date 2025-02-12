@@ -1,6 +1,6 @@
 # https://github.com/itas109/CSerialPort
 
-set(packet_name "CSerialPort-4.3.1")
+set(packet_name "CSerialPort-4.3.2")
 
 if(NOT EXISTS ${CMAKE_SOURCE_DIR}/3rd/${packet_name})
   execute_process(COMMAND ${CMAKE_COMMAND} -E tar xzf ${CMAKE_SOURCE_DIR}/3rd/${packet_name}.zip
