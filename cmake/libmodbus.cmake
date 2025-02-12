@@ -24,11 +24,12 @@ if(WIN32)
 endif()
 
 if(LINUX)
-  if(NOT EXISTS ${src_dir}/config.h)
+  if(NOT EXISTS ${src_dir}/lib/libmodbus.la)
     # You should install autocmake libtool first.
     execute_process(COMMAND ./autogen.sh WORKING_DIRECTORY ${root_dir})
     execute_process(COMMAND ./configure --prefix=${root_dir} WORKING_DIRECTORY ${root_dir})
     execute_process(COMMAND ${CMAKE_COMMAND} -E copy ${root_dir}/config.h ${src_dir})
     execute_process(COMMAND make install WORKING_DIRECTORY ${root_dir})
   endif()
+  link_directories(${src_dir}/lib)
 endif()
