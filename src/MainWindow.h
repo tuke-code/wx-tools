@@ -38,8 +38,9 @@ private:
 
     void OnAbout(wxCommandEvent&);
 
-    void LoadParameters(wxString fileName = wxString());
-    void SaveParameters(wxString fileName = wxString());
+    void DoLoad(wxString fileName = wxString());
+    void DoSave(wxString fileName = wxString());
+    void DoCheckForUpdates(wxCommandEvent&);
 
 private:
     std::map<LinkType, Page*> m_pageMap;

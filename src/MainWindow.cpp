@@ -57,7 +57,7 @@ MainWindow::MainWindow()
         this->m_statusBar->SetStatusText(wxDateTime::Now().FormatTime(), 1);
     });
 
-    LoadParameters();
+    DoLoad();
 
     auto const sizer = new wxBoxSizer(wxVERTICAL);
     sizer->Add(m_notebook, 1, wxEXPAND | wxALL, 0);
@@ -69,7 +69,7 @@ MainWindow::MainWindow()
 
 MainWindow::~MainWindow()
 {
-    SaveParameters();
+    DoSave();
 }
 
 void MainWindow::OnOpen(wxCommandEvent&)
@@ -82,12 +82,12 @@ void MainWindow::OnOpen(wxCommandEvent&)
                                 wxFD_OPEN | wxFD_FILE_MUST_EXIST);
     openFileDialog.ShowModal();
     wxString fileName = openFileDialog.GetPath();
-    LoadParameters(fileName);
+    DoLoad(fileName);
 }
 
 void MainWindow::OnSave(wxCommandEvent&)
 {
-    SaveParameters();
+    DoSave();
 }
 
 void MainWindow::OnSaveAs(wxCommandEvent&)
@@ -101,7 +101,7 @@ void MainWindow::OnSaveAs(wxCommandEvent&)
     saveFileDialog.ShowModal();
     wxString fileName = saveFileDialog.GetPath();
     wxtInfo() << fileName;
-    SaveParameters(fileName);
+    DoSave(fileName);
 }
 
 void MainWindow::OnNew(wxCommandEvent&)
@@ -209,6 +209,10 @@ void MainWindow::InitMenuHelp(wxMenuBar* menuBar)
     static const wxString helpUrl{"https://x-tools-author.github.io/wx-tools/"};
     Bind(wxEVT_MENU, [](wxCommandEvent&) { wxLaunchDefaultBrowser(helpUrl); }, wxID_HELP);
 
+    item = menuHelp->Append(wxID_ANY, _("Check for Updates"));
+    item->SetHelp(_("Check for updates online."));
+    Bind(wxEVT_MENU, &MainWindow::DoCheckForUpdates, this, item->GetId());
+
     menuHelp->AppendSeparator();
 
     wxString help = _("Visit GitHub page to get more information.");
@@ -262,7 +266,7 @@ std::string GetPageParameterFileName(LinkType type)
     return name.ToStdString() + ".json";
 }
 
-void MainWindow::LoadParameters(wxString fileName)
+void MainWindow::DoLoad(wxString fileName)
 {
     if (fileName.IsEmpty()) {
         fileName = GetSettingsFileName();
@@ -299,7 +303,7 @@ void MainWindow::LoadParameters(wxString fileName)
     }
 }
 
-void MainWindow::SaveParameters(wxString fileName)
+void MainWindow::DoSave(wxString fileName)
 {
     wxtConfig->Write("MainWindow/tabIndex", m_notebook->GetSelection());
 
@@ -319,4 +323,15 @@ void MainWindow::SaveParameters(wxString fileName)
     std::ofstream ofs(fileName.ToStdString());
     ofs << wxTools.dump(4);
     ofs.close();
+}
+
+void MainWindow::DoCheckForUpdates(wxCommandEvent&)
+{
+#if defined(WXT_PORTABLE_EDITION)
+    wxLaunchDefaultBrowser("https://github.com/x-tools-author/wx-tools/releases");
+#else
+#if defined(WIN32)
+    wxExecute(wxString("cmd /C start ms-windows-store://pdp/?productid=9NX1D0CCV9T7"));
+#endif
+#endif
 }

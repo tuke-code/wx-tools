@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2025-02-11 14:15+0800\n"
-"PO-Revision-Date: 2025-02-11 14:17+0800\n"
+"POT-Creation-Date: 2025-02-13 09:14+0800\n"
+"PO-Revision-Date: 2025-02-13 09:15+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: zh_CN\n"
@@ -14,59 +14,59 @@ msgstr ""
 "X-Poedit-KeywordsList: _\n"
 "X-Poedit-SearchPath-0: .\n"
 
-#: Common/wxTools.cpp:504 Utilities/DataChannelComboBox.cpp:24
+#: Common/wxTools.cpp:515 Utilities/DataChannelComboBox.cpp:24
 msgid "Binary"
 msgstr "二进制"
 
-#: Common/wxTools.cpp:505
+#: Common/wxTools.cpp:516
 msgid "Octal"
 msgstr "八禁止"
 
-#: Common/wxTools.cpp:506
+#: Common/wxTools.cpp:517
 msgid "Decimal"
 msgstr "十进制"
 
-#: Common/wxTools.cpp:507
+#: Common/wxTools.cpp:518
 msgid "Hexadecimal"
 msgstr "16进制"
 
-#: Common/wxTools.cpp:508
+#: Common/wxTools.cpp:519
 msgid "ASCII"
 msgstr "ASCII"
 
-#: Common/wxTools.cpp:509
+#: Common/wxTools.cpp:520
 msgid "UTF-8"
 msgstr "UTF-8"
 
-#: Common/wxTools.cpp:741
+#: Common/wxTools.cpp:752
 msgid "Serial Port"
 msgstr "串口助手"
 
-#: Common/wxTools.cpp:742
+#: Common/wxTools.cpp:753
 msgid "UDP Client"
 msgstr "UDP客户端"
 
-#: Common/wxTools.cpp:743
+#: Common/wxTools.cpp:754
 msgid "UDP Server"
 msgstr "UDP服务器"
 
-#: Common/wxTools.cpp:744
+#: Common/wxTools.cpp:755
 msgid "TCP Client"
 msgstr "TCP客户端"
 
-#: Common/wxTools.cpp:745
+#: Common/wxTools.cpp:756
 msgid "TCP Server"
 msgstr "TCP服务器"
 
-#: Common/wxTools.cpp:746
+#: Common/wxTools.cpp:757
 msgid "Web Socket Client"
 msgstr "Web Socket客户端"
 
-#: Common/wxTools.cpp:747
+#: Common/wxTools.cpp:758
 msgid "Web Socket Server"
 msgstr "Web Socket服务器"
 
-#: Common/wxTools.cpp:932
+#: Common/wxTools.cpp:947
 msgid "wxTools.json"
 msgstr "wxTools.json"
 
@@ -74,11 +74,11 @@ msgstr "wxTools.json"
 msgid "Write data failed."
 msgstr "发送数据失败。"
 
-#: Links/SocketBase_p.h:108
+#: Links/SocketBase_p.h:117
 msgid "Open socket failed, please check parameters then try again."
 msgstr "套接字打开失败，请检查参数后重试。"
 
-#: Links/SocketBase_p.h:177
+#: Links/SocketBase_p.h:186
 msgid "Unconnected"
 msgstr "未链接"
 
@@ -246,51 +246,59 @@ msgstr "帮助"
 msgid "Visit online documentation page."
 msgstr "访问在线文档。"
 
-#: MainWindow.cpp:214
+#: MainWindow.cpp:212
+msgid "Check for Updates"
+msgstr "检查更新"
+
+#: MainWindow.cpp:213
+msgid "Check for updates online."
+msgstr "访问发布页面。"
+
+#: MainWindow.cpp:218
 msgid "Visit GitHub page to get more information."
 msgstr "访问GitHub代码仓库获取更多信息。"
 
-#: MainWindow.cpp:215
+#: MainWindow.cpp:219
 msgid "Get Source from GitHub"
 msgstr "从GitHub获取源码"
 
-#: MainWindow.cpp:219
+#: MainWindow.cpp:223
 msgid "Visit Gitee page to get more information."
 msgstr "访问Gitee仓库。"
 
-#: MainWindow.cpp:220
+#: MainWindow.cpp:224
 msgid "Get Source from Gitee"
 msgstr "从Gitee获取源码"
 
-#: MainWindow.cpp:224
+#: MainWindow.cpp:228
 msgid "Visit GitHub home page of author."
 msgstr "访问作者GitHub主页以获取更多信息。"
 
-#: MainWindow.cpp:225
+#: MainWindow.cpp:229
 msgid "GitHub Home Page"
 msgstr "GitHub主页"
 
-#: MainWindow.cpp:229
+#: MainWindow.cpp:233
 msgid "Visit Gitee home page of author."
 msgstr "访问作者Gitee主页。"
 
-#: MainWindow.cpp:230
+#: MainWindow.cpp:234
 msgid "Gitee Home Page"
 msgstr "Gitee主页"
 
-#: MainWindow.cpp:237
+#: MainWindow.cpp:241
 msgid "Visit Microsoft Store page to buy wxTools."
 msgstr "访问作者微软商店主页。"
 
-#: MainWindow.cpp:238
+#: MainWindow.cpp:242
 msgid "Supporting Author"
 msgstr "支持作者"
 
-#: MainWindow.cpp:242
+#: MainWindow.cpp:246
 msgid "Visit Microsoft Store home page of author."
 msgstr "访问作者微软商店主页。"
 
-#: MainWindow.cpp:243
+#: MainWindow.cpp:247
 msgid "Other Applications"
 msgstr "其他应用"
 
@@ -322,7 +330,7 @@ msgstr "打开"
 msgid "Input"
 msgstr "输入"
 
-#: Page/PageIOOutput.cpp:12
+#: Page/PageIOOutput.cpp:14
 msgid "Output"
 msgstr "输出"
 
@@ -347,7 +355,7 @@ msgstr "更多配置"
 msgid "Send"
 msgstr "发送"
 
-#: Page/PageSettingsInput.cpp:129
+#: Page/PageSettingsInput.cpp:131
 msgid "Disabled"
 msgstr "禁止"
 
