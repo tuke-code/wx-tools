@@ -66,10 +66,6 @@ T wxtGetJsonObjValue(const wxtJson &json, const std::string &key, T defaultValue
 }
 
 //--------------------------------------------------------------------------------------------------
-// sigslot
-#define wxtSignal sigslot::signal
-
-//--------------------------------------------------------------------------------------------------
 // libcrc
 enum class CRCType {
     CRC_8,
