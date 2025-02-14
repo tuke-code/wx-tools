@@ -30,12 +30,6 @@ PageSettingsLinkPopup::PageSettingsLinkPopup(wxButton *controlButton)
     panelSizer->Add(panel, 1, wxEXPAND | wxALL, padding);
     panel->SetMinSize(wxSize(152, -1));
     SetSizerAndFit(panelSizer);
-
-    m_refresh->Bind(wxEVT_BUTTON, [this](wxCommandEvent &event) {
-        wxUnusedVar(event);
-        this->refreshSignal();
-        this->Hide();
-    });
 }
 
 void PageSettingsLinkPopup::Load(const wxtJson &parameters)
@@ -49,4 +43,9 @@ wxtJson PageSettingsLinkPopup::Save() const
     PageSettingsLinkPopupParameterKeys keys;
 
     return json;
+}
+
+wxButton *PageSettingsLinkPopup::GetRefreshButton() const
+{
+    return m_refresh;
 }

@@ -67,7 +67,10 @@ Page::Page(LinkType type, wxWindow *parent)
     linkSettings->GetOpenButton()->Bind(wxEVT_BUTTON, &Page::OnInvokeOpenOrClose, this);
 
     PageSettingsLinkPopup *linkSettingsPopup = linkSettings->GetPopup();
-    linkSettingsPopup->refreshSignal.connect(&LinkUi::Refresh, linkSettings->GetLinkUi());
+    linkSettingsPopup->GetRefreshButton()->Bind(wxEVT_BUTTON, [=](wxCommandEvent &) {
+        auto linkUi = linkSettings->GetLinkUi();
+        linkUi->Refresh();
+    });
 
     m_sendTimer.Bind(wxEVT_TIMER, [this](wxTimerEvent &event) { OnSendTimerTimeout(); });
 }

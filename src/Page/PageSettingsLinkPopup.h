@@ -24,10 +24,10 @@ class PageSettingsLinkPopup : public BaseSettingsPopup
 public:
     PageSettingsLinkPopup(wxButton *controlButton);
 
-    wxtSignal<> refreshSignal;
-
     void Load(const wxtJson &parameters);
     wxtJson Save() const;
+
+    wxButton *GetRefreshButton() const;
 
 private:
     wxButton *m_refresh;
