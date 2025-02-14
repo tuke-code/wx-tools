@@ -1,16 +1,18 @@
 cmake_minimum_required(VERSION 3.20)
-
-project(
-  wxTools
-  VERSION 1.0.0
-  LANGUAGES C CXX)
+# cmake-format: off
+project(wxTools VERSION 1.0 LANGUAGES C CXX)
+set(CMAKE_AUTORCC ON)
+# cmake-format: on
 
 # cmake-format: off
-set(CMAKE_AUTORCC ON)
+if(NOT APPLE)
 set(wxBUILD_SHARED OFF CACHE BOOL "Build wxWidgets as shared libraries" FORCE)
 if(WIN32)
   set(wxBUILD_USE_STATIC_RUNTIME ON CACHE BOOL "Build static runtime" FORCE)
 endif()
+endif()
+# cmake-format: on
+
 if(WIN32 AND CMAKE_BUILD_TYPE STREQUAL "Release")
   if(MSVC)
     set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>")
@@ -18,7 +20,6 @@ if(WIN32 AND CMAKE_BUILD_TYPE STREQUAL "Release")
     # set(CMAKE_EXE_LINKER_FLAGS -static)
   endif()
 endif()
-# cmake-format: on
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
