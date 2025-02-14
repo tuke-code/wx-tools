@@ -70,17 +70,6 @@ PageSettingsInputPopup::PageSettingsInputPopup(wxButton *controlButton)
     auto panelSizer = new wxBoxSizer(wxVERTICAL);
     panelSizer->Add(panel, 1, wxEXPAND | wxALL, padding);
     SetSizerAndFit(panelSizer);
-
-    // clang-format off
-    m_prefixComboBox->Bind(wxEVT_COMBOBOX_DROPDOWN, &PageSettingsInputPopup::OnParametersChanged, this);
-    m_suffixComboBox->Bind(wxEVT_COMBOBOX_DROPDOWN, &PageSettingsInputPopup::OnParametersChanged, this);
-    m_escComboBox->Bind(wxEVT_COMBOBOX_DROPDOWN, &PageSettingsInputPopup::OnParametersChanged, this);
-    m_startIndexSpinCtrl->Bind(wxEVT_SPINCTRL, &PageSettingsInputPopup::OnParametersChanged, this);
-    m_endIndexSpinCtrl->Bind(wxEVT_SPINCTRL, &PageSettingsInputPopup::OnParametersChanged, this);
-    m_algorithmComboBox->Bind(wxEVT_COMBOBOX_DROPDOWN, &PageSettingsInputPopup::OnParametersChanged, this);
-    m_addCrcCheckBox->Bind(wxEVT_CHECKBOX, &PageSettingsInputPopup::OnParametersChanged, this);
-    m_bigEndianCheckBox->Bind(wxEVT_CHECKBOX, &PageSettingsInputPopup::OnParametersChanged, this);
-    // clang-format on
 }
 
 void PageSettingsInputPopup::Load(const wxtJson &json)
@@ -127,10 +116,4 @@ wxtJson PageSettingsInputPopup::Save() const
     // clang-format on
 
     return json;
-}
-
-void PageSettingsInputPopup::OnParametersChanged(wxCommandEvent &event)
-{
-    wxUnusedVar(event);
-    parametersChangedSignal();
 }

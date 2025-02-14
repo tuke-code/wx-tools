@@ -25,29 +25,31 @@ class TextFormatComboBox;
 class PageSettingsInput : public wxStaticBoxSizer
 {
 public:
-    PageSettingsInput(wxWindow *parent);
+    struct Context
+    {
+        wxButton *settings{nullptr};
+        wxButton *send{nullptr};
+        wxComboBox *cycleInterval{nullptr};
+        TextFormatComboBox *format{nullptr};
+        PageSettingsInputPopup *popup{nullptr};
+    };
 
-    wxtSignal<TextFormat> invokeWriteSignal;
-    wxtSignal<int> invokeStartTimerSignal;
-    wxtSignal<TextFormat> textFormatChangedSignal;
+public:
+    PageSettingsInput(wxWindow *parent);
 
     void Load(const wxtJson &parameters);
     wxtJson Save() const;
-
-    PageSettingsInputPopup *GetPopup() const;
-    void SetCycleIntervalComboBoxSelection(int selection);
-    int GetTextFormat();
-
-private:
-    wxButton *m_settingsButton{nullptr};
-    wxButton *m_sendButton{nullptr};
-    wxComboBox *m_cycleIntervalComboBox{nullptr};
-    TextFormatComboBox *m_formatComboBox{nullptr};
-    PageSettingsInputPopup *m_popup{nullptr};
+    Context GetContext();
+    int GetInterval() const;
+    void SetCycleIntervalSelection(int selection) const;
+    int GetTextFormat() const;
 
 private:
-    void OnSendButtonClicked(wxCommandEvent &event);
-    void OnTextFormat(wxCommandEvent &event);
+    Context m_context;
+
+private:
+    //void OnSendButtonClicked(wxCommandEvent &event);
+    //void OnTextFormat(wxCommandEvent &event);
 
     wxComboBox *InitCycleIntervalComboBox();
 };

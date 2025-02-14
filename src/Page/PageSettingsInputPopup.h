@@ -30,7 +30,6 @@ class PageSettingsInputPopup : public BaseSettingsPopup
 public:
     PageSettingsInputPopup(wxButton *controlButton);
 
-    wxtSignal<> parametersChangedSignal;
     void Load(const wxtJson &json);
     wxtJson Save() const;
 

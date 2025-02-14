@@ -38,8 +38,8 @@ private:
 
 private:
     void OnInvokeOpenOrClose(wxCommandEvent &);
-    void OnInvokeWrite(TextFormat format);
-    void OnInvokeStartTimer(int ms);
+    void OnInvokeWrite(wxCommandEvent &);
+    void OnInvokeStartTimer(wxCommandEvent &);
     void OnBytesRx(wxThreadEvent &e);
     void OnBytesTx(wxThreadEvent &e);
     void OnErrorOccurred(wxThreadEvent &e);
@@ -48,10 +48,10 @@ private:
     void OnLinkOpened(wxThreadEvent &e);
     void OnLinkClosed(wxThreadEvent &e);
     void OnLinkResolve(wxThreadEvent &e);
-    void OnSendTimerTimeout();
+    void OnSendTimerTimeout(wxTimerEvent &);
     void OnWrap(wxCommandEvent &event);
     void OnClear(wxCommandEvent &);
-    void OnTextFormatChanged(TextFormat format);
+    void OnTextFormatChanged(wxCommandEvent &);
 
     void OutputText(std::shared_ptr<char> bytes, int len, std::string &fromTo, bool isRx);
     void Open();

@@ -17,6 +17,7 @@
 #include "LinksUi/SocketClientUi.h"
 #include "LinksUi/SocketServerUi.h"
 #include "LinksUi/UDPServerUi.h"
+#include "Utilities/TextFormatComboBox.h"
 
 #include "PageIO.h"
 #include "PageIOInput.h"
@@ -59,9 +60,10 @@ Page::Page(LinkType type, wxWindow *parent)
     Layout();
 
     PageSettingsInput *inputSettings = m_pageSettings->GetInputSettings();
-    inputSettings->invokeWriteSignal.connect(&Page::OnInvokeWrite, this);
-    inputSettings->invokeStartTimerSignal.connect(&Page::OnInvokeStartTimer, this);
-    inputSettings->textFormatChangedSignal.connect(&Page::OnTextFormatChanged, this);
+    PageSettingsInput::Context inputSettingCtx = inputSettings->GetContext();
+    inputSettingCtx.send->Bind(wxEVT_BUTTON, &Page::OnInvokeWrite, this);
+    inputSettingCtx.cycleInterval->Bind(wxEVT_COMBOBOX_DROPDOWN, &Page::OnInvokeStartTimer, this);
+    inputSettingCtx.format->Bind(wxEVT_COMBOBOX_DROPDOWN, &Page::OnTextFormatChanged, this);
 
     PageSettingsLink *linkSettings = m_pageSettings->GetLinkSettings();
     linkSettings->GetOpenButton()->Bind(wxEVT_BUTTON, &Page::OnInvokeOpenOrClose, this);
@@ -72,7 +74,7 @@ Page::Page(LinkType type, wxWindow *parent)
         linkUi->Refresh();
     });
 
-    m_sendTimer.Bind(wxEVT_TIMER, [this](wxTimerEvent &event) { OnSendTimerTimeout(); });
+    m_sendTimer.Bind(wxEVT_TIMER, &Page::OnSendTimerTimeout, this);
 }
 
 void Page::Load(const wxtJson &json)
@@ -116,7 +118,7 @@ void Page::OnInvokeOpenOrClose(wxCommandEvent &)
     }
 }
 
-void Page::OnInvokeWrite(TextFormat format)
+void Page::OnInvokeWrite(wxCommandEvent &)
 {
     PageSettingsLink *linkSettings = m_pageSettings->GetLinkSettings();
     LinkUi *linkUi = linkSettings->GetLinkUi();
@@ -126,8 +128,8 @@ void Page::OnInvokeWrite(TextFormat format)
     }
 
     PageSettingsInput *inputSettings = m_pageSettings->GetInputSettings();
-    PageSettingsInputPopup *inputSettingsPopup = inputSettings->GetPopup();
-    wxtJson inputParameters = inputSettingsPopup->Save();
+    PageSettingsInput::Context ctx = inputSettings->GetContext();
+    wxtJson inputParameters = ctx.popup->Save();
 
     PageSettingsInputPopupParameterKeys keys;
     int prefix = inputParameters[keys.prefix].get<int>();
@@ -147,7 +149,8 @@ void Page::OnInvokeWrite(TextFormat format)
 
     text = GetEscapeString(text.ToStdString(), escIndex);
     int len = 0;
-    auto bytes = DoEncodeBytes(text.ToStdString(), len, static_cast<int>(format));
+    int format = inputSettings->GetTextFormat();
+    auto bytes = DoEncodeBytes(text.ToStdString(), len, format);
     if (len <= 0) {
         return;
     }
@@ -171,8 +174,11 @@ void Page::OnInvokeWrite(TextFormat format)
     link->Write(std::move(allBytes), tmp.size());
 }
 
-void Page::OnInvokeStartTimer(int ms)
+void Page::OnInvokeStartTimer(wxCommandEvent &)
 {
+    PageSettingsInput *inputSettings = m_pageSettings->GetInputSettings();
+
+    int ms = inputSettings->GetInterval();
     if (ms == -1) {
         m_sendTimer.Stop();
         return;
@@ -182,7 +188,7 @@ void Page::OnInvokeStartTimer(int ms)
     LinkUi *linkUi = linkSettings->GetLinkUi();
     if (!linkUi->IsOpen()) {
         PageSettingsInput *inputSettings = m_pageSettings->GetInputSettings();
-        inputSettings->SetCycleIntervalComboBoxSelection(0);
+        inputSettings->SetCycleIntervalSelection(0);
         wxMessageBox(_("Link is not open."), _("Error"), wxICON_ERROR);
         return;
     }
@@ -273,7 +279,7 @@ void Page::OnLinkResolve(wxThreadEvent &e)
     }
 }
 
-void Page::OnSendTimerTimeout()
+void Page::OnSendTimerTimeout(wxTimerEvent &)
 {
     PageSettingsLink *linkSettings = m_pageSettings->GetLinkSettings();
     PageSettingsInput *inputSettings = m_pageSettings->GetInputSettings();
@@ -281,7 +287,7 @@ void Page::OnSendTimerTimeout()
         return;
     }
 
-    OnInvokeWrite(static_cast<TextFormat>(inputSettings->GetTextFormat()));
+    //OnInvokeWrite(e);
 }
 
 void Page::OnWrap(wxCommandEvent &event)
@@ -294,9 +300,11 @@ void Page::OnClear(wxCommandEvent &)
     m_pageIO->GetOutput()->Clear();
 }
 
-void Page::OnTextFormatChanged(TextFormat format)
+void Page::OnTextFormatChanged(wxCommandEvent &)
 {
-    m_pageIO->GetInput()->SetTextFormat(format);
+    PageSettingsInput *inputSettings = m_pageSettings->GetInputSettings();
+    int format = inputSettings->GetTextFormat();
+    m_pageIO->GetInput()->SetTextFormat(static_cast<TextFormat>(format));
 }
 
 std::string dateTimeString(bool showDate, bool showTime, bool showMs)
@@ -419,7 +427,7 @@ void Page::Close(bool ignoredCloseError)
     m_sendTimer.Stop();
 
     PageSettingsInput *inputSettings = m_pageSettings->GetInputSettings();
-    inputSettings->SetCycleIntervalComboBoxSelection(0);
+    inputSettings->SetCycleIntervalSelection(0);
 
     linkUi->Close(ignoredCloseError);
     linkUi->Enable();
