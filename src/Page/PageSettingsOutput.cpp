@@ -13,6 +13,9 @@
 #include "PageSettingsOutputPopup.h"
 #include "Utilities/TextFormatComboBox.h"
 
+wxDEFINE_EVENT(wxtEVT_SETTINGS_OUTPUT_CLEAR, wxCommandEvent);
+wxDEFINE_EVENT(wxtEVT_SETTINGS_OUTPUT_WRAP, wxCommandEvent);
+
 PageSettingsOutput::PageSettingsOutput(wxWindow *parent)
     : wxStaticBoxSizer(wxHORIZONTAL, parent, _("Output Settings"))
     , m_textFormatComboBox(nullptr)
@@ -24,6 +27,7 @@ PageSettingsOutput::PageSettingsOutput(wxWindow *parent)
     , m_showFlag(nullptr)
     , m_wrap(nullptr)
     , m_terminalMode(nullptr)
+    , m_parent(parent)
 {
     auto formatText = new wxStaticText(GetStaticBox(), wxID_ANY, _("Format"));
     m_textFormatComboBox = new TextFormatComboBox(GetStaticBox());
@@ -53,8 +57,6 @@ PageSettingsOutput::PageSettingsOutput(wxWindow *parent)
     m_terminalMode = new wxCheckBox(GetStaticBox(), wxID_ANY, _("Terminal Mode"));
     showModeSizer->Add(m_wrap, wxGBPosition(0, 0), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
     showModeSizer->Add(m_terminalMode, wxGBPosition(0, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
-    m_wrap->Bind(wxEVT_CHECKBOX, [=](wxCommandEvent &) { OnWrapModeStateChanged(); });
-    m_terminalMode->Bind(wxEVT_CHECKBOX, [=](wxCommandEvent &) { OnTerminalModeStateChanged(); });
 
     auto settingsButton = new wxButton(GetStaticBox(), wxID_ANY, _("Settings"));
     auto clearButton = new wxButton(GetStaticBox(), wxID_ANY, _("Clear"));
@@ -73,7 +75,9 @@ PageSettingsOutput::PageSettingsOutput(wxWindow *parent)
     Add(sizer, 1, wxEXPAND | wxALL, 0);
     sizer->AddGrowableCol(1);
 
-    clearButton->Bind(wxEVT_BUTTON, [=](wxCommandEvent &event) { clearSignal(); });
+    m_wrap->Bind(wxEVT_CHECKBOX, &PageSettingsOutput::OnWrapModeStateChanged, this);
+    m_terminalMode->Bind(wxEVT_CHECKBOX, &PageSettingsOutput::OnTerminalModeStateChanged, this);
+    clearButton->Bind(wxEVT_BUTTON, &PageSettingsOutput::OnClear, this);
 }
 
 void PageSettingsOutput::Load(const wxtJson &parameters)
@@ -100,7 +104,7 @@ void PageSettingsOutput::Load(const wxtJson &parameters)
     m_wrap->SetValue(wrap);
     m_terminalMode->SetValue(terminalMode);
 
-    OnTerminalModeStateChanged();
+    DoUpdateCheckBoxesState();
 }
 
 wxtJson PageSettingsOutput::Save() const
@@ -176,7 +180,7 @@ PageSettingsOutputPopup *PageSettingsOutput::GetPopup()
     return m_popup;
 }
 
-void PageSettingsOutput::OnTerminalModeStateChanged()
+void PageSettingsOutput::DoUpdateCheckBoxesState()
 {
     bool checked = m_terminalMode->GetValue();
     m_showRx->Enable(!checked);
@@ -187,7 +191,19 @@ void PageSettingsOutput::OnTerminalModeStateChanged()
     m_showMs->Enable(!checked);
 }
 
-void PageSettingsOutput::OnWrapModeStateChanged()
+void PageSettingsOutput::OnTerminalModeStateChanged(wxCommandEvent &)
 {
-    wrapSignal(m_wrap->GetValue());
+    DoUpdateCheckBoxesState();
+}
+
+void PageSettingsOutput::OnClear(wxCommandEvent &)
+{
+    wxPostEvent(m_parent, wxCommandEvent(wxtEVT_SETTINGS_OUTPUT_CLEAR));
+}
+
+void PageSettingsOutput::OnWrapModeStateChanged(wxCommandEvent &)
+{
+    wxCommandEvent event(wxtEVT_SETTINGS_OUTPUT_WRAP);
+    event.SetInt(m_wrap->GetValue() ? 1 : 0);
+    wxPostEvent(m_parent, wxCommandEvent(wxtEVT_SETTINGS_OUTPUT_WRAP));
 }

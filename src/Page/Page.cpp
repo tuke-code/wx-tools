@@ -18,13 +18,13 @@
 #include "LinksUi/SocketServerUi.h"
 #include "LinksUi/UDPServerUi.h"
 
-#include "PageSettingsLink.h"
 #include "PageIO.h"
 #include "PageIOInput.h"
 #include "PageIOOutput.h"
 #include "PageSettings.h"
 #include "PageSettingsInput.h"
 #include "PageSettingsInputPopup.h"
+#include "PageSettingsLink.h"
 #include "PageSettingsLinkPopup.h"
 #include "PageSettingsOutput.h"
 #include "PageSettingsOutputPopup.h"
@@ -39,6 +39,8 @@ EVT_THREAD(wxtDeleteClient, Page::OnDeleteClient)
 EVT_THREAD(wxtLinkOpened, Page::OnLinkOpened)
 EVT_THREAD(wxtLinkClosed, Page::OnLinkClosed)
 EVT_THREAD(wxtLinkResolve, Page::OnLinkResolve)
+EVT_COMMAND(wxID_ANY, wxtEVT_SETTINGS_OUTPUT_CLEAR, Page::OnClear)
+EVT_COMMAND(wxID_ANY, wxtEVT_SETTINGS_OUTPUT_WRAP, Page::OnWrap)
 END_EVENT_TABLE()
 
 Page::Page(LinkType type, wxWindow *parent)
@@ -67,10 +69,6 @@ Page::Page(LinkType type, wxWindow *parent)
     PageSettingsLinkPopup *linkSettingsPopup = linkSettings->GetPopup();
     linkSettingsPopup->refreshSignal.connect(&LinkUi::Refresh, linkSettings->GetLinkUi());
 
-    PageSettingsOutput *outputSettings = m_pageSettings->GetOutputSettings();
-    outputSettings->wrapSignal.connect(&Page::OnWrap, this);
-    outputSettings->clearSignal.connect(&Page::OnClear, this);
-
     m_sendTimer.Bind(wxEVT_TIMER, [this](wxTimerEvent &event) { OnSendTimerTimeout(); });
 }
 
@@ -88,7 +86,7 @@ void Page::Load(const wxtJson &json)
     int format = m_pageSettings->GetInputSettings()->GetTextFormat();
     m_pageIO->GetInput()->SetTextFormat(static_cast<TextFormat>(format));
 
-    OnWrap(m_pageSettings->GetOutputSettings()->GetWrap());
+    m_pageIO->GetOutput()->SetWrap(m_pageSettings->GetOutputSettings()->GetWrap());
 }
 
 wxtJson Page::Save() const
@@ -283,12 +281,12 @@ void Page::OnSendTimerTimeout()
     OnInvokeWrite(static_cast<TextFormat>(inputSettings->GetTextFormat()));
 }
 
-void Page::OnWrap(bool wrap)
+void Page::OnWrap(wxCommandEvent &event)
 {
-    m_pageIO->GetOutput()->SetWrap(wrap);
+    m_pageIO->GetOutput()->SetWrap(event.GetInt());
 }
 
-void Page::OnClear()
+void Page::OnClear(wxCommandEvent &)
 {
     m_pageIO->GetOutput()->Clear();
 }

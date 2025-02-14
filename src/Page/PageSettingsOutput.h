@@ -13,6 +13,9 @@
 
 #include "Common/wxTools.h"
 
+wxDECLARE_EVENT(wxtEVT_SETTINGS_OUTPUT_CLEAR, wxCommandEvent);
+wxDECLARE_EVENT(wxtEVT_SETTINGS_OUTPUT_WRAP, wxCommandEvent);
+
 struct PageSettingsOutputParameterKeys
 {
     std::string textFormat = {"textFormat"};
@@ -32,10 +35,6 @@ class PageSettingsOutput : public wxStaticBoxSizer
 {
 public:
     PageSettingsOutput(wxWindow *parent);
-
-    wxtSignal<> parametersChangedSignal;
-    wxtSignal<> clearSignal;
-    wxtSignal<bool> wrapSignal;
 
     void Load(const wxtJson &parameters);
     wxtJson Save() const;
@@ -62,8 +61,12 @@ private:
     wxCheckBox *m_wrap;
     wxCheckBox *m_terminalMode;
     PageSettingsOutputPopup *m_popup;
+    wxWindow *m_parent;
 
 private:
-    void OnTerminalModeStateChanged();
-    void OnWrapModeStateChanged();
+    void DoUpdateCheckBoxesState();
+
+    void OnTerminalModeStateChanged(wxCommandEvent &);
+    void OnClear(wxCommandEvent &);
+    void OnWrapModeStateChanged(wxCommandEvent &);
 };

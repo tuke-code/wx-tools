@@ -49,8 +49,8 @@ private:
     void OnLinkClosed(wxThreadEvent &e);
     void OnLinkResolve(wxThreadEvent &e);
     void OnSendTimerTimeout();
-    void OnWrap(bool wrap);
-    void OnClear();
+    void OnWrap(wxCommandEvent &event);
+    void OnClear(wxCommandEvent &);
     void OnTextFormatChanged(TextFormat format);
 
     void OutputText(std::shared_ptr<char> bytes, int len, std::string &fromTo, bool isRx);
