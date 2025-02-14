@@ -2,6 +2,7 @@
 
 [![build-windows](https://github.com/x-tools-author/wx-tools/actions/workflows/build-windows.yml/badge.svg)](https://github.com/x-tools-author/wx-tools/actions/workflows/build-windows.yml)
 [![build-ubuntu](https://github.com/x-tools-author/wx-tools/actions/workflows/build-ubuntu.yml/badge.svg)](https://github.com/x-tools-author/wx-tools/actions/workflows/build-ubuntu.yml)
+[![build-macos](https://github.com/x-tools-author/wx-tools/actions/workflows/build-macos.yml/badge.svg)](https://github.com/x-tools-author/wx-tools/actions/workflows/build-macos.yml)
 [![build-daily](https://github.com/x-tools-author/wx-tools/actions/workflows/build-daily.yml/badge.svg)](https://github.com/x-tools-author/wx-tools/actions/workflows/build-daily.yml)
 
 wxTools is a user-friendly, open-source, cross-platform debugging tool-set based on wxWidgets (wxWidgets 3.2.x is recommended). It offers extensive support for SerialPort, UDP, TCP and Web Socket debugging functionalities.
