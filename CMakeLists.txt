@@ -79,12 +79,13 @@ set_target_properties(
              TRUE)
 
 # --------------------------------------------------------------------------------------------------
-# Copy res/i18n to build directory
-add_custom_command(
-  TARGET wxTools
-  POST_BUILD
-  COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/res/i18n"
-          "$<TARGET_FILE_DIR:wxTools>/i18n")
+# Copy res to build directory
+# cmake-format: off
+add_custom_command(TARGET wxTools POST_BUILD
+  COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/res/i18n" "$<TARGET_FILE_DIR:wxTools>/i18n"
+  COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/res/files" "$<TARGET_FILE_DIR:wxTools>/files"
+)
+# cmake-format: on
 
 # --------------------------------------------------------------------------------------------------
 # Make zip file

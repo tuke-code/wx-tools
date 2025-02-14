@@ -1,8 +1,8 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
-"POT-Creation-Date: 2025-02-13 09:14+0800\n"
-"PO-Revision-Date: 2025-02-13 09:15+0800\n"
+"POT-Creation-Date: 2025-02-14 18:19+0800\n"
+"PO-Revision-Date: 2025-02-14 18:20+0800\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "Language: zh_CN\n"
@@ -150,165 +150,181 @@ msgstr "客户端信息"
 msgid "Tx Channel"
 msgstr "发送通道"
 
-#: MainWindow.cpp:78
+#: MainWindow.cpp:79
 msgid "Open parameters file"
 msgstr "导入配置文件"
 
-#: MainWindow.cpp:81 MainWindow.cpp:99
+#: MainWindow.cpp:82 MainWindow.cpp:100
 msgid "JSON files (*.json)|*.json"
 msgstr "JSON文件(*.json)|*.json"
 
-#: MainWindow.cpp:96
+#: MainWindow.cpp:97
 msgid "Save parameters file"
 msgstr "导出配置文件"
 
-#: MainWindow.cpp:114
+#: MainWindow.cpp:115
 msgid "The application will be closed!"
 msgstr "软件将会被关闭！"
 
-#: MainWindow.cpp:128
+#: MainWindow.cpp:129
 msgid "wxTools - A set of tools developed with wxWidgets\n"
 msgstr "wxTools-基于wxWidgets开发的工具集\n"
 
-#: MainWindow.cpp:130
+#: MainWindow.cpp:131
 msgid "Version: "
 msgstr "软件版本："
 
-#: MainWindow.cpp:131
+#: MainWindow.cpp:132
 msgid "Author: x-tools-author\n"
 msgstr "软件作者：x-tools-author\n"
 
-#: MainWindow.cpp:132
+#: MainWindow.cpp:133
 msgid "Email: x-tools@outlook.com\n"
 msgstr "联系邮箱：x-tools@outlook.com\n"
 
-#: MainWindow.cpp:134
+#: MainWindow.cpp:135
 msgid "Commit: "
 msgstr "提交："
 
-#: MainWindow.cpp:135
+#: MainWindow.cpp:136
 msgid "Date: "
 msgstr "日期："
 
-#: MainWindow.cpp:136
+#: MainWindow.cpp:137
 msgid "Build: "
 msgstr "构建："
 
-#: MainWindow.cpp:138
+#: MainWindow.cpp:139
 msgid "Copyright"
 msgstr "版权声明"
 
-#: MainWindow.cpp:140
+#: MainWindow.cpp:141
 msgid "All rights reserved.\n"
 msgstr "保留所有版权\n"
 
-#: MainWindow.cpp:141
+#: MainWindow.cpp:142
 msgid "About wxTools"
 msgstr "关于wxTools"
 
-#: MainWindow.cpp:163
+#: MainWindow.cpp:164
 msgid "File"
 msgstr "文件"
 
-#: MainWindow.cpp:182
+#: MainWindow.cpp:183
 msgid "Options"
 msgstr "选项"
 
-#: MainWindow.cpp:184
+#: MainWindow.cpp:185
 msgid "Open Log Directory"
 msgstr "打开日志目录"
 
-#: MainWindow.cpp:185
+#: MainWindow.cpp:186
 msgid "Open the log directory."
 msgstr "打开日志文件所在目录。"
 
-#: MainWindow.cpp:189
+#: MainWindow.cpp:190
 msgid "Open Config Directory"
 msgstr "打开配置目录"
 
-#: MainWindow.cpp:190
+#: MainWindow.cpp:191
 msgid "Open the config directory."
 msgstr "打开配置文件所在目录。"
 
-#: MainWindow.cpp:194
+#: MainWindow.cpp:195
 msgid "Open App Directory"
 msgstr "打开应用目录"
 
-#: MainWindow.cpp:195
+#: MainWindow.cpp:196
 msgid "Open the app directory."
 msgstr "打开应用文件所在目录。"
 
-#: MainWindow.cpp:202
+#: MainWindow.cpp:203
 msgid "Help"
 msgstr "帮助"
 
-#: MainWindow.cpp:208
+#: MainWindow.cpp:209
 msgid "Visit online documentation page."
 msgstr "访问在线文档。"
 
-#: MainWindow.cpp:212
+#: MainWindow.cpp:213
 msgid "Check for Updates"
 msgstr "检查更新"
 
-#: MainWindow.cpp:213
+#: MainWindow.cpp:214
 msgid "Check for updates online."
 msgstr "访问发布页面。"
 
-#: MainWindow.cpp:218
+#: MainWindow.cpp:220
+msgid "History"
+msgstr "发布记录"
+
+#: MainWindow.cpp:221
+msgid "Show the history of the application."
+msgstr "显示软件发布历史信息。"
+
+#: MainWindow.cpp:226
 msgid "Visit GitHub page to get more information."
 msgstr "访问GitHub代码仓库获取更多信息。"
 
-#: MainWindow.cpp:219
+#: MainWindow.cpp:227
 msgid "Get Source from GitHub"
 msgstr "从GitHub获取源码"
 
-#: MainWindow.cpp:223
+#: MainWindow.cpp:231
 msgid "Visit Gitee page to get more information."
 msgstr "访问Gitee仓库。"
 
-#: MainWindow.cpp:224
+#: MainWindow.cpp:232
 msgid "Get Source from Gitee"
 msgstr "从Gitee获取源码"
 
-#: MainWindow.cpp:228
+#: MainWindow.cpp:236
 msgid "Visit GitHub home page of author."
 msgstr "访问作者GitHub主页以获取更多信息。"
 
-#: MainWindow.cpp:229
+#: MainWindow.cpp:237
 msgid "GitHub Home Page"
 msgstr "GitHub主页"
 
-#: MainWindow.cpp:233
+#: MainWindow.cpp:241
 msgid "Visit Gitee home page of author."
 msgstr "访问作者Gitee主页。"
 
-#: MainWindow.cpp:234
+#: MainWindow.cpp:242
 msgid "Gitee Home Page"
 msgstr "Gitee主页"
 
-#: MainWindow.cpp:241
+#: MainWindow.cpp:249
 msgid "Visit Microsoft Store page to buy wxTools."
 msgstr "访问作者微软商店主页。"
 
-#: MainWindow.cpp:242
+#: MainWindow.cpp:250
 msgid "Supporting Author"
 msgstr "支持作者"
 
-#: MainWindow.cpp:246
+#: MainWindow.cpp:254
 msgid "Visit Microsoft Store home page of author."
 msgstr "访问作者微软商店主页。"
 
-#: MainWindow.cpp:247
+#: MainWindow.cpp:255
 msgid "Other Applications"
 msgstr "其他应用"
+
+#: MainWindow.cpp:354
+msgid "History file not found!"
+msgstr "未找到发布记录文件！"
+
+#: MainWindow.cpp:354 Page/Page.cpp:123 Page/Page.cpp:185 Page/Page.cpp:410
+msgid "Error"
+msgstr "发生错误"
+
+#: MainWindow.cpp:358
+msgid "wxTools Release History"
+msgstr "wxTools发布记录"
 
 #: Page/Page.cpp:123
 msgid "Link is not opened."
 msgstr "链接未打开。"
-
-#: Page/Page.cpp:123 Page/Page.cpp:185 Page/Page.cpp:410
-msgid "Error"
-msgstr "发生错误"
 
 #: Page/Page.cpp:185
 msgid "Link is not open."

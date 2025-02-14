@@ -10,6 +10,7 @@
 
 #include <fmt/format.h>
 #include <fstream>
+#include <wx/artprov.h>
 #include <wx/filename.h>
 #include <wx/stdpaths.h>
 
@@ -215,6 +216,13 @@ void MainWindow::InitMenuHelp(wxMenuBar* menuBar)
 
     menuHelp->AppendSeparator();
 
+    menuHelp->Append(wxID_ANY,
+                     _("History"),
+                     _("Show the history of the application."),
+                     wxITEM_NORMAL);
+    Bind(wxEVT_MENU, &MainWindow::DoShowHistory, this, wxID_ANY);
+    menuHelp->AppendSeparator();
+
     wxString help = _("Visit GitHub page to get more information.");
     item = menuHelp->Append(wxID_ANY, _("Get Source from GitHub"), help);
     static const wxString githubUrl{"https://github.com/x-tools-author/wx-tools"};
@@ -334,4 +342,27 @@ void MainWindow::DoCheckForUpdates(wxCommandEvent&)
     wxExecute(wxString("cmd /C start ms-windows-store://pdp/?productid=9NX1D0CCV9T7"));
 #endif
 #endif
+}
+
+void MainWindow::DoShowHistory(wxCommandEvent&)
+{
+    wxString path = wxStandardPaths::Get().GetDataDir();
+    path += wxFileName::GetPathSeparator() + wxString("files");
+    path += wxFileName::GetPathSeparator() + wxString("history.txt");
+
+    if (!wxFileExists(path)) {
+        wxMessageBox(_("History file not found!"), _("Error"), wxOK | wxICON_ERROR);
+        return;
+    }
+
+    wxDialog dlg(this, wxID_ANY, _("wxTools Release History"), wxDefaultPosition, wxSize(600, 400));
+    dlg.SetIcon(wxArtProvider::GetIcon(wxART_INFORMATION, wxART_OTHER, wxSize(64, 64)));
+    wxTextCtrl* textCtrl = new wxTextCtrl(&dlg,
+                                          wxID_ANY,
+                                          wxEmptyString,
+                                          wxDefaultPosition,
+                                          wxDefaultSize,
+                                          wxTE_MULTILINE | wxTE_DONTWRAP | wxTE_READONLY);
+    textCtrl->LoadFile(path);
+    dlg.ShowModal();
 }
