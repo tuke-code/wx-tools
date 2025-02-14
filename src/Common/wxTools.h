@@ -10,7 +10,6 @@
 
 #include <glog/logging.h>
 #include <nlohmann/json.hpp>
-#include <sigslot/signal.hpp>
 
 #include <wx/fileconf.h>
 #include <wx/wx.h>

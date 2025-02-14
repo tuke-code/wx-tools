@@ -8,7 +8,6 @@
  **************************************************************************************************/
 #pragma once
 
-#include <sigslot/signal.hpp>
 #include <wx/wx.h>
 
 #include "Common/wxTools.h"

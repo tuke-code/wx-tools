@@ -8,8 +8,6 @@
  **************************************************************************************************/
 #pragma once
 
-#include <nlohmann/json.hpp>
-#include <sigslot/signal.hpp>
 #include <wx/wx.h>
 
 #include "Common/wxTools.h"
