@@ -1,4 +1,4 @@
-﻿name: build-ubuntu
+﻿name: build-macos
 
 #on:
 #  schedule:
@@ -6,8 +6,10 @@
 
 on:
  push:
-   branches:
-     - master
+   branches: [master]
+   paths-ignore:
+    - '*.md'
+    - '*.txt'
 
 jobs:
   build:
