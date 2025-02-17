@@ -12,9 +12,6 @@
 
 #include "Common/wxTools.h"
 
-wxDECLARE_EVENT(wxtEVT_SETTINGS_OUTPUT_CLEAR, wxCommandEvent);
-wxDECLARE_EVENT(wxtEVT_SETTINGS_OUTPUT_WRAP, wxCommandEvent);
-
 struct PageSettingsOutputParameterKeys
 {
     std::string textFormat = {"textFormat"};

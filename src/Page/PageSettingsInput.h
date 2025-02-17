@@ -13,9 +13,6 @@
 
 #include "Common/wxTools.h"
 
-wxDECLARE_EVENT(wxtEVT_SETTINGS_INPUT_WRITE, wxCommandEvent);
-wxDECLARE_EVENT(wxtEVT_SETTINGS_INPUT_FORMAT, wxCommandEvent);
-
 struct PageSettingsInputParameterKeys
 {
     std::string cycleInterval = {"cycleInterval"};

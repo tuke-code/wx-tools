@@ -12,8 +12,6 @@
 
 #include "Common/wxTools.h"
 
-wxDECLARE_EVENT(wxtEVT_SETTINGS_LINK_OPEN, wxCommandEvent);
-
 class PageSettingsLinkPopup;
 class LinkUi;
 class PageSettingsLink : public wxStaticBoxSizer

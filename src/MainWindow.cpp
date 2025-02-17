@@ -139,7 +139,7 @@ void MainWindow::OnAbout(wxCommandEvent&)
     info += _("Copyright");
     info += fmt::format(" 2024-{} x-tools-author. ", std::string(__DATE__).substr(7, 4));
     info += _("All rights reserved.\n");
-    wxMessageBox(info, _("About wxTools"), wxOK | wxICON_INFORMATION);
+    wxMessageBox(info, _("About wxTools"), wxOK | wxICON_INFORMATION, GetParent());
 }
 
 void MainWindow::Init()
@@ -205,7 +205,12 @@ void MainWindow::InitMenuHelp(wxMenuBar* menuBar)
     menuHelp->Append(wxID_ABOUT);
     Bind(wxEVT_MENU, &MainWindow::OnAbout, this, wxID_ABOUT);
 
-    wxMenuItem* item = menuHelp->Append(wxID_HELP);
+    int tmpId = wxtNewID();
+    wxMenuItem* item = menuHelp->Append(tmpId, _("About wxWidgets"));
+    item->SetHelp(_("Show wxWidgets library information."));
+    Bind(wxEVT_MENU, [this](wxCommandEvent&) { wxInfoMessageBox(GetParent()); }, tmpId);
+
+    item = menuHelp->Append(wxID_HELP);
     item->SetHelp(_("Visit online documentation page."));
     static const wxString helpUrl{"https://x-tools-author.github.io/wx-tools/"};
     Bind(wxEVT_MENU, [](wxCommandEvent&) { wxLaunchDefaultBrowser(helpUrl); }, wxID_HELP);
@@ -216,11 +221,9 @@ void MainWindow::InitMenuHelp(wxMenuBar* menuBar)
 
     menuHelp->AppendSeparator();
 
-    menuHelp->Append(wxID_ANY,
-                     _("History"),
-                     _("Show the history of the application."),
-                     wxITEM_NORMAL);
-    Bind(wxEVT_MENU, &MainWindow::DoShowHistory, this, wxID_ANY);
+    tmpId = wxtNewID();
+    menuHelp->Append(tmpId, _("History"), _("Show the history of the application."));
+    Bind(wxEVT_MENU, &MainWindow::DoShowHistory, this, tmpId);
     menuHelp->AppendSeparator();
 
     wxString help = _("Visit GitHub page to get more information.");

@@ -14,8 +14,6 @@
 #include "Common/wxTools.h"
 #include "Utilities/BaseSettingsPopup.h"
 
-wxDECLARE_EVENT(wxtEVT_SETTINGS_LINK_POPUP_REFRESH, wxCommandEvent);
-
 struct PageSettingsLinkPopupParameterKeys
 {
 

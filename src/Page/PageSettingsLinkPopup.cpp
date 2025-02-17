@@ -12,8 +12,6 @@
 #include <wx/statline.h>
 #include <wx/wx.h>
 
-wxDEFINE_EVENT(wxtEVT_SETTINGS_LINK_POPUP_REFRESH, wxCommandEvent);
-
 PageSettingsLinkPopup::PageSettingsLinkPopup(wxButton *controlButton, wxWindow *parent)
     : BaseSettingsPopup(controlButton)
     , m_parent(parent)

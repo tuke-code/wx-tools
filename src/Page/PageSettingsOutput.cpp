@@ -13,9 +13,6 @@
 #include "PageSettingsOutputPopup.h"
 #include "Utilities/TextFormatComboBox.h"
 
-wxDEFINE_EVENT(wxtEVT_SETTINGS_OUTPUT_CLEAR, wxCommandEvent);
-wxDEFINE_EVENT(wxtEVT_SETTINGS_OUTPUT_WRAP, wxCommandEvent);
-
 PageSettingsOutput::PageSettingsOutput(wxWindow *parent)
     : wxStaticBoxSizer(wxHORIZONTAL, parent, _("Output Settings"))
     , m_textFormatComboBox(nullptr)

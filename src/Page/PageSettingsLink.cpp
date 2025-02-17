@@ -18,8 +18,6 @@
 #include "LinksUi/WSServerUi.h"
 #include "PageSettingsLinkPopup.h"
 
-wxDEFINE_EVENT(wxtEVT_SETTINGS_LINK_OPEN, wxCommandEvent);
-
 PageSettingsLink::PageSettingsLink(LinkType type, wxWindow *parent)
     : wxStaticBoxSizer(wxVERTICAL, parent, _("Link Settings"))
     , m_parent(parent)

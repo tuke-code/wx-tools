@@ -14,9 +14,6 @@
 #include "PageSettingsInputPopup.h"
 #include "Utilities/TextFormatComboBox.h"
 
-wxDEFINE_EVENT(wxtEVT_SETTINGS_INPUT_WRITE, wxCommandEvent);
-wxDEFINE_EVENT(wxtEVT_SETTINGS_INPUT_FORMAT, wxCommandEvent);
-
 PageSettingsInput::PageSettingsInput(wxWindow* parent)
     : wxStaticBoxSizer(wxVERTICAL, parent, _("Input Settings"))
     , m_parent{parent}

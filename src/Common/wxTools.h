@@ -32,6 +32,26 @@ const static int wxtDataSize = MG_DATA_SIZE;
 const static int wxtDataSize = 10240;
 #endif
 
+#define wxtIgnoreCloseErrorPopup 1
+enum wxtID {
+    wxtID_LINK_TX = wxID_HIGHEST + 1,
+    wxtID_LINK_RX,
+    wxtID_LINK_ERROR,
+    wxtID_LINK_NEW,
+    wxtID_LINK_DELETE,
+    wxtID_LINK_OPENED,
+    wxtID_LINK_CLOSED,
+    wxtID_LINK_RESOLVED
+};
+const int wxtNewID();
+
+wxDECLARE_EVENT(wxtEVT_SETTINGS_LINK_OPEN, wxCommandEvent);
+wxDECLARE_EVENT(wxtEVT_SETTINGS_LINK_POPUP_REFRESH, wxCommandEvent);
+wxDECLARE_EVENT(wxtEVT_SETTINGS_OUTPUT_CLEAR, wxCommandEvent);
+wxDECLARE_EVENT(wxtEVT_SETTINGS_OUTPUT_WRAP, wxCommandEvent);
+wxDECLARE_EVENT(wxtEVT_SETTINGS_INPUT_WRITE, wxCommandEvent);
+wxDECLARE_EVENT(wxtEVT_SETTINGS_INPUT_FORMAT, wxCommandEvent);
+
 //--------------------------------------------------------------------------------------------------
 // Datastructure
 struct wxtDataItem
