@@ -6,7 +6,7 @@ set(CMAKE_AUTORCC ON)
 
 # cmake-format: off
 if(NOT APPLE)
-set(wxBUILD_SHARED OFF CACHE BOOL "Build wxWidgets as shared libraries" FORCE)
+  set(wxBUILD_SHARED OFF CACHE BOOL "Build wxWidgets as shared libraries" FORCE)
 if(WIN32)
   set(wxBUILD_USE_STATIC_RUNTIME ON CACHE BOOL "Build static runtime" FORCE)
 endif()
@@ -23,7 +23,6 @@ endif()
 
 set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
-
 if(${CMAKE_BUILD_TYPE} STREQUAL "Release")
   add_compile_definitions(WXT_RELEASE)
 endif()
