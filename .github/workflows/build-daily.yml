@@ -1,11 +1,11 @@
 name: build-daily
-on:
-  schedule:
-    - cron: '0 0 * * *'
 # on:
-#  push:
-#    branches:
-#      - master
+#   schedule:
+#     - cron: '0 0 * * *'
+on:
+ push:
+   branches:
+     - master
 
 env:
     GH_TOKEN: ${{ github.token }}
@@ -56,4 +56,4 @@ jobs:
         dir && dir .\assets && dir .\assets\wxTools
     - name: Upload Release Asset for Windows
       run: |
-        dir && gh release upload continuous 'build\assets\wxtools-windows-${{ github.ref_name }}-${{ matrix.arch }}.zip'
+        dir && gh release upload continuous 'build\assets\*.zip'
