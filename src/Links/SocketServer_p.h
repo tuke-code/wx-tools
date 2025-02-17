@@ -83,7 +83,7 @@ public:
         }
 
         if (evtHandler) {
-            wxThreadEvent *evt = new wxThreadEvent(wxEVT_THREAD, wxtDeleteClient);
+            wxThreadEvent *evt = new wxThreadEvent(wxEVT_THREAD, wxtID_LINK_DELETE);
             evt->SetString(address);
             evt->SetInt(port);
             evtHandler->QueueEvent(evt);
@@ -97,7 +97,7 @@ public:
             clients.push_back(client);
 
             if (evtHandler) {
-                wxThreadEvent *evt = new wxThreadEvent(wxEVT_THREAD, wxtNewClient);
+                wxThreadEvent *evt = new wxThreadEvent(wxEVT_THREAD, wxtID_LINK_NEW);
                 evt->SetString(address);
                 evt->SetInt(port);
                 evtHandler->QueueEvent(evt);

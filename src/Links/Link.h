@@ -15,15 +15,15 @@
 
 #define wxtIgnoreCloseErrorPopup 1
 
-enum LinkEvent {
-    wxtBytesTx = wxID_HIGHEST + 1,
-    wxtBytesRx,
-    wxtErrorOccurred,
-    wxtNewClient,
-    wxtDeleteClient,
-    wxtLinkOpened,
-    wxtLinkClosed,
-    wxtLinkResolve
+enum wxtThreadEventId {
+    wxtID_LINK_TX = wxID_HIGHEST + 1,
+    wxtID_LINK_RX,
+    wxtID_LINK_ERROR,
+    wxtID_LINK_NEW,
+    wxtID_LINK_DELETE,
+    wxtID_LINK_OPENED,
+    wxtID_LINK_CLOSED,
+    wxtID_LINK_RESOLVED
 };
 
 class LinkPrivate;

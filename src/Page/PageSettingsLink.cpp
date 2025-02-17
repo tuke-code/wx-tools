@@ -18,8 +18,11 @@
 #include "LinksUi/WSServerUi.h"
 #include "PageSettingsLinkPopup.h"
 
+wxDEFINE_EVENT(wxtEVT_SETTINGS_LINK_OPEN, wxCommandEvent);
+
 PageSettingsLink::PageSettingsLink(LinkType type, wxWindow *parent)
     : wxStaticBoxSizer(wxVERTICAL, parent, _("Link Settings"))
+    , m_parent(parent)
     , m_linkUi(nullptr)
     , m_popup(nullptr)
 {
@@ -29,13 +32,15 @@ PageSettingsLink::PageSettingsLink(LinkType type, wxWindow *parent)
     AddSpacer(4);
 
     auto settingsButton = new wxButton(GetStaticBox(), wxID_ANY, _("Settings"));
-    m_popup = new PageSettingsLinkPopup(settingsButton);
+    m_popup = new PageSettingsLinkPopup(settingsButton, parent);
     m_openButton = new wxButton(GetStaticBox(), wxID_ANY, _("Open"));
 
     auto buttonSizer = new wxBoxSizer(wxHORIZONTAL);
     buttonSizer->Add(settingsButton, 1, wxEXPAND | wxALL, 0);
     buttonSizer->Add(m_openButton, 1, wxEXPAND | wxALL, 0);
     Add(buttonSizer, 0, wxEXPAND, 0);
+
+    m_openButton->Bind(wxEVT_BUTTON, &PageSettingsLink::OnOpen, this);
 }
 
 void PageSettingsLink::Load(const wxtJson &parameters)
@@ -82,4 +87,9 @@ LinkUi *PageSettingsLink::CreateLinkUi(LinkType type, wxWindow *parent)
     }
 
     return nullptr;
+}
+
+void PageSettingsLink::OnOpen(wxCommandEvent &)
+{
+    wxPostEvent(m_parent, wxCommandEvent(wxtEVT_SETTINGS_LINK_OPEN));
 }

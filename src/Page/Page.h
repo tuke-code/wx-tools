@@ -34,9 +34,8 @@ private:
     PageIO *m_pageIO;
 
 private:
-    void OnInvokeOpenOrClose(wxCommandEvent &);
-    void OnInvokeWrite(wxCommandEvent &);
-    void OnInvokeStartTimer(wxCommandEvent &);
+    void OnOpen(wxCommandEvent &);
+    void OnRefresh(wxCommandEvent &);
     void OnBytesRx(wxThreadEvent &e);
     void OnBytesTx(wxThreadEvent &e);
     void OnErrorOccurred(wxThreadEvent &e);

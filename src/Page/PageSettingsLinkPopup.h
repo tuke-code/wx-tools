@@ -14,6 +14,8 @@
 #include "Common/wxTools.h"
 #include "Utilities/BaseSettingsPopup.h"
 
+wxDECLARE_EVENT(wxtEVT_SETTINGS_LINK_POPUP_REFRESH, wxCommandEvent);
+
 struct PageSettingsLinkPopupParameterKeys
 {
 
@@ -22,13 +24,15 @@ struct PageSettingsLinkPopupParameterKeys
 class PageSettingsLinkPopup : public BaseSettingsPopup
 {
 public:
-    PageSettingsLinkPopup(wxButton *controlButton);
+    PageSettingsLinkPopup(wxButton *controlButton, wxWindow *parent);
 
     void Load(const wxtJson &parameters);
     wxtJson Save() const;
 
-    wxButton *GetRefreshButton() const;
+private:
+    void OnRefresh(wxCommandEvent &);
 
 private:
+    wxWindow *m_parent;
     wxButton *m_refresh;
 };

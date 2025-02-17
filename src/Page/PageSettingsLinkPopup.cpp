@@ -12,8 +12,11 @@
 #include <wx/statline.h>
 #include <wx/wx.h>
 
-PageSettingsLinkPopup::PageSettingsLinkPopup(wxButton *controlButton)
+wxDEFINE_EVENT(wxtEVT_SETTINGS_LINK_POPUP_REFRESH, wxCommandEvent);
+
+PageSettingsLinkPopup::PageSettingsLinkPopup(wxButton *controlButton, wxWindow *parent)
     : BaseSettingsPopup(controlButton)
+    , m_parent(parent)
     , m_refresh(nullptr)
 {
     wxPanel *panel = new wxPanel(this);
@@ -30,6 +33,8 @@ PageSettingsLinkPopup::PageSettingsLinkPopup(wxButton *controlButton)
     panelSizer->Add(panel, 1, wxEXPAND | wxALL, padding);
     panel->SetMinSize(wxSize(152, -1));
     SetSizerAndFit(panelSizer);
+
+    m_refresh->Bind(wxEVT_BUTTON, &PageSettingsLinkPopup::OnRefresh, this);
 }
 
 void PageSettingsLinkPopup::Load(const wxtJson &parameters)
@@ -41,11 +46,11 @@ wxtJson PageSettingsLinkPopup::Save() const
 {
     wxtJson json = wxtJson::object();
     PageSettingsLinkPopupParameterKeys keys;
-
+    wxUnusedVar(keys);
     return json;
 }
 
-wxButton *PageSettingsLinkPopup::GetRefreshButton() const
+void PageSettingsLinkPopup::OnRefresh(wxCommandEvent &)
 {
-    return m_refresh;
+    wxPostEvent(m_parent, wxCommandEvent(wxtEVT_SETTINGS_LINK_POPUP_REFRESH));
 }

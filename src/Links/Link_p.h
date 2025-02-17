@@ -42,18 +42,18 @@ public:
 
     void DoQueueRxBytes(std::shared_ptr<char> bytes, int len, const wxString &from)
     {
-        DoQueueBytes(bytes, len, from, wxtBytesRx);
+        DoQueueBytes(bytes, len, from, wxtID_LINK_RX);
     }
 
     void DoQueueTxBytes(std::shared_ptr<char> bytes, int len, const wxString &to)
     {
-        DoQueueBytes(bytes, len, to, wxtBytesTx);
+        DoQueueBytes(bytes, len, to, wxtID_LINK_TX);
     }
 
     void DoQueueError(const wxString &error)
     {
         if (evtHandler) {
-            auto *evt = new wxThreadEvent(wxEVT_THREAD, wxtErrorOccurred);
+            auto *evt = new wxThreadEvent(wxEVT_THREAD, wxtID_LINK_ERROR);
             if (ignoreCloseError) {
                 evt->SetInt(wxtIgnoreCloseErrorPopup);
             } else {
@@ -64,9 +64,9 @@ public:
         }
     }
 
-    void DoQueueLinkOpened() { DoQueueLinkState(wxtLinkOpened); }
+    void DoQueueLinkOpened() { DoQueueLinkState(wxtID_LINK_OPENED); }
 
-    void DoQueueLinkClosed() { DoQueueLinkState(wxtLinkClosed); }
+    void DoQueueLinkClosed() { DoQueueLinkState(wxtID_LINK_CLOSED); }
 
 public:
     virtual void Poll() = 0;

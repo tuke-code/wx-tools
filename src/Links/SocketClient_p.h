@@ -30,7 +30,7 @@ public:
             if (locIp == std::string("0.0.0.0") && locPort == 0) {
                 locIp = DoMgAddressToIpV4(&c->loc);
                 locPort = DoReverseByteOrder<uint16_t>(c->loc.port);
-                wxThreadEvent *evt = new wxThreadEvent(wxEVT_THREAD, wxtLinkResolve);
+                wxThreadEvent *evt = new wxThreadEvent(wxEVT_THREAD, wxtID_LINK_RESOLVED);
                 evt->SetString(locIp);
                 evt->SetInt(locPort);
                 evtHandler->QueueEvent(evt);

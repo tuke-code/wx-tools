@@ -31,14 +31,16 @@
 
 IMPLEMENT_ABSTRACT_CLASS(Page, wxPanel)
 BEGIN_EVENT_TABLE(Page, wxPanel)
-EVT_THREAD(wxtBytesRx, Page::OnBytesRx)
-EVT_THREAD(wxtBytesTx, Page::OnBytesTx)
-EVT_THREAD(wxtErrorOccurred, Page::OnErrorOccurred)
-EVT_THREAD(wxtNewClient, Page::OnNewClient)
-EVT_THREAD(wxtDeleteClient, Page::OnDeleteClient)
-EVT_THREAD(wxtLinkOpened, Page::OnLinkOpened)
-EVT_THREAD(wxtLinkClosed, Page::OnLinkClosed)
-EVT_THREAD(wxtLinkResolve, Page::OnLinkResolve)
+EVT_THREAD(wxtID_LINK_RX, Page::OnBytesRx)
+EVT_THREAD(wxtID_LINK_TX, Page::OnBytesTx)
+EVT_THREAD(wxtID_LINK_ERROR, Page::OnErrorOccurred)
+EVT_THREAD(wxtID_LINK_NEW, Page::OnNewClient)
+EVT_THREAD(wxtID_LINK_DELETE, Page::OnDeleteClient)
+EVT_THREAD(wxtID_LINK_OPENED, Page::OnLinkOpened)
+EVT_THREAD(wxtID_LINK_CLOSED, Page::OnLinkClosed)
+EVT_THREAD(wxtID_LINK_RESOLVED, Page::OnLinkResolve)
+EVT_COMMAND(wxID_ANY, wxtEVT_SETTINGS_LINK_OPEN, Page::OnOpen)
+EVT_COMMAND(wxID_ANY, wxtEVT_SETTINGS_LINK_POPUP_REFRESH, Page::OnRefresh)
 EVT_COMMAND(wxID_ANY, wxtEVT_SETTINGS_OUTPUT_CLEAR, Page::OnClear)
 EVT_COMMAND(wxID_ANY, wxtEVT_SETTINGS_OUTPUT_WRAP, Page::OnWrap)
 EVT_COMMAND(wxID_ANY, wxtEVT_SETTINGS_INPUT_WRITE, Page::OnWrite)
@@ -58,16 +60,8 @@ Page::Page(LinkType type, wxWindow *parent)
 
     m_pageIO = new PageIO(this);
     sizer->Add(m_pageIO, 1, wxEXPAND | wxALL, 4);
+
     Layout();
-
-    PageSettingsLink *linkSettings = m_pageSettings->GetLinkSettings();
-    linkSettings->GetOpenButton()->Bind(wxEVT_BUTTON, &Page::OnInvokeOpenOrClose, this);
-
-    PageSettingsLinkPopup *linkSettingsPopup = linkSettings->GetPopup();
-    linkSettingsPopup->GetRefreshButton()->Bind(wxEVT_BUTTON, [=](wxCommandEvent &) {
-        auto linkUi = linkSettings->GetLinkUi();
-        linkUi->Refresh();
-    });
 }
 
 void Page::Load(const wxtJson &json)
@@ -96,7 +90,7 @@ wxtJson Page::Save() const
     return json;
 }
 
-void Page::OnInvokeOpenOrClose(wxCommandEvent &)
+void Page::OnOpen(wxCommandEvent &)
 {
     PageSettingsLink *linkSettings = m_pageSettings->GetLinkSettings();
     LinkUi *linkUi = linkSettings->GetLinkUi();
@@ -111,9 +105,11 @@ void Page::OnInvokeOpenOrClose(wxCommandEvent &)
     }
 }
 
-void Page::OnInvokeWrite(wxCommandEvent &)
+void Page::OnRefresh(wxCommandEvent &)
 {
-    DoWrite();
+    auto linkSettings = m_pageSettings->GetLinkSettings();
+    auto linkUi = linkSettings->GetLinkUi();
+    linkUi->Refresh();
 }
 
 void Page::OnBytesRx(wxThreadEvent &e)
@@ -223,6 +219,7 @@ void Page::OnWrite(wxCommandEvent &)
     if (!linkUi->IsOpen()) {
         PageSettingsInput *inputSettings = m_pageSettings->GetInputSettings();
         inputSettings->DoStopTimer();
+        wxMessageBox("Link is not open!", "Error", wxICON_ERROR);
         return;
     }
 
