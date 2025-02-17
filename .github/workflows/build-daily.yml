@@ -57,4 +57,5 @@ jobs:
     - name: Upload Release Asset for Windows
       shell: cmd
       run: |
-        dir && gh release upload continuous 'build\assets\wxtools-windows-${{ matrix.arch }}.zip'
+        for /f "delims=" %i in (build\assets\zip_name.txt) do (set TAG=%i)
+        dir && gh release upload continuous 'build\assets\wxtools-windows%TAG%-${{ matrix.arch }}.zip'

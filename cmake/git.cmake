@@ -39,7 +39,8 @@ function(wxt_git_get_latest_tag working_dir prefix)
   set(GIT_TAG
       "${GIT_LATEST_TAG}"
       PARENT_SCOPE)
-  add_compile_definitions(${prefix}_GIT_TAG="${GIT_LATEST_TAG}")
+  string(SUBSTRING ${WXT_GIT_TAG} 1 -1 wxtools_version)
+  add_compile_definitions(${prefix}_GIT_TAG="${wxtools_version}")
 endfunction()
 
 # Get the last commit.
