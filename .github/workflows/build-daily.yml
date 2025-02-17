@@ -56,4 +56,4 @@ jobs:
         dir && dir .\assets && dir .\assets\wxTools
     - name: Upload Release Asset for Windows
       run: |
-        dir && gh release upload continuous 'build\assets\wxtools-windows-${{ matrix.arch }}.zip'
+        dir && gh release upload continuous 'build\assets\wxtools-windows-${{ github.ref_name }}-${{ matrix.arch }}.zip'

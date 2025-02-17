@@ -27,6 +27,10 @@ if(${CMAKE_BUILD_TYPE} STREQUAL "Release")
   add_compile_definitions(WXT_RELEASE)
 endif()
 
+# Windows XP
+option(_WIN32_WINNT "Windows Version" 0x0501)
+# Windows 7 option(_WIN32_WINNT "Windows Version" 0x0601)
+
 # --------------------------------------------------------------------------------------------------
 # For portable edition
 option(WXT_PORTABLE_EDITION "Portable edition" ON)
@@ -35,6 +39,10 @@ if(WXT_PORTABLE_EDITION)
 endif()
 
 include(cmake/git.cmake)
+wxt_git_get_latest_tag(${CMAKE_SOURCE_DIR} WXT)
+wxt_git_get_latest_commit(${CMAKE_SOURCE_DIR} WXT)
+wxt_git_get_latest_commit_time(${CMAKE_SOURCE_DIR} WXT)
+
 include(cmake/fmt.cmake)
 include(cmake/asio.cmake)
 include(cmake/glog.cmake)
@@ -46,14 +54,6 @@ include(cmake/Msix/Msix.cmake)
 include(cmake/CSerialPort.cmake)
 
 include_directories(src)
-
-# Windows XP
-option(_WIN32_WINNT "Windows Version" 0x0501)
-# Windows 7 option(_WIN32_WINNT "Windows Version" 0x0601)
-
-wxt_git_get_latest_tag(${CMAKE_SOURCE_DIR} WXT)
-wxt_git_get_latest_commit(${CMAKE_SOURCE_DIR} WXT)
-wxt_git_get_latest_commit_time(${CMAKE_SOURCE_DIR} WXT)
 
 # --------------------------------------------------------------------------------------------------
 # For mongoose, the default value is 32, I think it is too small.
