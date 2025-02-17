@@ -23,7 +23,7 @@ public:
     void Enable() override;
     wxtJson DoSave() const override;
     void DoLoad(const wxtJson &json) override;
-    void Refresh() override;
+    void DoRefreshDevice() override;
 
     wxTextCtrl *GetClientInfoTextCtrl() const;
 

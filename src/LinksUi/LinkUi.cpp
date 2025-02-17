@@ -71,7 +71,7 @@ void LinkUi::DoLoad(const wxtJson &json)
     wxUnusedVar(json);
 }
 
-void LinkUi::Refresh()
+void LinkUi::DoRefreshDevice()
 {
     // Nothing to do yet...
 }

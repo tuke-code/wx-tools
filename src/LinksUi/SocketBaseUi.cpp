@@ -87,7 +87,7 @@ void SocketBaseUi::DoLoad(const wxtJson &json)
     }
 }
 
-void SocketBaseUi::Refresh()
+void SocketBaseUi::DoRefreshDevice()
 {
     if (GetLink()) {
         return;

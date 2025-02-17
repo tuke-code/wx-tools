@@ -104,7 +104,7 @@ void SerialPortUi::DoLoad(const wxtJson &json)
     m_parityComboBox->SetParity(static_cast<itas109::Parity>(parity));
 }
 
-void SerialPortUi::Refresh()
+void SerialPortUi::DoRefreshDevice()
 {
     if (GetLink()) {
         return;

@@ -107,7 +107,7 @@ void Page::OnRefresh(wxCommandEvent &)
 {
     auto linkSettings = m_pageSettings->GetLinkSettings();
     auto linkUi = linkSettings->GetLinkUi();
-    linkUi->Refresh();
+    linkUi->DoRefreshDevice();
 }
 
 void Page::OnBytesRx(wxThreadEvent &e)

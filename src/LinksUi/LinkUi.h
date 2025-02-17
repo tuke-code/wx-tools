@@ -28,7 +28,7 @@ public:
     virtual void Enable();
     virtual wxtJson DoSave() const;
     virtual void DoLoad(const wxtJson &json);
-    virtual void Refresh();
+    virtual void DoRefreshDevice();
 
 protected:
     virtual Link *NewLink();
