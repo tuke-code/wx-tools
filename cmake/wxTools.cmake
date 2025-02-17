@@ -28,6 +28,6 @@ function(wxt_build_for_store target)
   add_custom_target(${target}-store
     COMMAND ${CMAKE_SOURCE_DIR}/scripts/msix/make-msix.bat ${target}
     SOURCES ${CMAKE_SOURCE_DIR}/scripts/msix/make-msix.bat
-    WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
+    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/scripts/msix)
   # cmake-format: on
 endfunction()
