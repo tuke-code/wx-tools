@@ -57,4 +57,4 @@ jobs:
     - name: Upload Release Asset for Windows
       shell: cmd
       run: |
-        for %f in (build\assets\*.zip) do gh release upload continuous "%f"
+        for %%f in (build\assets\*.zip) do gh release upload continuous "%%f"
