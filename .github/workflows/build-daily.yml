@@ -55,5 +55,7 @@ jobs:
         cmake --build . --target wxTools
         dir && dir .\assets && dir .\assets\wxTools
     - name: Upload Release Asset for Windows
+      shell: cmd
       run: |
-        dir && gh release upload continuous 'build\assets\*.zip'
+        for /f "delims=" %i in (build\assets\zip_name.txt) do ( set ZIP_NAME=%i)
+        dir && gh release upload continuous 'build\assets\%ZIP_NAME%.zip'
