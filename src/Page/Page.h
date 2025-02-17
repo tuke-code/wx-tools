@@ -32,7 +32,6 @@ public:
 private:
     PageSettings *m_pageSettings;
     PageIO *m_pageIO;
-    wxTimer m_sendTimer;
 
 private:
     void OnInvokeOpenOrClose(wxCommandEvent &);
@@ -46,15 +45,16 @@ private:
     void OnLinkOpened(wxThreadEvent &e);
     void OnLinkClosed(wxThreadEvent &e);
     void OnLinkResolve(wxThreadEvent &e);
-    void OnSendTimerTimeout(wxTimerEvent &);
     void OnWrap(wxCommandEvent &event);
     void OnClear(wxCommandEvent &);
-    void OnTextFormatChanged(wxCommandEvent &);
+    void OnInputTextFormatChanged(wxCommandEvent &);
+    void OnWrite(wxCommandEvent &);
 
-    void OutputText(std::shared_ptr<char> bytes, int len, std::string &fromTo, bool isRx);
-    void Open();
-    void Close(bool ignoredCloseError);
+    void DoOutputText(std::shared_ptr<char> bytes, int len, std::string &fromTo, bool isRx);
+    void DoOpen();
+    void DoClose(bool ignoredCloseError);
     void DoClearClients();
+    void DoWrite();
 
 private:
     DECLARE_DYNAMIC_CLASS(Page);

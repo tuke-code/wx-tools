@@ -14,39 +14,40 @@
 #include "PageSettingsInputPopup.h"
 #include "Utilities/TextFormatComboBox.h"
 
-wxDEFINE_EVENT(wxtEVT_SETTINGS_INPUT_FORMAT, wxCommandEvent);
 wxDEFINE_EVENT(wxtEVT_SETTINGS_INPUT_WRITE, wxCommandEvent);
+wxDEFINE_EVENT(wxtEVT_SETTINGS_INPUT_FORMAT, wxCommandEvent);
 
 PageSettingsInput::PageSettingsInput(wxWindow* parent)
     : wxStaticBoxSizer(wxVERTICAL, parent, _("Input Settings"))
-    , m_context{nullptr}
     , m_parent{parent}
 {
     auto cycleText = new wxStaticText(GetStaticBox(), wxID_ANY, _("Cycle"));
-    m_context.cycleInterval = InitCycleIntervalComboBox();
+    m_interval = InitCycleIntervalComboBox();
     auto formatText = new wxStaticText(GetStaticBox(), wxID_ANY, _("Format"));
-    m_context.format = new TextFormatComboBox(GetStaticBox());
-    m_context.settings = new wxButton(GetStaticBox(), wxID_ANY, _("Settings"));
-    m_context.send = new wxButton(GetStaticBox(), wxID_ANY, _("Send"));
-    m_context.popup = new PageSettingsInputPopup(m_context.settings);
+    m_format = new TextFormatComboBox(GetStaticBox());
+    m_settings = new wxButton(GetStaticBox(), wxID_ANY, _("Settings"));
+    m_send = new wxButton(GetStaticBox(), wxID_ANY, _("Send"));
+    m_popup = new PageSettingsInputPopup(m_settings);
 
     auto* sizer = new wxGridBagSizer(4, 4);
     sizer->Add(cycleText, wxGBPosition(0, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
-    sizer->Add(m_context.cycleInterval, wxGBPosition(0, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
+    sizer->Add(m_interval, wxGBPosition(0, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
     sizer->Add(formatText, wxGBPosition(1, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
-    sizer->Add(m_context.format, wxGBPosition(1, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
+    sizer->Add(m_format, wxGBPosition(1, 1), wxGBSpan(1, 1), wxEXPAND | wxALL, 0);
     sizer->AddGrowableCol(1);
     Add(sizer, 0, wxEXPAND | wxALL, 0);
 
     AddSpacer(4);
 
     auto buttonSizer = new wxBoxSizer(wxHORIZONTAL);
-    buttonSizer->Add(m_context.settings, 1, wxEXPAND | wxALL, 0);
-    buttonSizer->Add(m_context.send, 1, wxEXPAND | wxALL, 0);
+    buttonSizer->Add(m_settings, 1, wxEXPAND | wxALL, 0);
+    buttonSizer->Add(m_send, 1, wxEXPAND | wxALL, 0);
     Add(buttonSizer, 0, wxEXPAND | wxALL, 0);
 
-    m_context.format->Bind(wxEVT_COMBOBOX_DROPDOWN, &PageSettingsInput::OnFormatChanged, this);
-    m_context.send->Bind(wxEVT_BUTTON, &PageSettingsInput::OnSendButtonClicked, this);
+    m_interval->Bind(wxEVT_COMBOBOX_CLOSEUP, &PageSettingsInput::OnIntervalChanged, this);
+    m_send->Bind(wxEVT_BUTTON, &PageSettingsInput::OnSendButtonClicked, this);
+    m_format->Bind(wxEVT_COMBOBOX_CLOSEUP, &PageSettingsInput::OnInputFormatChangehd, this);
+    m_timer.Bind(wxEVT_TIMER, &PageSettingsInput::OnTimer, this);
 }
 
 void PageSettingsInput::Load(const wxtJson& parameters)
@@ -58,9 +59,9 @@ void PageSettingsInput::Load(const wxtJson& parameters)
     wxtJson popup = wxtGetJsonObjValue<wxtJson>(parameters, keys.popup, wxtJson::object());
     // clang-format on
 
-    SetComboBoxSectionByIntClientData(m_context.cycleInterval, cycleInterval);
-    SetComboBoxSectionByIntClientData(m_context.format, textFormat);
-    m_context.popup->Load(popup);
+    SetComboBoxSectionByIntClientData(m_interval, cycleInterval);
+    SetComboBoxSectionByIntClientData(m_format, textFormat);
+    m_popup->Load(popup);
 }
 
 wxtJson PageSettingsInput::Save() const
@@ -68,35 +69,28 @@ wxtJson PageSettingsInput::Save() const
     PageSettingsInputParameterKeys keys;
     wxtJson parameters;
 
-    int selection = m_context.cycleInterval->GetSelection();
-    void* clientData = m_context.cycleInterval->GetClientData(selection);
+    int selection = m_interval->GetSelection();
+    void* clientData = m_interval->GetClientData(selection);
     if (clientData) {
         int cycleInterval = *static_cast<int*>(clientData);
         parameters[keys.cycleInterval] = cycleInterval;
     }
 
-    selection = m_context.format->GetSelection();
-    clientData = m_context.format->GetClientData(selection);
+    selection = m_format->GetSelection();
+    clientData = m_format->GetClientData(selection);
     if (clientData) {
         int textFormat = *static_cast<int*>(clientData);
         parameters[keys.textFormat] = textFormat;
     }
 
-    parameters[keys.popup] = m_context.popup->Save();
+    parameters[keys.popup] = m_popup->Save();
     return parameters;
-}
-
-void PageSettingsInput::SetCycleIntervalSelection(int selection) const
-{
-    if (selection >= 0 && selection < m_context.cycleInterval->GetCount()) {
-        m_context.cycleInterval->SetSelection(selection);
-    }
 }
 
 int PageSettingsInput::GetTextFormat() const
 {
-    int selection = m_context.format->GetSelection();
-    void* clientData = m_context.format->GetClientData(selection);
+    int selection = m_format->GetSelection();
+    void* clientData = m_format->GetClientData(selection);
     if (clientData) {
         return *static_cast<int*>(clientData);
     }
@@ -104,15 +98,21 @@ int PageSettingsInput::GetTextFormat() const
     return static_cast<int>(TextFormat::Hex);
 }
 
-PageSettingsInput::Context PageSettingsInput::GetContext()
+void PageSettingsInput::DoStopTimer()
 {
-    return m_context;
+    m_timer.Stop();
+    m_interval->SetSelection(0);
+}
+
+PageSettingsInputPopup* PageSettingsInput::GetPopup()
+{
+    return m_popup;
 }
 
 int PageSettingsInput::GetInterval() const
 {
-    int selection = m_context.cycleInterval->GetSelection();
-    void* clientData = m_context.cycleInterval->GetClientData(selection);
+    int selection = m_interval->GetSelection();
+    void* clientData = m_interval->GetClientData(selection);
     if (clientData) {
         return *static_cast<int*>(clientData);
     }
@@ -120,18 +120,31 @@ int PageSettingsInput::GetInterval() const
     return -1;
 }
 
-void PageSettingsInput::OnSendButtonClicked(wxCommandEvent& WXUNUSED(event))
+void PageSettingsInput::OnSendButtonClicked(wxCommandEvent&)
 {
-    wxCommandEvent event(wxtEVT_SETTINGS_INPUT_WRITE);
+    wxPostEvent(m_parent, wxCommandEvent(wxtEVT_SETTINGS_INPUT_WRITE));
+}
+
+void PageSettingsInput::OnInputFormatChangehd(wxCommandEvent&)
+{
+    wxCommandEvent event(wxtEVT_SETTINGS_INPUT_FORMAT);
+    event.SetInt(GetTextFormat());
     wxPostEvent(m_parent, event);
 }
 
-void PageSettingsInput::OnFormatChanged(wxCommandEvent& WXUNUSED(event))
+void PageSettingsInput::OnIntervalChanged(wxCommandEvent&)
 {
-    wxCommandEvent event(wxtEVT_SETTINGS_INPUT_FORMAT);
-    int format = GetTextFormat();
-    event.SetInt(format);
-    wxPostEvent(m_parent, event);
+    int interval = GetInterval();
+    if (interval == -1) {
+        m_timer.Stop();
+    } else {
+        m_timer.Start(interval);
+    }
+}
+
+void PageSettingsInput::OnTimer(wxTimerEvent&)
+{
+    wxPostEvent(m_parent, wxCommandEvent(wxtEVT_SETTINGS_INPUT_WRITE));
 }
 
 wxComboBox* PageSettingsInput::InitCycleIntervalComboBox()
@@ -150,7 +163,7 @@ wxComboBox* PageSettingsInput::InitCycleIntervalComboBox()
     for (int i = 10; i <= 100; i += 10) {
         items.push_back(i);
     }
-    for (int i = 100; i <= 1000; i += 100) {
+    for (int i = 200; i <= 1000; i += 100) {
         items.push_back(i);
     }
     for (int i = 2000; i <= 10000; i += 1000) {

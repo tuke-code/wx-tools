@@ -37,7 +37,7 @@ bool Application::OnInit()
     wxtInfo() << "--------------------------------------------------------------------------------";
 
     auto* mainWindow = new MainWindow();
-#if 0
+#if 1
     mainWindow->SetTransparent(50);
 #endif
     mainWindow->Show(true);

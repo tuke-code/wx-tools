@@ -8,12 +8,13 @@
  **************************************************************************************************/
 #pragma once
 
+#include <wx/timer.h>
 #include <wx/wx.h>
 
 #include "Common/wxTools.h"
 
-wxDECLARE_EVENT(wxtEVT_SETTINGS_INPUT_FORMAT, wxCommandEvent);
 wxDECLARE_EVENT(wxtEVT_SETTINGS_INPUT_WRITE, wxCommandEvent);
+wxDECLARE_EVENT(wxtEVT_SETTINGS_INPUT_FORMAT, wxCommandEvent);
 
 struct PageSettingsInputParameterKeys
 {
@@ -27,32 +28,29 @@ class TextFormatComboBox;
 class PageSettingsInput : public wxStaticBoxSizer
 {
 public:
-    struct Context
-    {
-        wxButton *settings{nullptr};
-        wxButton *send{nullptr};
-        wxComboBox *cycleInterval{nullptr};
-        TextFormatComboBox *format{nullptr};
-        PageSettingsInputPopup *popup{nullptr};
-    };
-
-public:
     PageSettingsInput(wxWindow *parent);
 
     void Load(const wxtJson &parameters);
     wxtJson Save() const;
-    Context GetContext();
     int GetInterval() const;
-    void SetCycleIntervalSelection(int selection) const;
     int GetTextFormat() const;
+    void DoStopTimer();
+    PageSettingsInputPopup *GetPopup();
 
 private:
-    Context m_context;
+    wxButton *m_settings{nullptr};
+    wxButton *m_send{nullptr};
+    wxComboBox *m_interval{nullptr};
+    TextFormatComboBox *m_format{nullptr};
+    PageSettingsInputPopup *m_popup{nullptr};
     wxWindow *m_parent{nullptr};
+    wxTimer m_timer;
 
 private:
-    void OnSendButtonClicked(wxCommandEvent &event);
-    void OnFormatChanged(wxCommandEvent &);
+    void OnSendButtonClicked(wxCommandEvent &);
+    void OnInputFormatChangehd(wxCommandEvent &);
+    void OnIntervalChanged(wxCommandEvent &);
+    void OnTimer(wxTimerEvent &);
 
     wxComboBox *InitCycleIntervalComboBox();
 };

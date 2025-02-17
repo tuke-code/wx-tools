@@ -17,7 +17,6 @@
 #include "LinksUi/SocketClientUi.h"
 #include "LinksUi/SocketServerUi.h"
 #include "LinksUi/UDPServerUi.h"
-#include "Utilities/TextFormatComboBox.h"
 
 #include "PageIO.h"
 #include "PageIOInput.h"
@@ -42,6 +41,8 @@ EVT_THREAD(wxtLinkClosed, Page::OnLinkClosed)
 EVT_THREAD(wxtLinkResolve, Page::OnLinkResolve)
 EVT_COMMAND(wxID_ANY, wxtEVT_SETTINGS_OUTPUT_CLEAR, Page::OnClear)
 EVT_COMMAND(wxID_ANY, wxtEVT_SETTINGS_OUTPUT_WRAP, Page::OnWrap)
+EVT_COMMAND(wxID_ANY, wxtEVT_SETTINGS_INPUT_WRITE, Page::OnWrite)
+EVT_COMMAND(wxID_ANY, wxtEVT_SETTINGS_INPUT_FORMAT, Page::OnInputTextFormatChanged)
 END_EVENT_TABLE()
 
 Page::Page(LinkType type, wxWindow *parent)
@@ -59,12 +60,6 @@ Page::Page(LinkType type, wxWindow *parent)
     sizer->Add(m_pageIO, 1, wxEXPAND | wxALL, 4);
     Layout();
 
-    PageSettingsInput *inputSettings = m_pageSettings->GetInputSettings();
-    PageSettingsInput::Context inputSettingCtx = inputSettings->GetContext();
-    inputSettingCtx.send->Bind(wxEVT_BUTTON, &Page::OnInvokeWrite, this);
-    inputSettingCtx.cycleInterval->Bind(wxEVT_COMBOBOX_DROPDOWN, &Page::OnInvokeStartTimer, this);
-    inputSettingCtx.format->Bind(wxEVT_COMBOBOX_DROPDOWN, &Page::OnTextFormatChanged, this);
-
     PageSettingsLink *linkSettings = m_pageSettings->GetLinkSettings();
     linkSettings->GetOpenButton()->Bind(wxEVT_BUTTON, &Page::OnInvokeOpenOrClose, this);
 
@@ -73,8 +68,6 @@ Page::Page(LinkType type, wxWindow *parent)
         auto linkUi = linkSettings->GetLinkUi();
         linkUi->Refresh();
     });
-
-    m_sendTimer.Bind(wxEVT_TIMER, &Page::OnSendTimerTimeout, this);
 }
 
 void Page::Load(const wxtJson &json)
@@ -89,9 +82,9 @@ void Page::Load(const wxtJson &json)
     }
 
     int format = m_pageSettings->GetInputSettings()->GetTextFormat();
+    bool wrap = m_pageSettings->GetOutputSettings()->GetWrap();
     m_pageIO->GetInput()->SetTextFormat(static_cast<TextFormat>(format));
-
-    m_pageIO->GetOutput()->SetWrap(m_pageSettings->GetOutputSettings()->GetWrap());
+    m_pageIO->GetOutput()->SetWrap(wrap);
 }
 
 wxtJson Page::Save() const
@@ -112,105 +105,32 @@ void Page::OnInvokeOpenOrClose(wxCommandEvent &)
     btn->Disable();
 
     if (linkUi->IsOpen()) {
-        Close(true);
+        DoClose(true);
     } else {
-        Open();
+        DoOpen();
     }
 }
 
 void Page::OnInvokeWrite(wxCommandEvent &)
 {
-    PageSettingsLink *linkSettings = m_pageSettings->GetLinkSettings();
-    LinkUi *linkUi = linkSettings->GetLinkUi();
-    if (!linkUi->IsOpen()) {
-        wxMessageBox(_("Link is not opened."), _("Error"), wxICON_ERROR);
-        return;
-    }
-
-    PageSettingsInput *inputSettings = m_pageSettings->GetInputSettings();
-    PageSettingsInput::Context ctx = inputSettings->GetContext();
-    wxtJson inputParameters = ctx.popup->Save();
-
-    PageSettingsInputPopupParameterKeys keys;
-    int prefix = inputParameters[keys.prefix].get<int>();
-    int suffix = inputParameters[keys.suffix].get<int>();
-    int escIndex = inputParameters[keys.escIndex].get<int>();
-    int startIndex = inputParameters[keys.startIndex].get<int>();
-    int endIndex = inputParameters[keys.endIndex].get<int>();
-    int algorithm = inputParameters[keys.algorithm].get<int>();
-    bool addCrc = inputParameters[keys.addCrc].get<bool>();
-    bool bigEndian = inputParameters[keys.bigEndian].get<bool>();
-
-    Link *link = linkUi->GetLink();
-    wxString text = m_pageIO->GetInput()->GetInputText();
-    if (text.IsEmpty()) {
-        return;
-    }
-
-    text = GetEscapeString(text.ToStdString(), escIndex);
-    int len = 0;
-    int format = inputSettings->GetTextFormat();
-    auto bytes = DoEncodeBytes(text.ToStdString(), len, format);
-    if (len <= 0) {
-        return;
-    }
-
-    std::vector<char> prefixChars = GetAdditionChars(prefix);
-    std::vector<char> crcChars;
-    if (addCrc) {
-        crcChars = DoCalculateCRC(bytes, len, algorithm, startIndex, endIndex, bigEndian);
-    }
-    std::vector<char> suffixChars = GetAdditionChars(suffix);
-
-    std::vector<char> tmp = prefixChars;
-    for (int i = 0; i < len; i++) {
-        tmp.push_back(bytes.get()[i]);
-    }
-    tmp.insert(tmp.end(), crcChars.begin(), crcChars.end());
-    tmp.insert(tmp.end(), suffixChars.begin(), suffixChars.end());
-
-    std::shared_ptr<char> allBytes(new char[tmp.size()], [](char *p) { delete[] p; });
-    memcpy(allBytes.get(), tmp.data(), tmp.size());
-    link->Write(std::move(allBytes), tmp.size());
-}
-
-void Page::OnInvokeStartTimer(wxCommandEvent &)
-{
-    PageSettingsInput *inputSettings = m_pageSettings->GetInputSettings();
-
-    int ms = inputSettings->GetInterval();
-    if (ms == -1) {
-        m_sendTimer.Stop();
-        return;
-    }
-
-    PageSettingsLink *linkSettings = m_pageSettings->GetLinkSettings();
-    LinkUi *linkUi = linkSettings->GetLinkUi();
-    if (!linkUi->IsOpen()) {
-        PageSettingsInput *inputSettings = m_pageSettings->GetInputSettings();
-        inputSettings->SetCycleIntervalSelection(0);
-        wxMessageBox(_("Link is not open."), _("Error"), wxICON_ERROR);
-        return;
-    }
-
-    m_sendTimer.Start(ms);
+    DoWrite();
 }
 
 void Page::OnBytesRx(wxThreadEvent &e)
 {
     wxtDataItem item = e.GetPayload<wxtDataItem>();
-    OutputText(item.data, item.len, item.flag, true);
+    DoOutputText(item.data, item.len, item.flag, true);
 }
 
 void Page::OnBytesTx(wxThreadEvent &e)
 {
     auto item = e.GetPayload<wxtDataItem>();
-    OutputText(item.data, item.len, item.flag, false);
+    DoOutputText(item.data, item.len, item.flag, false);
 }
 
 void Page::OnErrorOccurred(wxThreadEvent &e)
 {
-    Close(e.GetInt() == wxtIgnoreCloseErrorPopup);
+    DoClose(e.GetInt() == wxtIgnoreCloseErrorPopup);
     wxButton *btn = m_pageSettings->GetLinkSettings()->GetOpenButton();
     btn->Enable(true);
     DoClearClients();
@@ -279,17 +199,6 @@ void Page::OnLinkResolve(wxThreadEvent &e)
     }
 }
 
-void Page::OnSendTimerTimeout(wxTimerEvent &)
-{
-    PageSettingsLink *linkSettings = m_pageSettings->GetLinkSettings();
-    PageSettingsInput *inputSettings = m_pageSettings->GetInputSettings();
-    if (!linkSettings->GetLinkUi()->IsOpen()) {
-        return;
-    }
-
-    //OnInvokeWrite(e);
-}
-
 void Page::OnWrap(wxCommandEvent &event)
 {
     m_pageIO->GetOutput()->SetWrap(event.GetInt());
@@ -300,11 +209,24 @@ void Page::OnClear(wxCommandEvent &)
     m_pageIO->GetOutput()->Clear();
 }
 
-void Page::OnTextFormatChanged(wxCommandEvent &)
+void Page::OnInputTextFormatChanged(wxCommandEvent &)
 {
     PageSettingsInput *inputSettings = m_pageSettings->GetInputSettings();
     int format = inputSettings->GetTextFormat();
     m_pageIO->GetInput()->SetTextFormat(static_cast<TextFormat>(format));
+}
+
+void Page::OnWrite(wxCommandEvent &)
+{
+    PageSettingsLink *linkSettings = m_pageSettings->GetLinkSettings();
+    LinkUi *linkUi = linkSettings->GetLinkUi();
+    if (!linkUi->IsOpen()) {
+        PageSettingsInput *inputSettings = m_pageSettings->GetInputSettings();
+        inputSettings->DoStopTimer();
+        return;
+    }
+
+    DoWrite();
 }
 
 std::string dateTimeString(bool showDate, bool showTime, bool showMs)
@@ -348,7 +270,7 @@ std::string flagString(bool isRx, const std::string &fromTo, bool showFlag)
     return stringStream.str();
 }
 
-void Page::OutputText(std::shared_ptr<char> bytes, int len, std::string &fromTo, bool isRx)
+void Page::DoOutputText(std::shared_ptr<char> bytes, int len, std::string &fromTo, bool isRx)
 {
     PageSettingsOutput *outputSettings = m_pageSettings->GetOutputSettings();
     TextFormat outputFormat = outputSettings->GetTextFormat();
@@ -407,7 +329,7 @@ void Page::OutputText(std::shared_ptr<char> bytes, int len, std::string &fromTo,
     }
 }
 
-void Page::Open()
+void Page::DoOpen()
 {
     PageSettingsLink *linkSettings = m_pageSettings->GetLinkSettings();
     LinkUi *linkUi = linkSettings->GetLinkUi();
@@ -420,14 +342,13 @@ void Page::Open()
     }
 }
 
-void Page::Close(bool ignoredCloseError)
+void Page::DoClose(bool ignoredCloseError)
 {
     PageSettingsLink *linkSettings = m_pageSettings->GetLinkSettings();
     LinkUi *linkUi = linkSettings->GetLinkUi();
-    m_sendTimer.Stop();
 
     PageSettingsInput *inputSettings = m_pageSettings->GetInputSettings();
-    inputSettings->SetCycleIntervalSelection(0);
+    inputSettings->DoStopTimer();
 
     linkUi->Close(ignoredCloseError);
     linkUi->Enable();
@@ -443,4 +364,60 @@ void Page::DoClearClients()
     if (serverUi) {
         serverUi->DoClearClients();
     }
+}
+
+void Page::DoWrite()
+{
+    PageSettingsLink *linkSettings = m_pageSettings->GetLinkSettings();
+    LinkUi *linkUi = linkSettings->GetLinkUi();
+    if (!linkUi->IsOpen()) {
+        wxMessageBox(_("Link is not opened."), _("Error"), wxICON_ERROR);
+        return;
+    }
+
+    PageSettingsInput *inputSettings = m_pageSettings->GetInputSettings();
+    PageSettingsInputPopup *popup = inputSettings->GetPopup();
+    wxtJson inputParameters = popup->Save();
+
+    PageSettingsInputPopupParameterKeys keys;
+    int prefix = inputParameters[keys.prefix].get<int>();
+    int suffix = inputParameters[keys.suffix].get<int>();
+    int escIndex = inputParameters[keys.escIndex].get<int>();
+    int startIndex = inputParameters[keys.startIndex].get<int>();
+    int endIndex = inputParameters[keys.endIndex].get<int>();
+    int algorithm = inputParameters[keys.algorithm].get<int>();
+    bool addCrc = inputParameters[keys.addCrc].get<bool>();
+    bool bigEndian = inputParameters[keys.bigEndian].get<bool>();
+
+    Link *link = linkUi->GetLink();
+    wxString text = m_pageIO->GetInput()->GetInputText();
+    if (text.IsEmpty()) {
+        return;
+    }
+
+    text = GetEscapeString(text.ToStdString(), escIndex);
+    int len = 0;
+    int format = inputSettings->GetTextFormat();
+    auto bytes = DoEncodeBytes(text.ToStdString(), len, format);
+    if (len <= 0) {
+        return;
+    }
+
+    std::vector<char> prefixChars = GetAdditionChars(prefix);
+    std::vector<char> crcChars;
+    if (addCrc) {
+        crcChars = DoCalculateCRC(bytes, len, algorithm, startIndex, endIndex, bigEndian);
+    }
+    std::vector<char> suffixChars = GetAdditionChars(suffix);
+
+    std::vector<char> tmp = prefixChars;
+    for (int i = 0; i < len; i++) {
+        tmp.push_back(bytes.get()[i]);
+    }
+    tmp.insert(tmp.end(), crcChars.begin(), crcChars.end());
+    tmp.insert(tmp.end(), suffixChars.begin(), suffixChars.end());
+
+    std::shared_ptr<char> allBytes(new char[tmp.size()], [](char *p) { delete[] p; });
+    memcpy(allBytes.get(), tmp.data(), tmp.size());
+    link->Write(std::move(allBytes), tmp.size());
 }
