@@ -36,12 +36,12 @@ PageIOOutput *PageIO::GetOutput() const
     return m_output;
 }
 
-wxtJson PageIO::Save() const
+wxtJson PageIO::DoSave() const
 {
     return wxtJson::object();
 }
 
-void PageIO::Load(const wxtJson &parameters)
+void PageIO::DoLoad(const wxtJson &parameters)
 {
     wxUnusedVar(parameters);
 }

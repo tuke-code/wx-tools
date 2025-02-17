@@ -8,7 +8,6 @@
  **************************************************************************************************/
 #pragma once
 
-#include <nlohmann/json.hpp>
 #include <wx/gbsizer.h>
 #include <wx/wx.h>
 
@@ -27,8 +26,8 @@ public:
 
     virtual void Disable();
     virtual void Enable();
-    virtual wxtJson Save() const;
-    virtual void Load(const wxtJson &json);
+    virtual wxtJson DoSave() const;
+    virtual void DoLoad(const wxtJson &json);
     virtual void Refresh();
 
 protected:

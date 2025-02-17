@@ -47,7 +47,7 @@ void SocketBaseUi::Enable()
     }
 }
 
-wxtJson SocketBaseUi::Save() const
+wxtJson SocketBaseUi::DoSave() const
 {
     wxtJson json;
     SocketBaseParameterKeys keys;
@@ -65,7 +65,7 @@ wxtJson SocketBaseUi::Save() const
     return json;
 }
 
-void SocketBaseUi::Load(const wxtJson &json)
+void SocketBaseUi::DoLoad(const wxtJson &json)
 {
     SocketBaseParameterKeys keys;
     if (m_serverComboBox) {

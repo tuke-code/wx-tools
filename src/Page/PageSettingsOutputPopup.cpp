@@ -42,7 +42,7 @@ void PageSettingsOutputPopup::Load(const wxtJson &parameters)
     m_filterTextCtrl->SetValue(parameters[keys.fillter].get<std::string>());
 }
 
-wxtJson PageSettingsOutputPopup::Save() const
+wxtJson PageSettingsOutputPopup::DoSave() const
 {
     wxtJson parameters{wxtJson::object()};
     PageSettingsOutputPopupParameterKeys keys;

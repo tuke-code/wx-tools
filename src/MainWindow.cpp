@@ -304,7 +304,7 @@ void MainWindow::DoLoad(wxString fileName)
 
         wxtJson pageJson = json[name.ToStdString()];
         if (pageJson.is_object()) {
-            page->Load(pageJson);
+            page->DoLoad(pageJson);
         }
     }
 
@@ -321,7 +321,7 @@ void MainWindow::DoSave(wxString fileName)
     wxtJson wxTools = wxtJson::object();
     for (auto it = m_pageMap.begin(); it != m_pageMap.end(); ++it) {
         Page* page = it->second;
-        wxtJson json = page->Save();
+        wxtJson json = page->DoSave();
         wxString name = GetPageParameterFileName(it->first);
         wxTools[name.ToStdString()] = json;
     }

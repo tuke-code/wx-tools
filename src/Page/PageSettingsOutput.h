@@ -32,8 +32,8 @@ class PageSettingsOutput : public wxStaticBoxSizer
 public:
     PageSettingsOutput(wxWindow *parent);
 
-    void Load(const wxtJson &parameters);
-    wxtJson Save() const;
+    void DoLoad(const wxtJson &parameters);
+    wxtJson DoSave() const;
 
     TextFormat GetTextFormat() const;
     bool GetShowDate() const;

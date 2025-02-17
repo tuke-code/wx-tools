@@ -21,8 +21,8 @@ public:
 
     void Disable() override;
     void Enable() override;
-    wxtJson Save() const override;
-    void Load(const wxtJson &json) override;
+    wxtJson DoSave() const override;
+    void DoLoad(const wxtJson &json) override;
     void Refresh() override;
 
     wxTextCtrl *GetClientInfoTextCtrl() const;

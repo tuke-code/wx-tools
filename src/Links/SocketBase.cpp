@@ -15,7 +15,7 @@ SocketBase::SocketBase(SocketBasePrivate *d)
 
 SocketBase::~SocketBase() {}
 
-void SocketBase::Load(const wxtJson &parameters)
+void SocketBase::DoLoad(const wxtJson &parameters)
 {
     auto *d = GetD<SocketBasePrivate *>();
     SocketBaseParameterKeys keys;
@@ -38,7 +38,7 @@ void SocketBase::Load(const wxtJson &parameters)
     }
 }
 
-wxtJson SocketBase::Save()
+wxtJson SocketBase::DoSave()
 {
     auto *d = GetD<SocketBasePrivate *>();
     SocketBaseParameterKeys keys;

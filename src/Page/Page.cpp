@@ -63,16 +63,15 @@ Page::Page(LinkType type, wxWindow *parent)
     Layout();
 }
 
-void Page::Load(const wxtJson &json)
+void Page::DoLoad(const wxtJson &json)
 {
-    PageParameterKeys keys;
-    if (json.contains(keys.settings)) {
-        m_pageSettings->Load(json[keys.settings].get<wxtJson>());
+    if (!json.is_object()) {
+        return;
     }
 
-    if (json.contains(keys.io)) {
-        m_pageIO->Load(json[keys.io].get<wxtJson>());
-    }
+    PageParameterKeys keys;
+    m_pageSettings->DoLoad(wxtGetJsonObjValue<wxtJson>(json, keys.settings, wxtJson::object()));
+    m_pageIO->DoLoad(wxtGetJsonObjValue<wxtJson>(json, keys.io, wxtJson::object()));
 
     int format = m_pageSettings->GetInputSettings()->GetTextFormat();
     bool wrap = m_pageSettings->GetOutputSettings()->GetWrap();
@@ -80,12 +79,12 @@ void Page::Load(const wxtJson &json)
     m_pageIO->GetOutput()->SetWrap(wrap);
 }
 
-wxtJson Page::Save() const
+wxtJson Page::DoSave() const
 {
     wxtJson json;
     PageParameterKeys keys;
-    json[keys.settings] = m_pageSettings->Save();
-    json[keys.io] = m_pageIO->Save();
+    json[keys.settings] = m_pageSettings->DoSave();
+    json[keys.io] = m_pageIO->DoSave();
     return json;
 }
 
@@ -373,7 +372,7 @@ void Page::DoWrite()
 
     PageSettingsInput *inputSettings = m_pageSettings->GetInputSettings();
     PageSettingsInputPopup *popup = inputSettings->GetPopup();
-    wxtJson inputParameters = popup->Save();
+    wxtJson inputParameters = popup->DoSave();
 
     PageSettingsInputPopupParameterKeys keys;
     int prefix = inputParameters[keys.prefix].get<int>();

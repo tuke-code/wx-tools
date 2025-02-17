@@ -26,8 +26,8 @@ public:
     Page(LinkType type, wxWindow *parent);
     Page() {}
 
-    void Load(const wxtJson &json);
-    wxtJson Save() const;
+    void DoLoad(const wxtJson &json);
+    wxtJson DoSave() const;
 
 private:
     PageSettings *m_pageSettings;

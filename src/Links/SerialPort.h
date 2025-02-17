@@ -27,6 +27,6 @@ public:
     SerialPort();
     ~SerialPort();
 
-    void Load(const wxtJson &parameters) override;
-    wxtJson Save() override;
+    void DoLoad(const wxtJson &parameters) override;
+    wxtJson DoSave() override;
 };

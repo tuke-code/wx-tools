@@ -47,7 +47,7 @@ PageSettingsInput::PageSettingsInput(wxWindow* parent)
     m_timer.Bind(wxEVT_TIMER, &PageSettingsInput::OnTimer, this);
 }
 
-void PageSettingsInput::Load(const wxtJson& parameters)
+void PageSettingsInput::DoLoad(const wxtJson& parameters)
 {
     PageSettingsInputParameterKeys keys;
     // clang-format off
@@ -58,10 +58,10 @@ void PageSettingsInput::Load(const wxtJson& parameters)
 
     SetComboBoxSectionByIntClientData(m_interval, cycleInterval);
     SetComboBoxSectionByIntClientData(m_format, textFormat);
-    m_popup->Load(popup);
+    m_popup->DoLoad(popup);
 }
 
-wxtJson PageSettingsInput::Save() const
+wxtJson PageSettingsInput::DoSave() const
 {
     PageSettingsInputParameterKeys keys;
     wxtJson parameters;
@@ -80,7 +80,7 @@ wxtJson PageSettingsInput::Save() const
         parameters[keys.textFormat] = textFormat;
     }
 
-    parameters[keys.popup] = m_popup->Save();
+    parameters[keys.popup] = m_popup->DoSave();
     return parameters;
 }
 

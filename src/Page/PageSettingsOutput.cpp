@@ -77,7 +77,7 @@ PageSettingsOutput::PageSettingsOutput(wxWindow *parent)
     clearButton->Bind(wxEVT_BUTTON, &PageSettingsOutput::OnClear, this);
 }
 
-void PageSettingsOutput::Load(const wxtJson &parameters)
+void PageSettingsOutput::DoLoad(const wxtJson &parameters)
 {
     PageSettingsOutputParameterKeys keys;
     int defaultFormat = static_cast<int>(TextFormat::Hex);
@@ -104,7 +104,7 @@ void PageSettingsOutput::Load(const wxtJson &parameters)
     DoUpdateCheckBoxesState();
 }
 
-wxtJson PageSettingsOutput::Save() const
+wxtJson PageSettingsOutput::DoSave() const
 {
     wxtJson parameters;
     PageSettingsOutputParameterKeys keys;

@@ -22,8 +22,8 @@ public:
     PageIOInput *GetInput() const;
     PageIOOutput *GetOutput() const;
 
-    wxtJson Save() const;
-    void Load(const wxtJson &parameters);
+    wxtJson DoSave() const;
+    void DoLoad(const wxtJson &parameters);
 
 private:
     PageIOInput *m_input;

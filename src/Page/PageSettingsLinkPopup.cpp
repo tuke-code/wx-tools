@@ -40,7 +40,7 @@ void PageSettingsLinkPopup::Load(const wxtJson &parameters)
     wxUnusedVar(parameters);
 }
 
-wxtJson PageSettingsLinkPopup::Save() const
+wxtJson PageSettingsLinkPopup::DoSave() const
 {
     wxtJson json = wxtJson::object();
     PageSettingsLinkPopupParameterKeys keys;

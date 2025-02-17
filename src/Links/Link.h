@@ -25,8 +25,8 @@ public:
     void Write(std::shared_ptr<char> bytes, int len);
     void SetEvtHandler(wxEvtHandler *handler);
 
-    virtual void Load(const wxtJson &parameters) = 0;
-    virtual wxtJson Save() = 0;
+    virtual void DoLoad(const wxtJson &parameters) = 0;
+    virtual wxtJson DoSave() = 0;
 
 public:
     template<typename T>

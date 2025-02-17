@@ -25,7 +25,7 @@ public:
     PageSettingsLinkPopup(wxButton *controlButton, wxWindow *parent);
 
     void Load(const wxtJson &parameters);
-    wxtJson Save() const;
+    wxtJson DoSave() const;
 
 private:
     void OnRefresh(wxCommandEvent &);

@@ -72,7 +72,7 @@ PageSettingsInputPopup::PageSettingsInputPopup(wxButton *controlButton)
     SetSizerAndFit(panelSizer);
 }
 
-void PageSettingsInputPopup::Load(const wxtJson &json)
+void PageSettingsInputPopup::DoLoad(const wxtJson &json)
 {
     PageSettingsInputPopupParameterKeys keys;
     int prefix = json[keys.prefix].get<int>();
@@ -94,7 +94,7 @@ void PageSettingsInputPopup::Load(const wxtJson &json)
     m_bigEndianCheckBox->SetValue(bigEndian);
 }
 
-wxtJson PageSettingsInputPopup::Save() const
+wxtJson PageSettingsInputPopup::DoSave() const
 {
     PageSettingsInputPopupParameterKeys keys;
     wxtJson json;

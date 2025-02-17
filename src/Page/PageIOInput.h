@@ -19,7 +19,7 @@ public:
     PageIOInput(wxWindow *parent);
 
     void Load(const wxtJson &parameters);
-    wxtJson Save() const;
+    wxtJson DoSave() const;
 
     wxString GetInputText() const;
     void SetTextFormat(TextFormat format);

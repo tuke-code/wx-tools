@@ -19,7 +19,7 @@ PageIOInput::PageIOInput(wxWindow *parent)
 
 void PageIOInput::Load(const wxtJson &parameters) {}
 
-wxtJson PageIOInput::Save() const
+wxtJson PageIOInput::DoSave() const
 {
     wxtJson parameters{wxtJson::object()};
     return parameters;

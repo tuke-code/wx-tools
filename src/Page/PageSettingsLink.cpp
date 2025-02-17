@@ -41,14 +41,14 @@ PageSettingsLink::PageSettingsLink(LinkType type, wxWindow *parent)
     m_openButton->Bind(wxEVT_BUTTON, &PageSettingsLink::OnOpen, this);
 }
 
-void PageSettingsLink::Load(const wxtJson &parameters)
+void PageSettingsLink::DoLoad(const wxtJson &parameters)
 {
-    m_linkUi->Load(parameters);
+    m_linkUi->DoLoad(parameters);
 }
 
-wxtJson PageSettingsLink::Save() const
+wxtJson PageSettingsLink::DoSave() const
 {
-    return m_linkUi->Save();
+    return m_linkUi->DoSave();
 }
 
 wxButton *PageSettingsLink::GetOpenButton() const

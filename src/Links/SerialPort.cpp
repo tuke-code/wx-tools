@@ -20,7 +20,7 @@ SerialPort::~SerialPort()
     delete GetD<SerialPortPrivate *>();
 }
 
-void SerialPort::Load(const wxtJson &parameters)
+void SerialPort::DoLoad(const wxtJson &parameters)
 {
     auto d = GetD<SerialPortPrivate *>();
     SerialPortParameterKeys keys;
@@ -34,7 +34,7 @@ void SerialPort::Load(const wxtJson &parameters)
     // clang-format on
 }
 
-wxtJson SerialPort::Save()
+wxtJson SerialPort::DoSave()
 {
     auto d = GetD<SerialPortPrivate *>();
     wxtJson parameters;

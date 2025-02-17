@@ -24,7 +24,7 @@ public:
     PageSettingsOutputPopup(wxButton *controlButton);
 
     void Load(const wxtJson &parameters);
-    wxtJson Save() const;
+    wxtJson DoSave() const;
 
     wxArrayString GetFilter() const;
 

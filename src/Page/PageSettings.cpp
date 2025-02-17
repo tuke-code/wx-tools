@@ -32,29 +32,29 @@ PageSettings::PageSettings(LinkType type, wxWindow *parent)
     Add(m_inputSettings, 0, wxEXPAND | wxALL);
 }
 
-void PageSettings::Load(const wxtJson &parameters)
+void PageSettings::DoLoad(const wxtJson &parameters)
 {
     PageSettingsParameterKeys keys;
     if (parameters.contains(keys.linkSettings)) {
-        m_linkSettings->Load(parameters[keys.linkSettings].get<wxtJson>());
+        m_linkSettings->DoLoad(parameters[keys.linkSettings].get<wxtJson>());
     }
 
     if (parameters.contains(keys.outputSettings)) {
-        m_outputSettings->Load(parameters[keys.outputSettings].get<wxtJson>());
+        m_outputSettings->DoLoad(parameters[keys.outputSettings].get<wxtJson>());
     }
 
     if (parameters.contains(keys.inputSettings)) {
-        m_inputSettings->Load(parameters[keys.inputSettings].get<wxtJson>());
+        m_inputSettings->DoLoad(parameters[keys.inputSettings].get<wxtJson>());
     }
 }
 
-wxtJson PageSettings::Save() const
+wxtJson PageSettings::DoSave() const
 {
     wxtJson parameters = wxtJson::object();
     PageSettingsParameterKeys keys;
-    parameters[keys.linkSettings] = m_linkSettings->Save();
-    parameters[keys.outputSettings] = m_outputSettings->Save();
-    parameters[keys.inputSettings] = m_inputSettings->Save();
+    parameters[keys.linkSettings] = m_linkSettings->DoSave();
+    parameters[keys.outputSettings] = m_outputSettings->DoSave();
+    parameters[keys.inputSettings] = m_inputSettings->DoSave();
     return parameters;
 }
 

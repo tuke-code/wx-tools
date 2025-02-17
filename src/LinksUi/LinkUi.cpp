@@ -35,7 +35,7 @@ bool LinkUi::Open(wxEvtHandler *evtHandler)
         return false;
     }
 
-    m_link->Load(Save());
+    m_link->DoLoad(DoSave());
     m_link->SetEvtHandler(evtHandler);
     return m_link->Open();
 }
@@ -60,13 +60,13 @@ void LinkUi::Disable() {}
 
 void LinkUi::Enable() {}
 
-wxtJson LinkUi::Save() const
+wxtJson LinkUi::DoSave() const
 {
     wxtJson json;
     return json;
 }
 
-void LinkUi::Load(const wxtJson &json)
+void LinkUi::DoLoad(const wxtJson &json)
 {
     wxUnusedVar(json);
 }

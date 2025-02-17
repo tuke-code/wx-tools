@@ -30,8 +30,8 @@ class PageSettingsInputPopup : public BaseSettingsPopup
 public:
     PageSettingsInputPopup(wxButton *controlButton);
 
-    void Load(const wxtJson &json);
-    wxtJson Save() const;
+    void DoLoad(const wxtJson &json);
+    wxtJson DoSave() const;
 
 private:
     wxComboBox *m_prefixComboBox{nullptr};

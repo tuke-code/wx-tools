@@ -24,6 +24,6 @@ public:
     SocketBase(SocketBasePrivate *d);
     ~SocketBase() override;
 
-    void Load(const wxtJson &parameters) override;
-    wxtJson Save() override;
+    void DoLoad(const wxtJson &parameters) override;
+    wxtJson DoSave() override;
 };

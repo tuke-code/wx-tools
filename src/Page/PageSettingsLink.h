@@ -19,8 +19,8 @@ class PageSettingsLink : public wxStaticBoxSizer
 public:
     PageSettingsLink(LinkType type, wxWindow *parent);
 
-    void Load(const wxtJson &parameters);
-    wxtJson Save() const;
+    void DoLoad(const wxtJson &parameters);
+    wxtJson DoSave() const;
 
     wxButton *GetOpenButton() const;
     LinkUi *GetLinkUi() const;

@@ -27,8 +27,8 @@ class PageSettingsInput : public wxStaticBoxSizer
 public:
     PageSettingsInput(wxWindow *parent);
 
-    void Load(const wxtJson &parameters);
-    wxtJson Save() const;
+    void DoLoad(const wxtJson &parameters);
+    wxtJson DoSave() const;
     int GetInterval() const;
     int GetTextFormat() const;
     void DoStopTimer();
