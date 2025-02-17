@@ -1,4 +1,7 @@
-# Get the last tag.
+# * Get the last tag.
+# * git tag -d v1.0.0
+# * git push github :refs/tags/v1.0.0
+
 function(wxt_git_get_latest_tag working_dir prefix)
   execute_process(
     COMMAND git tag
