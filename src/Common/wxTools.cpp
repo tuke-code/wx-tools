@@ -905,11 +905,7 @@ wxString GetEscapeString(const std::string &txt, int type)
 wxFileConfig *GetSettingsConfig()
 {
     wxString wxTools = wxStandardPaths::Get().MakeConfigFileName("wxTools");
-#ifdef WXT_PORTABLE_EDITION
     wxString fileName = GetSettingsPath() + wxtPathSeparator + wxTools;
-#else
-    wxString fileName = path + wxtPathSeparator + wxTools;
-#endif
 
     static wxFileConfig config("wxTools", "xTools", fileName, fileName, wxCONFIG_USE_GLOBAL_FILE);
     return &config;
@@ -940,8 +936,7 @@ wxString GetSettingsPath()
     wxString path = wxStandardPaths::Get().GetDataDir();
     path += wxFileName::GetPathSeparator() + wxString("conf");
 #else
-    wxStandardPaths &stdPaths = wxStandardPaths::Get();
-    wxString path = stdPaths.GetUserDataDir();
+    wxString path = wxStandardPaths::Get().GetUserDataDir();
 #endif
     // Make full dir...
     if (!wxDirExists(path)) {

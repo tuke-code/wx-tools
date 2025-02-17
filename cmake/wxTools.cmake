@@ -18,3 +18,16 @@ function(wxt_make_zip target)
       COMMENT "Creating zip package")
   endif()
 endfunction()
+
+function(wxt_build_for_store target)
+  if(NOT WIN32)
+    return()
+  endif()
+
+  # cmake-format: off
+  add_custom_target(${target}-store
+    COMMAND ${CMAKE_SOURCE_DIR}/scripts/msix/make-msix.bat ${target}
+    SOURCES ${CMAKE_SOURCE_DIR}/scripts/msix/make-msix.bat
+    WORKING_DIRECTORY ${CMAKE_BINARY_DIR})
+  # cmake-format: on
+endfunction()

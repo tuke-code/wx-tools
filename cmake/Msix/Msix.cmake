@@ -17,6 +17,7 @@
     ${target}_msix
     COMMAND ${CMAKE_COMMAND} ${args} -P ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/MsixScript.cmake
     SOURCES ${msix_source}
+    DEPENDS ${target}
     WORKING_DIRECTORY ${root_dir}
     COMMENT "Start making msix packet for ${target}")
 endfunction()

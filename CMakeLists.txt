@@ -95,13 +95,14 @@ endif()
 # Deploy local files
 file(GLOB_RECURSE WX_TOOLS_LOCAL_FILES res/*.po)
 add_custom_target(
-  wxTools-deploy-locale
+  wxTools-locale
   COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/res/i18n"
           "$<TARGET_FILE_DIR:wxTools>/i18n"
   SOURCES ${WX_TOOLS_LOCAL_FILES})
 
 # --------------------------------------------------------------------------------------------------
 # Generate MSI installer for Microsoft Store
+wxt_build_for_store(wxTools)
 option(WXT_GENERATE_MSIX "Generate MSIX" ON)
 if(${CMAKE_BUILD_TYPE} STREQUAL "Release" AND WXT_GENERATE_MSIX)
   wxt_generate_msix(wxTools "wxTools" "wxTools" ${WXT_GIT_TAG} OFF)
