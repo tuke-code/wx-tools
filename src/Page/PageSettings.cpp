@@ -35,17 +35,12 @@ PageSettings::PageSettings(LinkType type, wxWindow *parent)
 void PageSettings::DoLoad(const wxtJson &parameters)
 {
     PageSettingsParameterKeys keys;
-    if (parameters.contains(keys.linkSettings)) {
-        m_linkSettings->DoLoad(parameters[keys.linkSettings].get<wxtJson>());
-    }
-
-    if (parameters.contains(keys.outputSettings)) {
-        m_outputSettings->DoLoad(parameters[keys.outputSettings].get<wxtJson>());
-    }
-
-    if (parameters.contains(keys.inputSettings)) {
-        m_inputSettings->DoLoad(parameters[keys.inputSettings].get<wxtJson>());
-    }
+    auto tmp = wxtGetJsonObjValue<wxtJson>(parameters, keys.linkSettings, wxtJson::object());
+    m_linkSettings->DoLoad(tmp);
+    tmp = wxtGetJsonObjValue<wxtJson>(parameters, keys.outputSettings, wxtJson::object());
+    m_outputSettings->DoLoad(tmp);
+    tmp = wxtGetJsonObjValue<wxtJson>(parameters, keys.inputSettings, wxtJson::object());
+    m_inputSettings->DoLoad(tmp);
 }
 
 wxtJson PageSettings::DoSave() const
