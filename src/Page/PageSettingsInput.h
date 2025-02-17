@@ -12,6 +12,9 @@
 
 #include "Common/wxTools.h"
 
+wxDECLARE_EVENT(wxtEVT_SETTINGS_INPUT_FORMAT, wxCommandEvent);
+wxDECLARE_EVENT(wxtEVT_SETTINGS_INPUT_WRITE, wxCommandEvent);
+
 struct PageSettingsInputParameterKeys
 {
     std::string cycleInterval = {"cycleInterval"};
@@ -45,10 +48,11 @@ public:
 
 private:
     Context m_context;
+    wxWindow *m_parent{nullptr};
 
 private:
-    //void OnSendButtonClicked(wxCommandEvent &event);
-    //void OnTextFormat(wxCommandEvent &event);
+    void OnSendButtonClicked(wxCommandEvent &event);
+    void OnFormatChanged(wxCommandEvent &);
 
     wxComboBox *InitCycleIntervalComboBox();
 };

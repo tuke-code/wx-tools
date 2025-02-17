@@ -14,19 +14,21 @@
 #include "PageSettingsInputPopup.h"
 #include "Utilities/TextFormatComboBox.h"
 
+wxDEFINE_EVENT(wxtEVT_SETTINGS_INPUT_FORMAT, wxCommandEvent);
+wxDEFINE_EVENT(wxtEVT_SETTINGS_INPUT_WRITE, wxCommandEvent);
+
 PageSettingsInput::PageSettingsInput(wxWindow* parent)
     : wxStaticBoxSizer(wxVERTICAL, parent, _("Input Settings"))
     , m_context{nullptr}
+    , m_parent{parent}
 {
     auto cycleText = new wxStaticText(GetStaticBox(), wxID_ANY, _("Cycle"));
     m_context.cycleInterval = InitCycleIntervalComboBox();
     auto formatText = new wxStaticText(GetStaticBox(), wxID_ANY, _("Format"));
     m_context.format = new TextFormatComboBox(GetStaticBox());
-    //m_context.format->Bind(wxEVT_COMBOBOX_DROPDOWN, &PageSettingsInput::OnTextFormat, this);
     m_context.settings = new wxButton(GetStaticBox(), wxID_ANY, _("Settings"));
     m_context.send = new wxButton(GetStaticBox(), wxID_ANY, _("Send"));
     m_context.popup = new PageSettingsInputPopup(m_context.settings);
-    //m_context.send->Bind(wxEVT_BUTTON, &PageSettingsInput::OnSendButtonClicked, this);
 
     auto* sizer = new wxGridBagSizer(4, 4);
     sizer->Add(cycleText, wxGBPosition(0, 0), wxGBSpan(1, 1), wxALIGN_CENTER_VERTICAL | wxALL, 0);
@@ -42,6 +44,9 @@ PageSettingsInput::PageSettingsInput(wxWindow* parent)
     buttonSizer->Add(m_context.settings, 1, wxEXPAND | wxALL, 0);
     buttonSizer->Add(m_context.send, 1, wxEXPAND | wxALL, 0);
     Add(buttonSizer, 0, wxEXPAND | wxALL, 0);
+
+    m_context.format->Bind(wxEVT_COMBOBOX_DROPDOWN, &PageSettingsInput::OnFormatChanged, this);
+    m_context.send->Bind(wxEVT_BUTTON, &PageSettingsInput::OnSendButtonClicked, this);
 }
 
 void PageSettingsInput::Load(const wxtJson& parameters)
@@ -113,6 +118,20 @@ int PageSettingsInput::GetInterval() const
     }
 
     return -1;
+}
+
+void PageSettingsInput::OnSendButtonClicked(wxCommandEvent& WXUNUSED(event))
+{
+    wxCommandEvent event(wxtEVT_SETTINGS_INPUT_WRITE);
+    wxPostEvent(m_parent, event);
+}
+
+void PageSettingsInput::OnFormatChanged(wxCommandEvent& WXUNUSED(event))
+{
+    wxCommandEvent event(wxtEVT_SETTINGS_INPUT_FORMAT);
+    int format = GetTextFormat();
+    event.SetInt(format);
+    wxPostEvent(m_parent, event);
 }
 
 wxComboBox* PageSettingsInput::InitCycleIntervalComboBox()
