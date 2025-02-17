@@ -105,5 +105,7 @@ add_custom_target(
 wxt_build_for_store(wxTools)
 option(WXT_GENERATE_MSIX "Generate MSIX" ON)
 if(${CMAKE_BUILD_TYPE} STREQUAL "Release" AND WXT_GENERATE_MSIX)
+  # Remove “v” from ${WXT_GIT_TAG}
+  string(SUBSTRING ${WXT_GIT_TAG} 1 -1 WXT_GIT_TAG)
   wxt_generate_msix(wxTools "wxTools" "wxTools" ${WXT_GIT_TAG} OFF)
 endif()
