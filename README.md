@@ -5,9 +5,21 @@
 [![build-macos](https://github.com/x-tools-author/wx-tools/actions/workflows/build-macos.yml/badge.svg)](https://github.com/x-tools-author/wx-tools/actions/workflows/build-macos.yml)
 [![build-daily](https://github.com/x-tools-author/wx-tools/actions/workflows/build-daily.yml/badge.svg)](https://github.com/x-tools-author/wx-tools/actions/workflows/build-daily.yml)
 
+[![Packaging status](https://repology.org/badge/vertical-allrepos/wx-tools.svg)](https://repology.org/project/wx-tools/versions)
+
 wxTools is a user-friendly, open-source, cross-platform debugging tool-set based on wxWidgets (wxWidgets 3.2.x is recommended). It offers extensive support for SerialPort, UDP, TCP and Web Socket debugging functionalities.
 
 > **You can get *wxTools* form [Micorsoft Store(Sponsor)](https://www.microsoft.com/store/apps/9NX1D0CCV9T7)** or from [Github Release(Community)](https://github.com/x-tools-author/wx-tools/releases).
+
+## Build
+
+### Arch Linux
+
+Arch Linux can install wx-tools via the [AUR](https://aur.archlinux.org/packages/wx-tools) or a [self-built source](https://github.com/taotieren/aur-repo).
+
+```bash
+yay -Syu wx-tools
+```
 
 ## About the Project
 
