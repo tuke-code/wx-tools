@@ -38,6 +38,13 @@ if(WXT_PORTABLE_EDITION)
   add_compile_definitions(WXT_PORTABLE_EDITION)
 endif()
 
+# --------------------------------------------------------------------------------------------------
+# The magic option...
+option(WXT_MO_YU "The magic option..." OFF)
+if(WXT_MO_YU)
+  add_compile_definitions(WXT_MO_YU)
+endif()
+
 include(cmake/git.cmake)
 wxt_git_get_latest_tag(${CMAKE_SOURCE_DIR} WXT)
 wxt_git_get_latest_commit(${CMAKE_SOURCE_DIR} WXT)
