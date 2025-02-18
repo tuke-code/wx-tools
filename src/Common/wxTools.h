@@ -130,7 +130,7 @@ std::string GetDecString(uint8_t value);
 std::string GetHexString(uint8_t value);
 
 //--------------------------------------------------------------------------------------------------
-// Text format
+// Link type
 enum class LinkType {
     SerialPort,
     UDPClient,

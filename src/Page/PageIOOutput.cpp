@@ -8,8 +8,6 @@
  **************************************************************************************************/
 #include "PageIOOutput.h"
 
-#include "Common/wxTools.h"
-
 PageIOOutput::PageIOOutput(wxWindow *parent)
     : wxStaticBoxSizer(wxVERTICAL, parent, _("Output"))
     , m_parent(parent)

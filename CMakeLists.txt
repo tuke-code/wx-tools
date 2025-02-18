@@ -45,6 +45,11 @@ if(WXT_MO_YU)
   add_compile_definitions(WXT_MO_YU)
 endif()
 
+option(WXT_ENABLE_IPV6 "Enable IPv6" OFF)
+if(WXT_ENABLE_IPV6)
+  add_compile_definitions(WXT_ENABLE_IPV6)
+endif()
+
 include(cmake/git.cmake)
 wxt_git_get_latest_tag(${CMAKE_SOURCE_DIR} WXT)
 wxt_git_get_latest_commit(${CMAKE_SOURCE_DIR} WXT)
@@ -58,6 +63,7 @@ include(cmake/wxTools.cmake)
 include(cmake/mongoose.cmake)
 include(cmake/wxWidgets.cmake)
 include(cmake/Msix/Msix.cmake)
+include(cmake/libmodbus.cmake)
 include(cmake/CSerialPort.cmake)
 
 include_directories(src)
@@ -72,7 +78,14 @@ set(WXT_OUTPUT_DIR "${WX_TOOLS_BINARY_DIR}/wxTools")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${WXT_OUTPUT_DIR})
 add_executable(wxTools ${WX_TOOLS_SOURCE})
 
-set(PROJECT_LIBS libcserialport mongoose wx::core wx::aui glog::glog fmt::fmt)
+set(PROJECT_LIBS
+    libcserialport
+    mongoose
+    wx::core
+    wx::aui
+    glog::glog
+    fmt::fmt
+    libmodbus)
 target_link_libraries(wxTools PRIVATE ${PROJECT_LIBS})
 set_target_properties(
   wxTools

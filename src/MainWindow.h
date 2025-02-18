@@ -14,8 +14,10 @@
 #include <wx/wx.h>
 
 #include "Common/wxTools.h"
+#include "Modbus/ModbusPage.h"
 
 class Page;
+class ModbusPage;
 class MainWindow : public wxFrame
 {
 public:
@@ -45,6 +47,8 @@ private:
 
 private:
     std::map<LinkType, Page*> m_pageMap;
+    Modbus::ModbusPage* m_master;
+    Modbus::ModbusPage* m_slave;
     wxStatusBar* m_statusBar;
     wxTimer m_updateTimeTimer;
     wxNotebook* m_notebook;

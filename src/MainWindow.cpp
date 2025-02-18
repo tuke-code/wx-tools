@@ -14,6 +14,8 @@
 #include <wx/filename.h>
 #include <wx/stdpaths.h>
 
+#include "Modbus/ModbusPageMaster.h"
+#include "Modbus/ModbusPageSlave.h"
 #include "Page/Page.h"
 
 MainWindow::MainWindow()
@@ -53,6 +55,11 @@ MainWindow::MainWindow()
             wxtLog(ERROR) << wxString::Format("Create page failed, type: %d", cookedType);
         }
     }
+
+    m_master = new Modbus::ModbusPageMaster(m_notebook);
+    m_notebook->AddPage(m_master, _("Modbus Master"));
+    m_slave = new Modbus::ModbusPageSlave(m_notebook);
+    m_notebook->AddPage(m_slave, _("Modbus Slave"));
 
     m_updateTimeTimer.Bind(wxEVT_TIMER, [this](wxTimerEvent&) {
         this->m_statusBar->SetStatusText(wxDateTime::Now().FormatTime(), 1);
