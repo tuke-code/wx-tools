@@ -28,7 +28,7 @@ wxDEFINE_EVENT(wxtEVT_SETTINGS_INPUT_FORMAT, wxCommandEvent);
 
 const int wxtNewID()
 {
-    static int wxtId = wxID_HIGHEST + 1;
+    static int wxtId = wxID_HIGHEST + 10000;
     return wxtId++;
 }
 
