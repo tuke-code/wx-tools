@@ -1,4 +1,10 @@
 # https://github.com/stephane/libmodbus
+if(NOT EXISTS "${CMAKE_SOURCE_DIR}/src/Modbus/wxtModbus.h")
+  set(WXT_ENABLE_MODBUS OFF)
+  return()
+endif()
+
+set(WXT_ENABLE_MODBUS ON)
 set(packet_name "libmodbus-3.1.11")
 
 if(NOT EXISTS ${CMAKE_SOURCE_DIR}/3rd/${packet_name})

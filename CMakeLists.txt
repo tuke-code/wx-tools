@@ -77,15 +77,10 @@ list(APPEND WX_TOOLS_SOURCE wxTools.rc)
 set(WXT_OUTPUT_DIR "${WX_TOOLS_BINARY_DIR}/wxTools")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${WXT_OUTPUT_DIR})
 add_executable(wxTools ${WX_TOOLS_SOURCE})
-
-set(PROJECT_LIBS
-    libcserialport
-    mongoose
-    wx::core
-    wx::aui
-    glog::glog
-    fmt::fmt
-    libmodbus)
+set(PROJECT_LIBS libcserialport mongoose wx::core wx::aui glog::glog fmt::fmt)
+if(WXT_ENABLE_MODBUS)
+  target_link_libraries(wxTools PRIVATE libmodbus)
+endif()
 target_link_libraries(wxTools PRIVATE ${PROJECT_LIBS})
 set_target_properties(
   wxTools
