@@ -14,8 +14,11 @@
 #include <wx/filename.h>
 #include <wx/stdpaths.h>
 
+#if defined(WXT_ENABLE_MODBUS)
 #include "Modbus/ModbusPageMaster.h"
 #include "Modbus/ModbusPageSlave.h"
+#endif
+
 #include "Page/Page.h"
 
 MainWindow::MainWindow()
@@ -56,10 +59,12 @@ MainWindow::MainWindow()
         }
     }
 
-    m_master = new Modbus::ModbusPageMaster(m_notebook);
-    m_notebook->AddPage(m_master, _("Modbus Master"));
-    m_slave = new Modbus::ModbusPageSlave(m_notebook);
-    m_notebook->AddPage(m_slave, _("Modbus Slave"));
+#if defined(WXT_ENABLE_MODBUS)
+    auto master = new Modbus::ModbusPageMaster(m_notebook);
+    m_notebook->AddPage(master, _("Modbus Master"));
+    auto slave = new Modbus::ModbusPageSlave(m_notebook);
+    m_notebook->AddPage(slave, _("Modbus Slave"));
+#endif
 
     m_updateTimeTimer.Bind(wxEVT_TIMER, [this](wxTimerEvent&) {
         this->m_statusBar->SetStatusText(wxDateTime::Now().FormatTime(), 1);

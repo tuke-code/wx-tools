@@ -5,6 +5,7 @@ if(NOT EXISTS "${CMAKE_SOURCE_DIR}/src/Modbus/wxtModbus.h")
 endif()
 
 set(WXT_ENABLE_MODBUS ON)
+add_compile_definitions(WXT_ENABLE_MODBUS)
 set(packet_name "libmodbus-3.1.11")
 
 if(NOT EXISTS ${CMAKE_SOURCE_DIR}/3rd/${packet_name})
