@@ -109,6 +109,7 @@ void SocketBaseUi::InitUiComponents(
     for (int i = 0; i < funcs.size(); i++) {
         (this->*funcs[i])(i, parent);
     }
+    AddGrowableCol(1);
 }
 
 void SocketBaseUi::InitServerComboBox(int row, wxWindow *parent)
