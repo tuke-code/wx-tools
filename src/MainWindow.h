@@ -20,7 +20,7 @@ class MainWindow : public wxFrame
 {
 public:
     MainWindow();
-    ~MainWindow();
+    ~MainWindow() override;
 
 private:
     void Init();
