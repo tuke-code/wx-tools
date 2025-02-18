@@ -33,7 +33,7 @@ bool Application::OnInit()
     m_locale.Init(wxLANGUAGE_DEFAULT, wxLOCALE_LOAD_DEFAULT);
     m_locale.AddCatalog(wxString("wxTools"));
     m_locale.AddCatalog(wxString("wxWidgets"));
-    wxtInfo() << "Applicationn booting...";
+    wxtInfo() << "Application booting...";
     wxtInfo() << "--------------------------------------------------------------------------------";
 
     auto* mainWindow = new MainWindow();

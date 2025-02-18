@@ -49,14 +49,9 @@ MainWindow::MainWindow()
     m_notebook = new wxNotebook(this, wxID_ANY);
     auto types = GetSuportedLinkTypes();
     for (auto type : types) {
-        auto* page = new Page(type, m_notebook);
-        if (page != nullptr) {
-            m_notebook->AddPage(page, GetLinkName(type));
-            m_pageMap[type] = page;
-        } else {
-            int cookedType = static_cast<int>(type);
-            wxtLog(ERROR) << wxString::Format("Create page failed, type: %d", cookedType);
-        }
+        auto page = new Page(type, m_notebook);
+        m_notebook->AddPage(page, GetLinkName(type));
+        m_pageMap[type] = page;
     }
 
 #if defined(WXT_ENABLE_MODBUS)
