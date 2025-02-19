@@ -123,3 +123,10 @@ if(${CMAKE_BUILD_TYPE} STREQUAL "Release" AND WXT_GENERATE_MSIX)
   string(SUBSTRING ${WXT_GIT_TAG} 1 -1 WXT_GIT_TAG)
   wxt_generate_msix(wxTools "wxTools" "wxTools" ${WXT_GIT_TAG} OFF)
 endif()
+
+# --------------------------------------------------------------------------------------------------
+# Generate deb installer for linux
+if(LINUX)
+include(cmake/Deb/deb.cmake)
+wxt_make_deb(wxTools "wx-tools" "wxTools" ${WXT_GIT_TAG})
+endif()
