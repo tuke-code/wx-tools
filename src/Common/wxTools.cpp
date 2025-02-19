@@ -937,8 +937,7 @@ void SetComboBoxSectionByIntClientData(wxComboBox *comboBox, int clientDataValue
 wxString GetSettingsPath()
 {
 #if defined(WXT_PORTABLE_EDITION) && defined(WIN32)
-    wxString path = wxStandardPaths::Get().GetDataDir();
-    path += wxFileName::GetPathSeparator() + wxString("conf");
+    wxString path = wxGetCwd() + wxFileName::GetPathSeparator() + wxString("conf");
 #else
     wxString path = wxStandardPaths::Get().GetUserDataDir();
 #endif

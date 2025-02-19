@@ -24,9 +24,7 @@ bool Application::OnInit()
     DoInitLogging("wxTools");
 #endif
 
-    auto stdPath = wxStandardPaths::Get();
-    wxString i18nDir = stdPath.GetExecutablePath();
-    i18nDir = i18nDir.Left(i18nDir.Last(wxtPathSeparator));
+    wxString i18nDir = wxGetCwd();
     i18nDir += wxFileName::GetPathSeparator();
     i18nDir += wxString("i18n");
 

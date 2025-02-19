@@ -28,7 +28,7 @@ MainWindow::MainWindow()
 #if !defined(WXT_RELEASE)
 #if 0
 Ubuntu
-I20250219 13:13:10.775637 139801817956736 MainWindow.cpp:29] GetExecutablePath():...assets/wxTools/wxTools
+I20250219 13:13:10.775637 139801817956736 MainWindow.cpp:29] GetExecutablePath():/home/user/Project/wx-tools/build/Desktop_Qt_6_8_2-Debug/assets/wxTools/wxTools
 I20250219 13:13:10.775692 139801817956736 MainWindow.cpp:30] GetConfigDir():/etc
 I20250219 13:13:10.775699 139801817956736 MainWindow.cpp:31] GetUserConfigDir():/home/user
 I20250219 13:13:10.775705 139801817956736 MainWindow.cpp:32] GetDataDir():/usr/local/share/wxTools
@@ -38,7 +38,7 @@ I20250219 13:13:10.775719 139801817956736 MainWindow.cpp:35] GetPluginsDir():/us
 I20250219 13:13:10.775722 139801817956736 MainWindow.cpp:36] MakeConfigFileName():wxTools.conf
 I20250219 13:13:10.775734 139801817956736 MainWindow.cpp:37] GetGlobalFileName()/etc/wxTools.conf
 I20250219 13:13:10.775746 139801817956736 MainWindow.cpp:38] GetLocalFileName()/home/user/.wxTools
-13:13:12: Error: Failed to create a temporary file name (error 13: Permission denied)
+I20250219 13:13:10.775746 139801817956736 MainWindow.cpp:38] wxGetCwd():/home/user/Project/wx-tools/build/Desktop_Qt_6_8_2-Debug/assets/wxTools
 #endif
     wxtInfo() << "GetExecutablePath():" << wxStandardPaths::Get().GetExecutablePath();
     wxtInfo() << "GetConfigDir():" << wxStandardPaths::Get().GetConfigDir();
@@ -48,8 +48,9 @@ I20250219 13:13:10.775746 139801817956736 MainWindow.cpp:38] GetLocalFileName()/
     wxtInfo() << "GetUserLocalDataDir():" << wxStandardPaths::Get().GetUserLocalDataDir();
     wxtInfo() << "GetPluginsDir():" << wxStandardPaths::Get().GetPluginsDir();
     wxtInfo() << "MakeConfigFileName():" << wxStandardPaths::Get().MakeConfigFileName("wxTools");
-    wxtInfo() << "GetGlobalFileName()" << wxFileConfig::GetGlobalFileName("wxTools");
-    wxtInfo() << "GetLocalFileName()" << wxFileConfig::GetLocalFileName("wxTools");
+    wxtInfo() << "GetGlobalFileName():" << wxFileConfig::GetGlobalFileName("wxTools");
+    wxtInfo() << "GetLocalFileName():" << wxFileConfig::GetLocalFileName("wxTools");
+    wxtInfo() << "wxGetCwd():" << wxGetCwd();
 #endif
 
     Init();
