@@ -51,4 +51,5 @@ wxtJson PageSettingsLinkPopup::DoSave() const
 void PageSettingsLinkPopup::OnRefresh(wxCommandEvent &)
 {
     wxPostEvent(m_parent, wxCommandEvent(wxtEVT_SETTINGS_LINK_POPUP_REFRESH));
+    Hide();
 }

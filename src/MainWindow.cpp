@@ -324,7 +324,7 @@ void MainWindow::DoLoad(wxString fileName)
     }
 
     int tabIndex = wxtConfig->Read("MainWindow/tabIndex", long(0));
-    if (tabIndex >= 0 || tabIndex < m_notebook->GetPageCount()) {
+    if (tabIndex >= 0 && tabIndex < m_notebook->GetPageCount()) {
         m_notebook->SetSelection(tabIndex);
     }
 }
