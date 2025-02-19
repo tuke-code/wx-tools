@@ -2,7 +2,7 @@
 Name=argFriendlyName
 Comment=argFriendlyName
 Exec=/opt/argPacketName/argTarget
-Icon=/usr/share/icons/wxTools.png
+Icon=/usr/share/icons/icon.png
 Terminal=false
 Type=Application
 Categories=Development;
