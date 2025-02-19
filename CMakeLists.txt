@@ -54,6 +54,11 @@ include(cmake/git.cmake)
 wxt_git_get_latest_tag(${CMAKE_SOURCE_DIR} WXT)
 wxt_git_get_latest_commit(${CMAKE_SOURCE_DIR} WXT)
 wxt_git_get_latest_commit_time(${CMAKE_SOURCE_DIR} WXT)
+# Remove “v” from ${WXT_GIT_TAG} if it exists
+set(WXT_VERSION ${WXT_GIT_TAG})
+if (WXT_VERSION MATCHES "^v[0-9].*")
+ string(SUBSTRING ${WXT_VERSION} 1 -1 WXT_VERSION)
+endif()
 
 include(cmake/fmt.cmake)
 include(cmake/asio.cmake)
@@ -119,16 +124,12 @@ add_custom_target(
 wxt_build_for_store(wxTools)
 option(WXT_GENERATE_MSIX "Generate MSIX" ON)
 if(${CMAKE_BUILD_TYPE} STREQUAL "Release" AND WXT_GENERATE_MSIX)
-  # Remove “v” from ${WXT_GIT_TAG}
-  string(SUBSTRING ${WXT_GIT_TAG} 1 -1 WXT_GIT_TAG)
-  wxt_generate_msix(wxTools "wxTools" "wxTools" ${WXT_GIT_TAG} OFF)
+  wxt_generate_msix(wxTools "wxTools" "wxTools" ${WXT_VERSION} OFF)
 endif()
 
 # --------------------------------------------------------------------------------------------------
 # Generate deb installer for linux
 if(LINUX)
   include(cmake/Deb/deb.cmake)
-  # Remove “v” from ${WXT_GIT_TAG}
-  string(SUBSTRING ${WXT_GIT_TAG} 1 -1 WXT_GIT_TAG)
-  wxt_make_deb(wxTools "wx-tools" "wxTools" ${WXT_GIT_TAG})
+  wxt_make_deb(wxTools "wx-tools" "wxTools" ${WXT_VERSION})
 endif()

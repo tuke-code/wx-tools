@@ -20,7 +20,7 @@ function(wxt_git_get_latest_tag working_dir prefix)
   endif()
   string(REPLACE "\n" ";" git_tags ${git_tags})
   list(LENGTH git_tags git_tags_count)
-  list(GET git_tags -1 GIT_LATEST_TAG)
+  list(GET git_tags 0 GIT_LATEST_TAG)
   if(${GIT_LATEST_TAG} STREQUAL "" OR ${GIT_LATEST_TAG} STREQUAL "continuous")
     # Such as 25.2.5
     string(TIMESTAMP current_year "%Y")
