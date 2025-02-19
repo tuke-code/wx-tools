@@ -21,8 +21,11 @@ PageSettingsOutputPopup::PageSettingsOutputPopup(wxButton *controlButton)
                                       wxID_ANY,
                                       wxEmptyString,
                                       wxDefaultPosition,
-                                      wxDefaultSize);
+                                      wxDefaultSize,
+                                      wxTE_PROCESS_ENTER);
     m_filterTextCtrl->SetHint(_("Hello;World"));
+    // Hide popup window when the user presses the Enter key
+    m_filterTextCtrl->Bind(wxEVT_TEXT_ENTER, [this](wxCommandEvent &) { Hide(); });
 
     auto panelSizer = new wxGridBagSizer(4, 4);
     panelSizer->Add(filterLabel, wxGBPosition(0, 0), wxDefaultSpan, wxALIGN_CENTER_VERTICAL);
