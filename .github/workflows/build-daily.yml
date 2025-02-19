@@ -85,4 +85,5 @@ jobs:
       - name: Upload Release Asset for Ubuntu
         run: |
           ls -l
-          find build -name "*.deb" -exec gh release upload continuous ${{ matrix.os }}-{} \;
+          cd build/deb/wxTools
+          find . -name "*.deb" -exec gh release upload continuous ${{ matrix.os }}-{} \;
