@@ -3,6 +3,7 @@
 # * argFriendlyName: desktop entry file name
 # * argVersion: the application version
 # * argWorkingDir: working dir
+# * argLowerTargetName: lower case of argTarget, such as "wxTools" -> "wxtools"
 
 set(control_file ${argWorkingDir}/DEBIAN/control)
 set(old_text argPacketName)
@@ -35,5 +36,5 @@ set(old_text icon.png)
 set(new_text ${argPacketName}-icon.png)
 execute_process(COMMAND sed -i s/${old_text}/${new_text}/g ${desktop_file_name})
 
-execute_process(COMMAND dpkg -b ./ ${argPacketName}-${argVersion}-amd64.deb
+execute_process(COMMAND dpkg -b ./ ${argLowerTargetName}-${argVersion}-amd64.deb
                 WORKING_DIRECTORY ${argWorkingDir})

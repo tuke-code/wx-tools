@@ -1,11 +1,17 @@
 function(wxt_make_deb target packetName friendlyName version)
   file(GLOB_RECURSE RES_FILES ${CMAKE_SOURCE_DIR}/cmake/Deb/*)
 
+  # target to lower case
+  string(TOLOWER ${target} lower_target)
+  # Remove all spaces
+  string(REGEX REPLACE " " "" lower_target ${lower_target})
+
   set(args "-DargTarget=${target}")
   list(APPEND args "-DargPacketName=${packetName}")
   list(APPEND args "-DargFriendlyName=${friendlyName}")
   list(APPEND args "-DargVersion=${version}")
   list(APPEND args "-DargWorkingDir=${CMAKE_BINARY_DIR}/deb/${target}")
+  list(APPEND args "-DargLowerTargetName=${lower_target}")
 
   # cmake-format: off
   add_custom_target(${target}-deb
