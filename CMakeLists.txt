@@ -127,6 +127,8 @@ endif()
 # --------------------------------------------------------------------------------------------------
 # Generate deb installer for linux
 if(LINUX)
-include(cmake/Deb/deb.cmake)
-wxt_make_deb(wxTools "wx-tools" "wxTools" ${WXT_GIT_TAG})
+  include(cmake/Deb/deb.cmake)
+  # Remove “v” from ${WXT_GIT_TAG}
+  string(SUBSTRING ${WXT_GIT_TAG} 1 -1 WXT_GIT_TAG)
+  wxt_make_deb(wxTools "wx-tools" "wxTools" ${WXT_GIT_TAG})
 endif()
