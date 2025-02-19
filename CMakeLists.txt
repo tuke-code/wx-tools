@@ -1,7 +1,6 @@
 cmake_minimum_required(VERSION 3.20)
 # cmake-format: off
 project(wxTools VERSION 1.0 LANGUAGES C CXX)
-set(CMAKE_AUTORCC ON)
 # cmake-format: on
 
 # cmake-format: off
@@ -27,9 +26,10 @@ if(${CMAKE_BUILD_TYPE} STREQUAL "Release")
   add_compile_definitions(WXT_RELEASE)
 endif()
 
-# Windows XP
+# * Windows XP
 option(_WIN32_WINNT "Windows Version" 0x0501)
-# Windows 7 option(_WIN32_WINNT "Windows Version" 0x0601)
+# * Windows 7
+# * option(_WIN32_WINNT "Windows Version" 0x0601)
 
 # --------------------------------------------------------------------------------------------------
 # For portable edition
