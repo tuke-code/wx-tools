@@ -1,5 +1,5 @@
 function(wxt_make_deb target packetName friendlyName version)
-  file(GLOB_RECURSE RES_FILES ${CMAKE_SOURCE_DIR}/cmake/deb/*)
+  file(GLOB_RECURSE RES_FILES ${CMAKE_SOURCE_DIR}/cmake/Deb/*)
 
   set(args "-DargTarget=${target}")
   list(APPEND args "-DargPacketName=${packetName}")

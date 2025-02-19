@@ -47,7 +47,11 @@ std::string LogPath()
     path += wxFileName::GetPathSeparator();
     path += wxString("log");
 
-    wxFileName::Mkdir(path, wxS_DIR_DEFAULT, wxPATH_MKDIR_FULL);
+#if defined(WIN32)
+    wxMkDir(path);
+#else
+    wxMkDir(path, 777);
+#endif
 
     return path.ToStdString();
 }
@@ -932,7 +936,7 @@ void SetComboBoxSectionByIntClientData(wxComboBox *comboBox, int clientDataValue
 
 wxString GetSettingsPath()
 {
-#if defined(WXT_PORTABLE_EDITION) && !defined(WIN32)
+#if defined(WXT_PORTABLE_EDITION) && defined(WIN32)
     wxString path = wxStandardPaths::Get().GetDataDir();
     path += wxFileName::GetPathSeparator() + wxString("conf");
 #else
