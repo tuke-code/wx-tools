@@ -1,3 +1,0 @@
-[submodule "src/Modbus"]
-	path = src/Modbus
-	url = https://gitee.com/x-apps/wx-modbus.git
