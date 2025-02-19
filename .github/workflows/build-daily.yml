@@ -83,8 +83,6 @@ jobs:
           cmake --build . --target all
           cmake --build . --target wxTools-deb
       - name: Upload Release Asset for Ubuntu
-        shell: cmd
         run: |
           ls -l
-          find deb -name "*.deb" -exec mv {} wxtools-${{ matrix.os }}-${{ github.ref_name }}-amd64.deb \;
-          gh release upload continuous wxtools-${{ matrix.os }}-${{ github.ref_name }}-amd64.deb
+          find deb -name "*.deb" -exec gh release upload continuous ${{ matrix.os }}-{} \;
