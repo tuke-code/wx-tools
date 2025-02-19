@@ -19,6 +19,7 @@
 #include "Modbus/ModbusPageSlave.h"
 #endif
 
+#include "128x128.xpm"
 #include "Page/Page.h"
 
 MainWindow::MainWindow()
@@ -55,10 +56,14 @@ I20250219 13:13:10.775746 139801817956736 MainWindow.cpp:38] wxGetCwd():/home/us
 
     Init();
 
+#if 0
 #if defined(WIN32)
     wxIcon icon;
     icon.LoadFile("IDI_ICON1", wxBITMAP_TYPE_ICO_RESOURCE);
     SetIcon(icon);
+#endif
+#else
+    SetIcon(wxIcon(wxtLogo));
 #endif
 
     m_notebook = new wxNotebook(this, wxID_ANY);
