@@ -42,6 +42,6 @@ yay -Syu wx-tools
 
 ## Screenshot
 
-![en_US](doc/en_US.png)
+![en_US](docs/assets/en_US.png)
 
-![zh_CN](doc/zh_CN.png)
+![zh_CN](docs/assets/zh_CN.png)

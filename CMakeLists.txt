@@ -56,8 +56,8 @@ wxt_git_get_latest_commit(${CMAKE_SOURCE_DIR} WXT)
 wxt_git_get_latest_commit_time(${CMAKE_SOURCE_DIR} WXT)
 # Remove “v” from ${WXT_GIT_TAG} if it exists
 set(WXT_VERSION ${WXT_GIT_TAG})
-if (WXT_VERSION MATCHES "^v[0-9].*")
- string(SUBSTRING ${WXT_VERSION} 1 -1 WXT_VERSION)
+if(WXT_VERSION MATCHES "^v[0-9].*")
+  string(SUBSTRING ${WXT_VERSION} 1 -1 WXT_VERSION)
 endif()
 
 include(cmake/fmt.cmake)
