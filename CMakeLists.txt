@@ -132,14 +132,7 @@ if(${CMAKE_BUILD_TYPE} STREQUAL "Release" AND WXT_GENERATE_MSIX)
 endif()
 
 # --------------------------------------------------------------------------------------------------
-# Generate deb installer for linux
-if(LINUX)
-  include(cmake/Deb/deb.cmake)
-  wxt_make_deb(wxTools "wx-tools" "wxTools" ${WXT_VERSION})
-endif()
-
-# --------------------------------------------------------------------------------------------------
-# Generate AppImage for linux
+# Generate package for linux
 if(LINUX)
   include(cmake/Linux/Linux.cmake)
   wxt_make_app_image(wxTools "wx-tools" "wxTools" ${WXT_VERSION})
