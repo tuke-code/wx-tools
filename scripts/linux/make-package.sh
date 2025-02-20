@@ -16,4 +16,7 @@ fi
 cd build
 cmake -DCMAKE_BUILD_TYPE=Release -DWXT_GENERATE_MSIX:BOOL=OFF -G "Ninja" ../../../
 cmake --build . --target all
+cmake --build . --target wxTools-deb
+tree deb/wxTools
 cmake --build . --target wxTools-appimage
+tree appimage/wxTools
