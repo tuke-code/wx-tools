@@ -12,14 +12,10 @@ set(control_file ${argWorkingDir}/DEBIAN/control)
 set(old_text argPacketName)
 set(new_text ${argPacketName})
 execute_process(COMMAND sed -i s/${old_text}/${new_text}/g ${control_file})
+
 set(old_text argVersion)
 set(new_text ${argVersion})
 execute_process(COMMAND sed -i s/${old_text}/${new_text}/g ${control_file})
-
-# Rename the icon
-set(old_icon_name ${argWorkingDir}/usr/share/icons/icon.png)
-set(new_icon_name ${argWorkingDir}/usr/share/icons/${argPacketName}.png)
-execute_process(COMMAND ${CMAKE_COMMAND} -E rename ${old_icon_name} ${new_icon_name})
 
 set(desktop_file_name_tmp ${argWorkingDir}/usr/share/applications/app.desktop)
 set(desktop_file_name ${argWorkingDir}/usr/share/applications/${argPacketName}.desktop)
@@ -35,9 +31,9 @@ set(old_text argTarget)
 set(new_text ${argTarget})
 execute_process(COMMAND sed -i s/${old_text}/${new_text}/g ${desktop_file_name})
 
-# icon
-set(icon_file_name_tmp ${argWorkingDir}/usr/share/icons/icon.png)
-set(icon_file_name ${argWorkingDir}/usr/share/icons/${argPacketName}.png)
+# Rename the icon
+set(old_text ${argWorkingDir}/usr/share/icons/icon.png)
+set(new_text ${argWorkingDir}/usr/share/icons/${argPacketName}.png)
 execute_process(COMMAND ${CMAKE_COMMAND} -E rename ${icon_file_name_tmp} ${icon_file_name})
 
 set(old_text icon.png)
