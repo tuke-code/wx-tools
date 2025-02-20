@@ -141,6 +141,6 @@ endif()
 # --------------------------------------------------------------------------------------------------
 # Generate AppImage for linux
 if(LINUX)
-  include(cmake/AppImage/app_image.cmake)
+  include(cmake/Linux/Linux.cmake)
   wxt_make_app_image(wxTools "wx-tools" "wxTools" ${WXT_VERSION})
 endif()

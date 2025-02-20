@@ -1,4 +1,4 @@
-function(wxt_make_deb target packetName friendlyName version)
+function(wxt_make_package target packetName friendlyName version)
   file(GLOB_RECURSE RES_FILES ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/app/*)
 
   # target to lower case
@@ -16,7 +16,7 @@ function(wxt_make_deb target packetName friendlyName version)
   list(APPEND args "-DargSrcDir=${CMAKE_SOURCE_DIR}")
 
   # cmake-format: off
-  add_custom_target(${target}-deb
+  add_custom_target(${target}-package
     COMMAND ${CMAKE_COMMAND} -E remove_directory {CMAKE_BINARY_DIR}/deb/${target} "||" ${CMAKE_COMMAND} -E true
     COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/deb/${target} "||" ${CMAKE_COMMAND} -E true
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/app ${CMAKE_BINARY_DIR}/deb/${target} "||" ${CMAKE_COMMAND} -E true
