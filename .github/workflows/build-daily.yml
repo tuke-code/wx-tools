@@ -99,5 +99,5 @@ jobs:
         if: matrix.os == 'ubuntu-20.04'
         run: |
           cd build
-          cmake --build . --target wxTools-app-image
+          cmake --build . --target wxTools-appimage
           find appimage -name "*.AppImage" -exec gh release upload continuous {} \;
