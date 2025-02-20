@@ -95,3 +95,9 @@ jobs:
           done
           ls -l
           find . -name "*.deb" -exec gh release upload continuous {} \;
+      - name: Make app image for ubuntu-20.04
+        if: matrix.os == 'ubuntu-20.04'
+        run: |
+          cd build
+          cmake --build . --target wxTools-app-image
+          find appimage -name "*.AppImage" -exec gh release upload continuous {} \;
