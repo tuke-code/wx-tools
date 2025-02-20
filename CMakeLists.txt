@@ -133,3 +133,10 @@ if(LINUX)
   include(cmake/Deb/deb.cmake)
   wxt_make_deb(wxTools "wx-tools" "wxTools" ${WXT_VERSION})
 endif()
+
+# --------------------------------------------------------------------------------------------------
+# Generate AppImage for linux
+if(LINUX)
+  include(cmake/AppImage/app_image.cmake)
+  wxt_make_app_image(wxTools "wx-tools" "wxTools" ${WXT_VERSION})
+endif()
