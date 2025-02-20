@@ -1,4 +1,4 @@
-﻿#!/usr/bin/bash
+#!/bin/bash
 
 # if $1 is "clean", remove build directory
 if [ "$1" == "clean" ]; then

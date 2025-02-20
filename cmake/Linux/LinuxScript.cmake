@@ -34,11 +34,24 @@ execute_process(COMMAND sed -i s/${old_text}/${new_text}/g ${desktop_file_name})
 # Rename the icon
 set(old_text ${argWorkingDir}/usr/share/icons/icon.png)
 set(new_text ${argWorkingDir}/usr/share/icons/${argPacketName}.png)
-execute_process(COMMAND ${CMAKE_COMMAND} -E rename ${icon_file_name_tmp} ${icon_file_name})
+execute_process(COMMAND ${CMAKE_COMMAND} -E rename ${old_text} ${new_text})
 
 set(old_text icon.png)
 set(new_text ${argPacketName})
 execute_process(COMMAND sed -i s/${old_text}/${new_text}/g ${desktop_file_name})
+
+# Copy mo files
+# cmake-format: off
+file(GLOB i18n_dirs ${argSrcDir}/res/i18n/*)
+foreach(i18n_dir ${i18n_dirs})
+  get_filename_component(i18n_dir_name ${i18n_dir} NAME)
+  execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${argWorkingDir}/usr/share/locale/${i18n_dir_name}/LC_MESSAGES)
+  file(GLOB mo_files ${i18n_dir}/*.mo)
+  foreach(mo_file ${mo_files})
+    execute_process(COMMAND ${CMAKE_COMMAND} -E copy_if_different ${mo_file} ${argWorkingDir}/usr/share/locale/${i18n_dir_name}/LC_MESSAGES)
+  endforeach()
+endforeach()
+# cmake-format: on
 
 # cmake-format: off
 if(${argPackageType} STREQUAL "deb")
