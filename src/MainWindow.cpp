@@ -236,10 +236,14 @@ void MainWindow::InitMenuHelp(wxMenuBar* menuBar)
 
     menuHelp->AppendSeparator();
 
-    tmpId = wxtNewID();
-    menuHelp->Append(tmpId, _("History"), _("Show the history of the application."));
-    Bind(wxEVT_MENU, &MainWindow::DoShowHistory, this, tmpId);
-    menuHelp->AppendSeparator();
+    // if history file not found, ignore this menu item
+    wxString historyFileName = GetHistoryFileName();
+    if (wxFileExists(historyFileName)) {
+        tmpId = wxtNewID();
+        menuHelp->Append(tmpId, _("History"), _("Show the history of the application."));
+        Bind(wxEVT_MENU, &MainWindow::DoShowHistory, this, tmpId);
+        menuHelp->AppendSeparator();
+    }
 
     wxString help = _("Visit GitHub page to get more information.");
     item = menuHelp->Append(wxID_ANY, _("Get Source from GitHub"), help);
@@ -364,10 +368,7 @@ void MainWindow::DoCheckForUpdates(wxCommandEvent&)
 
 void MainWindow::DoShowHistory(wxCommandEvent&)
 {
-    wxString path = wxStandardPaths::Get().GetDataDir();
-    path += wxFileName::GetPathSeparator() + wxString("files");
-    path += wxFileName::GetPathSeparator() + wxString("history.txt");
-
+    wxString path = GetHistoryFileName();
     if (!wxFileExists(path)) {
         wxMessageBox(_("History file not found!"), _("Error"), wxOK | wxICON_ERROR);
         return;
@@ -383,4 +384,20 @@ void MainWindow::DoShowHistory(wxCommandEvent&)
                                           wxTE_MULTILINE | wxTE_DONTWRAP | wxTE_READONLY);
     textCtrl->LoadFile(path);
     dlg.ShowModal();
+}
+
+wxString MainWindow::GetHistoryFileName() const
+{
+#if defined(__WINDOWS__)
+    wxString path = wxStandardPaths::Get().GetDataDir();
+    path += wxFileName::GetPathSeparator() + wxString("files");
+    path += wxFileName::GetPathSeparator() + wxString("history.txt");
+    return path;
+#elif defined(__LINUX__)
+    return wxString("/usr/local/share/wx-tools/history.txt");
+#elif defined(__APPLE__)
+    return wxString("/Applications/wx-tools/history.txt");
+#endif
+
+    return wxEmptyString;
 }

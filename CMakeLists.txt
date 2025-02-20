@@ -97,10 +97,12 @@ set_target_properties(
 # --------------------------------------------------------------------------------------------------
 # Copy res to build directory
 # cmake-format: off
-add_custom_command(TARGET wxTools POST_BUILD
-  COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/res/i18n" "$<TARGET_FILE_DIR:wxTools>/i18n"
-  COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/res/files" "$<TARGET_FILE_DIR:wxTools>/files"
-)
+if(WIN32)
+  add_custom_command(TARGET wxTools POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/res/i18n" "$<TARGET_FILE_DIR:wxTools>/i18n"
+    COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/res/files" "$<TARGET_FILE_DIR:wxTools>/files"
+  )
+endif()
 # cmake-format: on
 
 # --------------------------------------------------------------------------------------------------
@@ -112,12 +114,14 @@ endif()
 
 # --------------------------------------------------------------------------------------------------
 # Deploy local files
-file(GLOB_RECURSE WX_TOOLS_LOCAL_FILES res/*.po)
-add_custom_target(
-  wxTools-locale
-  COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/res/i18n"
-          "$<TARGET_FILE_DIR:wxTools>/i18n"
-  SOURCES ${WX_TOOLS_LOCAL_FILES})
+if(WIN32)
+  file(GLOB_RECURSE WX_TOOLS_LOCAL_FILES res/*.po)
+  add_custom_target(
+    wxTools-locale
+    COMMAND ${CMAKE_COMMAND} -E copy_directory "${CMAKE_SOURCE_DIR}/res/i18n"
+            "$<TARGET_FILE_DIR:wxTools>/i18n"
+    SOURCES ${WX_TOOLS_LOCAL_FILES})
+endif()
 
 # --------------------------------------------------------------------------------------------------
 # Generate MSI installer for Microsoft Store

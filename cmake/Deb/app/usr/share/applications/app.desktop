@@ -1,8 +1,8 @@
 [Desktop Entry]
 Name=argFriendlyName
 Comment=argFriendlyName
-Exec=/opt/argPacketName/argTarget
-Icon=/usr/share/icons/icon.png
+Exec=argPacketName
+Icon=icon.png
 Terminal=false
 Type=Application
 Categories=Development;

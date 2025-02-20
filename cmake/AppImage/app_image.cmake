@@ -7,7 +7,7 @@ function(wxt_make_app_image target packetName friendlyName version)
   list(APPEND args "-DargPacketName=${packetName}")
   list(APPEND args "-DargVersion=${version}")
   list(APPEND args "-DargWorkingDir=${workingDir}")
-  list(APPEND args "-DargTool=${CMAKE_CURRENT_FUNCTION_LIST_DIR}/linuxdeployqt-continuous-x86_64.AppImage")
+  list(APPEND args "-DargTool=${CMAKE_BINARY_DIR}/tools/linuxdeployqt")
 
   # cmake-format: off
   add_custom_target(${target}-appimage

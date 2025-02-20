@@ -42,6 +42,7 @@ private:
     void DoSave(wxString fileName = wxString());
     void DoCheckForUpdates(wxCommandEvent&);
     void DoShowHistory(wxCommandEvent&);
+    wxString GetHistoryFileName() const;
 
 private:
     std::map<LinkType, Page*> m_pageMap;
