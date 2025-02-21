@@ -394,7 +394,7 @@ wxString MainWindow::GetHistoryFileName() const
     path += wxFileName::GetPathSeparator() + wxString("history.txt");
     return path;
 #elif defined(__LINUX__)
-    return wxString("/usr/local/share/wx-tools/history.txt");
+    return wxString("/usr/share/doc/wx-tools/history.txt");
 #elif defined(__APPLE__)
     return wxString("/Applications/wx-tools/history.txt");
 #endif
