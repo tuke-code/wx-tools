@@ -125,10 +125,12 @@ endif()
 
 # --------------------------------------------------------------------------------------------------
 # Generate MSI installer for Microsoft Store
-wxt_build_for_store(wxTools)
-option(WXT_GENERATE_MSIX "Generate MSIX" ON)
-if(${CMAKE_BUILD_TYPE} STREQUAL "Release" AND WXT_GENERATE_MSIX)
-  wxt_generate_msix(wxTools "wxTools" "wxTools" ${WXT_VERSION} OFF)
+if(WIN32)
+  wxt_build_for_store(wxTools)
+  option(WXT_GENERATE_MSIX "Generate MSIX" ON)
+  if(${CMAKE_BUILD_TYPE} STREQUAL "Release" AND WXT_GENERATE_MSIX)
+    wxt_generate_msix(wxTools "wxTools" "wxTools" ${WXT_VERSION} OFF)
+  endif()
 endif()
 
 # --------------------------------------------------------------------------------------------------
