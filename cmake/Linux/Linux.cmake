@@ -27,7 +27,6 @@ function(wxt_make_package target packetName friendlyName version is_deb)
     COMMAND ${CMAKE_COMMAND} -E make_directory ${CMAKE_BINARY_DIR}/${package_type}/${target} "||" ${CMAKE_COMMAND} -E true
     COMMAND ${CMAKE_COMMAND} -E copy_directory ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/app ${CMAKE_BINARY_DIR}/${package_type}/${target} "||" ${CMAKE_COMMAND} -E true
     COMMAND ${CMAKE_COMMAND} -E copy_if_different $<TARGET_FILE:${target}> ${CMAKE_BINARY_DIR}/${package_type}/${target}/usr/bin/${packetName}
-    COMMAND ${CMAKE_COMMAND} -E copy_if_different ${CMAKE_SOURCE_DIR}/res/files/history.txt ${CMAKE_BINARY_DIR}/${package_type}/${target}/usr/share/doc/${packetName}/history.txt
     COMMAND ${CMAKE_COMMAND} ${args} -P ${CMAKE_CURRENT_FUNCTION_LIST_DIR}/LinuxScript.cmake
     SOURCES ${RES_FILES})
   # cmake-format: on
