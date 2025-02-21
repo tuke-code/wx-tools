@@ -66,6 +66,9 @@ include(cmake/wxWidgets.cmake)
 include(cmake/Msix/Msix.cmake)
 include(cmake/CSerialPort.cmake)
 
+set_target_properties(fmt PROPERTIES FOLDER "3rd")
+set_target_properties(libcserialport PROPERTIES FOLDER "3rd")
+
 include_directories(src)
 
 # --------------------------------------------------------------------------------------------------
