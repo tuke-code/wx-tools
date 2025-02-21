@@ -26,13 +26,9 @@ if(${CMAKE_BUILD_TYPE} STREQUAL "Release")
   add_compile_definitions(WXT_RELEASE)
 endif()
 
-# * Windows XP
-option(_WIN32_WINNT "Windows Version" 0x0501)
-# * Windows 7
-# * option(_WIN32_WINNT "Windows Version" 0x0601)
-
 # --------------------------------------------------------------------------------------------------
-# For portable edition
+# Project options
+option(WXT_AUTO_USING_3RD_LIBS "If the option is OFF, using 3rd source always" ON)
 option(WXT_PORTABLE_EDITION "Portable edition" ON)
 if(WXT_PORTABLE_EDITION)
   add_compile_definitions(WXT_PORTABLE_EDITION)
@@ -81,18 +77,15 @@ list(APPEND WX_TOOLS_SOURCE wxTools.rc)
 set(WXT_OUTPUT_DIR "${WX_TOOLS_BINARY_DIR}/wxTools")
 set(CMAKE_RUNTIME_OUTPUT_DIRECTORY ${WXT_OUTPUT_DIR})
 add_executable(wxTools ${WX_TOOLS_SOURCE})
-set(PROJECT_LIBS libcserialport mongoose wx::core wx::aui glog::glog fmt::fmt)
-if(WXT_ENABLE_MODBUS)
-  target_link_libraries(wxTools PRIVATE libmodbus)
+set(PROJECT_LIBS glog::glog fmt::fmt libcserialport mongoose)
+target_link_libraries(wxTools PRIVATE ${wxWidgets_LIBRARIES} ${PROJECT_LIBS})
+if(BUNDLE_ID_OPTION)
+  set_target_properties(wxTools PROPERTIES ${BUNDLE_ID_OPTION})
 endif()
-target_link_libraries(wxTools PRIVATE ${PROJECT_LIBS})
-set_target_properties(
-  wxTools
-  PROPERTIES ${BUNDLE_ID_OPTION} MACOSX_BUNDLE_BUNDLE_VERSION
-             ${PROJECT_VERSION} MACOSX_BUNDLE_SHORT_VERSION_STRING
-             ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR} MACOSX_BUNDLE
-             TRUE WIN32_EXECUTABLE
-             TRUE)
+set_target_properties(wxTools PROPERTIES MACOSX_BUNDLE_BUNDLE_VERSION ${PROJECT_VERSION})
+set_target_properties(wxTools PROPERTIES MACOSX_BUNDLE_SHORT_VERSION_STRING
+                                         ${PROJECT_VERSION_MAJOR}.${PROJECT_VERSION_MINOR})
+set_target_properties(wxTools PROPERTIES MACOSX_BUNDLE TRUE WIN32_EXECUTABLE TRUE)
 
 # --------------------------------------------------------------------------------------------------
 # Copy res to build directory

@@ -89,5 +89,6 @@ compile_commands.json
 cmake-build*
 3rd
 html
+libs
 
 ThirdParty
