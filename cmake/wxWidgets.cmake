@@ -7,9 +7,11 @@ if(wxWidgets_FOUND AND WXT_AUTO_USING_3RD_LIBS)
   include(${wxWidgets_USE_FILE})
 else()
   # Extract the wxWidgets packet
-  if(NOT EXISTS ${CMAKE_SOURCE_DIR}/3rd/${packet_name})
-    execute_process(COMMAND ${CMAKE_COMMAND} -E tar xzf ${CMAKE_SOURCE_DIR}/3rd/${packet_name}.zip
+  if(NOT EXISTS ${CMAKE_SOURCE_DIR}/3rd/${packet_name}/CMakeLists.txt)
+    execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${packet_name}
                     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/3rd)
+    execute_process(COMMAND ${CMAKE_COMMAND} -E tar xzf ${CMAKE_SOURCE_DIR}/3rd/${packet_name}.7z
+                    WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/3rd/${packet_name})
   endif()
 
   # Add the wxWidgets subdirectory
