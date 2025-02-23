@@ -1,9 +1,10 @@
 ﻿set(packet_name "glog-0.7.1")
 
 # cmake-format: off
-set(WITH_GTEST OFF CACHE BOOL "" FORCE)
-set(WITH_GFLAGS OFF CACHE BOOL "" FORCE)
-set(BUILD_SHARED_LIBS OFF CACHE BOOL "Build shared libraries" FORCE)
+set(WITH_GFLAGS OFF)
+set(BUILD_TESTING OFF)
+set(BUILD_SHARED_LIBS OFF CACHE BOOL "Reset option" FORCE)
+set(WITH_TOOLS OFF CACHE BOOL "Reset option" FORCE)
 # cmake-format: on
 
 set(wxWidget_LIBS ${CMAKE_SOURCE_DIR}/libs/${CMAKE_BUILD_TYPE}/${packet_name})
