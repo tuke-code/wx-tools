@@ -1,4 +1,4 @@
-﻿set(packet_name "wxWidgets-3.2.6")
+﻿set(packet_name "wxWidgets-3.2.7")
 
 set(wxWidget_LIBS ${CMAKE_SOURCE_DIR}/libs/${CMAKE_BUILD_TYPE}/${packet_name})
 set(CMAKE_PREFIX_PATH ${CMAKE_PREFIX_PATH} ${wxWidget_LIBS})
@@ -10,7 +10,7 @@ else()
   if(NOT EXISTS ${CMAKE_SOURCE_DIR}/3rd/${packet_name}/CMakeLists.txt)
     execute_process(COMMAND ${CMAKE_COMMAND} -E make_directory ${packet_name}
                     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/3rd)
-    execute_process(COMMAND ${CMAKE_COMMAND} -E tar xzf ${CMAKE_SOURCE_DIR}/3rd/${packet_name}.7z
+    execute_process(COMMAND ${CMAKE_COMMAND} -E tar xzf ${CMAKE_SOURCE_DIR}/3rd/${packet_name}.zip
                     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR}/3rd/${packet_name})
   endif()
 
